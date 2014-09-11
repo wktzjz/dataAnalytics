@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import "TSMessage.h"
+#import "baseViewController.h"
 
 @interface AppDelegate ()
 
@@ -15,8 +17,24 @@
 @implementation AppDelegate
             
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSLog(@"Lauched in %f seconds.", CFAbsoluteTimeGetCurrent());
+    });
+    
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    baseViewController *viewController = [[baseViewController alloc] init];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    self.window.rootViewController = navigationController;
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+    
+//    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    [TSMessage setDefaultViewController: self.window.rootViewController];
+    
     return YES;
 }
 

@@ -141,7 +141,7 @@
         _clickedOutlineView = (UIView *)[fromViewController clickedView];
 
 /* get the imageSnapshot View of the clicked View */
-        _snapView = [[UIImageView alloc] initWithImage:[_clickedOutlineView graphSnapshotImage] ];
+        _snapView = [[UIImageView alloc] initWithImage:[_clickedOutlineView snapshot] ];
         
 /* set the snapshot view frame as the clicked outlineView is in mainView */
         NSArray *arrayOfFrame = (NSArray *)[fromViewController clickedViewFrame];

@@ -51,8 +51,9 @@
     [self.tableView setBackgroundColor:[UIColor clearColor]];
     _interactive = [[AMWaveTransition alloc] init];
     
-    _tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
-    
+//    _tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
+    _tableView.backgroundColor = [UIColor colorWithRed:135/255.0 green:206.0/255.0 blue:238.0/255.0 alpha:1];
+
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
      self.navigationController.interactivePopGestureRecognizer.enabled = YES;
 

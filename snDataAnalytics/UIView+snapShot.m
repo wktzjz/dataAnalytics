@@ -10,7 +10,7 @@
 
 @implementation UIView (snapShot)
 
-- (UIImage *)graphSnapshotImage
+- (UIImage *)snapshot
 {
     UIGraphicsBeginImageContextWithOptions(self.bounds.size, NO, [UIScreen mainScreen].scale);
     

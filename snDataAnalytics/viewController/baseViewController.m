@@ -8,14 +8,19 @@
 
 #import "baseViewController.h"
 #import "defines.h"
-#import "FBShimmeringView.h"
 #import "menuViewController.h"
 #import "menuController.h"
 #import "outlineViewTransitionAnimator.h"
+#import "loginViewController.h"
 
+#import "FBShimmeringView.h"
 #import "UIViewController+clickedViewIndex.h"
 #import "clickedViewData.h"
 #import "TSMessage.h"
+
+#import "PresentingAnimator.h"
+#import "DismissingAnimator.h"
+#import "POP.h"
 
 typedef enum {
     dragUnknown = 0,
@@ -39,7 +44,7 @@ typedef enum {
     menuController     *_menuController;
     outlineViewTransitionAnimator *_animator;
     
-    UIView         *_contentView;
+//    UIView         *_contentView;
     UIScrollView   *_scrollView;
     UIView         *_backgroundView;
     UIView         *_frontView;
@@ -70,11 +75,13 @@ typedef enum {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.view.backgroundColor = [UIColor blackColor];
 //    self.view.BackgroundColor =[UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
     [self setNeedsStatusBarAppearanceUpdate];
 
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navbar"] forBarMetrics:UIBarMetricsDefault];
+//    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navbar"] forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed:173/255.0 green:216.0/255.0 blue:230.0/255.0 alpha:1];
+    //72 209 204 [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1]
 //    [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
 //    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
 //    self.navigationController.interactivePopGestureRecognizer.delegate = self;
@@ -82,10 +89,9 @@ typedef enum {
 
     [self setTitle:@"Data Analytics Main View"];
 
-    _userDefaults = [NSUserDefaults standardUserDefaults];
     _contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, wkScreenWidth, wkScreenHeight)];
-//    _contentView.backgroundColor = [UIColor blackColor];
-     _contentView.BackgroundColor =[UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
+    _contentView.backgroundColor = [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
+//     _contentView.BackgroundColor =[UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
     [self.view addSubview:_contentView];
     
     _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
@@ -115,8 +121,8 @@ typedef enum {
     shimmeringLogo.shimmering = YES;
     [_frontView addSubview:shimmeringLogo];
     [_frontView addSubview:_text];
-//    _frontView.backgroundColor = [UIColor whiteColor];
-   _frontView.BackgroundColor =[UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
+    _frontView.backgroundColor = [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
+//   _frontView.BackgroundColor =[UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
     
     CGRect backgroundViewRect = CGRectMake(0, 0, wkScreenWidth, wkScreenHeight);
     _backgroundView = [[UIView alloc] initWithFrame:backgroundViewRect];
@@ -157,12 +163,17 @@ typedef enum {
                                                     action:@selector(handleTap:)];
     [_frontView addGestureRecognizer:tapGestureRecognizer];
     
+    
+    
     double delayInSeconds = 1.0;
     __weak id wself = self;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         baseViewController *strongSelf = wself;
         [strongSelf onApplicationFinishedLaunching];
+        NSLog(@"width:%f, height:%f",wkScreenWidth,wkScreenHeight);
+        NSLog(@"navigationbar height:%f",self.navigationController.navigationBar.frame.size.height);
+
     });
     
 }
@@ -208,8 +219,22 @@ typedef enum {
 }
 
 #pragma mark - Lazy Loading
+- (void)jumoToLoginView
+{
+    _userDefaults = [NSUserDefaults standardUserDefaults];
+    if(![_userDefaults objectForKey:@"logInSucceeded" ]){
+        loginViewController *viewController = [[loginViewController alloc] init];
+        viewController.delegate = self;
+//        viewController.title = @"Login";
+//        [self.navigationController pushViewController:viewController animated:YES];
+        [self presentViewController:viewController animated:YES completion:nil];
+    }
+}
+
 - (void)onApplicationFinishedLaunching
 {
+    [self jumoToLoginView];
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         [TSMessage showNotificationWithTitle:@" Network Error" subtitle:@"There is a problem getting the data." type:TSMessageNotificationTypeError];
     });
@@ -298,14 +323,20 @@ typedef enum {
 
     CGRect frame = targetView.frame;
     frame = [_scrollView1 convertRect:frame toView:self.view];
-    [self.navigationController setClickedViewFrame:@[@(frame.origin.x),@(frame.origin.y),@(frame.size.width),@(frame.size.height)]];
+    [self.navigationController setClickedViewFrame:@[@(frame.origin.x),@(frame.origin.y - 44.0),@(frame.size.width),@(frame.size.height)]];
     
     [self transitOutlineView:targetView type:(dataVisualizedType)(index - 1)];
 }
 
 
 #pragma mark dataDetailsControllerDelegate
-- (void)disMissDetailsController
+- (void)dismissDetailsController
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark loginControllerDelegate
+- (void)dismissLoginController
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -327,8 +358,23 @@ typedef enum {
     _animator.direction = (transitonDirection)fmodf(type, 3);
     
     _detailsViewController.transitioningDelegate = _animator;
-    [self.navigationController presentViewController:_detailsViewController animated:YES completion:nil];
+    
+    [self presentViewController:_detailsViewController animated:YES completion:nil];
 }
+
+#pragma mark - UIViewControllerTransitioningDelegate
+
+//- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented
+//                                                                  presentingController:(UIViewController *)presenting
+//                                                                      sourceController:(UIViewController *)source
+//{
+//    return [PresentingAnimator new];
+//}
+//
+//- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+//{
+//    return [DismissingAnimator new];
+//}
 
 #pragma mark outLineViewTransitionProtocol
 - (NSMutableArray *)outLineViewArray
@@ -345,8 +391,10 @@ typedef enum {
 - (void)mainViewPullUpFromBottom
 {
     [UIView animateWithDuration:0.35
-                          delay:0.0
-                        options:UIViewAnimationOptionCurveEaseOut
+                           delay:0
+         usingSpringWithDamping:0.8
+          initialSpringVelocity:0.5
+                        options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          _backgroundView.transform = CGAffineTransformMakeScale(backgroundInitialScale, backgroundInitialScale);
                          _frontView.center = CGPointMake(wkScreenWidth/2, wkScreenHeight/2);
@@ -396,8 +444,10 @@ typedef enum {
 
 - (void)mainViewPullDownFromTop
 {
-    [UIView animateWithDuration:0.3
+    [UIView animateWithDuration:0.5
                           delay:0.0
+         usingSpringWithDamping:0.8
+          initialSpringVelocity:0.5
                         options:UIViewAnimationOptionCurveEaseOut
                      animations:^{
                          _backgroundView.transform = CGAffineTransformIdentity;
@@ -425,7 +475,7 @@ typedef enum {
     float scale = backgroundInitialScale + _progress * (1 - backgroundInitialScale);
     _backgroundView.transform = CGAffineTransformMakeScale(scale, scale);
     
-    _blackView.alpha = 1 - _progress;
+    _blackView.alpha = blackViewMaximumAlpha - _progress;
 }
 
 - (void)handleDragUpWithTranslationY:(CGFloat)translationY
@@ -475,11 +525,11 @@ typedef enum {
         }
             
         case UIGestureRecognizerStateChanged:{
-            if(_dragDirection == dragUp){
+            if(_frontViewIsDraggedDown && _dragDirection == dragUp){
                 [self handleDragUpWithTranslationY:translation.y];
                 
             }else{
-                if(!_frontViewIsDraggedDown){
+                if(!_frontViewIsDraggedDown && _dragDirection == dragdown){
                     [self handleDragDownWithTranslationY:translation.y];
                 }
             }

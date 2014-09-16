@@ -29,7 +29,7 @@
 
 - (instancetype)init
 {
-    return [self initWithFrame:CGRectZero];
+    return [self initWithFrame:CGRectZero type:outlineTypeLine];
 }
 
 - (instancetype)initWithFrame:(CGRect)frame type:(dataVisualizedType)type
@@ -41,7 +41,6 @@
         self.view.frame = frame;
 //        self.view.backgroundColor = [UIColor clearColor];
     }
-    
     return self;
 }
 
@@ -50,11 +49,11 @@
     [super viewDidLoad];
     
     UIView *contentView = [[UIView alloc] initWithFrame:self.view.frame];
-    contentView.backgroundColor = [UIColor colorWithRed:211/255.0 green:211.0/255.0 blue:211.0/255.0 alpha:1.0];
+    contentView.backgroundColor = [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
     [self.view addSubview:contentView];
     
     _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    _scrollView.backgroundColor = [UIColor colorWithRed:211/255.0 green:211.0/255.0 blue:211.0/255.0 alpha:1.0];
+    _scrollView.backgroundColor = [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
     [_scrollView setDelegate:self];
     [_scrollView setShowsVerticalScrollIndicator:NO];
     [_scrollView setContentSize:CGSizeMake(0, self.view.bounds.size.height * 3)];
@@ -62,7 +61,8 @@
     
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    button.frame = CGRectMake(80.0, 400.0, 160.0, 40.0);
+    button.frame = CGRectMake(0, 0, 160.0, 40.0);
+    button.center = CGPointMake(self.view.center.x, self.view.center.y+150);
     [button setTitle:@"swipe or click" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [contentView addSubview:button];
@@ -324,15 +324,15 @@
 
 - (void)handleTap:(id)sender
 {
-    if(self.delegate && [self.delegate respondsToSelector:@selector(disMissDetailsController)]){
-        [self.delegate disMissDetailsController];
+    if(self.delegate && [self.delegate respondsToSelector:@selector(dismissDetailsController)]){
+        [self.delegate dismissDetailsController];
     }
 }
 
 - (void)buttonClicked:(id)sender
 {
-    if(self.delegate && [self.delegate respondsToSelector:@selector(disMissDetailsController)]){
-        [self.delegate disMissDetailsController];
+    if(self.delegate && [self.delegate respondsToSelector:@selector(dismissDetailsController)]){
+        [self.delegate dismissDetailsController];
     }
 }
 - (void)didReceiveMemoryWarning {

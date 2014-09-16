@@ -14,7 +14,7 @@
 @protocol dataDetailsControllerDelegate <NSObject>
 
 @required
-- (void)disMissDetailsController;
+- (void)dismissDetailsController;
 
 @end
 
@@ -25,8 +25,8 @@
 @property (nonatomic) dataVisualizedType dataVisualizedType;
 @property (nonatomic) UIScrollView *scrollView;
 
-- (instancetype)init;
-- (instancetype)initWithFrame:(CGRect)frame;
+//- (instancetype)init;
+//- (instancetype)initWithFrame:(CGRect)frame;
 - (instancetype)initWithFrame:(CGRect)frame type:(dataVisualizedType)type;
 
 @end

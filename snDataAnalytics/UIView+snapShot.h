@@ -11,6 +11,6 @@
 
 @interface UIView (snapShot)
 
-- (UIImage *)graphSnapshotImage;
+- (UIImage *)snapshot;
 
 @end

@@ -16,12 +16,13 @@
 
 @interface baseViewController : UIViewController <networkDelegate,UIScrollViewDelegate,UIGestureRecognizerDelegate,dataDetailsControllerDelegate,outLineViewTransitionProtocol>
 
-@property (nonatomic,strong) UIView *settingView;
+@property (nonatomic) UIView *settingView;
+@property (nonatomic) UIView *contentView;
 @property (nonatomic) NSMutableArray *outLineViewArray;
-@property (nonatomic,strong) dataOutlineViewContainer *outlineView1;
-@property (nonatomic,strong) dataOutlineViewContainer *outlineView2;
-@property (nonatomic,strong) dataOutlineViewContainer *outlineView3;
-@property (nonatomic,strong) dataOutlineViewContainer *outlineView4;
+@property (nonatomic) dataOutlineViewContainer *outlineView1;
+@property (nonatomic) dataOutlineViewContainer *outlineView2;
+@property (nonatomic) dataOutlineViewContainer *outlineView3;
+@property (nonatomic) dataOutlineViewContainer *outlineView4;
 
 @property (nonatomic,strong) dataDetailsViewController *detailsViewController;
 

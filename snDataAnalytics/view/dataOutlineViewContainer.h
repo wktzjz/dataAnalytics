@@ -26,6 +26,9 @@ typedef NS_ENUM(NSUInteger, inViewType) {
 
 @property (nonatomic) PNBarChart *barChart;
 @property (nonatomic) UIImageView *snapView;
+
+- (instancetype)initWithFrame:(CGRect)frame ifLoading:(BOOL)ifLoading;
 - (instancetype)initWithFrame:(CGRect)frame dataType:(dataVisualizedType)type inControllerType:(inViewType)inViewType;
+- (void)addDataViewType:(dataVisualizedType)dataType inControllerType:(inViewType)inViewType data:(id)data;
 
 @end

@@ -37,10 +37,10 @@
 
 - (UIEdgeInsets)titleEdgeInsets
 {
-    return UIEdgeInsetsMake(4.f,
-                            28.f,
-                            4.f,
-                            28.f);
+    return UIEdgeInsetsMake(2.f,
+                            14.f,
+                            2.f,
+                            14.f);
 }
 
 - (CGSize)intrinsicContentSize
@@ -61,7 +61,7 @@
     [self setTitleColor:[UIColor whiteColor]
                forState:UIControlStateNormal];
     self.titleLabel.font = [UIFont fontWithName:@"Avenir-Medium"
-                                           size:32];
+                                           size:28];
     
     [self addTarget:self action:@selector(scaleToSmall)
    forControlEvents:UIControlEventTouchDown | UIControlEventTouchDragEnter];

@@ -11,6 +11,7 @@
 #import "AMWaveTransition.h"
 #import "menuViewController.h"
 #import "defines.h"
+#import "Colours.h"
 
 @interface menuController () <UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate,UIViewControllerTransitioningDelegate>
 
@@ -53,18 +54,18 @@
 
     CGRect frame = self.view.frame;
     frame.origin.y += 44.0;
-//    NSLog(@"navigationbar height:%f",self.navigationController.navigationBar.frame.size.height);
     _tableView = [[UITableView alloc] initWithFrame:frame];
 //    _tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
-    _tableView.backgroundColor = [UIColor colorWithRed:135/255.0 green:206.0/255.0 blue:238.0/255.0 alpha:1];
+//    _tableView.backgroundColor = [UIColor colorWithRed:135/255.0 green:206.0/255.0 blue:238.0/255.0 alpha:1];
+    _tableView.backgroundColor = [UIColor denimColor];
 
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
     [self.view addSubview:_tableView];
      [self setTitle:@"Setting View"];
-    self.navigationController.interactivePopGestureRecognizer.delegate = self;
-    self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+//    self.navigationController.interactivePopGestureRecognizer.delegate = self;
+//    self.navigationController.interactivePopGestureRecognizer.enabled = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated

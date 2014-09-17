@@ -21,6 +21,7 @@
 #import "PresentingAnimator.h"
 #import "DismissingAnimator.h"
 #import "POP.h"
+#import "Colours.h"
 
 typedef enum {
     dragUnknown = 0,
@@ -94,21 +95,8 @@ typedef enum {
 //     _contentView.BackgroundColor =[UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
     [self.view addSubview:_contentView];
     
-    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    [_scrollView setPagingEnabled:NO];
-    [_scrollView setDelegate:self];
-    [_scrollView setShowsHorizontalScrollIndicator:NO];
-    [_scrollView setContentSize:CGSizeMake( _scrollView.frame.size.width, self.view.bounds.size.height * 2)];
-//    [_contentView addSubview:_scrollView];
-    
     CGRect frontViewRect = CGRectMake(0, 0, wkScreenWidth, wkScreenHeight);
     _frontView = [[UIView alloc] initWithFrame:frontViewRect];
-//    _frontView.layer.cornerRadius = 8;
-    //    _frontView.alpha = 0.2;
-    //    _frontView.layer.shadowOpacity = 0.5;
-    //    _frontView.layer.shadowRadius = 10;
-    //    _frontView.layer.shadowColor = [UIColor blackColor].CGColor;
-    //    _frontView.layer.shadowOffset = CGSizeMake(-3, 3);
     
     _text = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, 300, 50)];
     [_text setText:@"Data Outline View"];
@@ -121,7 +109,7 @@ typedef enum {
     shimmeringLogo.shimmering = YES;
     [_frontView addSubview:shimmeringLogo];
     [_frontView addSubview:_text];
-    _frontView.backgroundColor = [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
+    _frontView.backgroundColor = [UIColor colorWithRed:236.0/255.0 green:236.0/255.0 blue:236.0/255.0 alpha:1];
 //   _frontView.BackgroundColor =[UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
     
     CGRect backgroundViewRect = CGRectMake(0, 0, wkScreenWidth, wkScreenHeight);
@@ -146,7 +134,7 @@ typedef enum {
     [self addDataView];
     
     _menuController = [[menuController alloc] init];
-    _menuController.view.frame = wkScreen;
+//    _menuController.view.frame = wkScreen;
     _settingView = _menuController.view;
     [_backgroundView addSubview:_settingView];
     [self addChildViewController:_menuController];
@@ -171,8 +159,8 @@ typedef enum {
     dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         baseViewController *strongSelf = wself;
         [strongSelf onApplicationFinishedLaunching];
-        NSLog(@"width:%f, height:%f",wkScreenWidth,wkScreenHeight);
-        NSLog(@"navigationbar height:%f",self.navigationController.navigationBar.frame.size.height);
+//        NSLog(@"width:%f, height:%f",wkScreenWidth,wkScreenHeight);
+//        NSLog(@"navigationbar height:%f",self.navigationController.navigationBar.frame.size.height);
 
     });
     
@@ -192,16 +180,20 @@ typedef enum {
     NSLog(@"!!!!!width:%f",width);
     CGFloat originX = 0;
     
-    _outlineView1 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, 0, width, height) dataType:outlineTypeLine inControllerType:outlineView];
+//    _outlineView1 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, 0, width, height) dataType:outlineTypeLine inControllerType:outlineView];
+    _outlineView1 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, 0, width, height) ifLoading:YES];
     [_scrollView1 addSubview:_outlineView1];
     
-    _outlineView2 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _outlineView1.frame.origin.y + _outlineView1.frame.size.height + 30, width, height) dataType:outlineTypeBar inControllerType:outlineView];
+//    _outlineView2 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _outlineView1.frame.origin.y + _outlineView1.frame.size.height + 30, width, height) dataType:outlineTypeBar inControllerType:outlineView];
+    _outlineView2 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _outlineView1.frame.origin.y + _outlineView1.frame.size.height + 30, width, height) ifLoading:YES];
     [_scrollView1 addSubview:_outlineView2];
     
-    _outlineView3 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _outlineView2.frame.origin.y + _outlineView2.frame.size.height + 30, width, height) dataType:outlineTypeLine1 inControllerType:outlineView];
+//    _outlineView3 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _outlineView2.frame.origin.y + _outlineView2.frame.size.height + 30, width, height) dataType:outlineTypeLine1 inControllerType:outlineView];
+    _outlineView3 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _outlineView2.frame.origin.y + _outlineView2.frame.size.height + 30, width, height) ifLoading:YES];
     [_scrollView1 addSubview:_outlineView3];
     
-    _outlineView4 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _outlineView3.frame.origin.y + _outlineView3.frame.size.height + 30, width, height) dataType:outlineTypeCircle inControllerType:outlineView];
+//    _outlineView4 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _outlineView3.frame.origin.y + _outlineView3.frame.size.height + 30, width, height) dataType:outlineTypeCircle inControllerType:outlineView];
+    _outlineView4 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _outlineView3.frame.origin.y + _outlineView3.frame.size.height + 30, width, height) ifLoading:YES];
     [_scrollView1 addSubview:_outlineView4];
     
     _outLineViewArray = [[NSMutableArray alloc] initWithArray:@[_outlineView1,_outlineView2,_outlineView3,_outlineView4]];
@@ -227,25 +219,18 @@ typedef enum {
         viewController.delegate = self;
 //        viewController.title = @"Login";
 //        [self.navigationController pushViewController:viewController animated:YES];
-        [self presentViewController:viewController animated:YES completion:nil];
+        
+             [self presentViewController:viewController animated:YES completion:nil];
     }
 }
 
 - (void)onApplicationFinishedLaunching
 {
-    [self jumoToLoginView];
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_main_async_safe(^{
+        [self jumoToLoginView];
+        
         [TSMessage showNotificationWithTitle:@" Network Error" subtitle:@"There is a problem getting the data." type:TSMessageNotificationTypeError];
     });
-    
-//    NSLog(@"onApplicationFinishedLaunching");
-    /*************************************
-     Netwokr weather instance
-     *************************************/
-    [self getNetworkInfo];
-    
-    
 }
 
 #pragma mark - getNetworkInfo
@@ -259,9 +244,14 @@ typedef enum {
 
 - (BOOL)handleInfoFromNetwork:(NSDictionary *)info
 {
-    dispatch_main_sync_safe(^{
-    });
-    
+    if(!info){
+        dispatch_main_async_safe(^{
+            [_outlineView1 addDataViewType:outlineTypeLine inControllerType:outlineView data:nil];
+            [_outlineView2 addDataViewType:outlineTypeBar inControllerType:outlineView data:nil];
+            [_outlineView3 addDataViewType:outlineTypeLine1 inControllerType:outlineView data:nil];
+            [_outlineView4 addDataViewType:outlineTypeCircle inControllerType:outlineView data:nil];
+        });
+    }
     return YES;
 }
 
@@ -339,6 +329,10 @@ typedef enum {
 - (void)dismissLoginController
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+    /*************************************
+     Netwokr weather instance
+     *************************************/
+    [self getNetworkInfo];
 }
 
 #pragma mark outlineView transite to detailsView
@@ -527,7 +521,6 @@ typedef enum {
         case UIGestureRecognizerStateChanged:{
             if(_frontViewIsDraggedDown && _dragDirection == dragUp){
                 [self handleDragUpWithTranslationY:translation.y];
-                
             }else{
                 if(!_frontViewIsDraggedDown && _dragDirection == dragdown){
                     [self handleDragDownWithTranslationY:translation.y];
@@ -540,7 +533,6 @@ typedef enum {
                 
                 if (_progress >mainViewPullSuccessedRatio) {
                     [self mainViewPullUpFromBottom];
-                    
                 }else{
                     [self mainViewPullDownFromBottom];
                 }
@@ -551,7 +543,6 @@ typedef enum {
                     if (_progress >mainViewPullSuccessedRatio) {
                         _frontViewIsDraggedDown = YES;
                         [self mainViewPullDownFromTop];
-                        
                     }else{
                         [self mainViewPullUpFromTop];
                     }

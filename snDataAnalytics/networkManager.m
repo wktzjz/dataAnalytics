@@ -107,7 +107,7 @@
         
         //    NSURL *url1 =  [NSURL URLWithString:@"http://www.weather.com.cn/data/cityinfo/101210101.html"];
         NSURL *url1 = [NSURL URLWithString:URLString];
-        NSURLRequest *request1 = [[NSURLRequest alloc]initWithURL:url1 cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:20];
+        NSURLRequest *request1 = [[NSURLRequest alloc]initWithURL:url1 cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5];
         //    NSData *received1 = [NSURLConnection sendSynchronousRequest:request1 returningResponse:nil error:nil];
         
         NSOperationQueue *queue = [[NSOperationQueue alloc] init];
@@ -124,6 +124,11 @@
             
             if(nil == json){
                 NSLog(@"json is nil");
+                
+                if (strongSelf.delegate && [strongSelf.delegate respondsToSelector:@selector(handleInfoFromNetwork:)]) {
+                    _sendWeatherInfoCompleted = [strongSelf.delegate handleInfoFromNetwork:nil];
+                }
+
                 return ;
             }
             
@@ -156,9 +161,13 @@
             //        UIImage *img=[UIImage imageWithData:imageData];
             
             //        [strongSelf handleData:json1 toDick:sendDick array:sendArray];
+            
             sendDick = @{@"title":title,@"url":stroyUrl,@"imageUrl":imageUrl};
+            
             if (strongSelf.delegate && [strongSelf.delegate respondsToSelector:@selector(handleInfoFromNetwork:)]) {
-                _sendWeatherInfoCompleted = [strongSelf.delegate handleInfoFromNetwork:sendDick];
+                
+// to test i send nil to UI
+                _sendWeatherInfoCompleted = [strongSelf.delegate handleInfoFromNetwork:nil];
             }
             
         }];

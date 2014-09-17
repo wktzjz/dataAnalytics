@@ -11,6 +11,7 @@
 #import "defines.h"
 #import "outlineViewTransitionAnimator.h"
 #import "dataDetailsViewController.h"
+#import "Colours.h"
 
 
 @interface menuViewController ()<UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate>
@@ -25,6 +26,7 @@
     outlineViewTransitionAnimator *_animator;
     dataDetailsViewController *_detailsViewController;
 
+    NSArray *_dataArray;
 }
 
 - (instancetype)init
@@ -38,26 +40,30 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UIView *contnetView = [[UIView alloc] initWithFrame:wkScreen];
-    [self.view addSubview:contnetView];
+    UIView *contentView = [[UIView alloc] initWithFrame:wkScreen];
+    [self.view addSubview:contentView];
     [self setTitle:@"Setting View"];
-    contnetView.BackgroundColor =[UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
+//    contnetView.BackgroundColor =[UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
+    contentView.backgroundColor = [UIColor whiteColor];
     _tableView = [[UITableView alloc] initWithFrame:self.view.frame];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
-    [contnetView addSubview:_tableView];
+    [contentView addSubview:_tableView];
     
     [self.tableView setBackgroundColor:[UIColor clearColor]];
     _interactive = [[AMWaveTransition alloc] init];
     
 //    _tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
     _tableView.backgroundColor = [UIColor colorWithRed:135/255.0 green:206.0/255.0 blue:238.0/255.0 alpha:1];
+//    _tableView.backgroundColor = [UIColor denimColor];
 
     self.navigationController.interactivePopGestureRecognizer.delegate = self;
      self.navigationController.interactivePopGestureRecognizer.enabled = YES;
 
     [self setNeedsStatusBarAppearanceUpdate];
+    
+    _dataArray = @[@"Line",@"Bar",@"Line1",@"Circle"];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -97,14 +103,14 @@
          cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
     
-    cell.textLabel.text = @"W K WKWKWKWKWKWKWKWKWKWK";
-    cell.detailTextLabel.text = @"Y B YBYBYBYBYBYBYBYBYB";
+    cell.textLabel.text = @"Detail View";
+    cell.detailTextLabel.text = [_dataArray objectAtIndex:fmodf(indexPath.row, 4)];
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.detailTextLabel.textColor = [UIColor whiteColor];
     [cell setBackgroundColor:[UIColor clearColor]];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    return cell;
     
+    return cell;
 }
 
 

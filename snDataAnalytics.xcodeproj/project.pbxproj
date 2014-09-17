@@ -30,6 +30,10 @@
 		3522248419C2E0200048F57C /* DismissingAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3522248319C2E0200048F57C /* DismissingAnimator.m */; };
 		3522248719C2E0250048F57C /* PresentingAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3522248619C2E0250048F57C /* PresentingAnimator.m */; };
 		3522248A19C689740048F57C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3522248919C689740048F57C /* LaunchScreen.xib */; };
+		3522248D19C923350048F57C /* Colours.m in Sources */ = {isa = PBXBuildFile; fileRef = 3522248C19C923350048F57C /* Colours.m */; };
+		3522249519C936B40048F57C /* JVFloatLabeledTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3522249019C936B40048F57C /* JVFloatLabeledTextField.m */; };
+		3522249619C936B40048F57C /* JVFloatLabeledTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3522249219C936B40048F57C /* JVFloatLabeledTextView.m */; };
+		3522249719C936B40048F57C /* NSString+TextDirectionality.m in Sources */ = {isa = PBXBuildFile; fileRef = 3522249419C936B40048F57C /* NSString+TextDirectionality.m */; };
 		355900A219B8690C001AD1FF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 355900A119B8690C001AD1FF /* Foundation.framework */; };
 		355900AB19B9B92A001AD1FF /* BEMSimpleLineGraphView.m in Sources */ = {isa = PBXBuildFile; fileRef = 355900A619B9B92A001AD1FF /* BEMSimpleLineGraphView.m */; };
 		355900AC19B9B92A001AD1FF /* BEMCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = 355900A819B9B92A001AD1FF /* BEMCircle.m */; };
@@ -166,6 +170,14 @@
 		3522248519C2E0250048F57C /* PresentingAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PresentingAnimator.h; sourceTree = "<group>"; };
 		3522248619C2E0250048F57C /* PresentingAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PresentingAnimator.m; sourceTree = "<group>"; };
 		3522248919C689740048F57C /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LaunchScreen.xib; path = ../LaunchScreen.xib; sourceTree = "<group>"; };
+		3522248B19C923350048F57C /* Colours.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Colours.h; sourceTree = "<group>"; };
+		3522248C19C923350048F57C /* Colours.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Colours.m; sourceTree = "<group>"; };
+		3522248F19C936B40048F57C /* JVFloatLabeledTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JVFloatLabeledTextField.h; sourceTree = "<group>"; };
+		3522249019C936B40048F57C /* JVFloatLabeledTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JVFloatLabeledTextField.m; sourceTree = "<group>"; };
+		3522249119C936B40048F57C /* JVFloatLabeledTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JVFloatLabeledTextView.h; sourceTree = "<group>"; };
+		3522249219C936B40048F57C /* JVFloatLabeledTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JVFloatLabeledTextView.m; sourceTree = "<group>"; };
+		3522249319C936B40048F57C /* NSString+TextDirectionality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TextDirectionality.h"; sourceTree = "<group>"; };
+		3522249419C936B40048F57C /* NSString+TextDirectionality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TextDirectionality.m"; sourceTree = "<group>"; };
 		355900A119B8690C001AD1FF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		355900A519B9B92A001AD1FF /* BEMSimpleLineGraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BEMSimpleLineGraphView.h; sourceTree = "<group>"; };
 		355900A619B9B92A001AD1FF /* BEMSimpleLineGraphView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BEMSimpleLineGraphView.m; sourceTree = "<group>"; };
@@ -407,6 +419,19 @@
 			name = outlineDetailtTransition;
 			sourceTree = "<group>";
 		};
+		3522248E19C936A40048F57C /* JVFloatLabeledTextField */ = {
+			isa = PBXGroup;
+			children = (
+				3522248F19C936B40048F57C /* JVFloatLabeledTextField.h */,
+				3522249019C936B40048F57C /* JVFloatLabeledTextField.m */,
+				3522249119C936B40048F57C /* JVFloatLabeledTextView.h */,
+				3522249219C936B40048F57C /* JVFloatLabeledTextView.m */,
+				3522249319C936B40048F57C /* NSString+TextDirectionality.h */,
+				3522249419C936B40048F57C /* NSString+TextDirectionality.m */,
+			);
+			name = JVFloatLabeledTextField;
+			sourceTree = "<group>";
+		};
 		355900A319B8693E001AD1FF /* Framework */ = {
 			isa = PBXGroup;
 			children = (
@@ -571,6 +596,7 @@
 		3562983319B4575E004A8054 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				3522248E19C936A40048F57C /* JVFloatLabeledTextField */,
 				3522243219C2C6570048F57C /* Pop */,
 				355900A419B9B918001AD1FF /* LineChart */,
 				356298E219B866BC004A8054 /* UICountingLabel */,
@@ -773,6 +799,8 @@
 			children = (
 				35BDE15119C28EC900A1D90B /* UIColor+CustomColors.h */,
 				35BDE15219C28EC900A1D90B /* UIColor+CustomColors.m */,
+				3522248B19C923350048F57C /* Colours.h */,
+				3522248C19C923350048F57C /* Colours.m */,
 			);
 			name = color;
 			sourceTree = "<group>";
@@ -898,6 +926,7 @@
 				356298D919B86655004A8054 /* PNColor.m in Sources */,
 				35BDE15319C28EC900A1D90B /* UIColor+CustomColors.m in Sources */,
 				3522246A19C2C73D0048F57C /* POPAnimationRuntime.mm in Sources */,
+				3522249619C936B40048F57C /* JVFloatLabeledTextView.m in Sources */,
 				3562988019B4631B004A8054 /* menuViewController.m in Sources */,
 				3562989919B83763004A8054 /* dataDetailsViewController.m in Sources */,
 				3562988D19B5B8AB004A8054 /* AMWaveViewController.m in Sources */,
@@ -931,6 +960,7 @@
 				3562985519B458DD004A8054 /* TSBlurView.m in Sources */,
 				3562983E19B457CE004A8054 /* FBShimmeringLayer.m in Sources */,
 				356298E519B866C6004A8054 /* UICountingLabel.m in Sources */,
+				3522249719C936B40048F57C /* NSString+TextDirectionality.m in Sources */,
 				356298BE19B850B4004A8054 /* outlineViewTransitionAnimator.m in Sources */,
 				3562989619B7F97D004A8054 /* dataOutlineViewContainer.m in Sources */,
 				3562988C19B5B8AB004A8054 /* AMWaveTransition.m in Sources */,
@@ -946,6 +976,7 @@
 				3522246719C2C73D0048F57C /* POPAnimation.mm in Sources */,
 				3522246919C2C73D0048F57C /* POPAnimationExtras.mm in Sources */,
 				3562983719B4578F004A8054 /* FRDLivelyButton.m in Sources */,
+				3522248D19C923350048F57C /* Colours.m in Sources */,
 				356298DE19B86655004A8054 /* PNLineChartData.m in Sources */,
 				3562988419B4666B004A8054 /* networkManager.m in Sources */,
 				3522247019C2C73D0048F57C /* POPDecayAnimation.mm in Sources */,
@@ -953,6 +984,7 @@
 				3522247119C2C73D0048F57C /* POPGeometry.mm in Sources */,
 				3522246D19C2C73D0048F57C /* POPBasicAnimation.mm in Sources */,
 				356298DC19B86655004A8054 /* PNCircleChart.m in Sources */,
+				3522249519C936B40048F57C /* JVFloatLabeledTextField.m in Sources */,
 				356298DA19B86655004A8054 /* PNBar.m in Sources */,
 				3562985619B458DD004A8054 /* TSMessageView.m in Sources */,
 				356298D819B86655004A8054 /* PNChartLabel.m in Sources */,

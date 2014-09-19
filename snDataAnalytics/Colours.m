@@ -772,7 +772,7 @@ static CGFloat (^RAD)(CGFloat) = ^CGFloat (CGFloat degree){
 
 + (instancetype)black75PercentColor
 {
-	return [[self class] colorWithWhite:0.75 alpha:1.0];
+	return [[self class] colorWithWhite:0.9 alpha:0.4];
 }
 
 + (instancetype)warmGrayColor

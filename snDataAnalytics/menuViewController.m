@@ -154,7 +154,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    _detailsViewController = [[dataDetailsViewController alloc] initWithFrame:wkScreen type:fmodf(indexPath.row,3)];
+    _detailsViewController = [[dataDetailsViewController alloc] initWithFrame:wkScreen type:outlineTypeLine1/*fmodf(indexPath.row,3)*/];
     _detailsViewController.delegate = self;
     _detailsViewController.modalPresentationStyle = UIModalPresentationCustom;
     

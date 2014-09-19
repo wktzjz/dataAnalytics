@@ -17,6 +17,9 @@
 #import "FBShimmeringView.h"
 #import "UIColor+CustomColors.h"
 
+
+const static CGFloat loadingAnimationDuration = 0.7f;
+
 @implementation UIView (Screenshot)
 
 - (UIImage *)graphSnapshotImage
@@ -350,7 +353,7 @@
     centerPoint.x = self.frame.size.width/2;
     centerPoint.y = self.frame.size.height/2;
     
-    [UIView animateWithDuration:0.5
+    [UIView animateWithDuration:loadingAnimationDuration
                           delay:0.0
          usingSpringWithDamping:0.6
           initialSpringVelocity:0.5

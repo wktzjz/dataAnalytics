@@ -14,8 +14,7 @@
 #import "UIView+snapShot.h"
 #import "UIImage+Blur.h"
 #import "Colours.h"
-#import "JVFloatLabeledTextField.h"
-#import "JVFloatLabeledTextView.h"
+#import "FBShimmeringView.h"
 
 const static CGFloat fieldHeight = 44.0f;
 const static CGFloat fieldHMargin = 20.0f;
@@ -38,10 +37,14 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
 
 @implementation loginViewController
 {
-    UIImageView *_contentView;
+    UIScrollView *_contentView;
     UIView *_inputView;
+    
+    UILabel *_logo;
     UITextField *_accountField;
     UITextField *_passwordField;
+    
+    BOOL _keyboardShowed;
 }
 
 - (instancetype)init
@@ -63,9 +66,16 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
     [self setNeedsStatusBarAppearanceUpdate];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    _contentView = [[UIImageView alloc] initWithFrame:self.view.frame];
-    _contentView.backgroundColor = [UIColor indigoColor];
-
+    _contentView = [[UIScrollView alloc] initWithFrame:self.view.frame];
+    [_contentView setShowsVerticalScrollIndicator:NO];
+    [_contentView setContentSize:CGSizeMake(0, self.view.bounds.size.height*2)];
+    _contentView.backgroundColor = [UIColor clearColor];
+    
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    gradient.frame = self.view.frame;
+    gradient.colors = [NSArray arrayWithObjects:(id)[UIColor indigoColor].CGColor,(id)[UIColor robinEggColor].CGColor,nil];
+    [self.view.layer insertSublayer:gradient atIndex:0];
+    //(id)[UIColor colorWithRed:0x0D/255.0 green:0x2F/255.0 blue:0x94/255.0 alpha:1].CGColor,(id)[UIColor colorWithRed:0x1F/255.0 green:0xAC/255.0 blue:0xEF/255.0 alpha:1].CGColor,
     //[UIColor colorWithRed:175/255.0 green:238.0/255.0 blue:238.0/255.0 alpha:1];
     [self.view addSubview:_contentView];
     
@@ -74,71 +84,82 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
     [self addButton];
     [self addLabel];
     [self addActivityIndicatorView];
+    [self addObserver];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void)addTextField
 {
-    CGFloat topOffset = 210;
+    CGFloat topOffsetRatio = 230.0/568.0;
+    NSLog(@"(110/568)*self.view.frame.size.height:%f",(110.0/568.0)*self.view.frame.size.height);
+    _logo = [[UILabel alloc] init];
+    [_logo setTextColor:[UIColor lightCreamColor]];
+    [_logo setText:@"Analytics"];
+    _logo.textAlignment = NSTextAlignmentCenter;
+    _logo.font   = [UIFont fontWithName:@"HelveticaNeue-Light" size:50];
+    CGSize sz    = [_logo.text sizeWithAttributes:@{NSFontAttributeName:_logo.font}];
+    _logo.frame  = CGRectMake(0, 0, sz.width, sz.height);
+    _logo.center = CGPointMake(self.view.center.x,(110.0/568.0)*self.view.frame.size.height);
     
-    UILabel *logo = [[UILabel alloc] init];
-    [logo setTextColor:[UIColor lightCreamColor]];
-    [logo setText:@"Analytics"];
-    logo.textAlignment = NSTextAlignmentCenter;
-    logo.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:50];
-    CGSize sz = [logo.text sizeWithAttributes:@{NSFontAttributeName:logo.font}];
-    logo.frame = CGRectMake(0, 0, sz.width, sz.height);
-    logo.center = CGPointMake(self.view.center.x,100);
+    FBShimmeringView *shimmeringLogo = [[FBShimmeringView alloc] initWithFrame:_logo.frame];
+    shimmeringLogo.contentView     = _logo;
+    shimmeringLogo.shimmeringSpeed = 140;
+    shimmeringLogo.shimmering      = YES;
+    shimmeringLogo.center          = CGPointMake(self.view.center.x,(110.0/568.0)*self.view.bounds.size.height);
+//    [self.view addSubview:_logo];
+    [self.view addSubview:shimmeringLogo];
     
-    [self.view addSubview:logo];
+    _inputView = [[UIView alloc] initWithFrame:CGRectMake(0, topOffsetRatio*self.view.bounds.size.height, self.view.frame.size.width, 200)];
+    _inputView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:_inputView];
     
-    
-    _inputView = [[UIView alloc] initWithFrame:CGRectMake(0, topOffset, self.view.frame.size.width, 300)];
-    _inputView.backgroundColor = [UIColor indigoColor];
-    [_contentView addSubview:_inputView];
-    
-    _accountField = [[UITextField alloc] initWithFrame:CGRectMake(fieldHMargin, topOffset, self.view.frame.size.width - 2 * fieldHMargin, fieldHeight)];
-    _accountField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Account", @"") attributes:@{NSForegroundColorAttributeName: [UIColor coolGrayColor]}];
-    _accountField.font = [UIFont systemFontOfSize:fieldFontSize];
-//    _accountField.text.font = [UIFont boldSystemFontOfSize:fieldFloatingLabelFontSize];
-    _accountField.textColor = [UIColor whiteColor];
+    _accountField = [[UITextField alloc] initWithFrame:CGRectMake(fieldHMargin, 0, self.view.frame.size.width - 2 * fieldHMargin, fieldHeight)];
+    _accountField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Account", @"") attributes:@{NSForegroundColorAttributeName: [UIColor black75PercentColor]}];
+    _accountField.font            = [UIFont systemFontOfSize:fieldFontSize];
+    _accountField.textColor       = [UIColor whiteColor];
     _accountField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    _accountField.delegate = self;
-    [self.view addSubview:_accountField];
+    _accountField.delegate        = self;
+    _accountField.returnKeyType   = UIReturnKeyNext;
+    _accountField.keyboardType    = UIKeyboardTypeEmailAddress;
+    [_inputView addSubview:_accountField];
     
-    UIView *div1 = [UIView new];
-    div1.frame = CGRectMake(14, _accountField.frame.origin.y + _accountField.frame.size.height + 10,
-                            self.view.frame.size.width - 2 * 14, 1.0f);
-    div1.backgroundColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.6f];
-    [self.view addSubview:div1];
+    UIView *div1 = [[UIView alloc] init];
+    div1.frame = CGRectMake(14, _accountField.frame.origin.y + _accountField.frame.size.height + 10,self.view.frame.size.width - 2 * 14, 1.0f);
+    div1.backgroundColor = [[UIColor lightCreamColor] colorWithAlphaComponent:0.4f];
+    [_inputView addSubview:div1];
     
     _passwordField = [[UITextField alloc] initWithFrame:CGRectMake(fieldHMargin, div1.frame.origin.y + div1.frame.size.height +5, self.view.frame.size.width - 2 * fieldHMargin, fieldHeight)];
-    _passwordField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Password", @"")attributes:@{NSForegroundColorAttributeName: [UIColor coolGrayColor]}];
+    _passwordField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Password", @"")attributes:@{NSForegroundColorAttributeName: [UIColor black75PercentColor]}];
     _passwordField.font = [UIFont systemFontOfSize:fieldFontSize];
 //    passwordField.font = [UIFont boldSystemFontOfSize:fieldFloatingLabelFontSize];
-    _passwordField.textColor = [UIColor whiteColor];
+    _passwordField.textColor       = [UIColor whiteColor];
     _passwordField.secureTextEntry = YES;
-    _passwordField.delegate = self;
-    [self.view addSubview:_passwordField];
-   
-    [_accountField becomeFirstResponder];
+    _passwordField.delegate        = self;
+    _passwordField.returnKeyType   = UIReturnKeySend;
+    [_inputView addSubview:_passwordField];
     
-//    UITapGestureRecognizer *tapGr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped:)];
-//    tapGr.cancelsTouchesInView = NO;
-//    [self.view addGestureRecognizer:tapGr];
+    _contentView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    
+    UITapGestureRecognizer *tapGr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+    tapGr.cancelsTouchesInView = NO;
+    [self.view addGestureRecognizer:tapGr];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [_accountField resignFirstResponder];
-
-    return YES;
+    if(textField == _accountField){
+        [_passwordField becomeFirstResponder];
+    }else{
+         [self.view endEditing:YES];
+         [self login:nil];
+    }
+      return YES;
 }
 
+#pragma mark Add all the views
 - (void)backgroudImageSetting
 {
     UIImageView *imageView =  [[UIImageView alloc] initWithFrame:self.view.frame];
@@ -154,10 +175,10 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
 - (void)addButton
 {
     self.button = [flatButton button];
-    self.button.backgroundColor = [UIColor customBlueColor];
+    self.button.backgroundColor = [UIColor clearColor];
     self.button.translatesAutoresizingMaskIntoConstraints = NO;
     [self.button setTitle:@" Log in " forState:UIControlStateNormal];
-    [self.button addTarget:self action:@selector(touchUpInside:) forControlEvents:UIControlEventTouchDown];
+    [self.button addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.button];
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.button
@@ -173,11 +194,11 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:self.view
                                                           attribute:NSLayoutAttributeCenterY
-                                                         multiplier:1.5f
+                                                         multiplier:1.7f
                                                            constant:8.f]];
     
     flatButton *dismissButton = [flatButton button];
-    dismissButton.backgroundColor = [UIColor customRedColor];
+    dismissButton.backgroundColor = [UIColor clearColor];
     dismissButton.translatesAutoresizingMaskIntoConstraints = NO;
     [dismissButton setTitle:@"Dismiss" forState:UIControlStateNormal];
     [dismissButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
@@ -197,16 +218,9 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:self.view
                                                           attribute:NSLayoutAttributeCenterY
-                                                         multiplier:1.5f
+                                                         multiplier:1.7f
                                                            constant:8.f]];
 
-}
-
-- (void)dismiss
-{
-    if(self.delegate && [self.delegate respondsToSelector:@selector(dismissLoginController)]){
-        [self.delegate dismissLoginController];
-    }
 }
 
 - (void)addLabel
@@ -215,7 +229,7 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
     self.errorLabel.font = [UIFont fontWithName:@"Avenir-Light" size:20];
     self.errorLabel.textColor = [UIColor customRedColor];
     self.errorLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    self.errorLabel.text = @"Just a serious login error.";
+    self.errorLabel.text = @"Login Error";
     self.errorLabel.textAlignment = NSTextAlignmentCenter;
     [self.view insertSubview:self.errorLabel belowSubview:_inputView];
     
@@ -234,7 +248,7 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
                               relatedBy:NSLayoutRelationEqual toItem:_inputView
                               attribute:NSLayoutAttributeCenterY
                               multiplier:1
-                              constant:-20]];
+                              constant:40]];
     
     self.errorLabel.layer.transform = CATransform3DMakeScale(0.5f, 0.5f, 1.f);
     self.errorLabel.alpha = 0.0;
@@ -247,19 +261,65 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
     self.navigationItem.rightBarButtonItem = item;
 }
 
-- (void)touchUpInside:(flatButton *)button
+#pragma mark LoginControllerDelegate
+
+- (void)dismiss
+{
+    if(self.delegate && [self.delegate respondsToSelector:@selector(dismissLoginController)]){
+        [self.delegate dismissLoginController];
+    }
+}
+
+
+#pragma mark Login
+
+- (void)login:(flatButton *)button
 {
     [self hideLabel];
-    [self.activityIndicatorView startAnimating];
+//    [self.activityIndicatorView startAnimating];
     button.userInteractionEnabled = NO;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        [self.activityIndicatorView stopAnimating];
-        [self shake:_passwordField];
-        [self showLabel];
-    });
+    
+    NSURL *url1 = [NSURL URLWithString:@""];
+    NSURLRequest *request1 = [[NSURLRequest alloc]initWithURL:url1 cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5];
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+    
+    __block NSDictionary *json;
+    
+    [NSURLConnection sendAsynchronousRequest:request1 queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError){
+        
+        if(data){
+            json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&connectionError];
+        }else{
+            json = nil;
+        }
+        
+        if(nil == json){
+            NSLog(@"json is nil");
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                //        [self.activityIndicatorView stopAnimating];
+                [self shake:_inputView];
+                [self showLabel];
+            });
+            return ;
+        }
+        
+        // print all the obtained info
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json options:NSJSONWritingPrettyPrinted error:nil];
+    }];
 }
+
+
+#pragma mark Login
+- (void)handleTap:(id)sender
+{
+    if(sender != _accountField && sender != _passwordField){
+        [self.view endEditing:YES];
+    }
+}
+
 
 #pragma mark Animations
 
@@ -269,7 +329,7 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
     positionAnimation.velocity = @2000;
     positionAnimation.springBounciness = 20;
     [positionAnimation setCompletionBlock:^(POPAnimation *animation, BOOL finished) {
-        sender.userInteractionEnabled = YES;
+        self.button.userInteractionEnabled = YES;
     }];
     [sender.layer pop_addAnimation:positionAnimation forKey:@"positionAnimation"];
 }
@@ -283,7 +343,7 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
     [self.errorLabel.layer pop_addAnimation:layerScaleAnimation forKey:@"labelScaleAnimation"];
     
     POPSpringAnimation *layerPositionAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerPositionY];
-    layerPositionAnimation.toValue = @(_inputView.layer.position.y + 20);
+    layerPositionAnimation.toValue = @(_inputView.layer.position.y + 30);
     layerPositionAnimation.springBounciness = 12;
     [self.errorLabel.layer pop_addAnimation:layerPositionAnimation forKey:@"layerPositionAnimation"];
 }
@@ -301,6 +361,48 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
     self.errorLabel.layer.opacity = 0.0;
 }
 
+#pragma mark Keyboard Notification
+- (void)addObserver
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlekeyboardShowed) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handlekeyboardHided) name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)handlekeyboardShowed
+{
+    [self hideLabel];
+    
+    if(!_keyboardShowed){
+        _keyboardShowed = YES;
+        
+        CGRect r = _inputView.frame;
+        r.origin.y -= 80;
+        CGRect r1 = _logo.frame;
+        r1.origin.y -= 50;
+        
+        [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            _inputView.frame = r;
+            _logo.frame = r1;
+        } completion:nil];
+    }
+}
+
+- (void)handlekeyboardHided
+{
+    if(_keyboardShowed){
+        _keyboardShowed = NO;
+
+        CGRect r = _inputView.frame;
+        r.origin.y += 80;
+        CGRect r1 = _logo.frame;
+        r1.origin.y += 50;
+        
+        [UIView animateWithDuration:0.2 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            _inputView.frame = r;
+            _logo.frame = r1;
+        } completion:nil];
+    }
+}
 
 #pragma mark barSetting
 - (BOOL)prefersStatusBarHidden

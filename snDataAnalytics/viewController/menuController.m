@@ -57,7 +57,7 @@
     _tableView = [[UITableView alloc] initWithFrame:frame];
 //    _tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
 //    _tableView.backgroundColor = [UIColor colorWithRed:135/255.0 green:206.0/255.0 blue:238.0/255.0 alpha:1];
-    _tableView.backgroundColor = [UIColor denimColor];
+    _tableView.backgroundColor = [UIColor colorWithRed:135/255.0 green:206.0/255.0 blue:238.0/255.0 alpha:1];
 
     _tableView.delegate = self;
     _tableView.dataSource = self;

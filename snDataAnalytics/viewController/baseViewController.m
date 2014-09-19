@@ -85,8 +85,7 @@ typedef enum {
     //72 209 204 [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1]
 //    [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
 //    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-//    self.navigationController.interactivePopGestureRecognizer.delegate = self;
-//    self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+
 
     [self setTitle:@"Data Analytics Main View"];
 
@@ -159,7 +158,7 @@ typedef enum {
     dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         baseViewController *strongSelf = wself;
         [strongSelf onApplicationFinishedLaunching];
-//        NSLog(@"width:%f, height:%f",wkScreenWidth,wkScreenHeight);
+        NSLog(@"width:%f, height:%f",wkScreenWidth,wkScreenHeight);
 //        NSLog(@"navigationbar height:%f",self.navigationController.navigationBar.frame.size.height);
 
     });
@@ -414,7 +413,7 @@ typedef enum {
                          _blackView.alpha =0.0;
                          
                      } completion:^(BOOL finished) {
-                         _frontViewIsDraggedDown = YES;
+//                         _frontViewIsDraggedDown = YES;
                      }];
     
 }
@@ -501,13 +500,14 @@ typedef enum {
         if(!_frontViewIsDraggedDown && translation.y < 0){
             return;
         }
-        if( _progress == 0 && translation.y >= 0) {
+        if( _progress == 0 && translation.y > 0) {
 //            NSLog(@"drag down");
             _dragDirection = dragdown;
             _dragInProgress = YES;
             
         }else{
 //            NSLog(@"drag up");
+//            NSLog(@"_frontViewIsDraggedDown:%i",_frontViewIsDraggedDown);
             _dragDirection = dragUp;
             _dragInProgress = YES;
         }

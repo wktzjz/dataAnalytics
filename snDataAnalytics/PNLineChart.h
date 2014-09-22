@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import "PNChartDelegate.h"
+#import "PNChartLabel.h"
 
 @interface PNLineChart : UIView
 
@@ -57,6 +58,10 @@
 
 @property (nonatomic) BOOL showLabel;
 
+//wk
+@property (nonatomic) NSMutableArray *xlabelViewArray;
+@property (nonatomic) NSMutableArray *ylabelViewArray;
+
 /**
  *  show CoordinateAxis ornot, Default is not
  */
@@ -73,5 +78,10 @@
 @property (nonatomic, strong) NSString *yLabelFormat;
 
 - (void)setXLabels:(NSArray *)xLabels withWidth:(CGFloat)width;
+
+//wk
+- (void)removeXlabelView;
+- (void)removeYlabelView;
+
 
 @end

@@ -15,7 +15,12 @@
 
 @end
 
+// Block
+typedef void(^dismiss)();
+
 @interface loginViewController : UIViewController
+
+@property (nonatomic, copy) dismiss dismissBlock;
 @property (nonatomic, weak) id <loginControllerDelegate> delegate;
 
 @end

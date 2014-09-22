@@ -164,7 +164,7 @@
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
             CGRect frameRect = _snapView.frame;
-            frameRect.origin = CGPointMake(20,10);
+            frameRect.origin = CGPointMake(20,10+44.0);
             _snapView.frame = frameRect;
             fromView.alpha = 0.00;
 //            fromView.transform = CGAffineTransformMakeScale(animationScale,animationScale);
@@ -197,7 +197,7 @@
         }
         [[transitionContext containerView] bringSubviewToFront:fromViewController.view];
   
-        NSLog(@"_snapInitialFrame.origin.x:%f, y:%f",_snapInitialFrame.origin.x,_snapInitialFrame.origin.y);
+//        NSLog(@"_snapInitialFrame.origin.x:%f, y:%f",_snapInitialFrame.origin.x,_snapInitialFrame.origin.y);
     
 //        if (![self isIOS8]) {
             toViewController.view.layer.transform = CATransform3DScale(toViewController.view.layer.transform, self.behindViewScale, self.behindViewScale, 1);

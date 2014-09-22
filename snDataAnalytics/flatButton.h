@@ -10,6 +10,8 @@
 
 @interface flatButton : UIButton
 
+@property (nonatomic) int fontSize;
+@property (nonatomic) UIColor *textColor;
 + (instancetype)button;
 
 @end

@@ -8,7 +8,7 @@
 
 #import "PNLineChart.h"
 #import "PNColor.h"
-#import "PNChartLabel.h"
+//#import "PNChartLabel.h"
 #import "PNLineChartData.h"
 #import "PNLineChartDataItem.h"
 
@@ -91,6 +91,7 @@
             label.text = [NSString stringWithFormat:yLabelFormat, _yValueMin + (yStep * index)];
             [self setCustomStyleForYLabel:label];
             [self addSubview:label];
+            [_ylabelViewArray addObject:label];
             index += 1;
             num -= 1;
         }
@@ -124,12 +125,27 @@
             NSInteger x = 2 * _chartMargin +  (index * _xLabelWidth) - (_xLabelWidth / 2);
             NSInteger y = _chartMargin + _chartCavanHeight;
 
-            PNChartLabel *label = [[PNChartLabel alloc] initWithFrame:CGRectMake(x, y, _xLabelWidth, _chartMargin)];
-            [label setTextAlignment:NSTextAlignmentCenter];
-            label.text = labelText;
-            [self setCustomStyleForXLabel:label];
-            [self addSubview:label];
+            PNChartLabel *xlabel = [[PNChartLabel alloc] initWithFrame:CGRectMake(x, y, _xLabelWidth, _chartMargin)];
+            [xlabel setTextAlignment:NSTextAlignmentCenter];
+            xlabel.text = labelText;
+            [self setCustomStyleForXLabel:xlabel];
+            [self addSubview:xlabel];
+            [_xlabelViewArray addObject:xlabel];
         }
+    }
+}
+
+- (void)removeXlabelView
+{
+    for (PNChartLabel *xlabel in _xlabelViewArray) {
+        [xlabel removeFromSuperview];
+    }
+}
+
+- (void)removeYlabelView
+{
+    for (PNChartLabel *ylabel in _ylabelViewArray) {
+        [ylabel removeFromSuperview];
     }
 }
 
@@ -569,6 +585,9 @@
     _showCoordinateAxis = NO;
     _axisColor = [UIColor colorWithRed:0.4f green:0.4f blue:0.4f alpha:1.f];
     _axisWidth = 1.f;
+    
+    _xlabelViewArray = [NSMutableArray array];
+    _ylabelViewArray = [NSMutableArray array];
 }
 
 #pragma mark - tools

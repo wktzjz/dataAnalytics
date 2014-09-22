@@ -9,11 +9,6 @@
 #import "dataOutlineViewContainer.h"
 #import "defines.h"
 
-#import "PNChart.h"
-#import "PNLineChartData.h"
-#import "PNLineChartDataItem.h"
-
-#import "BEMSimpleLineGraphView.h"
 #import "FBShimmeringView.h"
 #import "UIColor+CustomColors.h"
 
@@ -47,7 +42,6 @@ const static CGFloat loadingAnimationDuration = 0.7f;
 
 @property (strong, nonatomic) NSMutableArray *ArrayOfValues;
 @property (strong, nonatomic) NSMutableArray *ArrayOfDates;
-@property (nonatomic)  BEMSimpleLineGraphView *myGraph;
 
 @end
 
@@ -97,6 +91,7 @@ const static CGFloat loadingAnimationDuration = 0.7f;
         
         self.layer.cornerRadius = 10;
         self.backgroundColor = [UIColor whiteColor];
+        self.dataType = dataType;
         [self addDataViewType:dataType inControllerType:inViewType data:nil];
         
 //        UIView *contentView = [[UIView alloc] initWithFrame:self.frame];
@@ -122,31 +117,32 @@ const static CGFloat loadingAnimationDuration = 0.7f;
 - (void)addDataViewType:(dataVisualizedType)dataType inControllerType:(inViewType)inViewType data:(id)data
 {
     UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(self.frame.size.width, 0, self.frame.size.width, self.frame.size.height)];
-//    contentView.center = CGPointMake(self.frame.size.width * 1.5, 0);
     
+    self.dataType = dataType;
+
     if (dataType == outlineTypeLine) {
         
         //            float width  = (inViewType == outlineView) ? outlineViewWidth:SCREEN_WIDTH;
         //            float height = (inViewType == outlineView) ? outlineViewHeight:detailViewHeight;
         
         //Add LineChart
-        UILabel * lineChartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
-        lineChartLabel.text = @"Line Chart";
-        lineChartLabel.textColor = PNFreshGreen;
-        lineChartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:23.0];
-        lineChartLabel.textAlignment = NSTextAlignmentCenter;
+        _chartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
+        _chartLabel.text = @"Line Chart";
+        _chartLabel.textColor = PNFreshGreen;
+        _chartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:23.0];
+        _chartLabel.textAlignment = NSTextAlignmentCenter;
         
-        PNLineChart * lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(0, 55.0, outlineViewWidth, outlineViewHeight)];
-        lineChart.yLabelFormat = @"%1.1f";
-        lineChart.backgroundColor = [UIColor clearColor];
-        [lineChart setXLabels:@[@"9.1",@"9.2",@"9.3",@"9.4",@"9.5",@"9.6",@"9.7"]];
-        lineChart.showCoordinateAxis = YES;
+        _lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(0, 55.0, outlineViewWidth, outlineViewHeight)];
+        _lineChart.yLabelFormat = @"%1.1f";
+        _lineChart.backgroundColor = [UIColor clearColor];
+        [_lineChart setXLabels:@[@"9.1",@"9.2",@"9.3",@"9.4",@"9.5",@"9.6",@"9.7"]];
+        _lineChart.showCoordinateAxis = YES;
         
         // Line Chart Nr.1
         NSArray * data01Array = @[@60.1, @160.1, @126.4, @262.2, @186.2, @127.2, @176.2];
         PNLineChartData *data01 = [PNLineChartData new];
         data01.color = PNFreshGreen;
-        data01.itemCount = lineChart.xLabels.count;
+        data01.itemCount = _lineChart.xLabels.count;
         data01.inflexionPointStyle = PNLineChartPointStyleCycle;
         data01.getData = ^(NSUInteger index) {
             CGFloat yValue = [data01Array[index] floatValue];
@@ -157,20 +153,22 @@ const static CGFloat loadingAnimationDuration = 0.7f;
         NSArray * data02Array = @[@20.1, @180.1, @26.4, @202.2, @126.2, @167.2, @276.2];
         PNLineChartData *data02 = [PNLineChartData new];
         data02.color = PNTwitterColor;
-        data02.itemCount = lineChart.xLabels.count;
+        data02.itemCount = _lineChart.xLabels.count;
         data02.inflexionPointStyle = PNLineChartPointStyleSquare;
         data02.getData = ^(NSUInteger index) {
             CGFloat yValue = [data02Array[index] floatValue];
             return [PNLineChartDataItem dataItemWithY:yValue];
         };
         
-        lineChart.chartData = @[data01, data02];
-        [lineChart strokeChart];
+        _lineChart.chartData = @[data01, data02];
+        [_lineChart strokeChart];
+        [_lineChart removeXlabelView];
+        [_lineChart setXLabels:@[@"10.1",@"10.2",@"10.3",@"10.4",@"10.5",@"10.6",@"10.7"]];
         
 //        lineChart.delegate = self;
         
-        [contentView addSubview:lineChartLabel];
-        [contentView addSubview:lineChart];
+        [contentView addSubview:_chartLabel];
+        [contentView addSubview:_lineChart];
 //        [self addSubview:lineChartLabel];
 //        [self addSubview:lineChart];
         
@@ -190,33 +188,33 @@ const static CGFloat loadingAnimationDuration = 0.7f;
     {
         //Add BarChart
         
-        UILabel * barChartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
-        barChartLabel.text = @"Bar Chart";
-        barChartLabel.textColor = PNFreshGreen;
-        barChartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:23.0];
-        barChartLabel.textAlignment = NSTextAlignmentCenter;
+        _chartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
+        _chartLabel.text = @"Bar Chart";
+        _chartLabel.textColor = PNFreshGreen;
+        _chartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:23.0];
+        _chartLabel.textAlignment = NSTextAlignmentCenter;
         
-        self.barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 55.0, outlineViewWidth, outlineViewHeight)];
-        self.barChart.backgroundColor = [UIColor clearColor];
-        self.barChart.yLabelFormatter = ^(CGFloat yValue){
+        _barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 55.0, outlineViewWidth, outlineViewHeight)];
+        _barChart.backgroundColor = [UIColor clearColor];
+        _barChart.yLabelFormatter = ^(CGFloat yValue){
             CGFloat yValueParsed = yValue;
             NSString * labelText = [NSString stringWithFormat:@"%1.f",yValueParsed];
             return labelText;
         };
-        self.barChart.labelMarginTop = 5.0;
-        [self.barChart setXLabels:@[@"SEP 1",@"SEP 2",@"SEP 3",@"SEP 4",@"SEP 5",@"SEP 6",@"SEP 7"]];
-        [self.barChart setYValues:@[@1,@24,@12,@18,@30,@10,@21]];
-        [self.barChart setStrokeColors:@[PNGreen,PNGreen,PNRed,PNGreen,PNGreen,PNYellow,PNGreen]];
+        _barChart.labelMarginTop = 5.0;
+        [_barChart setXLabels:@[@"SEP 1",@"SEP 2",@"SEP 3",@"SEP 4",@"SEP 5",@"SEP 6",@"SEP 7"]];
+        [_barChart setYValues:@[@1,@24,@12,@18,@30,@10,@21]];
+        [_barChart setStrokeColors:@[PNGreen,PNGreen,PNRed,PNGreen,PNGreen,PNYellow,PNGreen]];
         // Adding gradient
-        self.barChart.barColorGradientStart = [UIColor customYellowColor];
+        _barChart.barColorGradientStart = [UIColor customYellowColor];
         
-        [self.barChart strokeChart];
+        [_barChart strokeChart];
         
-//        self.barChart.delegate = self;
+//        _barChart.delegate = self;
         
 //        [self addSubview:barChartLabel];
 //        [self addSubview:self.barChart];
-        [contentView addSubview:barChartLabel];
+        [contentView addSubview:_chartLabel];
         [contentView addSubview:self.barChart];
         
         //            UIImage *snapShotImage = [self.barChart graphSnapshotImage];
@@ -239,13 +237,13 @@ const static CGFloat loadingAnimationDuration = 0.7f;
         //Add CircleChart
         
         
-        UILabel * circleChartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
-        circleChartLabel.text = @"Circle Chart";
-        circleChartLabel.textColor = PNFreshGreen;
-        circleChartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:23.0];
-        circleChartLabel.textAlignment = NSTextAlignmentCenter;
+        _chartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
+        _chartLabel.text = @"Circle Chart";
+        _chartLabel.textColor = PNFreshGreen;
+        _chartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:23.0];
+        _chartLabel.textAlignment = NSTextAlignmentCenter;
         
-        PNCircleChart * circleChart = [[PNCircleChart alloc] initWithFrame:CGRectMake(0, 30.0, outlineViewWidth, 100.0) andTotal:@100 andCurrent:@60 andClockwise:YES andShadow:YES];
+        PNCircleChart *circleChart = [[PNCircleChart alloc] initWithFrame:CGRectMake(0, 30.0, outlineViewWidth, 100.0) andTotal:@100 andCurrent:@60 andClockwise:YES andShadow:YES];
         circleChart.backgroundColor = [UIColor clearColor];
         [circleChart setStrokeColor:PNGreen];
         [circleChart setStrokeColorGradientStart:[UIColor blueColor]];
@@ -253,7 +251,7 @@ const static CGFloat loadingAnimationDuration = 0.7f;
         
 //        [self addSubview:circleChartLabel];
 //        [self addSubview:circleChart];
-        [contentView addSubview:circleChartLabel];
+        [contentView addSubview:_chartLabel];
         [contentView addSubview:circleChart];
         
         //            UIImage *snapShotImage = [self.barChart graphSnapshotImage];
@@ -264,11 +262,11 @@ const static CGFloat loadingAnimationDuration = 0.7f;
     }else if (dataType == outlineTypePie)
     {
         //Add PieChart
-        UILabel * pieChartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
-        pieChartLabel.text = @"Pie Chart";
-        pieChartLabel.textColor = PNFreshGreen;
-        pieChartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:23.0];
-        pieChartLabel.textAlignment = NSTextAlignmentCenter;
+        _chartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
+        _chartLabel.text = @"Pie Chart";
+        _chartLabel.textColor = PNFreshGreen;
+        _chartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:23.0];
+        _chartLabel.textAlignment = NSTextAlignmentCenter;
         
         NSArray *items = @[[PNPieChartDataItem dataItemWithValue:10 color:PNLightGreen],
                            [PNPieChartDataItem dataItemWithValue:20 color:PNFreshGreen description:@"WWDC"],
@@ -284,7 +282,7 @@ const static CGFloat loadingAnimationDuration = 0.7f;
         
 //        [self addSubview:pieChartLabel];
 //        [self addSubview:pieChart];
-        [contentView addSubview:pieChartLabel];
+        [contentView addSubview:_chartLabel];
         [contentView addSubview:pieChart];
 
         
@@ -370,6 +368,47 @@ const static CGFloat loadingAnimationDuration = 0.7f;
 
                      }];
 }
+
+
+#pragma mark - modifyLineChart
+- (void)modifyLineChartWithDataArray1:(NSArray *)dataArray1 dataArray2:(NSArray *)dataArray2 xLabelArray:(NSArray *)labelArray
+{
+    double delayInSeconds = 0.5;
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(delayTime,dispatch_get_main_queue(), ^{
+        
+        [_lineChart removeXlabelView];
+        [_lineChart removeYlabelView];
+
+        [_lineChart setXLabels:labelArray];
+        
+        NSArray * data01Array = dataArray1;
+        PNLineChartData *data01 = [PNLineChartData new];
+        data01.color = PNFreshGreen;
+        data01.itemCount = _lineChart.xLabels.count;
+        data01.inflexionPointStyle = PNLineChartPointStyleCycle;
+        data01.getData = ^(NSUInteger index) {
+            CGFloat yValue = [data01Array[index] floatValue];
+            return [PNLineChartDataItem dataItemWithY:yValue];
+        };
+        
+        // Line Chart Nr.2
+        NSArray * data02Array = dataArray2;
+        PNLineChartData *data02 = [PNLineChartData new];
+        data02.color = PNTwitterColor;
+        data02.itemCount = _lineChart.xLabels.count;
+        data02.inflexionPointStyle = PNLineChartPointStyleSquare;
+        data02.getData = ^(NSUInteger index) {
+            CGFloat yValue = [data02Array[index] floatValue];
+            return [PNLineChartDataItem dataItemWithY:yValue];
+        };
+        
+        _lineChart.chartData = @[data01, data02];
+        [_lineChart strokeChart];
+    });
+    
+}
+
 
 
 #pragma mark - SimpleLineGraph Data Source

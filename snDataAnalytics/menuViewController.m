@@ -43,6 +43,8 @@
     UIView *contentView = [[UIView alloc] initWithFrame:wkScreen];
     [self.view addSubview:contentView];
     [self setTitle:@"Setting View"];
+    NSLog(@"menuViewController self.navigationController:%@",self.navigationController);
+
 //    contnetView.BackgroundColor =[UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
     contentView.backgroundColor = [UIColor whiteColor];
     _tableView = [[UITableView alloc] initWithFrame:self.view.frame];
@@ -154,8 +156,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    _detailsViewController = [[dataDetailsViewController alloc] initWithFrame:wkScreen type:outlineTypeLine1/*fmodf(indexPath.row,3)*/];
-    _detailsViewController.delegate = self;
+    _detailsViewController = [[dataDetailsViewController alloc] initWithFrame:wkScreen type:outlineTypeLine1/*fmodf(indexPath.row,3)*/ title:@"detailsView"];
+    _detailsViewController.delegate  = self;
     _detailsViewController.modalPresentationStyle = UIModalPresentationCustom;
     
     _animator = [[outlineViewTransitionAnimator alloc] initWithModalViewController:_detailsViewController];
@@ -170,7 +172,7 @@
 }
 
 #pragma mark dataDetailsControllerDelegate
-- (void)disMissDetailsController
+- (void)dismissDetailsController
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }

@@ -18,6 +18,9 @@
 @end
 
 @implementation flatButton
+{
+    
+}
 
 + (instancetype)button
 {
@@ -32,6 +35,7 @@
     }
     return self;
 }
+
 
 #pragma mark - Instance methods
 
@@ -58,10 +62,12 @@
 {
     self.backgroundColor = self.tintColor;
     self.layer.cornerRadius = 4.f;
-    [self setTitleColor:[UIColor whiteColor]
+    _textColor = _textColor ? _textColor : [UIColor whiteColor];
+    [self setTitleColor:_textColor
                forState:UIControlStateNormal];
+    int size = _fontSize?_fontSize:28;
     self.titleLabel.font = [UIFont fontWithName:@"Avenir-Medium"
-                                           size:28];
+                                           size:size];
     
     [self addTarget:self action:@selector(scaleToSmall)
    forControlEvents:UIControlEventTouchDown | UIControlEventTouchDragEnter];
@@ -70,6 +76,11 @@
     [self addTarget:self action:@selector(scaleToDefault)
    forControlEvents:UIControlEventTouchDragExit];
 }
+
+//- (void)setFontSize:(int)fontSize
+//{
+//    s
+//}
 
 - (void)scaleToSmall
 {

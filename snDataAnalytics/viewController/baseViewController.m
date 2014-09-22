@@ -158,7 +158,7 @@ typedef enum {
     dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         baseViewController *strongSelf = wself;
         [strongSelf onApplicationFinishedLaunching];
-        NSLog(@"width:%f, height:%f",wkScreenWidth,wkScreenHeight);
+//        NSLog(@"width:%f, height:%f",wkScreenWidth,wkScreenHeight);
 //        NSLog(@"navigationbar height:%f",self.navigationController.navigationBar.frame.size.height);
 
     });
@@ -176,7 +176,7 @@ typedef enum {
 
     CGFloat width = outleineContainerViewWidth;
     CGFloat height = wkScreenHeight/2 + 10;
-    NSLog(@"!!!!!width:%f",width);
+//    NSLog(@"!!!!!width:%f",width);
     CGFloat originX = 0;
     
 //    _outlineView1 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, 0, width, height) dataType:outlineTypeLine inControllerType:outlineView];
@@ -215,7 +215,11 @@ typedef enum {
     _userDefaults = [NSUserDefaults standardUserDefaults];
     if(![_userDefaults objectForKey:@"logInSucceeded" ]){
         loginViewController *viewController = [[loginViewController alloc] init];
-        viewController.delegate = self;
+        viewController.dismissBlock = ^{
+            [self dismissViewControllerAnimated:YES completion:nil];
+            [self getNetworkInfo];
+        };
+//        viewController.delegate = self;
 //        viewController.title = @"Login";
 //        [self.navigationController pushViewController:viewController animated:YES];
         
@@ -337,14 +341,15 @@ typedef enum {
 #pragma mark outlineView transite to detailsView
 - (void)transitOutlineView:(dataOutlineViewContainer *)view type:(dataVisualizedType)type
 {
-    _detailsViewController = [[dataDetailsViewController alloc] initWithFrame:wkScreen type:type];
+    _detailsViewController = [[dataDetailsViewController alloc] initWithFrame:wkScreen type:type title:@"Details"];
     _detailsViewController.delegate = self;
+    _detailsViewController.viewTitleString = @"changed";
     _detailsViewController.modalPresentationStyle = UIModalPresentationCustom;
 
     _animator = [[outlineViewTransitionAnimator alloc] initWithModalViewController:_detailsViewController];
     _animator.behindViewAlpha = 0.5f;
     _animator.behindViewScale = 0.5f;
-    _animator.bounces = YES;
+    _animator.bounces  = YES;
     _animator.dragable = YES;
     
     [_animator setContentScrollView:_detailsViewController.scrollView];

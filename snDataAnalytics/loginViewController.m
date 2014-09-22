@@ -61,7 +61,8 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     [self setNeedsStatusBarAppearanceUpdate];
     self.view.backgroundColor = [UIColor whiteColor];
@@ -82,7 +83,7 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
 //    [self backgroudImageSetting];
     [self addTextField];
     [self addButton];
-    [self addLabel];
+    [self addErrorLabel];
     [self addActivityIndicatorView];
     [self addObserver];
 }
@@ -223,7 +224,7 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
 
 }
 
-- (void)addLabel
+- (void)addErrorLabel
 {
     self.errorLabel = [UILabel new];
     self.errorLabel.font = [UIFont fontWithName:@"Avenir-Light" size:20];
@@ -265,9 +266,31 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
 
 - (void)dismiss
 {
-    if(self.delegate && [self.delegate respondsToSelector:@selector(dismissLoginController)]){
-        [self.delegate dismissLoginController];
+//    if(self.delegate && [self.delegate respondsToSelector:@selector(dismissLoginController)]){
+//        [self.delegate dismissLoginController];
+//    }
+    
+    if(self.dismissBlock){
+        _dismissBlock();
     }
+    
+//    UIView *snapshotView = [self.view snapshotViewAfterScreenUpdates:NO];
+//    snapshotView.frame = self.view.bounds;
+//    snapshotView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//    [self.view insertSubview:snapshotView atIndex:0];
+//    
+//    UIToolbar *blurView = [[UIToolbar alloc] initWithFrame:CGRectZero];
+//    blurView.frame = self.view.bounds;
+//    blurView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//    blurView.barStyle = UIBarStyleBlack;
+//    blurView.translucent = YES;
+//    [self.view insertSubview:blurView aboveSubview:self.view];
+//    
+//    blurView.alpha = 0;
+//    blurView.userInteractionEnabled = YES;
+//    [UIView animateWithDuration:3.0 animations:^{
+//        blurView.alpha = 0.9;
+//    }];
 }
 
 
@@ -298,8 +321,8 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
             NSLog(@"json is nil");
             
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                //        [self.activityIndicatorView stopAnimating];
+//               [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+//               [self.activityIndicatorView stopAnimating];
                 [self shake:_inputView];
                 [self showLabel];
             });

@@ -97,6 +97,9 @@
 		35BDE10919C28AD900A1D90B /* loginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 35BDE10819C28AD900A1D90B /* loginViewController.m */; };
 		35BDE15319C28EC900A1D90B /* UIColor+CustomColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 35BDE15219C28EC900A1D90B /* UIColor+CustomColors.m */; };
 		35BDE15619C28F8A00A1D90B /* flatButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 35BDE15519C28F8A00A1D90B /* flatButton.m */; };
+		35F3999B19CFC6F10077BA75 /* wkBlurPopover.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F3999819CFC6F10077BA75 /* wkBlurPopover.m */; };
+		35F3999C19CFC6F10077BA75 /* wkBlurPopoverTransitionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F3999A19CFC6F10077BA75 /* wkBlurPopoverTransitionController.m */; };
+		35F3999F19CFCBEE0077BA75 /* indexSwitchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F3999E19CFCBEE0077BA75 /* indexSwitchController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -291,6 +294,12 @@
 		35BDE15219C28EC900A1D90B /* UIColor+CustomColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+CustomColors.m"; sourceTree = "<group>"; };
 		35BDE15419C28F8A00A1D90B /* flatButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = flatButton.h; sourceTree = "<group>"; };
 		35BDE15519C28F8A00A1D90B /* flatButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = flatButton.m; sourceTree = "<group>"; };
+		35F3999719CFC6F10077BA75 /* wkBlurPopover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wkBlurPopover.h; sourceTree = "<group>"; };
+		35F3999819CFC6F10077BA75 /* wkBlurPopover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = wkBlurPopover.m; sourceTree = "<group>"; };
+		35F3999919CFC6F10077BA75 /* wkBlurPopoverTransitionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wkBlurPopoverTransitionController.h; sourceTree = "<group>"; };
+		35F3999A19CFC6F10077BA75 /* wkBlurPopoverTransitionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = wkBlurPopoverTransitionController.m; sourceTree = "<group>"; };
+		35F3999D19CFCBEE0077BA75 /* indexSwitchController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = indexSwitchController.h; sourceTree = "<group>"; };
+		35F3999E19CFCBEE0077BA75 /* indexSwitchController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = indexSwitchController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -566,6 +575,7 @@
 		3562983019B45099004A8054 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				35F3999019CFC1D30077BA75 /* popupViewController */,
 				3562987A19B46294004A8054 /* baseViewController.h */,
 				3562987B19B46294004A8054 /* baseViewController.m */,
 				3562987D19B4631B004A8054 /* menuViewController.h */,
@@ -578,6 +588,8 @@
 				3562989819B83763004A8054 /* dataDetailsViewController.m */,
 				35BDE10719C28AD900A1D90B /* loginViewController.h */,
 				35BDE10819C28AD900A1D90B /* loginViewController.m */,
+				35F3999D19CFCBEE0077BA75 /* indexSwitchController.h */,
+				35F3999E19CFCBEE0077BA75 /* indexSwitchController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -805,6 +817,17 @@
 			name = color;
 			sourceTree = "<group>";
 		};
+		35F3999019CFC1D30077BA75 /* popupViewController */ = {
+			isa = PBXGroup;
+			children = (
+				35F3999719CFC6F10077BA75 /* wkBlurPopover.h */,
+				35F3999819CFC6F10077BA75 /* wkBlurPopover.m */,
+				35F3999919CFC6F10077BA75 /* wkBlurPopoverTransitionController.h */,
+				35F3999A19CFC6F10077BA75 /* wkBlurPopoverTransitionController.m */,
+			);
+			name = popupViewController;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -953,6 +976,7 @@
 				355900AC19B9B92A001AD1FF /* BEMCircle.m in Sources */,
 				3522247219C2C73D0048F57C /* POPLayerExtras.mm in Sources */,
 				3562989319B7F61B004A8054 /* dataOutlineViewController.m in Sources */,
+				35F3999F19CFCBEE0077BA75 /* indexSwitchController.m in Sources */,
 				3562980619B44564004A8054 /* main.m in Sources */,
 				3562984619B4581D004A8054 /* CheckNetwork.m in Sources */,
 				3562985019B458D4004A8054 /* TSMessage.m in Sources */,
@@ -974,6 +998,7 @@
 				3561A10A19C02FDD00C6A262 /* UIView+snapShot.m in Sources */,
 				3522246B19C2C73D0048F57C /* POPAnimationTracer.mm in Sources */,
 				3522246719C2C73D0048F57C /* POPAnimation.mm in Sources */,
+				35F3999B19CFC6F10077BA75 /* wkBlurPopover.m in Sources */,
 				3522246919C2C73D0048F57C /* POPAnimationExtras.mm in Sources */,
 				3562983719B4578F004A8054 /* FRDLivelyButton.m in Sources */,
 				3522248D19C923350048F57C /* Colours.m in Sources */,
@@ -983,6 +1008,7 @@
 				35BDE10919C28AD900A1D90B /* loginViewController.m in Sources */,
 				3522247119C2C73D0048F57C /* POPGeometry.mm in Sources */,
 				3522246D19C2C73D0048F57C /* POPBasicAnimation.mm in Sources */,
+				35F3999C19CFC6F10077BA75 /* wkBlurPopoverTransitionController.m in Sources */,
 				356298DC19B86655004A8054 /* PNCircleChart.m in Sources */,
 				3522249519C936B40048F57C /* JVFloatLabeledTextField.m in Sources */,
 				356298DA19B86655004A8054 /* PNBar.m in Sources */,

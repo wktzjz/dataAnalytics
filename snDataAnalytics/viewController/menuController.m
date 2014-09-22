@@ -41,10 +41,10 @@
     [self setTitle:@"Demo"];
     self.data =
     @[
-      @{@"text": @"Setting1", @"icon": @"pencil"},
-      @{@"text": @"Setting2", @"icon": @"pencil"},
+      @{@"text": @"Setting1", @"icon": @"heart"},
+      @{@"text": @"Setting2", @"icon": @"heart"},
       @{@"text": @"Setting3", @"icon": @"pencil"},
-      @{@"text": @"Setting4", @"icon": @"puzzle"},
+      @{@"text": @"Setting4", @"icon": @"pencil"},
       @{@"text": @"Setting5", @"icon": @"puzzle"},
       @{@"text": @"Setting6", @"icon": @"puzzle"}
       ];
@@ -84,30 +84,71 @@
     return 70;
 }
 
-- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentifier = @"Cell";
-
-    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-    if( nil == cell ) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+    if(indexPath.row == 0){
+        
+        static NSString *cellIdentifier = @"AccountCell";
+        
+        UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"AccountCell"];
+        if( nil == cell ) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+        }
+        
+        NSDictionary* dict = self.data[indexPath.row];
+        
+        cell.textLabel.text = @"AccountName 王康";
+        cell.textLabel.textColor = [UIColor whiteColor];
+        [cell setBackgroundColor:[UIColor clearColor]];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        [cell.imageView setImage:[UIImage imageNamed:dict[@"icon"]]];
+        
+        return cell;
+    }else if(indexPath.row == 1){
+        
+        static NSString *cellIdentifier = @"choose Data Sources";
+        
+        UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"AccountCell"];
+        if( nil == cell ) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+        }
+        
+        NSDictionary* dict = self.data[indexPath.row];
+        
+        cell.textLabel.text = @"Choose data origin";
+        cell.textLabel.textColor = [UIColor whiteColor];
+        cell.detailTextLabel.text = @"选择数据来源";
+        cell.detailTextLabel.textColor = [UIColor whiteColor];
+        [cell setBackgroundColor:[UIColor clearColor]];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        [cell.imageView setImage:[UIImage imageNamed:dict[@"icon"]]];
+        
+        return cell;
+    }else{
+        static NSString *cellIdentifier = @"Cell";
+        
+        UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+        if( nil == cell ) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+        }
+        
+        NSDictionary* dict = self.data[indexPath.row];
+        
+        cell.textLabel.text = dict[@"text"];
+        cell.textLabel.textColor = [UIColor whiteColor];
+        [cell setBackgroundColor:[UIColor clearColor]];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        [cell.imageView setImage:[UIImage imageNamed:dict[@"icon"]]];
+        
+        return cell;
     }
-    
-    NSDictionary* dict = self.data[indexPath.row];
-    
-    cell.textLabel.text = dict[@"text"];
-    cell.textLabel.textColor = [UIColor whiteColor];
-    [cell setBackgroundColor:[UIColor clearColor]];
-    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    [cell.imageView setImage:[UIImage imageNamed:dict[@"icon"]]];
-    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     _menuViewController = [[menuViewController alloc] init];
     _menuViewController.view.frame = CGRectMake(0, 0, wkScreenWidth, wkScreenHeight-frontViewRemainHeight);
-    NSLog(@"self.navigationController:%@",self.navigationController);
+//    NSLog(@"self.navigationController:%@",self.navigationController);
     [self.navigationController pushViewController:_menuViewController animated:YES ];
 //    [self.navigationController pushViewController:_menuViewController animated:YES];
 //    [self addChildViewController:_menuViewController];

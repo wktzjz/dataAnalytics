@@ -21,12 +21,15 @@
 @interface dataDetailsViewController : UIViewController
 
 @property (nonatomic, weak) id <dataDetailsControllerDelegate> delegate;
-@property (nonatomic) PNBarChart * barChart;
 @property (nonatomic) dataVisualizedType dataVisualizedType;
 @property (nonatomic) UIScrollView *scrollView;
+@property (nonatomic) NSString *viewTitleString;
+@property (nonatomic) UILabel *viewTitle;
+@property (nonatomic) dataOutlineViewContainer *dataContentView;
 
 //- (instancetype)init;
 //- (instancetype)initWithFrame:(CGRect)frame;
-- (instancetype)initWithFrame:(CGRect)frame type:(dataVisualizedType)type;
+//- (instancetype)initWithFrame:(CGRect)frame type:(dataVisualizedType)type;
+- (instancetype)initWithFrame:(CGRect)frame type:(dataVisualizedType)type title:(NSString *)title;
 
 @end

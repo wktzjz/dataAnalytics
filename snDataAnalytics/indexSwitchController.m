@@ -8,6 +8,7 @@
 
 #import "indexSwitchController.h"
 #import "FlatButton.h"
+#import "Colours.h"
 
 @interface indexSwitchController ()
 
@@ -22,7 +23,7 @@
 
 - (instancetype)init
 {
-     NSLog(@"0 indexSwitchController init");
+//     NSLog(@"0 indexSwitchController init");
     return [self initWithFrame:CGRectMake(0, 0, 280, 160)];
 }
 
@@ -30,7 +31,7 @@
 {
     if ( (self = [super init]) ) {
         self.view.frame = frame;
-         NSLog(@"111switchView frame, origin,x:%f, y:%f ,width:%f, height:%f",self.view.frame.origin.x,self.view.frame.origin.y,self.view.frame.size.width,self.view.frame.size.height);
+//         NSLog(@"111switchView frame, origin,x:%f, y:%f ,width:%f, height:%f",self.view.frame.origin.x,self.view.frame.origin.y,self.view.frame.size.width,self.view.frame.size.height);
     }
     
     return self;
@@ -41,9 +42,11 @@
     [super viewDidLoad];
     self.view.frame = CGRectMake(0, 0, 280, 160);
     _contentView = [[UIView alloc] initWithFrame:self.view.frame];
-    NSLog(@"222 switchView _contentView, origin,x:%f, y:%f ,width:%f, height:%f",_contentView.frame.origin.x,_contentView.frame.origin.y,_contentView.frame.size.width,_contentView.frame.size.height);
+//    NSLog(@"222 switchView _contentView, origin,x:%f, y:%f ,width:%f, height:%f",_contentView.frame.origin.x,_contentView.frame.origin.y,_contentView.frame.size.width,_contentView.frame.size.height);
 
     _contentView.backgroundColor = [UIColor whiteColor];
+//    _contentView.alpha = 0.9;
+
     [self.view addSubview:_contentView];
     [self addButton];
 }

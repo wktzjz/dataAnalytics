@@ -216,26 +216,8 @@ const static CGFloat loadingAnimationDuration = 0.7f;
 //        [self addSubview:self.barChart];
         [contentView addSubview:_chartLabel];
         [contentView addSubview:self.barChart];
-        
-        //            UIImage *snapShotImage = [self.barChart graphSnapshotImage];
-        //            UIImageView *snapView = [[UIImageView alloc] initWithFrame:self.barChart.frame];
-        //            snapView.image = snapShotImage;
-        //            [self addSubview:snapView];
-        
-        //            double delayInSeconds = 2.0;
-        //            __weak id wself = self;
-        //            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        //            dispatch_after(popTime, dispatch_get_main_queue(), ^{
-        //                dataOutlineViewContainer *strongSelf = wself;
-        //                [self.barChart setYValues:@[@13,@4,@17,@18,@10,@50,@5]];
-        //                [self.barChart strokeChart];
-        //
-        //            });
-        //
+
     }else if (dataType == outlineTypeCircle){
-        
-        //Add CircleChart
-        
         
         _chartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
         _chartLabel.text = @"Circle Chart";
@@ -243,21 +225,17 @@ const static CGFloat loadingAnimationDuration = 0.7f;
         _chartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:23.0];
         _chartLabel.textAlignment = NSTextAlignmentCenter;
         
-        PNCircleChart *circleChart = [[PNCircleChart alloc] initWithFrame:CGRectMake(0, 30.0, outlineViewWidth, 100.0) andTotal:@100 andCurrent:@60 andClockwise:YES andShadow:YES];
-        circleChart.backgroundColor = [UIColor clearColor];
-        [circleChart setStrokeColor:PNGreen];
-        [circleChart setStrokeColorGradientStart:[UIColor blueColor]];
-        [circleChart strokeChart];
+        _circleChart = [[PNCircleChart alloc] initWithFrame:CGRectMake(0, 30.0, outlineViewWidth, 100.0) andTotal:@100 andCurrent:@60 andClockwise:YES andShadow:YES];
+        _circleChart.backgroundColor = [UIColor clearColor];
+        [_circleChart setStrokeColor:PNGreen];
+        [_circleChart setStrokeColorGradientStart:[UIColor blueColor]];\
+        _circleChart.isRestroke = NO;
+        [_circleChart strokeChart];
         
 //        [self addSubview:circleChartLabel];
 //        [self addSubview:circleChart];
         [contentView addSubview:_chartLabel];
-        [contentView addSubview:circleChart];
-        
-        //            UIImage *snapShotImage = [self.barChart graphSnapshotImage];
-        //            UIImageView *snapView = [[UIImageView alloc] initWithFrame:self.barChart.frame];
-        //            snapView.image = snapShotImage;
-        //            [self addSubview:circleChart];
+        [contentView addSubview:_circleChart];
         
     }else if (dataType == outlineTypePie)
     {
@@ -269,21 +247,21 @@ const static CGFloat loadingAnimationDuration = 0.7f;
         _chartLabel.textAlignment = NSTextAlignmentCenter;
         
         NSArray *items = @[[PNPieChartDataItem dataItemWithValue:10 color:PNLightGreen],
-                           [PNPieChartDataItem dataItemWithValue:20 color:PNFreshGreen description:@"WWDC"],
-                           [PNPieChartDataItem dataItemWithValue:40 color:PNDeepGreen description:@"GOOL I/O"],
+                           [PNPieChartDataItem dataItemWithValue:20 color:PNFreshGreen description:@"SMALL"],
+                           [PNPieChartDataItem dataItemWithValue:40 color:PNDeepGreen description:@"BIG"],
                            ];
         
         
-        PNPieChart *pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(40.0, 55.0, 240.0, 240.0) items:items];
-        pieChart.descriptionTextColor = [UIColor whiteColor];
-        pieChart.descriptionTextFont  = [UIFont fontWithName:@"Avenir-Medium" size:14.0];
-        pieChart.descriptionTextShadowColor = [UIColor clearColor];
-        [pieChart strokeChart];
+        _pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(15.0, 40.0, outlineViewWidth - 30,outlineViewWidth - 30) items:items];
+        _pieChart.descriptionTextColor = [UIColor whiteColor];
+        _pieChart.descriptionTextFont  = [UIFont fontWithName:@"Avenir-Medium" size:14.0];
+        _pieChart.descriptionTextShadowColor = [UIColor clearColor];
+        [_pieChart strokeChart];
         
 //        [self addSubview:pieChartLabel];
 //        [self addSubview:pieChart];
         [contentView addSubview:_chartLabel];
-        [contentView addSubview:pieChart];
+        [contentView addSubview:_pieChart];
 
         
     }else{
@@ -377,8 +355,9 @@ const static CGFloat loadingAnimationDuration = 0.7f;
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(delayTime,dispatch_get_main_queue(), ^{
         
-        [_lineChart removeXlabelView];
-        [_lineChart removeYlabelView];
+//        [_lineChart removeXlabelView];
+//        [_lineChart removeYlabelView];
+        [_lineChart removeLabelView];
 
         [_lineChart setXLabels:labelArray];
         
@@ -406,10 +385,81 @@ const static CGFloat loadingAnimationDuration = 0.7f;
         _lineChart.chartData = @[data01, data02];
         [_lineChart strokeChart];
     });
-    
 }
 
 
+#pragma mark - modifyBarChart
+
+- (void)modifyBarChartWithDataArray:(NSArray *)dataArray xLabelArray:(NSArray *)labelArray
+{
+    double delayInSeconds = 0.5;
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(delayTime,dispatch_get_main_queue(), ^{
+        
+        [_barChart removeLabelView];
+        [_barChart setXLabels:labelArray];
+        [_barChart setYValues:dataArray];
+        
+        [_barChart strokeChart];
+    });
+}
+
+
+#pragma mark - modifyCircleChart
+
+- (void)modifyCircleChartWithData:(NSNumber *)data
+{
+    double delayInSeconds = 0.5;
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(delayTime,dispatch_get_main_queue(), ^{
+        
+        _circleChart.current = data;
+        _circleChart.isRestroke = YES;
+//        [_circleChart.circle removeFromSuperlayer];
+//        _circleChart.circle = nil;
+        [_circleChart strokeChart];
+
+    });
+}
+
+
+#pragma mark - modifyPieChart
+
+- (void)modifyPieChartWithDataArray:(NSArray *)dataArray
+{
+    double delayInSeconds = 0.5;
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(delayTime,dispatch_get_main_queue(), ^{
+        
+        _pieChart.items = dataArray;
+        [_pieChart strokeChart];
+        
+    });
+}
+
+#pragma mark - modifyLine1Chart
+
+- (void)modifyLineChartWithValueArray:(NSMutableArray *)valueArray dateArray:(NSMutableArray *)dateArray
+{
+    double delayInSeconds = 0.5;
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(delayTime,dispatch_get_main_queue(), ^{
+        
+//        self.ArrayOfValues = valueArray;
+//        self.ArrayOfDates = dateArray;
+        [self.ArrayOfValues removeAllObjects];
+        [self.ArrayOfDates removeAllObjects];
+        
+        for (int i = 0; i < 9; i++) {
+            [self.ArrayOfValues addObject:[NSNumber numberWithInteger:(arc4random() % 10000)]]; // Random values for the graph
+            [self.ArrayOfDates addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:2000 + i]]]; // Dates for the X-Axis of the graph
+            
+            totalNumber = totalNumber + [[self.ArrayOfValues objectAtIndex:i] intValue]; // All of the values added together
+        }
+
+        [self.myGraph reloadGraph];
+    });
+}
 
 #pragma mark - SimpleLineGraph Data Source
 

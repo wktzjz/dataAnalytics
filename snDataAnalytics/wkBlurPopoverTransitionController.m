@@ -9,6 +9,8 @@
 #import <objc/runtime.h>
 #import "wkBlurPopoverTransitionController.h"
 #import "wkBlurPopover.h"
+#import "UIView+snapShot.h"
+#import "UIImage+Blur.m"
 
 static const void *wkBlurViewKey = "wkBlurViewKey";
 static const void *wkSnapshotViewKey = "wkSnapshotViewKey";
@@ -69,7 +71,7 @@ static CGFloat angleOfView(UIView *view)
     snapshotView.frame = fromVC.view.bounds;
     snapshotView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [toVC.view insertSubview:snapshotView atIndex:0];
-    
+//
     UIToolbar *blurView = [[UIToolbar alloc] initWithFrame:CGRectZero];
     blurView.frame = fromVC.view.bounds;
     blurView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -77,20 +79,25 @@ static CGFloat angleOfView(UIView *view)
     blurView.translucent = YES;
     [toVC.view insertSubview:blurView aboveSubview:snapshotView];
     
+//    UIImageView *blurView =  [[UIImageView alloc] initWithFrame:fromVC.view.frame];
+//    UIImage *blurImage = [[snapshotView snapshot] applyBlurWithRadius:20 tintColor:[UIColor clearColor] saturationDeltaFactor:2.8 maskImage:nil];
+//    blurView.image = blurImage;
+//    [toVC.view insertSubview:blurView aboveSubview:snapshotView];
+    
     blurView.alpha = 0;
     blurView.userInteractionEnabled = YES;
     
     [blurView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:toVC action:@selector(_wkBlurPopoverDismiss)]];
     
     objc_setAssociatedObject(toVC, wkBlurViewKey, blurView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    objc_setAssociatedObject(toVC, wkSnapshotViewKey, snapshotView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(toVC, wkSnapshotViewKey, snapshotView,OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     
     toVC.view.frame = container.bounds;
     
     [container addSubview:toVC.view];
     [fromVC.view removeFromSuperview];
     
-    content.transform = CGAffineTransformMakeTranslation(0, CGRectGetMaxY(content.frame));
+    content.transform = CGAffineTransformMakeTranslation(0, -CGRectGetMaxY(content.frame));
     
     [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:0 animations:^{
         blurView.alpha = 0.975;

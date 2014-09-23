@@ -16,9 +16,9 @@
 typedef NS_ENUM(NSUInteger, dataVisualizedType) {
     outlineTypeLine = 0,
     outlineTypeBar,
-    outlineTypeLine1,
     outlineTypeCircle,
     outlineTypePie,
+    outlineTypeLine1,
 };
 
 typedef NS_ENUM(NSUInteger, inViewType) {
@@ -38,10 +38,17 @@ typedef NS_ENUM(NSUInteger, inViewType) {
 @property (nonatomic) PNPieChart *pieChart;
 @property (nonatomic) BEMSimpleLineGraphView *myGraph;
 
+
 - (instancetype)initWithFrame:(CGRect)frame ifLoading:(BOOL)ifLoading;
 - (instancetype)initWithFrame:(CGRect)frame dataType:(dataVisualizedType)type inControllerType:(inViewType)inViewType;
-- (void)addDataViewType:(dataVisualizedType)dataType inControllerType:(inViewType)inViewType data:(id)data;
 
+
+- (void)addDataViewType:(dataVisualizedType)dataType inControllerType:(inViewType)inViewType data:(id)data;
 - (void)modifyLineChartWithDataArray1:(NSArray *)dataArray1 dataArray2:(NSArray *)dataArray2 xLabelArray:(NSArray *)labelArray;
+- (void)modifyBarChartWithDataArray:(NSArray *)dataArray xLabelArray:(NSArray *)labelArray;
+- (void)modifyCircleChartWithData:(NSNumber *)data;
+- (void)modifyPieChartWithDataArray:(NSArray *)dataArray;
+- (void)modifyLineChartWithValueArray:(NSMutableArray *)valueArray dateArray:(NSMutableArray *)dateArray;
+
 
 @end

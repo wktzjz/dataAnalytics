@@ -31,7 +31,8 @@
                             color:(UIColor*)color
                        description:(NSString *)description{
 	PNPieChartDataItem *item = [PNPieChartDataItem dataItemWithValue:value color:color];
-	item.description = description;
+//	item.description = description;
+    item.textDescription = description;
 	return item;
 }
 

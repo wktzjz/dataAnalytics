@@ -36,4 +36,6 @@ typedef NS_ENUM (NSUInteger, PNChartFormatType) {
 @property (nonatomic) CAShapeLayer *circle;
 @property (nonatomic) CAShapeLayer *circleBG;
 
+@property (nonatomic) BOOL isRestroke;
+
 @end

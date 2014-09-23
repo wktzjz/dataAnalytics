@@ -295,6 +295,11 @@
     }
 }
 
+- (void)removeLabelView
+{
+    [self viewCleanupForCollection:_labels];
+}
+
 
 #pragma mark - Class extension methods
 

@@ -36,6 +36,9 @@ typedef NSString *(^PNyLabelFromatter)(CGFloat yLabelValue);
 @property (nonatomic) UIColor *strokeColor;
 @property (nonatomic) NSArray *strokeColors;
 
+//wk
+- (void)removeLabelView;
+
 
 /*
  chartMargin changes chart margin

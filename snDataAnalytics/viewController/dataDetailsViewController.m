@@ -11,11 +11,15 @@
 #import "BEMSimpleLineGraphView.h"
 #import "defines.h"
 #import "dataOutlineViewContainer.h"
+
+#import "wkBlurPopover.h"
+#import "indexSwitchController.h"
+
+
 #import "Colours.h"
 #import "FBShimmeringView.h"
 #import "flatButton.h"
-#import "wkBlurPopover.h"
-#import "indexSwitchController.h"
+#import "changefulButton.h"
 
 const static CGFloat titleViewHeight = 44.0f;
 
@@ -59,7 +63,7 @@ const static CGFloat titleViewHeight = 44.0f;
     return self;
 }
 
-
+#pragma mark viewDidLoad
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -78,6 +82,7 @@ const static CGFloat titleViewHeight = 44.0f;
                                                     action:@selector(handleTap:)];
 }
 
+#pragma mark add views
 - (void)addTitleView
 {
     _barView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, titleViewHeight)];
@@ -96,7 +101,7 @@ const static CGFloat titleViewHeight = 44.0f;
 
     FBShimmeringView *shimmeringLogo = [[FBShimmeringView alloc] initWithFrame:_viewTitle.frame];
     shimmeringLogo.contentView     = _viewTitle;
-    shimmeringLogo.shimmeringSpeed = 140;
+    shimmeringLogo.shimmeringSpeed = 180;
     shimmeringLogo.shimmering      = YES;
     shimmeringLogo.center          = CGPointMake(_barView.center.x,_barView.center.y);
     [_barView addSubview:shimmeringLogo];
@@ -110,14 +115,19 @@ const static CGFloat titleViewHeight = 44.0f;
 
 - (void)addSettingButton
 {
+//    changefulButton *settingButton = [changefulButton button];
+//    settingButton.tintColor = [UIColor blackColor];
+//    settingButton.center = CGPointMake(290.0f,22.0f);
+
+
     flatButton *settingButton = [flatButton button];
-    settingButton.titleLabel.font = [UIFont fontWithName:@"Avenir-Medium"
-                                                    size:18];
+    settingButton.titleLabel.font = [UIFont fontWithName:@"Avenir-Medium"size:18];
 
     settingButton.backgroundColor = [UIColor clearColor];
     settingButton.translatesAutoresizingMaskIntoConstraints = NO;
     [settingButton setTitle:@"Settings" forState:UIControlStateNormal];
     [settingButton addTarget:self action:@selector(settingButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    
     [_barView addSubview:settingButton];
     
     [_barView addConstraint:[NSLayoutConstraint constraintWithItem:settingButton
@@ -126,7 +136,7 @@ const static CGFloat titleViewHeight = 44.0f;
                                                                 toItem:_barView
                                                              attribute:NSLayoutAttributeRight
                                                             multiplier:1.f
-                                                              constant:-5]];
+                                                              constant:0.0f]];
     
     
     [_barView addConstraint:[NSLayoutConstraint constraintWithItem:settingButton
@@ -137,29 +147,6 @@ const static CGFloat titleViewHeight = 44.0f;
                                                             multiplier:1.0f
                                                               constant:0.f]];
 
-}
-
-- (void)settingButtonClicked
-{
-    indexSwitchController *vc = [[indexSwitchController alloc] init];
-    
-    __weak typeof(self) weakSelf = self;
-    
-    vc.switchAction =^(NSInteger index){
-        typeof(weakSelf) strongSelf = weakSelf;
-        [strongSelf dismissViewControllerAnimated:YES completion:nil];
-        
-        if(_dataVisualizedType == outlineTypeLine){
-            if (index == 0) {
-               [strongSelf.dataContentView modifyLineChartWithDataArray1:@[@160.1, @260.1, @36.4, @162.2, @86.2, @227.2, @76.2] dataArray2:@[@260.1, @60.1, @26.4, @262.2, @186.2, @227.2, @76.2] xLabelArray:@[@"10.1",@"10.2",@"10.3",@"10.4",@"10.5",@"10.6",@"10.7"]];
-            }else if(index == 1){
-                [strongSelf.dataContentView modifyLineChartWithDataArray1: @[@60.1, @160.1, @126.4, @262.2, @186.2, @127.2, @176.2] dataArray2:@[@20.1, @180.1, @26.4, @202.2, @126.2, @167.2, @276.2] xLabelArray:@[@"9.1",@"9.2",@"9.3",@"9.4",@"9.5",@"9.6",@"9.7"]];
-            }
-        }
-    };
-    
-    wkBlurPopover *popover = [[wkBlurPopover alloc] initWithContentViewController:vc];
-    [self presentViewController:popover animated:YES completion:nil];
 }
 
 - (void)addScrollView
@@ -387,6 +374,65 @@ const static CGFloat titleViewHeight = 44.0f;
 
 }
 
+#pragma mark settingButtonClicked
+- (void)settingButtonClicked
+{
+    indexSwitchController *vc = [[indexSwitchController alloc] init];
+    
+    __weak typeof(self) weakSelf = self;
+    
+    vc.switchAction =^(NSInteger clickedButtonIndex){
+        typeof(weakSelf) strongSelf = weakSelf;
+        [strongSelf dismissViewControllerAnimated:YES completion:nil];
+        
+        [strongSelf modifyDataView:clickedButtonIndex];
+        };
+    
+    wkBlurPopover *popover = [[wkBlurPopover alloc] initWithContentViewController:vc];
+    [self presentViewController:popover animated:YES completion:nil];
+}
+
+#pragma mark modifyDataView
+- (void)modifyDataView:(NSInteger)clickedButtonIndex
+{
+    if(_dataVisualizedType == outlineTypeLine){
+        if (clickedButtonIndex == 0) {
+            [_dataContentView modifyLineChartWithDataArray1:@[@160.1, @260.1, @36.4, @162.2, @86.2, @227.2, @76.2] dataArray2:@[@260.1, @60.1, @26.4, @262.2, @186.2, @227.2, @76.2] xLabelArray:@[@"10.1",@"10.2",@"10.3",@"10.4",@"10.5",@"10.6",@"10.7"]];
+        }else if(clickedButtonIndex == 1){
+            [_dataContentView modifyLineChartWithDataArray1: @[@60.1, @160.1, @126.4, @262.2, @186.2, @127.2, @176.2] dataArray2:@[@20.1, @180.1, @26.4, @202.2, @126.2, @167.2, @276.2] xLabelArray:@[@"9.1",@"9.2",@"9.3",@"9.4",@"9.5",@"9.6",@"9.7"]];
+        }
+        
+    }else if(_dataVisualizedType == outlineTypeBar){
+        if (clickedButtonIndex == 0) {
+            [_dataContentView modifyBarChartWithDataArray:@[@22,@51,@12,@10,@10,@30,@11] xLabelArray:@[@"OCT 1",@"OCT 2",@"OCT 3",@"OCT 4",@"OCT 5",@"OCT 6",@"OCT 7"]];
+        }else if(clickedButtonIndex == 1){
+            [_dataContentView modifyBarChartWithDataArray: @[@1,@24,@12,@18,@30,@10,@21] xLabelArray:@[@"SEP 1",@"SEP 2",@"SEP 3",@"SEP 4",@"SEP 5",@"SEP 6",@"SEP 7"]];
+        }
+        
+    }else if(_dataVisualizedType == outlineTypeCircle){
+        if (clickedButtonIndex == 0) {
+            [_dataContentView modifyCircleChartWithData:@20];
+        }else if(clickedButtonIndex == 1){
+            [_dataContentView modifyCircleChartWithData:@60];
+        }
+        
+    }else if(_dataVisualizedType == outlineTypePie){
+        if (clickedButtonIndex == 0) {
+            [_dataContentView modifyPieChartWithDataArray:@[[PNPieChartDataItem dataItemWithValue:10 color:PNBlue],[PNPieChartDataItem dataItemWithValue:40 color:PNLightBlue description:@"SMALL"],[PNPieChartDataItem dataItemWithValue:50 color:PNTwitterColor description:@"BIG"]]];
+        }else if(clickedButtonIndex == 1){
+            [_dataContentView modifyPieChartWithDataArray: @[[PNPieChartDataItem dataItemWithValue:10 color:PNLightGreen],[PNPieChartDataItem dataItemWithValue:20 color:PNFreshGreen description:@"SMALL"],[PNPieChartDataItem dataItemWithValue:40 color:PNDeepGreen description:@"BIG"]]];
+        }
+        
+    }else if(_dataVisualizedType == outlineTypeLine1){
+        if (clickedButtonIndex == 0) {
+            [_dataContentView modifyLineChartWithValueArray:nil dateArray:nil];
+        }else if(clickedButtonIndex == 1){
+            [_dataContentView modifyLineChartWithValueArray:nil dateArray:nil];
+        }
+    }
+    
+}
+
 #pragma mark - SimpleLineGraph Data Source
 
 - (NSInteger)numberOfPointsInLineGraph:(BEMSimpleLineGraphView *)graph {
@@ -446,6 +492,7 @@ const static CGFloat titleViewHeight = 44.0f;
         [self.delegate dismissDetailsController];
     }
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

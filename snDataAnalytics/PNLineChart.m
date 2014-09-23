@@ -91,7 +91,11 @@
             label.text = [NSString stringWithFormat:yLabelFormat, _yValueMin + (yStep * index)];
             [self setCustomStyleForYLabel:label];
             [self addSubview:label];
+            
+            //wk
             [_ylabelViewArray addObject:label];
+            [_labelViewArray addObject:label];
+            
             index += 1;
             num -= 1;
         }
@@ -130,8 +134,19 @@
             xlabel.text = labelText;
             [self setCustomStyleForXLabel:xlabel];
             [self addSubview:xlabel];
+            //wk
             [_xlabelViewArray addObject:xlabel];
+            [_labelViewArray addObject:xlabel];
         }
+    }
+}
+
+//wk
+- (void)removeLabelView
+{
+    if (_labelViewArray.count) {
+        [_labelViewArray makeObjectsPerformSelector:@selector(removeFromSuperview)];
+        [_labelViewArray removeAllObjects];
     }
 }
 
@@ -588,6 +603,7 @@
     
     _xlabelViewArray = [NSMutableArray array];
     _ylabelViewArray = [NSMutableArray array];
+    _labelViewArray = [NSMutableArray array];
 }
 
 #pragma mark - tools

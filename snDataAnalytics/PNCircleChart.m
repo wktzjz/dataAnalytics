@@ -59,6 +59,7 @@
         [self addSubview:_countingLabel];;
     }
 
+    _isRestroke = NO;
     return self;
 }
 
@@ -84,6 +85,28 @@
     [self addSubview:self.countingLabel];
 
 
+//wk 重绘时需将circle layer 重绘
+//  [_circleChart.circle removeFromSuperlayer];
+    if(_isRestroke){
+        [_circle removeFromSuperlayer];
+        
+        CGFloat startAngle = -90.0f;
+        CGFloat endAngle =-90.01f;
+        
+        _lineWidth = @8.0f;
+
+        UIBezierPath *circlePath = [UIBezierPath bezierPathWithArcCenter:CGPointMake(self.center.x, self.center.y) radius:self.frame.size.height * 0.5 startAngle:DEGREES_TO_RADIANS(startAngle) endAngle:DEGREES_TO_RADIANS(endAngle) clockwise:YES];
+
+        _circle               = [CAShapeLayer layer];
+        _circle.path          = circlePath.CGPath;
+        _circle.lineCap       = kCALineCapRound;
+        _circle.fillColor     = [UIColor clearColor].CGColor;
+        _circle.lineWidth     = [_lineWidth floatValue];
+        _circle.zPosition     = 1;
+        
+         [self.layer addSublayer:_circle];
+    }
+    
     // Add circle params
 
     _circle.lineWidth   = [_lineWidth floatValue];

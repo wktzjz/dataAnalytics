@@ -10,7 +10,7 @@
 
 @interface PNPieChart()
 
-@property (nonatomic, readwrite) NSArray	*items;
+//@property (nonatomic, readwrite) NSArray	*items;
 @property (nonatomic) CGFloat total;
 @property (nonatomic) CGFloat currentTotal;
 
@@ -123,7 +123,9 @@
     
 	_currentTotal += currentDataItem.value;
 	
-    NSString *titleText = currentDataItem.description;
+//    NSString *titleText = currentDataItem.description;
+    NSString *titleText = currentDataItem.textDescription;
+
     if(!titleText){
         titleText = [NSString stringWithFormat:@"%.0f%%",currentDataItem.value/ _total * 100];
     }

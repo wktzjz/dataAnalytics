@@ -23,6 +23,8 @@
 @property (nonatomic) dataOutlineViewContainer *outlineView2;
 @property (nonatomic) dataOutlineViewContainer *outlineView3;
 @property (nonatomic) dataOutlineViewContainer *outlineView4;
+@property (nonatomic) dataOutlineViewContainer *outlineView5;
+
 
 @property (nonatomic,strong) dataDetailsViewController *detailsViewController;
 

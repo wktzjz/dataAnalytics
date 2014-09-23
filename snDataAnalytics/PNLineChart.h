@@ -59,6 +59,7 @@
 @property (nonatomic) BOOL showLabel;
 
 //wk
+@property (nonatomic) NSMutableArray *labelViewArray;
 @property (nonatomic) NSMutableArray *xlabelViewArray;
 @property (nonatomic) NSMutableArray *ylabelViewArray;
 
@@ -82,6 +83,6 @@
 //wk
 - (void)removeXlabelView;
 - (void)removeYlabelView;
-
+- (void)removeLabelView;
 
 @end

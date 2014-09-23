@@ -15,13 +15,13 @@
 
 #import "FBShimmeringView.h"
 #import "UIViewController+clickedViewIndex.h"
-#import "clickedViewData.h"
 #import "TSMessage.h"
 
 #import "PresentingAnimator.h"
 #import "DismissingAnimator.h"
 #import "POP.h"
 #import "Colours.h"
+#import "changefulButton.h"
 
 typedef enum {
     dragUnknown = 0,
@@ -46,11 +46,12 @@ typedef enum {
     outlineViewTransitionAnimator *_animator;
     
 //    UIView         *_contentView;
-    UIScrollView   *_scrollView;
-    UIView         *_backgroundView;
-    UIView         *_frontView;
-    UIView         *_blackView;
-    UIScrollView   *_scrollView1;
+    UIScrollView    *_scrollView;
+    UIView          *_backgroundView;
+    UIView          *_frontView;
+    UIView          *_blackView;
+    UIScrollView    *_scrollView1;
+    changefulButton *_button;
     
     UILabel *_title;
     UILabel *_text;
@@ -77,21 +78,42 @@ typedef enum {
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
-//    self.view.BackgroundColor =[UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
     [self setNeedsStatusBarAppearanceUpdate];
 
+//    self.view.BackgroundColor =[UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
 //    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navbar"] forBarMetrics:UIBarMetricsDefault];
+    
     self.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed:173/255.0 green:216.0/255.0 blue:230.0/255.0 alpha:1];
-    //72 209 204 [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1]
+    
+//72 209 204 [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1]
 //    [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
 //    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
 
-
     [self setTitle:@"Data Analytics Main View"];
+    
+    [self addFrontAndBackgroundView];
+    [self addDataView];
+    [self addBarButton];
+    [self addMenuController];
+    [self addgestures];
 
+    double delayInSeconds = 1.0;
+    __weak id wself = self;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        baseViewController *strongSelf = wself;
+        [strongSelf onApplicationFinishedLaunching];
+//        NSLog(@"width:%f, height:%f",wkScreenWidth,wkScreenHeight);
+//        NSLog(@"navigationbar height:%f",self.navigationController.navigationBar.frame.size.height);
+
+    });
+}
+
+- (void)addFrontAndBackgroundView
+{
     _contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, wkScreenWidth, wkScreenHeight)];
     _contentView.backgroundColor = [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
-//     _contentView.BackgroundColor =[UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
+    //     _contentView.BackgroundColor =[UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
     [self.view addSubview:_contentView];
     
     CGRect frontViewRect = CGRectMake(0, 0, wkScreenWidth, wkScreenHeight);
@@ -109,18 +131,10 @@ typedef enum {
     [_frontView addSubview:shimmeringLogo];
     [_frontView addSubview:_text];
     _frontView.backgroundColor = [UIColor colorWithRed:236.0/255.0 green:236.0/255.0 blue:236.0/255.0 alpha:1];
-//   _frontView.BackgroundColor =[UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
+    //   _frontView.BackgroundColor =[UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
     
     CGRect backgroundViewRect = CGRectMake(0, 0, wkScreenWidth, wkScreenHeight);
     _backgroundView = [[UIView alloc] initWithFrame:backgroundViewRect];
-    
-    _text1 = [[UILabel alloc] init];
-    [_text1 setTextColor:[UIColor blackColor]];
-    _text1.font = [UIFont boldSystemFontOfSize:13];
-    _text1.frame = CGRectMake(115, 215, 180, 100);
-    [_text1 setText:@"frontView"];
-    //    [labelCity setFont:[UIFont fontWithName:@"HelveticaNeue-UltraLight" size:25]];
-    [_backgroundView addSubview:_text1];
     _backgroundView.backgroundColor = [UIColor blackColor];
     _backgroundView.transform = CGAffineTransformMakeScale(backgroundInitialScale,backgroundInitialScale);
     
@@ -129,16 +143,20 @@ typedef enum {
     _blackView.backgroundColor = [UIColor blackColor];
     [_contentView addSubview:_blackView];
     [_contentView addSubview:_frontView];
-    
-    [self addDataView];
-    
+}
+
+- (void)addMenuController
+{
     _menuController = [[menuController alloc] init];
-//    _menuController.view.frame = wkScreen;
+    //    _menuController.view.frame = wkScreen;
     _settingView = _menuController.view;
     [_backgroundView addSubview:_settingView];
     [self addChildViewController:_menuController];
-    
 
+}
+
+- (void)addgestures
+{
     UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc]
                                                     initWithTarget:self
                                                     action:@selector(handlePan:)];
@@ -149,20 +167,26 @@ typedef enum {
                                                     initWithTarget:self
                                                     action:@selector(handleTap:)];
     [_frontView addGestureRecognizer:tapGestureRecognizer];
-    
-    
-    
-    double delayInSeconds = 1.0;
-    __weak id wself = self;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        baseViewController *strongSelf = wself;
-        [strongSelf onApplicationFinishedLaunching];
-//        NSLog(@"width:%f, height:%f",wkScreenWidth,wkScreenHeight);
-//        NSLog(@"navigationbar height:%f",self.navigationController.navigationBar.frame.size.height);
+}
 
-    });
+- (void)addBarButton
+{
+    _button = [changefulButton button];
+    _button.tintColor = [UIColor blackColor];
+    UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithCustomView:_button];
+    [_button addTarget:self action:@selector(handleLeftBarButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     
+    self.navigationItem.leftBarButtonItem = barButton;
+}
+
+- (void)handleLeftBarButtonClicked
+{
+    if(!_frontViewIsDraggedDown){
+        _frontViewIsDraggedDown = YES;
+        [self mainViewPullDownFromTop];
+    }else{
+        [self mainViewPullUpFromBottom];
+    }
 }
 
 #pragma mark addDataSubview
@@ -179,29 +203,24 @@ typedef enum {
 //    NSLog(@"!!!!!width:%f",width);
     CGFloat originX = 0;
     
-//    _outlineView1 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, 0, width, height) dataType:outlineTypeLine inControllerType:outlineView];
     _outlineView1 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, 0, width, height) ifLoading:YES];
     [_scrollView1 addSubview:_outlineView1];
     
-//    _outlineView2 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _outlineView1.frame.origin.y + _outlineView1.frame.size.height + 30, width, height) dataType:outlineTypeBar inControllerType:outlineView];
     _outlineView2 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _outlineView1.frame.origin.y + _outlineView1.frame.size.height + 30, width, height) ifLoading:YES];
     [_scrollView1 addSubview:_outlineView2];
     
-//    _outlineView3 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _outlineView2.frame.origin.y + _outlineView2.frame.size.height + 30, width, height) dataType:outlineTypeLine1 inControllerType:outlineView];
     _outlineView3 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _outlineView2.frame.origin.y + _outlineView2.frame.size.height + 30, width, height) ifLoading:YES];
     [_scrollView1 addSubview:_outlineView3];
     
-//    _outlineView4 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _outlineView3.frame.origin.y + _outlineView3.frame.size.height + 30, width, height) dataType:outlineTypeCircle inControllerType:outlineView];
     _outlineView4 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _outlineView3.frame.origin.y + _outlineView3.frame.size.height + 30, width, height) ifLoading:YES];
     [_scrollView1 addSubview:_outlineView4];
     
-    _outLineViewArray = [[NSMutableArray alloc] initWithArray:@[_outlineView1,_outlineView2,_outlineView3,_outlineView4]];
+    _outlineView5 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _outlineView4.frame.origin.y + _outlineView4.frame.size.height + 30, width, height) ifLoading:YES];
+    [_scrollView1 addSubview:_outlineView5];
+    
+    _outLineViewArray = [[NSMutableArray alloc] initWithArray:@[_outlineView1,_outlineView2,_outlineView3,_outlineView4,_outlineView5]];
 }
 
-//- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-//{
-//    return YES;
-//}
 
 #pragma mark - viewWillAppear
 - (void)viewWillAppear:(BOOL)animated
@@ -245,16 +264,17 @@ typedef enum {
     ////http://news-at.zhihu.com/api/3/news/hot;
 }
 
+#pragma mark - handleInfoFromNetwork
 - (BOOL)handleInfoFromNetwork:(NSDictionary *)info
 {
     if(!info){
         dispatch_main_async_safe(^{
-            [_outlineView1 addDataViewType:outlineTypeLine inControllerType:outlineView data:nil];
-            [_outlineView2 addDataViewType:outlineTypeBar inControllerType:outlineView data:nil];
-            [_outlineView3 addDataViewType:outlineTypeLine1 inControllerType:outlineView data:nil];
-            [_outlineView4 addDataViewType:outlineTypeCircle inControllerType:outlineView data:nil];
+            [_outLineViewArray enumerateObjectsUsingBlock:^(dataOutlineViewContainer *view, NSUInteger idx, BOOL *stop) {
+                [view addDataViewType:(dataVisualizedType)idx inControllerType:outlineView data:nil];
+            }];
         });
     }
+    
     return YES;
 }
 
@@ -283,6 +303,9 @@ typedef enum {
                 }else if(CGRectContainsPoint(_outlineView4.frame, location)){
                     [self handleTappingOutlineView:4];
                 }
+                else if(CGRectContainsPoint(_outlineView5.frame, location)){
+                    [self handleTappingOutlineView:5];
+                }
         }
     }
 }
@@ -308,6 +331,10 @@ typedef enum {
             targetView = _outlineView4;
             }
             break;
+        case 5:{
+            targetView = _outlineView5;
+        }
+            break;
         default:
             break;
     }
@@ -318,7 +345,7 @@ typedef enum {
     frame = [_scrollView1 convertRect:frame toView:self.view];
     [self.navigationController setClickedViewFrame:@[@(frame.origin.x),@(frame.origin.y - 44.0),@(frame.size.width),@(frame.size.height)]];
     
-    [self transitOutlineView:targetView type:(dataVisualizedType)(index - 1)];
+    [self transitOutlineView:targetView type:(dataVisualizedType)(index-1)];
 }
 
 
@@ -353,7 +380,7 @@ typedef enum {
     _animator.dragable = YES;
     
     [_animator setContentScrollView:_detailsViewController.scrollView];
-    _animator.direction = (transitonDirection)fmodf(type, 3);
+    _animator.direction = transitonDirectionBottom/*(transitonDirection)fmodf(type, 3)*/;
     
     _detailsViewController.transitioningDelegate = _animator;
     
@@ -388,6 +415,7 @@ typedef enum {
 #pragma mark viewAnimations
 - (void)mainViewPullUpFromBottom
 {
+    [_button animateToMenu];
     [UIView animateWithDuration:0.35
                            delay:0
          usingSpringWithDamping:0.8
@@ -407,6 +435,7 @@ typedef enum {
 
 - (void)mainViewPullDownFromBottom
 {
+    [_button animateToClose];
     [UIView animateWithDuration:0.5
                           delay:0.0
          usingSpringWithDamping:0.5
@@ -425,6 +454,7 @@ typedef enum {
 
 - (void)mainViewPullUpFromTop
 {
+    [_button animateToMenu];
     [UIView animateWithDuration:0.8
                           delay:0.0
          usingSpringWithDamping:0.5
@@ -442,6 +472,7 @@ typedef enum {
 
 - (void)mainViewPullDownFromTop
 {
+    [_button animateToClose];
     [UIView animateWithDuration:0.5
                           delay:0.0
          usingSpringWithDamping:0.8

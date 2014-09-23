@@ -13,7 +13,7 @@
 
 - (id)initWithFrame:(CGRect)frame items:(NSArray *)items;
 
-@property (nonatomic, readonly) NSArray	*items;
+@property (nonatomic) NSArray *items;
 
 @property (nonatomic) UIFont  *descriptionTextFont;  //default is [UIFont fontWithName:@"Avenir-Medium" size:18.0];
 @property (nonatomic) UIColor *descriptionTextColor; //default is [UIColor whiteColor]

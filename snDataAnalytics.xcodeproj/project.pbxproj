@@ -100,6 +100,7 @@
 		35F3999B19CFC6F10077BA75 /* wkBlurPopover.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F3999819CFC6F10077BA75 /* wkBlurPopover.m */; };
 		35F3999C19CFC6F10077BA75 /* wkBlurPopoverTransitionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F3999A19CFC6F10077BA75 /* wkBlurPopoverTransitionController.m */; };
 		35F3999F19CFCBEE0077BA75 /* indexSwitchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F3999E19CFCBEE0077BA75 /* indexSwitchController.m */; };
+		35F399A219D161770077BA75 /* changefulButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F399A119D161770077BA75 /* changefulButton.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -300,6 +301,8 @@
 		35F3999A19CFC6F10077BA75 /* wkBlurPopoverTransitionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = wkBlurPopoverTransitionController.m; sourceTree = "<group>"; };
 		35F3999D19CFCBEE0077BA75 /* indexSwitchController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = indexSwitchController.h; sourceTree = "<group>"; };
 		35F3999E19CFCBEE0077BA75 /* indexSwitchController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = indexSwitchController.m; sourceTree = "<group>"; };
+		35F399A019D161770077BA75 /* changefulButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = changefulButton.h; sourceTree = "<group>"; };
+		35F399A119D161770077BA75 /* changefulButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = changefulButton.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -568,6 +571,8 @@
 				3562989519B7F97D004A8054 /* dataOutlineViewContainer.m */,
 				35BDE15419C28F8A00A1D90B /* flatButton.h */,
 				35BDE15519C28F8A00A1D90B /* flatButton.m */,
+				35F399A019D161770077BA75 /* changefulButton.h */,
+				35F399A119D161770077BA75 /* changefulButton.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -959,6 +964,7 @@
 				3522246619C2C73D0048F57C /* POPAnimatableProperty.mm in Sources */,
 				356298DB19B86655004A8054 /* PNBarChart.m in Sources */,
 				3522247519C2C73D0048F57C /* POPSpringAnimation.mm in Sources */,
+				35F399A219D161770077BA75 /* changefulButton.m in Sources */,
 				3562987C19B46294004A8054 /* baseViewController.m in Sources */,
 				3522248419C2E0200048F57C /* DismissingAnimator.m in Sources */,
 				3522248719C2E0250048F57C /* PresentingAnimator.m in Sources */,

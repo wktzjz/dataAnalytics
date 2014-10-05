@@ -12,7 +12,7 @@
 #import "UIView+snapShot.h"
 #import "UIImage+Blur.m"
 
-static const void *wkBlurViewKey = "wkBlurViewKey";
+static const void *wkBlurViewKey     = "wkBlurViewKey";
 static const void *wkSnapshotViewKey = "wkSnapshotViewKey";
 
 static CGFloat angleOfView(UIView *view)
@@ -57,6 +57,8 @@ static CGFloat angleOfView(UIView *view)
     return 0.5;
 }
 
+
+
 - (void)animatePresentation:(id<UIViewControllerContextTransitioning>)transitionContext
 {
     UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
@@ -72,18 +74,32 @@ static CGFloat angleOfView(UIView *view)
     snapshotView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [toVC.view insertSubview:snapshotView atIndex:0];
 //
-    UIToolbar *blurView = [[UIToolbar alloc] initWithFrame:CGRectZero];
-    blurView.frame = fromVC.view.bounds;
-    blurView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    blurView.barStyle = UIBarStyleBlack;
-    blurView.translucent = YES;
-    [toVC.view insertSubview:blurView aboveSubview:snapshotView];
-    
-//    UIImageView *blurView =  [[UIImageView alloc] initWithFrame:fromVC.view.frame];
-//    UIImage *blurImage = [[snapshotView snapshot] applyBlurWithRadius:20 tintColor:[UIColor clearColor] saturationDeltaFactor:2.8 maskImage:nil];
-//    blurView.image = blurImage;
+    UIView *blurView;
+//    UIToolbar *blurView = [[UIToolbar alloc] initWithFrame:CGRectZero];
+//    blurView.frame = fromVC.view.bounds;
+//    blurView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//    blurView.barStyle = UIBarStyleBlack;
+//    blurView.translucent = YES;
 //    [toVC.view insertSubview:blurView aboveSubview:snapshotView];
     
+//    UIImageView *blurView =  [[UIImageView alloc] initWithFrame:fromVC.view.frame];
+//    UIImage *blurImage = [[snapshotView snapshot] applyBlurWithRadius:5 tintColor:nil saturationDeltaFactor:1.0 maskImage:nil];
+//    blurView.image = blurImage;
+    
+
+    if([self isIOS8]){
+        UIVisualEffect *effect;
+        effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+        blurView = [[UIVisualEffectView alloc] initWithEffect:effect];
+    }else{
+        blurView = [[UIToolbar alloc] initWithFrame:CGRectZero];
+        blurView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        ((UIToolbar *)blurView).barStyle = UIBarStyleBlack;
+        ((UIToolbar *)blurView).translucent = YES;
+    }
+
+    blurView.frame = fromVC.view.bounds;
+    [toVC.view insertSubview:blurView aboveSubview:snapshotView];
     blurView.alpha = 0;
     blurView.userInteractionEnabled = YES;
     
@@ -100,7 +116,11 @@ static CGFloat angleOfView(UIView *view)
     content.transform = CGAffineTransformMakeTranslation(0, -CGRectGetMaxY(content.frame));
     
     [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:0 animations:^{
-        blurView.alpha = 0.975;
+        if([self isIOS8]){
+            blurView.alpha = 0.88;
+        }else{
+            blurView.alpha = 0.965;
+        }
         content.transform = CGAffineTransformIdentity;
     } completion:^(BOOL finished) {
         [transitionContext completeTransition:YES];
@@ -176,6 +196,17 @@ static CGFloat angleOfView(UIView *view)
     {
         return [self animateDismissal:transitionContext];
     }
+}
+
+#pragma mark isIOS8
+- (BOOL)isIOS8
+{
+    NSComparisonResult order = [[UIDevice currentDevice].systemVersion compare: @"8.0" options: NSNumericSearch];
+    if (order == NSOrderedSame || order == NSOrderedDescending) {
+        // OS version >= 8.0
+        return YES;
+    }
+    return NO;
 }
 
 @end

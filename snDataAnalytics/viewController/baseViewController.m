@@ -23,6 +23,8 @@
 #import "Colours.h"
 #import "changefulButton.h"
 
+#import "wkContextMenuView.h"
+
 typedef enum {
     dragUnknown = 0,
     dragUp,
@@ -35,7 +37,7 @@ typedef enum {
     viewPresentedTypeDown
 } viewPresentedType;
 
-@interface baseViewController ()
+@interface baseViewController ()<wkContextOverlayViewDataSource, wkContextOverlayViewDelegate>
 
 @end
 
@@ -97,6 +99,8 @@ typedef enum {
     [self addMenuController];
     [self addgestures];
 
+    [self jumoToLoginView];
+    
     double delayInSeconds = 1.0;
     __weak id wself = self;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -105,8 +109,76 @@ typedef enum {
         [strongSelf onApplicationFinishedLaunching];
 //        NSLog(@"width:%f, height:%f",wkScreenWidth,wkScreenHeight);
 //        NSLog(@"navigationbar height:%f",self.navigationController.navigationBar.frame.size.height);
-
     });
+    
+//    wkContextMenuView* overlay = [[wkContextMenuView alloc] init];
+//    overlay.dataSource = self;
+//    overlay.delegate = self;
+//
+//    UILongPressGestureRecognizer* _longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:overlay action:@selector(longPressDetected:)];
+//    [self.view setUserInteractionEnabled:YES];
+//    [self.view addGestureRecognizer:_longPressRecognizer];
+    
+}
+
+- (NSInteger)numberOfMenuItems
+{
+    return 3;
+}
+
+- (UIImage *)imageForItemAtIndex:(NSInteger)index
+{
+    NSString* imageName = nil;
+    switch (index) {
+        case 0:
+            imageName = @"facebook-white";
+            break;
+        case 1:
+            imageName = @"twitter-white";
+            break;
+        case 2:
+            imageName = @"google-plus-white";
+            break;
+        case 3:
+            imageName = @"linkedin-white";
+            break;
+        case 4:
+            imageName = @"pinterest-white";
+            break;
+            
+        default:
+            break;
+    }
+    return [UIImage imageNamed:imageName];
+}
+
+- (void)didSelectItemAtIndex:(NSInteger)selectedIndex forMenuAtPoint:(CGPoint)point
+{
+    NSString* msg = nil;
+    switch (selectedIndex) {
+        case 0:
+            msg = @"1 Selected";
+            break;
+        case 1:
+            msg = @"2 Selected";
+            break;
+        case 2:
+            msg = @"3 Selected";
+            break;
+        case 3:
+            msg = @"4 Selected";
+            break;
+        case 4:
+            msg = @"5 Selected";
+            break;
+            
+        default:
+            break;
+    }
+    
+    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alertView show];
+    
 }
 
 - (void)addFrontAndBackgroundView
@@ -143,6 +215,11 @@ typedef enum {
     _blackView.backgroundColor = [UIColor blackColor];
     [_contentView addSubview:_blackView];
     [_contentView addSubview:_frontView];
+    
+//    NSDate *curDate = [NSDate date];
+//    NSDateFormatter *formater = [[ NSDateFormatter alloc] init];
+//    [formater setDateFormat:@"yyyy.MM.dd"];
+//    NSString * curTime = [formater stringFromDate:curDate];
 }
 
 - (void)addMenuController
@@ -152,7 +229,6 @@ typedef enum {
     _settingView = _menuController.view;
     [_backgroundView addSubview:_settingView];
     [self addChildViewController:_menuController];
-
 }
 
 - (void)addgestures
@@ -232,12 +308,15 @@ typedef enum {
 - (void)jumoToLoginView
 {
     _userDefaults = [NSUserDefaults standardUserDefaults];
+    
     if(![_userDefaults objectForKey:@"logInSucceeded" ]){
         loginViewController *viewController = [[loginViewController alloc] init];
+        
         viewController.dismissBlock = ^{
             [self dismissViewControllerAnimated:YES completion:nil];
             [self getNetworkInfo];
         };
+        
 //        viewController.delegate = self;
 //        viewController.title = @"Login";
 //        [self.navigationController pushViewController:viewController animated:YES];
@@ -249,7 +328,7 @@ typedef enum {
 - (void)onApplicationFinishedLaunching
 {
     dispatch_main_async_safe(^{
-        [self jumoToLoginView];
+//        [self jumoToLoginView];
         
         [TSMessage showNotificationWithTitle:@" Network Error" subtitle:@"There is a problem getting the data." type:TSMessageNotificationTypeError];
     });
@@ -343,7 +422,7 @@ typedef enum {
 
     CGRect frame = targetView.frame;
     frame = [_scrollView1 convertRect:frame toView:self.view];
-    [self.navigationController setClickedViewFrame:@[@(frame.origin.x),@(frame.origin.y - 44.0),@(frame.size.width),@(frame.size.height)]];
+    [self.navigationController setClickedViewFrame:@[@(frame.origin.x),@(frame.origin.y - navigationBarHeight),@(frame.size.width),@(frame.size.height)]];
     
     [self transitOutlineView:targetView type:(dataVisualizedType)(index-1)];
 }
@@ -379,8 +458,8 @@ typedef enum {
     _animator.bounces  = YES;
     _animator.dragable = YES;
     
-    [_animator setContentScrollView:_detailsViewController.scrollView];
-    _animator.direction = transitonDirectionBottom/*(transitonDirection)fmodf(type, 3)*/;
+//    [_animator setContentScrollView:_detailsViewController.scrollView];
+    _animator.direction = transitonDirectionLeft/*(transitonDirection)fmodf(type, 3)*/;
     
     _detailsViewController.transitioningDelegate = _animator;
     
@@ -496,6 +575,11 @@ typedef enum {
 - (void)handleDragDownWithTranslationY:(CGFloat)translationY
 {
     _progress += translationY / (wkScreenHeight - frontViewRemainHeight);
+    
+    //we can not drag view up than its original place after we first drag view down.
+    if(_progress<0){
+        return;
+    }
     _progress = _progress >= 0 ? _progress : 0;
     
     _addedDragDistanceY += translationY;
@@ -515,6 +599,7 @@ typedef enum {
     _addedDragDistanceY += translationY;
     _frontView.center = CGPointMake(_frontView.center.x ,_initalFrontCenterY + _addedDragDistanceY);
     
+    // 1- (1-initacle)*progress
     float scale = backgroundInitialScale + (1 - backgroundInitialScale) * (1 - _progress);
     _backgroundView.transform = CGAffineTransformMakeScale(scale, scale);
     
@@ -555,27 +640,26 @@ typedef enum {
         }
             
         case UIGestureRecognizerStateChanged:{
+            
             if(_frontViewIsDraggedDown && _dragDirection == dragUp){
                 [self handleDragUpWithTranslationY:translation.y];
             }else{
                 if(!_frontViewIsDraggedDown && _dragDirection == dragdown){
                     [self handleDragDownWithTranslationY:translation.y];
+//                    NSLog(@"in dragdown handling");
                 }
             }
             break;
         }
         case UIGestureRecognizerStateEnded:{
             if(_dragDirection == dragUp){
-                
                 if (_progress >mainViewPullSuccessedRatio) {
                     [self mainViewPullUpFromBottom];
                 }else{
                     [self mainViewPullDownFromBottom];
                 }
-                
             }else{
                 if(!_frontViewIsDraggedDown){
-                    
                     if (_progress >mainViewPullSuccessedRatio) {
                         _frontViewIsDraggedDown = YES;
                         [self mainViewPullDownFromTop];
@@ -602,7 +686,7 @@ typedef enum {
         case UIGestureRecognizerStatePossible:{
             break;
         }
-               default:{
+        default:{
             break;
         }
     }
@@ -626,6 +710,18 @@ typedef enum {
 {
     return YES;
 }
+
+#pragma mark isIOS8
+- (BOOL)isIOS8
+{
+    NSComparisonResult order = [[UIDevice currentDevice].systemVersion compare: @"8.0" options: NSNumericSearch];
+    if (order == NSOrderedSame || order == NSOrderedDescending) {
+        // OS version >= 8.0
+        return YES;
+    }
+    return NO;
+}
+
 
 
 @end

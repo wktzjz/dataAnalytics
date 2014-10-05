@@ -74,13 +74,13 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
     
     CAGradientLayer *gradient = [CAGradientLayer layer];
     gradient.frame = self.view.frame;
-    gradient.colors = [NSArray arrayWithObjects:(id)[UIColor indigoColor].CGColor,(id)[UIColor robinEggColor].CGColor,nil];
+    gradient.colors = [NSArray arrayWithObjects:(id)[UIColor colorWithRed:0x0D/255.0 green:0x2F/255.0 blue:0x94/255.0 alpha:1].CGColor,(id)[UIColor colorWithRed:0x1F/255.0 green:0xAC/255.0 blue:0xEF/255.0 alpha:1].CGColor,nil];
     [self.view.layer insertSublayer:gradient atIndex:0];
+    //(id)[UIColor indigoColor].CGColor,(id)[UIColor robinEggColor].CGColor,
     //(id)[UIColor colorWithRed:0x0D/255.0 green:0x2F/255.0 blue:0x94/255.0 alpha:1].CGColor,(id)[UIColor colorWithRed:0x1F/255.0 green:0xAC/255.0 blue:0xEF/255.0 alpha:1].CGColor,
     //[UIColor colorWithRed:175/255.0 green:238.0/255.0 blue:238.0/255.0 alpha:1];
     [self.view addSubview:_contentView];
     
-//    [self backgroudImageSetting];
     [self addTextField];
     [self addButton];
     [self addErrorLabel];
@@ -177,6 +177,7 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
 {
     self.button = [flatButton button];
     self.button.backgroundColor = [UIColor clearColor];
+    self.button.alpha = 0.7;
     self.button.translatesAutoresizingMaskIntoConstraints = NO;
     [self.button setTitle:@" Log in " forState:UIControlStateNormal];
     [self.button addTarget:self action:@selector(login:) forControlEvents:UIControlEventTouchUpInside];
@@ -200,6 +201,7 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
     
     flatButton *dismissButton = [flatButton button];
     dismissButton.backgroundColor = [UIColor clearColor];
+    dismissButton.alpha = 0.7;
     dismissButton.translatesAutoresizingMaskIntoConstraints = NO;
     [dismissButton setTitle:@"Dismiss" forState:UIControlStateNormal];
     [dismissButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];

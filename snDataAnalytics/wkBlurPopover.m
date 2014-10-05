@@ -57,7 +57,7 @@
     frame.origin.y = (CGRectGetHeight(self.view.bounds) - self.contentViewController.preferredContentSize.height) / 2;
     frame.size = [self contentViewController].preferredContentSize;
     self.contentViewController.view.frame = frame;
-    NSLog(@"popover frame, origin,x:%f, y:%f ,width:%f, height:%f",frame.origin.x,frame.origin.y,frame.size.width,frame.size.height);
+//    NSLog(@"popover frame, origin,x:%f, y:%f ,width:%f, height:%f",frame.origin.x,frame.origin.y,frame.size.width,frame.size.height);
 }
 
 - (void)viewDidLayoutSubviews

@@ -14,18 +14,20 @@
 @end
 
 
+typedef void(^failureBlock)();
+
 @interface networkManager : NSObject
 
 @property (nonatomic, weak) id <networkDelegate> delegate;
+@property (nonatomic, copy) failureBlock failureBlock;
 
 + (instancetype)sharedInstance;
 
-/****************************
- Location based ,obtain weather info automaticlly.
- ****************************/
 - (void)obtainWeaterInfoLocationBased;
 
 - (BOOL)getNetworkInfo:(NSString *)URLString;
+
+- (void)sendAsynchronousRequestWithURL:(NSString *)urlString failureBlock:(void (^)())failBlock successedBlock:(void (^)())succeedBlock;
 @end
 
 

@@ -9,7 +9,6 @@
 #import "outlineViewTransitionAnimator.h"
 #import "UIViewController+clickedViewIndex.h"
 #import "outLineViewTransitionProtocol.h"
-#import "clickedViewData.h"
 #import "defines.h"
 #import "UIView+snapShot.h"
 
@@ -150,7 +149,7 @@
         
         
 //        NSLog(@"clickedOutlineView1 :%@",_clickedOutlineView);
-        NSLog(@"imageView origin.x: %f, y:%f, width:%f, height:%f",_snapView.frame.origin.x,_snapView.frame.origin.y,_snapView.frame.size.width,_snapView.frame.size.height);
+//        NSLog(@"imageView origin.x: %f, y:%f, width:%f, height:%f",_snapView.frame.origin.x,_snapView.frame.origin.y,_snapView.frame.size.width,_snapView.frame.size.height);
         
         toView.alpha = 0.0;
         [containerView addSubview:_snapView];
@@ -521,15 +520,15 @@
 
 #pragma mark - Utils
 
-- (BOOL)isIOS8
-{
-    NSComparisonResult order = [[UIDevice currentDevice].systemVersion compare: @"8.0" options: NSNumericSearch];
-    if (order == NSOrderedSame || order == NSOrderedDescending) {
-        // OS version >= 8.0
-        return YES;
-    }
-    return NO;
-}
+//- (BOOL)isIOS8
+//{
+//    NSComparisonResult order = [[UIDevice currentDevice].systemVersion compare: @"8.0" options: NSNumericSearch];
+//    if (order == NSOrderedSame || order == NSOrderedDescending) {
+//        // OS version >= 8.0
+//        return YES;
+//    }
+//    return NO;
+//}
 
 @end
 

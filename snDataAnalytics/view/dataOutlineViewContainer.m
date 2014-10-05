@@ -71,7 +71,7 @@ const static CGFloat loadingAnimationDuration = 0.7f;
             _loadingLogo = [[FBShimmeringView alloc] initWithFrame:CGRectMake(20, 100, frame.size.width - 20, 50)];
             _loadingLogo.contentView = text;
             _loadingLogo.shimmeringSpeed = 180;
-            _loadingLogo.center = CGPointMake(self.center.x, self.frame.size.height/2);
+            _loadingLogo.center = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
             _loadingLogo.shimmering = YES;
             
             [self addSubview:_loadingLogo];
@@ -162,9 +162,7 @@ const static CGFloat loadingAnimationDuration = 0.7f;
         
         _lineChart.chartData = @[data01, data02];
         [_lineChart strokeChart];
-        [_lineChart removeXlabelView];
-        [_lineChart setXLabels:@[@"10.1",@"10.2",@"10.3",@"10.4",@"10.5",@"10.6",@"10.7"]];
-        
+    
 //        lineChart.delegate = self;
         
         [contentView addSubview:_chartLabel];

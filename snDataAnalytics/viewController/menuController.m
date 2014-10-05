@@ -53,7 +53,6 @@
     self.view.backgroundColor = [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
 
     CGRect frame = self.view.frame;
-    frame.origin.y += 44.0;
     _tableView = [[UITableView alloc] initWithFrame:frame];
 //    _tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
 //    _tableView.backgroundColor = [UIColor colorWithRed:135/255.0 green:206.0/255.0 blue:238.0/255.0 alpha:1];
@@ -64,8 +63,6 @@
     
     [self.view addSubview:_tableView];
      [self setTitle:@"Setting View"];
-//    self.navigationController.interactivePopGestureRecognizer.delegate = self;
-//    self.navigationController.interactivePopGestureRecognizer.enabled = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated

@@ -21,7 +21,7 @@
     }
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    NSData *imageData = UIImageJPEGRepresentation(image, 0.75);
+    NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
     image = [UIImage imageWithData:imageData];
     return image;
 }

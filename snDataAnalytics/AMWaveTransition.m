@@ -305,13 +305,25 @@ const CGFloat MAX_DELAY = 0.15;
 {
     CGRect rect = view.frame;
     rect.origin.x = 0;
-//    if (self.navigationController.navigationBar.translucent && !self.navigationController.navigationBar.hidden) {
-//        rect.origin.y -= self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height;
-//    }
+    if(![self isIOS8]){
+        if (self.navigationController.navigationBar.translucent && !self.navigationController.navigationBar.hidden) {
+            rect.origin.y -= self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height;
+        }
+    }
     view.frame = rect;
     view.alpha = [self alphaForView:view];
 }
 
+#pragma mark isIOS8
+- (BOOL)isIOS8
+{
+    NSComparisonResult order = [[UIDevice currentDevice].systemVersion compare: @"8.0" options: NSNumericSearch];
+    if (order == NSOrderedSame || order == NSOrderedDescending) {
+        // OS version >= 8.0
+        return YES;
+    }
+    return NO;
+}
 
 - (void)setPresentedFrameForView:(UIView *)view
 {
@@ -325,9 +337,9 @@ const CGFloat MAX_DELAY = 0.15;
 {
     CGRect rect = view.frame;
     rect.origin.x = -SCREEN_WIDTH - self.viewControllersInset;
-//    if (self.navigationController.navigationBar.translucent) {
-//        rect.origin.y += self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height;
-//    }
+    if (self.navigationController.navigationBar.translucent) {
+        rect.origin.y += self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height;
+    }
     view.alpha = [self alphaForView:view];
     view.frame = rect;
 }

@@ -557,6 +557,7 @@
 		353FCE6919D951BC00072431 /* buttons */ = {
 			isa = PBXGroup;
 			children = (
+				35945CFA19E8C29900BF5EC3 /* menuViewController.h */,
 				35945D4919E8C9D400BF5EC3 /* changefulButton.h */,
 				35945D4A19E8C9D400BF5EC3 /* changefulButton.m */,
 				35945D4B19E8C9D400BF5EC3 /* flatButton.h */,
@@ -1030,7 +1031,6 @@
 		35945DEF19E9342F00BF5EC3 /* backgroundMenu */ = {
 			isa = PBXGroup;
 			children = (
-				35945CFA19E8C29900BF5EC3 /* menuViewController.h */,
 				35945CFB19E8C29900BF5EC3 /* menuViewController.m */,
 				3562988E19B5BE82004A8054 /* menuController.h */,
 				3562988F19B5BE82004A8054 /* menuController.m */,

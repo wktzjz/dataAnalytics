@@ -403,7 +403,7 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
         CGRect r = _inputView.frame;
         r.origin.y -= 80;
         CGRect r1 = _logo.frame;
-        r1.origin.y -= 50;
+        r1.origin.y -= 40;
         
         [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             _inputView.frame = r;

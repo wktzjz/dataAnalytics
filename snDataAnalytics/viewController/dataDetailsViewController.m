@@ -505,9 +505,9 @@ const static CGFloat titleViewHeight = 44.0f;
         
     }else if(_dataVisualizedType == outlineHotCity){
         if (clickedButtonIndex == 0) {
-            [_dataContentView modifyBarChartWithDataArray:@[@22,@51,@12,@10,@10,@30,@11] xLabelArray:@[@"OCT 1",@"OCT 2",@"OCT 3",@"OCT 4",@"OCT 5",@"OCT 6",@"OCT 7"]];
+            [_dataContentView modifyBarChartWithDataArray:@[@31,@12,@20,@8,@21] xLabelArray:@[@"杭州",@"天津",@"成都",@"重庆",@"苏州"]];
         }else if(clickedButtonIndex == 1){
-            [_dataContentView modifyBarChartWithDataArray: @[@1,@24,@12,@18,@30,@10,@21] xLabelArray:@[@"SEP 1",@"SEP 2",@"SEP 3",@"SEP 4",@"SEP 5",@"SEP 6",@"SEP 7"]];
+            [_dataContentView modifyBarChartWithDataArray: @[@24,@12,@18,@10,@21] xLabelArray:@[@"北京",@"上海",@"广州",@"深圳",@"南京"]];
         }
         
     }else if(_dataVisualizedType == outlineSource){

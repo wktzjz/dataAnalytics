@@ -64,7 +64,7 @@ typedef NS_ENUM(NSUInteger, inViewType) {
 - (void)addView:(UIView *)view inControllerType:(inViewType)inViewType;
 
 
-- (void)addDataViewType:(dataVisualizedType)dataType inControllerType:(inViewType)inViewType data:(id)data;
+- (void)addDataViewType:(viewType)dataType inControllerType:(inViewType)inViewType data:(id)data;
 - (void)modifyLineChartWithDataArray1:(NSArray *)dataArray1 dataArray2:(NSArray *)dataArray2 xLabelArray:(NSArray *)labelArray;
 - (void)modifyBarChartWithDataArray:(NSArray *)dataArray xLabelArray:(NSArray *)labelArray;
 - (void)modifyCircleChartWithData:(NSNumber *)data;

@@ -359,7 +359,7 @@ typedef enum {
         NSArray *vistorGroupData = @[@"实时",@"访客群体分析",@"来源分析",@"页面分析",@"热门城市",@"热门页面",@"转化分析"];
         dispatch_main_async_safe(^{
             [_outLineViewArray enumerateObjectsUsingBlock:^(dataOutlineViewContainer *view, NSUInteger idx, BOOL *stop) {
-                    [view addDataViewType:(dataVisualizedType)idx inControllerType:outlineView data:vistorGroupData];
+                    [view addDataViewType:(viewType)idx inControllerType:outlineView data:vistorGroupData];
                 
             }];
         });

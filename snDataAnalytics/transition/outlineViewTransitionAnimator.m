@@ -140,7 +140,8 @@
         _clickedOutlineView = (UIView *)[fromViewController clickedView];
 
 /* get the imageSnapshot View of the clicked View */
-        _snapView = [[UIImageView alloc] initWithImage:[_clickedOutlineView snapshot] ];
+        _snapView = [[UIImageView alloc] initWithImage:[_clickedOutlineView snapshot]];
+        _snapView.layer.cornerRadius = 10.0;
         
 /* set the snapshot view frame as the clicked outlineView is in mainView */
         NSArray *arrayOfFrame = (NSArray *)[fromViewController clickedViewFrame];
@@ -429,7 +430,7 @@
                          toViewController.view.alpha = 1.0f;
                          fromViewController.view.frame = endRect;
                      } completion:^(BOOL finished) {
-                         NSLog(@"finish");
+//                         NSLog(@"finish");
                          
                          if(_snapView && _direction!=transitonDirectionBottom){
                              [_snapView removeFromSuperview];

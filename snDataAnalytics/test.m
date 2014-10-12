@@ -19,7 +19,7 @@
     self = [super init];
     if (self) {
         
-    _displayLink = [CADisplayLink displayLinkWithTarget:self selector:nil];
+//    _displayLink = [CADisplayLink displayLinkWithTarget:self selector:nil];
 //    _gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:nil];
       
     }

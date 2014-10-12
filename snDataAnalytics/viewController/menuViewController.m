@@ -43,7 +43,7 @@
     UIView *contentView = [[UIView alloc] initWithFrame:wkScreen];
     [self.view addSubview:contentView];
     [self setTitle:@"Setting View"];
-    NSLog(@"menuViewController self.navigationController:%@",self.navigationController);
+//    NSLog(@"menuViewController self.navigationController:%@",self.navigationController);
 
 //    contnetView.BackgroundColor =[UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
     contentView.backgroundColor = [UIColor whiteColor];
@@ -93,7 +93,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 70;
+    return 53;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -156,7 +156,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    _detailsViewController = [[dataDetailsViewController alloc] initWithFrame:wkScreen type:outlineTypeLine1/*fmodf(indexPath.row,3)*/ title:@"detailsView"];
+    _detailsViewController = [[dataDetailsViewController alloc] initWithFrame:wkScreen type:(viewType)indexPath.row/*fmodf(indexPath.row,3)*/ title:@"detailsView"];
     _detailsViewController.delegate  = self;
     _detailsViewController.modalPresentationStyle = UIModalPresentationCustom;
     

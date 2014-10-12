@@ -9,6 +9,8 @@
 #import "indexSwitchController.h"
 #import "FlatButton.h"
 #import "Colours.h"
+#import "vistorGroupSwitchView.h"
+
 
 @interface indexSwitchController ()
 
@@ -17,19 +19,26 @@
 @implementation indexSwitchController
 {
     UIView *_contentView;
+    
+    swithViewType _type;
+    
     flatButton *_switchButton1;
     flatButton *_switchButton2;
 }
 
-- (instancetype)init
-{
-//     NSLog(@"0 indexSwitchController init");
-    return [self initWithFrame:CGRectMake(0, 0, 280, 160)];
-}
+//- (instancetype)initWithType:(swithViewType)type
+//{
+////     NSLog(@"0 indexSwitchController init");
+//    _type = type;
+//    if(demo == _type){
+//      return [self initWithFrame:CGRectMake(0, 0, 280, 160) type:demo];
+//    }
+//}
 
-- (instancetype)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame type:(swithViewType)type
 {
     if ( (self = [super init]) ) {
+        _type = type;
         self.view.frame = frame;
 //         NSLog(@"111switchView frame, origin,x:%f, y:%f ,width:%f, height:%f",self.view.frame.origin.x,self.view.frame.origin.y,self.view.frame.size.width,self.view.frame.size.height);
     }
@@ -40,7 +49,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.frame = CGRectMake(0, 0, 280, 160);
+    
+    if(_type == demo){
+       self.view.frame = CGRectMake(0, 0, 280, 160);
+    }else{
+        self.view.frame = CGRectMake(0, 0, 280, 216);
+    }
     _contentView = [[UIView alloc] initWithFrame:self.view.frame];
 //    NSLog(@"222 switchView _contentView, origin,x:%f, y:%f ,width:%f, height:%f",_contentView.frame.origin.x,_contentView.frame.origin.y,_contentView.frame.size.width,_contentView.frame.size.height);
 
@@ -48,7 +62,26 @@
 //    _contentView.alpha = 0.9;
 
     [self.view addSubview:_contentView];
-    [self addButton];
+    
+    if(_type == demo){
+       [self addButton];
+    }else if(_type == vistorGroup){
+        [self addVistorSwitchView];
+    }
+    
+}
+
+- (void)addVistorSwitchView
+{
+    vistorGroupSwitchView *view = [[vistorGroupSwitchView alloc]initWithFrame:self.view.frame];
+    __weak typeof(self) weakSelf = self;
+
+    view.switchAction =^(NSInteger index){
+        typeof(weakSelf) strongSelf = weakSelf;
+         strongSelf.switchAction(index);
+        };
+
+    [_contentView addSubview:view];
 }
 
 - (void)addButton
@@ -125,7 +158,11 @@
 
 - (CGSize)preferredContentSize
 {
-    return CGSizeMake(280, 160);
+    if(_type == demo){
+        return CGSizeMake(280, 160);
+    }else{
+        return CGSizeMake(280, 216);
+    }
 }
 
 - (void)didReceiveMemoryWarning {

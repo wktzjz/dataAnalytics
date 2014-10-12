@@ -6,7 +6,7 @@
 //  Copyright (c) 2014年 wktzjz. All rights reserved.
 //
 
-#import "UiView+Blur.h"
+#import "UIImage+Blur.h"
 #import <Accelerate/Accelerate.h>
 
 @implementation UIImage (Blur)

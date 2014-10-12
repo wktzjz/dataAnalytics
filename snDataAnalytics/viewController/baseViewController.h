@@ -19,11 +19,14 @@
 @property (nonatomic) UIView *settingView;
 @property (nonatomic) UIView *contentView;
 @property (nonatomic) NSMutableArray *outLineViewArray;
-@property (nonatomic) dataOutlineViewContainer *outlineView1;
-@property (nonatomic) dataOutlineViewContainer *outlineView2;
-@property (nonatomic) dataOutlineViewContainer *outlineView3;
-@property (nonatomic) dataOutlineViewContainer *outlineView4;
-@property (nonatomic) dataOutlineViewContainer *outlineView5;
+
+@property (nonatomic) dataOutlineViewContainer *realTimeView;
+@property (nonatomic) dataOutlineViewContainer *vistorGruopView;
+@property (nonatomic) dataOutlineViewContainer *sourceView;
+@property (nonatomic) dataOutlineViewContainer *pageView;
+@property (nonatomic) dataOutlineViewContainer *hotCityView;
+@property (nonatomic) dataOutlineViewContainer *hotPageView;
+@property (nonatomic) dataOutlineViewContainer *transformView;
 
 
 @property (nonatomic,strong) dataDetailsViewController *detailsViewController;

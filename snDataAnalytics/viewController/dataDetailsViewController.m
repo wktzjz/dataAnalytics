@@ -26,9 +26,23 @@
 #import "wkContextMenuView.h"
 
 #import "test.h"
+#import "vistorGroupDetailOutlineView.h"
 
 const static CGFloat titleViewHeight = 44.0f;
 
+@interface UIViewController (test)
+
+- (void)test1;
+
+@end
+
+@implementation UIViewController (test)
+
+- (void)test1
+{
+    NSLog(@"!!!!!!!test");
+}
+@end
 
 @interface dataDetailsViewController ()<THDatePickerDelegate,BEMSimpleLineGraphDataSource, BEMSimpleLineGraphDelegate,wkContextOverlayViewDataSource, wkContextOverlayViewDelegate>
 
@@ -52,25 +66,29 @@ const static CGFloat titleViewHeight = 44.0f;
     NSDateFormatter *_formatter;
     
     NSMutableArray *_selectedDays;
+    BOOL _ifHasDetailsView;
+    
+    test *testInstance;
 }
 
 - (instancetype)init
 {
-    return [self initWithFrame:CGRectZero type:outlineTypeLine title:nil];
+    return [self initWithFrame:CGRectZero type:outlineRealTime title:nil];
 }
 
-- (instancetype)initWithFrame:(CGRect)frame type:(dataVisualizedType)type
+- (instancetype)initWithFrame:(CGRect)frame type:(viewType)viewType
 {
-    return [self initWithFrame:CGRectZero type:type title:nil];
+    return [self initWithFrame:CGRectZero type:viewType title:nil];
 }
 
-- (instancetype)initWithFrame:(CGRect)frame type:(dataVisualizedType)type title:(NSString *)title
+- (instancetype)initWithFrame:(CGRect)frame type:(viewType)viewType title:(NSString *)title
 {
     if ( (self = [super init]) ) {
         
-        _dataVisualizedType = type;
+        _dataVisualizedType = viewType;
         _viewTitleString   = title;
         self.view.frame = frame;
+        _ifHasDetailsView = NO;
 //        self.view.backgroundColor = [UIColor clearColor];
     }
     return self;
@@ -93,6 +111,7 @@ const static CGFloat titleViewHeight = 44.0f;
     [self addSettingButton];
     [self addDatePickerButton];
     [self addScrollView];
+    [self getDataFromNetwork];
     [self addOutlineDataView];
     
     wkContextMenuView* overlay = [[wkContextMenuView alloc] init];
@@ -103,7 +122,7 @@ const static CGFloat titleViewHeight = 44.0f;
     [self.scrollView setUserInteractionEnabled:YES];
     [self.scrollView addGestureRecognizer:_longPressRecognizer];
     
-//    test *testInstance = [[test alloc] init];
+//    testInstance = [[test alloc] init];
 //    UITapGestureRecognizer* tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:testInstance action:@selector(test1)];
 //    [self.view addGestureRecognizer:tapRecognizer];
     
@@ -285,12 +304,12 @@ const static CGFloat titleViewHeight = 44.0f;
     [_scrollView setContentSize:CGSizeMake(0, self.view.bounds.size.height * 3)];
     [_contentView addSubview:_scrollView];
     
-    _tipButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    _tipButton.frame = CGRectMake(0, 0, 160.0, 40.0);
-    _tipButton.center = CGPointMake(self.view.center.x, self.view.center.y+150);
-    [_tipButton setTitle:@"swipe or click" forState:UIControlStateNormal];
-    [_tipButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [_contentView addSubview:_tipButton];
+//    _tipButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//    _tipButton.frame = CGRectMake(0, 0, 160.0, 40.0);
+//    _tipButton.center = CGPointMake(self.view.center.x, self.view.center.y+150);
+//    [_tipButton setTitle:@"swipe or click" forState:UIControlStateNormal];
+//    [_tipButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+//    [_contentView addSubview:_tipButton];
 }
 
 - (void)addOutlineDataView
@@ -300,62 +319,87 @@ const static CGFloat titleViewHeight = 44.0f;
     float width   = wkScreenWidth - marginX * 2;
     float height  = wkScreenHeight/2 + 10;
     
-    if (_dataVisualizedType == outlineTypeLine) {
+    if (_dataVisualizedType == outlinePageAnalytics) {
         
-            _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineTypeLine inControllerType:detailView];
-            _dataContentView.backgroundColor = [UIColor whiteColor];
-            [_scrollView addSubview:_dataContentView];
+        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineTypeLine inControllerType:detailView];
+        _dataContentView.backgroundColor = [UIColor whiteColor];
+        [_scrollView addSubview:_dataContentView];
         
-       }else if (_dataVisualizedType == outlineTypeBar){
+       }else if (_dataVisualizedType == outlineHotCity){
         //Add BarChart
         _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineTypeBar inControllerType:detailView];
         [_scrollView addSubview:_dataContentView];
         
            
-    }else if (_dataVisualizedType == outlineTypeCircle){
+    }else if (_dataVisualizedType == outlineSource){
         
         //Add CircleChart
         _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineTypeCircle inControllerType:detailView];
         [_scrollView addSubview:_dataContentView];
         
-    }else if (_dataVisualizedType == outlineTypePie){
+    }else if (_dataVisualizedType == outlineVistorGroup){
         
         //Add PieChart
         
         _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineTypePie inControllerType:detailView];
         [_scrollView addSubview:_dataContentView];
+        
+        vistorGroupDetailOutlineView *detailView = [[vistorGroupDetailOutlineView alloc] initWithFrame:CGRectMake(marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 20, width, height - 30.0)];
+        
+        [_scrollView addSubview:detailView];
+        _ifHasDetailsView = YES;
        
-    }else{
+    }else if (_dataVisualizedType == outlineHotPage){
         _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineTypeLine1 inControllerType:detailView];
         [_scrollView addSubview:_dataContentView];
         
     }
 
-    dataOutlineViewContainer *dataContentView1 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(_dataContentView.frame.origin.x , _dataContentView.frame.origin.y + _dataContentView.frame.size.height+ 30, width, height) ifLoading:YES];
-    dataOutlineViewContainer *dataContentView2 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(dataContentView1.frame.origin.x , dataContentView1.frame.origin.y + dataContentView1.frame.size.height +30, width, height) ifLoading:YES];
-    
-    [_scrollView addSubview:dataContentView1];
-    [_scrollView addSubview:dataContentView2];
+    if(!_ifHasDetailsView){
+        dataOutlineViewContainer *dataContentView1 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 20, width, height) ifLoading:YES];
+        dataOutlineViewContainer *dataContentView2 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX , dataContentView1.frame.origin.y + dataContentView1.frame.size.height + 20, width, height) ifLoading:YES];
+        
+        [_scrollView addSubview:dataContentView1];
+        [_scrollView addSubview:dataContentView2];
+    }
+}
 
+#pragma mark settingButtonClicked
+- (void)getDataFromNetwork
+{
     
 }
 
 #pragma mark settingButtonClicked
 - (void)settingButtonClicked
 {
-    indexSwitchController *vc = [[indexSwitchController alloc] init];
+//    indexSwitchController *vc = [[indexSwitchController alloc] initWithFrame:CGRectMake(0, 0, 280, 160) type:demo];
+//    
+//    __weak typeof(self) weakSelf = self;
+//    
+//    vc.switchAction =^(NSInteger clickedButtonIndex){
+//        typeof(weakSelf) strongSelf = weakSelf;
+//
+//        [strongSelf dismissViewControllerAnimated:YES completion:nil];
+//        [strongSelf modifyDataView:clickedButtonIndex];
+//        };
+//    
+//    wkBlurPopover *popover = [[wkBlurPopover alloc] initWithContentViewController:vc];
+//    [self presentViewController:popover animated:YES completion:nil];
     
-    __weak typeof(self) weakSelf = self;
+    indexSwitchController *vc = [[indexSwitchController alloc] initWithFrame:CGRectMake(0, 0, 280, 216) type:vistorGroup];
+        __weak typeof(self) weakSelf = self;
     
-    vc.switchAction =^(NSInteger clickedButtonIndex){
-        typeof(weakSelf) strongSelf = weakSelf;
+        vc.switchAction =^(NSInteger index){
+            typeof(weakSelf) strongSelf = weakSelf;
+    
+            [strongSelf dismissViewControllerAnimated:YES completion:nil];
+            [strongSelf modifyDataView:index];
+            };
 
-        [strongSelf dismissViewControllerAnimated:YES completion:nil];
-        [strongSelf modifyDataView:clickedButtonIndex];
-        };
-    
     wkBlurPopover *popover = [[wkBlurPopover alloc] initWithContentViewController:vc];
     [self presentViewController:popover animated:YES completion:nil];
+    
 }
 
 #pragma mark datePicker
@@ -445,39 +489,46 @@ const static CGFloat titleViewHeight = 44.0f;
 #pragma mark modifyDataView
 - (void)modifyDataView:(NSInteger)clickedButtonIndex
 {
-    if(_dataVisualizedType == outlineTypeLine){
+    if(_dataVisualizedType == outlinePageAnalytics){
+//        if (clickedButtonIndex == 0) {
+//            [_dataContentView modifyLineChartWithDataArray1:@[@160.1, @260.1, @36.4, @162.2, @86.2, @227.2, @76.2] dataArray2:@[@260.1, @60.1, @26.4, @262.2, @186.2, @227.2, @76.2] xLabelArray:@[@"10.1",@"10.2",@"10.3",@"10.4",@"10.5",@"10.6",@"10.7"]];
+//        }else if(clickedButtonIndex == 1){
+//            [_dataContentView modifyLineChartWithDataArray1: @[@60.1, @160.1, @126.4, @262.2, @186.2, @127.2, @176.2] dataArray2:@[@20.1, @180.1, @26.4, @202.2, @126.2, @167.2, @276.2] xLabelArray:@[@"9.1",@"9.2",@"9.3",@"9.4",@"9.5",@"9.6",@"9.7"]];
+//        }
         if (clickedButtonIndex == 0) {
-            [_dataContentView modifyLineChartWithDataArray1:@[@160.1, @260.1, @36.4, @162.2, @86.2, @227.2, @76.2] dataArray2:@[@260.1, @60.1, @26.4, @262.2, @186.2, @227.2, @76.2] xLabelArray:@[@"10.1",@"10.2",@"10.3",@"10.4",@"10.5",@"10.6",@"10.7"]];
+            [_dataContentView modifyPieChartInView:_dataContentView.pageView type:outlinePageAnalytics WithDataArray: @[[PNPieChartDataItem dataItemWithValue:15 color:PNLightGreen],[PNPieChartDataItem dataItemWithValue:20 color:PNGreen ],[PNPieChartDataItem dataItemWithValue:20 color:PNFreshGreen ],[PNPieChartDataItem dataItemWithValue:45 color:PNDeepGreen]] groupColorArray:@[PNLightGreen,PNGreen,PNFreshGreen,PNDeepGreen] groupPercentArray:@[@15,@20,@20,@45]];
+            [_dataContentView modifyLineChartInView:_dataContentView.pageView type:outlinePageAnalytics WithValueArray:nil dateArray:nil];
         }else if(clickedButtonIndex == 1){
-            [_dataContentView modifyLineChartWithDataArray1: @[@60.1, @160.1, @126.4, @262.2, @186.2, @127.2, @176.2] dataArray2:@[@20.1, @180.1, @26.4, @202.2, @126.2, @167.2, @276.2] xLabelArray:@[@"9.1",@"9.2",@"9.3",@"9.4",@"9.5",@"9.6",@"9.7"]];
+            [_dataContentView modifyPieChartInView:_dataContentView.pageView type:outlinePageAnalytics WithDataArray:@[[PNPieChartDataItem dataItemWithValue:15 color:PNBlue],[PNPieChartDataItem dataItemWithValue:20 color:PNBlue],[PNPieChartDataItem dataItemWithValue:30 color:PNLightBlue description:@"40%"],[PNPieChartDataItem dataItemWithValue:35 color:PNTwitterColor description:@"50%"]] groupColorArray:@[PNLightBlue,PNBlue,PNTwitterColor,[UIColor indigoColor]] groupPercentArray:@[@15,@20,@30,@35]];
+            [_dataContentView modifyLineChartInView:_dataContentView.pageView type:outlinePageAnalytics WithValueArray:nil dateArray:nil];
         }
         
-    }else if(_dataVisualizedType == outlineTypeBar){
+    }else if(_dataVisualizedType == outlineHotCity){
         if (clickedButtonIndex == 0) {
             [_dataContentView modifyBarChartWithDataArray:@[@22,@51,@12,@10,@10,@30,@11] xLabelArray:@[@"OCT 1",@"OCT 2",@"OCT 3",@"OCT 4",@"OCT 5",@"OCT 6",@"OCT 7"]];
         }else if(clickedButtonIndex == 1){
             [_dataContentView modifyBarChartWithDataArray: @[@1,@24,@12,@18,@30,@10,@21] xLabelArray:@[@"SEP 1",@"SEP 2",@"SEP 3",@"SEP 4",@"SEP 5",@"SEP 6",@"SEP 7"]];
         }
         
-    }else if(_dataVisualizedType == outlineTypeCircle){
+    }else if(_dataVisualizedType == outlineSource){
         if (clickedButtonIndex == 0) {
             [_dataContentView modifyCircleChartWithData:@20];
         }else if(clickedButtonIndex == 1){
             [_dataContentView modifyCircleChartWithData:@60];
         }
         
-    }else if(_dataVisualizedType == outlineTypePie){
+    }else if(_dataVisualizedType == outlineVistorGroup){
         if (clickedButtonIndex == 0) {
-            [_dataContentView modifyPieChartWithDataArray:@[[PNPieChartDataItem dataItemWithValue:10 color:PNBlue],[PNPieChartDataItem dataItemWithValue:40 color:PNLightBlue description:@"SMALL"],[PNPieChartDataItem dataItemWithValue:50 color:PNTwitterColor description:@"BIG"]]];
+            [_dataContentView modifyPieChartInView:_dataContentView.vistorGroupView type:outlineVistorGroup WithDataArray:@[[PNPieChartDataItem dataItemWithValue:10 color:PNBlue],[PNPieChartDataItem dataItemWithValue:40 color:PNLightBlue description:@"40%"],[PNPieChartDataItem dataItemWithValue:50 color:PNTwitterColor description:@"50%"]] groupColorArray:@[PNBlue,PNLightBlue,PNTwitterColor] groupPercentArray:@[@10,@40,@50]];
         }else if(clickedButtonIndex == 1){
-            [_dataContentView modifyPieChartWithDataArray: @[[PNPieChartDataItem dataItemWithValue:10 color:PNLightGreen],[PNPieChartDataItem dataItemWithValue:20 color:PNFreshGreen description:@"SMALL"],[PNPieChartDataItem dataItemWithValue:40 color:PNDeepGreen description:@"BIG"]]];
+            [_dataContentView modifyPieChartInView:_dataContentView.vistorGroupView type:outlineVistorGroup WithDataArray: @[[PNPieChartDataItem dataItemWithValue:15 color:PNLightGreen],[PNPieChartDataItem dataItemWithValue:30 color:PNFreshGreen ],[PNPieChartDataItem dataItemWithValue:55 color:PNDeepGreen]] groupColorArray:@[PNLightGreen,PNFreshGreen,PNDeepGreen] groupPercentArray:@[@15,@30,@55]];
         }
         
-    }else if(_dataVisualizedType == outlineTypeLine1){
+    }else if(_dataVisualizedType == outlineHotPage){
         if (clickedButtonIndex == 0) {
-            [_dataContentView modifyLineChartWithValueArray:nil dateArray:nil];
+            [_dataContentView modifyLineChartInView:nil type:0 WithValueArray:nil dateArray:nil];
         }else if(clickedButtonIndex == 1){
-            [_dataContentView modifyLineChartWithValueArray:nil dateArray:nil];
+            [_dataContentView modifyLineChartInView:nil type:0 WithValueArray:nil dateArray:nil];
         }
     }
 }

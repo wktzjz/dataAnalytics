@@ -12,6 +12,7 @@
 #import "FBShimmeringView.h"
 #import "UIColor+CustomColors.h"
 
+#import "realTimeOutlineView.h"
 
 const static CGFloat loadingAnimationDuration = 0.7f;
 
@@ -51,6 +52,14 @@ const static CGFloat loadingAnimationDuration = 0.7f;
     int totalNumber;
     FBShimmeringView *_loadingLogo;
     BOOL _ifLoadingLogoShowing;
+    
+    UIView *_contentView;
+    
+    UILabel *_realtimeVistorGroupLabel;
+    UILabel *_realtimeDealLabel;
+    UILabel *_realtimeSourceLabel;
+    UILabel *_realtimeCityLabel;
+    UILabel *_realtimeTop5Label;
 }
 
 #pragma mark - init loadingView
@@ -94,9 +103,9 @@ const static CGFloat loadingAnimationDuration = 0.7f;
         self.dataType = dataType;
         [self addDataViewType:dataType inControllerType:inViewType data:nil];
         
-//        UIView *contentView = [[UIView alloc] initWithFrame:self.frame];
-//        contentView.backgroundColor = [UIColor whiteColor];
-//        [self addSubview:contentView];
+//        UIView *_contentView = [[UIView alloc] initWithFrame:self.frame];
+//        _contentView.backgroundColor = [UIColor whiteColor];
+//        [self addSubview:_contentView];
         
         //disable the shadow and alpha to improve the performance.
 //        self.alpha = 0.6;
@@ -113,60 +122,81 @@ const static CGFloat loadingAnimationDuration = 0.7f;
     return self;
 }
 
+
 #pragma mark - add dataView
+- (void)addView:(UIView *)view inControllerType:(inViewType)inViewType
+{
+    [_contentView addSubview:view];
+    [self addSubview:_contentView];
+}
+
+#pragma mark - add chart dataView
 - (void)addDataViewType:(dataVisualizedType)dataType inControllerType:(inViewType)inViewType data:(id)data
 {
-    UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(self.frame.size.width, 0, self.frame.size.width, self.frame.size.height)];
+    _contentView = [[UIView alloc] initWithFrame:CGRectMake(self.frame.size.width, 0, self.frame.size.width, self.frame.size.height)];
     
     self.dataType = dataType;
 
-    if (dataType == outlineTypeLine) {
+       if (dataType == outlineTypeRealTime) {
+        
+           _contentView = nil;
+           _contentView = [[realTimeOutlineView alloc] initWithFrame:CGRectMake(self.frame.size.width, 0, self.frame.size.width, self.frame.size.height)];
+           
+           //[self addRealtimeView:data];
+           
+       }else if (dataType == outlineTypeLine) {
+           
+           _pageView = [[pageAnalyticsOutlineView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+           [_contentView addSubview:_pageView];
+           
+           _pieChart = _pageView.pieChart;
+           _myGraph  = _pageView.lineGraph;
         
         //            float width  = (inViewType == outlineView) ? outlineViewWidth:SCREEN_WIDTH;
         //            float height = (inViewType == outlineView) ? outlineViewHeight:detailViewHeight;
         
-        //Add LineChart
-        _chartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
-        _chartLabel.text = @"Line Chart";
-        _chartLabel.textColor = PNFreshGreen;
-        _chartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:23.0];
-        _chartLabel.textAlignment = NSTextAlignmentCenter;
-        
-        _lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(0, 55.0, outlineViewWidth, outlineViewHeight)];
-        _lineChart.yLabelFormat = @"%1.1f";
-        _lineChart.backgroundColor = [UIColor clearColor];
-        [_lineChart setXLabels:@[@"9.1",@"9.2",@"9.3",@"9.4",@"9.5",@"9.6",@"9.7"]];
-        _lineChart.showCoordinateAxis = YES;
-        
-        // Line Chart Nr.1
-        NSArray * data01Array = @[@60.1, @160.1, @126.4, @262.2, @186.2, @127.2, @176.2];
-        PNLineChartData *data01 = [PNLineChartData new];
-        data01.color = PNFreshGreen;
-        data01.itemCount = _lineChart.xLabels.count;
-        data01.inflexionPointStyle = PNLineChartPointStyleCycle;
-        data01.getData = ^(NSUInteger index) {
-            CGFloat yValue = [data01Array[index] floatValue];
-            return [PNLineChartDataItem dataItemWithY:yValue];
-        };
-        
-        // Line Chart Nr.2
-        NSArray * data02Array = @[@20.1, @180.1, @26.4, @202.2, @126.2, @167.2, @276.2];
-        PNLineChartData *data02 = [PNLineChartData new];
-        data02.color = PNTwitterColor;
-        data02.itemCount = _lineChart.xLabels.count;
-        data02.inflexionPointStyle = PNLineChartPointStyleSquare;
-        data02.getData = ^(NSUInteger index) {
-            CGFloat yValue = [data02Array[index] floatValue];
-            return [PNLineChartDataItem dataItemWithY:yValue];
-        };
-        
-        _lineChart.chartData = @[data01, data02];
-        [_lineChart strokeChart];
-    
-//        lineChart.delegate = self;
-        
-        [contentView addSubview:_chartLabel];
-        [contentView addSubview:_lineChart];
+//        //Add LineChart
+//        _chartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
+//        _chartLabel.text = (NSString *)data[dataType]?(NSString *)data[dataType]: @"Line Chart";
+//        _chartLabel.textColor = PNFreshGreen;
+//        _chartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:23.0];
+//        _chartLabel.textAlignment = NSTextAlignmentCenter;
+//        
+//        _lineChart = [[PNLineChart alloc] initWithFrame:CGRectMake(0, 55.0, outlineViewWidth, outlineViewHeight)];
+//        _lineChart.yLabelFormat = @"%1.1f";
+//        _lineChart.backgroundColor = [UIColor clearColor];
+//        [_lineChart setXLabels:@[@"9.1",@"9.2",@"9.3",@"9.4",@"9.5",@"9.6",@"9.7"]];
+//        _lineChart.showCoordinateAxis = YES;
+//        
+//        // Line Chart Nr.1
+//        NSArray * data01Array = @[@60.1, @160.1, @126.4, @262.2, @186.2, @127.2, @176.2];
+//        PNLineChartData *data01 = [PNLineChartData new];
+//        data01.color = PNFreshGreen;
+//        data01.itemCount = _lineChart.xLabels.count;
+//        data01.inflexionPointStyle = PNLineChartPointStyleCycle;
+//        data01.getData = ^(NSUInteger index) {
+//            CGFloat yValue = [data01Array[index] floatValue];
+//            return [PNLineChartDataItem dataItemWithY:yValue];
+//        };
+//        
+//        // Line Chart Nr.2
+//        NSArray * data02Array = @[@20.1, @180.1, @26.4, @202.2, @126.2, @167.2, @276.2];
+//        PNLineChartData *data02 = [PNLineChartData new];
+//        data02.color = PNTwitterColor;
+//        data02.itemCount = _lineChart.xLabels.count;
+//        data02.inflexionPointStyle = PNLineChartPointStyleSquare;
+//        data02.getData = ^(NSUInteger index) {
+//            CGFloat yValue = [data02Array[index] floatValue];
+//            return [PNLineChartDataItem dataItemWithY:yValue];
+//        };
+//        
+//        _lineChart.chartData = @[data01, data02];
+//        [_lineChart strokeChart];
+//    
+////        lineChart.delegate = self;
+//        
+//        [_contentView addSubview:_chartLabel];
+//        [_contentView addSubview:_lineChart];
 //        [self addSubview:lineChartLabel];
 //        [self addSubview:lineChart];
         
@@ -187,7 +217,7 @@ const static CGFloat loadingAnimationDuration = 0.7f;
         //Add BarChart
         
         _chartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
-        _chartLabel.text = @"Bar Chart";
+        _chartLabel.text =(NSString *)data[dataType]?(NSString *)data[dataType]: @"Bar Chart";
         _chartLabel.textColor = PNFreshGreen;
         _chartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:23.0];
         _chartLabel.textAlignment = NSTextAlignmentCenter;
@@ -212,57 +242,79 @@ const static CGFloat loadingAnimationDuration = 0.7f;
         
 //        [self addSubview:barChartLabel];
 //        [self addSubview:self.barChart];
-        [contentView addSubview:_chartLabel];
-        [contentView addSubview:self.barChart];
+        [_contentView addSubview:_chartLabel];
+        [_contentView addSubview:self.barChart];
 
     }else if (dataType == outlineTypeCircle){
         
         _chartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
-        _chartLabel.text = @"Circle Chart";
+        _chartLabel.text = (NSString *)data[dataType]?(NSString *)data[dataType]: @"Circle Chart";
         _chartLabel.textColor = PNFreshGreen;
         _chartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:23.0];
         _chartLabel.textAlignment = NSTextAlignmentCenter;
         
-        _circleChart = [[PNCircleChart alloc] initWithFrame:CGRectMake(0, 30.0, outlineViewWidth, 100.0) andTotal:@100 andCurrent:@60 andClockwise:YES andShadow:YES];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 10 + _chartLabel.frame.origin.y + _chartLabel.frame.size.height, outlineViewWidth, 30)];
+        label.text = @"Vistor占比:";
+        label.textColor = PNDeepGrey;
+        label.font = [UIFont fontWithName:@"Avenir-Medium" size:18.0];
+        label.textAlignment = NSTextAlignmentLeft;
+        
+        _circleChart = [[PNCircleChart alloc] initWithFrame:CGRectMake(0,label.frame.origin.y + label.frame.size.height - 30.0, outlineViewWidth, 100.0) andTotal:@100 andCurrent:@60 andClockwise:YES andShadow:YES];
         _circleChart.backgroundColor = [UIColor clearColor];
-        [_circleChart setStrokeColor:PNGreen];
-        [_circleChart setStrokeColorGradientStart:[UIColor blueColor]];\
+
+        [_circleChart setStrokeColor:[UIColor colorWithRed:77.0 / 255.0 green:106.0 / 255.0 blue:122.0 / 255.0 alpha:1.0f]];
+        [_circleChart setStrokeColorGradientStart:[UIColor colorWithRed:77.0 / 255.0 green:236.0 / 255.0 blue:122.0 / 255.0 alpha:1.0f]];
         _circleChart.isRestroke = NO;
         [_circleChart strokeChart];
         
 //        [self addSubview:circleChartLabel];
 //        [self addSubview:circleChart];
-        [contentView addSubview:_chartLabel];
-        [contentView addSubview:_circleChart];
+        [_contentView addSubview:label];
+        [_contentView addSubview:_chartLabel];
+        [_contentView addSubview:_circleChart];
         
     }else if (dataType == outlineTypePie)
     {
-        //Add PieChart
+//        _contentView = nil;
+        _vistorGroupView = [[vistorGroupOutlineView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+        [_contentView addSubview:_vistorGroupView];
+        
+        _pieChart = _vistorGroupView.pieChart;
+        
+//        //Add PieChart
+//        _chartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
+//        _chartLabel.text = (NSString *)data[dataType]?(NSString *)data[dataType]: @"Pie Chart";
+//        _chartLabel.textColor = PNFreshGreen;
+//        _chartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:23.0];
+//        _chartLabel.textAlignment = NSTextAlignmentCenter;
+//        
+//        NSArray *items = @[[PNPieChartDataItem dataItemWithValue:10 color:PNLightGreen],
+//                           [PNPieChartDataItem dataItemWithValue:20 color:PNFreshGreen description:@"SMALL"],
+//                           [PNPieChartDataItem dataItemWithValue:40 color:PNDeepGreen description:@"BIG"],
+//                           ];
+//        
+//        
+//        _pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(15.0, 40.0, outlineViewWidth - 30,outlineViewWidth - 30) items:items];
+//        _pieChart.descriptionTextColor = [UIColor whiteColor];
+//        _pieChart.descriptionTextFont  = [UIFont fontWithName:@"Avenir-Medium" size:14.0];
+//        _pieChart.descriptionTextShadowColor = [UIColor clearColor];
+//        [_pieChart strokeChart];
+//        
+////        [self addSubview:pieChartLabel];
+////        [self addSubview:pieChart];
+//        [_contentView addSubview:_chartLabel];
+//        [_contentView addSubview:_pieChart];
+//
+        
+    }else{
+        
         _chartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
-        _chartLabel.text = @"Pie Chart";
+        _chartLabel.text = (NSString *)data[dataType]?(NSString *)data[dataType]: @"Line Chart";
         _chartLabel.textColor = PNFreshGreen;
         _chartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:23.0];
         _chartLabel.textAlignment = NSTextAlignmentCenter;
-        
-        NSArray *items = @[[PNPieChartDataItem dataItemWithValue:10 color:PNLightGreen],
-                           [PNPieChartDataItem dataItemWithValue:20 color:PNFreshGreen description:@"SMALL"],
-                           [PNPieChartDataItem dataItemWithValue:40 color:PNDeepGreen description:@"BIG"],
-                           ];
-        
-        
-        _pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(15.0, 40.0, outlineViewWidth - 30,outlineViewWidth - 30) items:items];
-        _pieChart.descriptionTextColor = [UIColor whiteColor];
-        _pieChart.descriptionTextFont  = [UIFont fontWithName:@"Avenir-Medium" size:14.0];
-        _pieChart.descriptionTextShadowColor = [UIColor clearColor];
-        [_pieChart strokeChart];
-        
-//        [self addSubview:pieChartLabel];
-//        [self addSubview:pieChart];
-        [contentView addSubview:_chartLabel];
-        [contentView addSubview:_pieChart];
 
-        
-    }else{
+        [_contentView addSubview:_chartLabel];
         self.ArrayOfValues = [[NSMutableArray alloc] init];
         self.ArrayOfDates = [[NSMutableArray alloc] init];
         
@@ -281,7 +333,7 @@ const static CGFloat loadingAnimationDuration = 0.7f;
         
         float width  = (inViewType == outlineView) ? outlineViewWidth:SCREEN_WIDTH;
         
-        self.myGraph = [[BEMSimpleLineGraphView alloc] initWithFrame:CGRectMake(0, 25.0, outlineViewWidth, 270.0)];
+        self.myGraph = [[BEMSimpleLineGraphView alloc] initWithFrame:CGRectMake(0, 45.0, outlineViewWidth, 250.0)];
         _myGraph.delegate = self;
         _myGraph.dataSource = self;
         
@@ -312,7 +364,7 @@ const static CGFloat loadingAnimationDuration = 0.7f;
         //            self.myGraph.backgroundColor = [UIColor whiteColor];
         self.tintColor = [UIColor whiteColor];
         
-        [contentView addSubview:_myGraph];
+        [_contentView addSubview:_myGraph];
 
         if (inViewType == detailView){
             _myGraph.alpha = 0.0;
@@ -322,11 +374,17 @@ const static CGFloat loadingAnimationDuration = 0.7f;
         }
     }
 
-    [self addSubview:contentView];
-    CGPoint centerPoint = contentView.center;
+    [self addSubview:_contentView];
+    
+    [self endLoadingAnimation];
+ }
+
+- (void)endLoadingAnimation
+{
+    CGPoint centerPoint = _contentView.center;
     centerPoint.x = self.frame.size.width/2;
     centerPoint.y = self.frame.size.height/2;
-    
+
     [UIView animateWithDuration:loadingAnimationDuration
                           delay:0.0
          usingSpringWithDamping:0.6
@@ -336,13 +394,115 @@ const static CGFloat loadingAnimationDuration = 0.7f;
                          if(_ifLoadingLogoShowing){
                              _loadingLogo.center = CGPointMake(-_loadingLogo.center.x, _loadingLogo.center.y);
                          }
-                         contentView.center = centerPoint;
+                         _contentView.center = centerPoint;
                      } completion:^(BOOL finished) {
                          _ifLoadingLogoShowing = NO;
-//                             [self addSubview:contentView];
-//                         NSLog(@"contentView.center.x :%f, y:%f",contentView.center.x,contentView.center.y);
-
+                         //                             [self addSubview:_contentView];
+                         //                         NSLog(@"_contentView.center.x :%f, y:%f",_contentView.center.x,_contentView.center.y);
+                         
                      }];
+}
+
+
+- (void)addRealtimeView:(id)data
+{
+    _chartLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, outlineViewWidth, 30)];
+    _chartLabel.text = (NSString *)data[_dataType]?(NSString *)data[_dataType]: @"Line Chart";
+    _chartLabel.textColor = [UIColor blackColor];
+    _chartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:24.0];
+    _chartLabel.textAlignment = NSTextAlignmentLeft;
+    
+    [_contentView addSubview:_chartLabel];
+//    访客群体分析
+//    成交
+//    来源渠道
+//    城市分布
+//    TOP5页面
+    _realtimeVistorGroupLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 3 + _chartLabel.frame.origin.y +_chartLabel.frame.size.height, outlineViewWidth, 30)];
+    _realtimeVistorGroupLabel.text =@"访客群体分析";
+    _realtimeVistorGroupLabel.textColor = PNDeepGrey;
+    _realtimeVistorGroupLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:18.0];
+    _realtimeVistorGroupLabel.textAlignment = NSTextAlignmentLeft;
+
+    _realtimeDealLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 3 + _realtimeVistorGroupLabel.frame.origin.y +_realtimeVistorGroupLabel.frame.size.height, outlineViewWidth, 30)];
+    _realtimeDealLabel.text =@"成交";
+    _realtimeDealLabel.textColor = PNDeepGrey;
+    _realtimeDealLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:18.0];
+    _realtimeDealLabel.textAlignment = NSTextAlignmentLeft;
+    
+    _realtimeSourceLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 3 + _realtimeDealLabel.frame.origin.y +_realtimeDealLabel.frame.size.height, outlineViewWidth, 30)];
+    _realtimeSourceLabel.text =@"来源渠道";
+    _realtimeSourceLabel.textColor = PNDeepGrey;
+    _realtimeSourceLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:18.0];
+    _realtimeSourceLabel.textAlignment = NSTextAlignmentLeft;
+    
+    _realtimeCityLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 3 + _realtimeSourceLabel.frame.origin.y +_realtimeSourceLabel.frame.size.height, outlineViewWidth, 30)];
+    _realtimeCityLabel.text =@"城市分布";
+    _realtimeCityLabel.textColor = PNDeepGrey;
+    _realtimeCityLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:18.0];
+    _realtimeCityLabel.textAlignment = NSTextAlignmentLeft;
+    
+    _realtimeTop5Label = [[UILabel alloc] initWithFrame:CGRectMake(20, 3 + _realtimeCityLabel.frame.origin.y +_realtimeCityLabel.frame.size.height, outlineViewWidth, 30)];
+    _realtimeTop5Label.text =@"TOP5页面";
+    _realtimeTop5Label.textColor = PNDeepGrey;
+    _realtimeTop5Label.font = [UIFont fontWithName:@"Avenir-Medium" size:18.0];
+    _realtimeTop5Label.textAlignment = NSTextAlignmentLeft;
+    
+    [_contentView addSubview:_realtimeVistorGroupLabel];
+    [_contentView addSubview:_realtimeDealLabel];
+    [_contentView addSubview:_realtimeSourceLabel];
+    [_contentView addSubview:_realtimeCityLabel];
+    [_contentView addSubview:_realtimeTop5Label];
+
+   NSMutableArray *ArrayOfValues = [[NSMutableArray alloc] init];
+   NSMutableArray *ArrayOfDates = [[NSMutableArray alloc] init];
+    
+    totalNumber = 0;
+    
+    for (int i = 0; i < 9; i++) {
+        [ArrayOfValues addObject:[NSNumber numberWithInteger:(arc4random() % 10000)]]; // Random values for the graph
+        [ArrayOfDates addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:2000 + i]]]; // Dates for the X-Axis of the graph
+        
+        totalNumber = totalNumber + [[ArrayOfValues objectAtIndex:i] intValue]; // All of the values added together
+    }
+    
+    //            self.ArrayOfValues = [[NSMutableArray alloc] initWithArray:@[@24444,@10000,@64213,@52341,@34445,@423,@81114,@22342,@33333]];
+    
+    /* This is commented out because the graph is created in the interface with this sample app. However, the code remains as an example for creating the graph using code. */
+    
+   BEMSimpleLineGraphView *lineGraph = [[BEMSimpleLineGraphView alloc] initWithFrame:CGRectMake(0, 3.0+_realtimeTop5Label.frame.origin.y +_realtimeTop5Label.frame.size.height, outlineViewWidth, 30.0)];
+    lineGraph.delegate = self;
+    lineGraph.dataSource = self;
+    
+    lineGraph.backgroundColor = [UIColor clearColor];
+    
+    // Customization of the graph
+    
+    lineGraph.colorLine = [UIColor colorWithRed:31.0/255.0 green:187.0/255.0 blue:166.0/255.0 alpha:1.0];
+    
+    lineGraph.colorXaxisLabel = [UIColor clearColor];
+    lineGraph.colorYaxisLabel = [UIColor clearColor];
+    lineGraph.widthLine = 1.5;
+    lineGraph.enableTouchReport = YES;
+    lineGraph.enablePopUpReport = YES;
+    lineGraph.enableBezierCurve = YES;
+    
+    lineGraph.enableYAxisLabel = NO;
+    lineGraph.enableReferenceAxisLines = NO;
+    
+    lineGraph.autoScaleYAxis = YES;
+    lineGraph.alwaysDisplayDots = NO;
+    lineGraph.enableReferenceAxisLines = NO;
+    lineGraph.enableReferenceAxisFrame = YES;
+    lineGraph.animationGraphStyle = BEMLineAnimationDraw;
+    
+    lineGraph.colorTop = [UIColor whiteColor];
+    lineGraph.colorBottom = [UIColor whiteColor];
+    //            self.myGraph.backgroundColor = [UIColor whiteColor];
+    self.tintColor = [UIColor whiteColor];
+    
+    [_contentView addSubview:lineGraph];
+    
 }
 
 
@@ -423,11 +583,22 @@ const static CGFloat loadingAnimationDuration = 0.7f;
 
 #pragma mark - modifyPieChart
 
-- (void)modifyPieChartWithDataArray:(NSArray *)dataArray
+- (void)modifyPieChartInView:(UIView *)view type:(viewType)type WithDataArray:(NSArray *)dataArray groupColorArray:(NSArray *)colorArray groupPercentArray:(NSArray *)percentArray
 {
     double delayInSeconds = 0.5;
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(delayTime,dispatch_get_main_queue(), ^{
+        
+        if(type == outlineVistorGroup){
+            _vistorGroupView.groupColorArray = colorArray;
+            _vistorGroupView.groupPercentArray = percentArray;
+            [_vistorGroupView modifyGroupView];
+            
+        }else if (type == outlinePageAnalytics){
+            _pageView.groupColorArray = colorArray;
+            _pageView.groupPercentArray = percentArray;
+            [_pageView modifyPageView];
+        }
         
         _pieChart.items = dataArray;
         [_pieChart strokeChart];
@@ -437,7 +608,7 @@ const static CGFloat loadingAnimationDuration = 0.7f;
 
 #pragma mark - modifyLine1Chart
 
-- (void)modifyLineChartWithValueArray:(NSMutableArray *)valueArray dateArray:(NSMutableArray *)dateArray
+- (void)modifyLineChartInView:(UIView *)view type:(viewType)type WithValueArray:(NSMutableArray *)valueArray dateArray:(NSMutableArray *)dateArray
 {
     double delayInSeconds = 0.5;
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -445,10 +616,15 @@ const static CGFloat loadingAnimationDuration = 0.7f;
         
 //        self.ArrayOfValues = valueArray;
 //        self.ArrayOfDates = dateArray;
+        if(type == outlinePageAnalytics){
+            self.ArrayOfValues = ((pageAnalyticsOutlineView *)view).ArrayOfValues;
+            self.ArrayOfDates = ((pageAnalyticsOutlineView *)view).ArrayOfDates;
+        }
+        
         [self.ArrayOfValues removeAllObjects];
         [self.ArrayOfDates removeAllObjects];
         
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 20; i++) {
             [self.ArrayOfValues addObject:[NSNumber numberWithInteger:(arc4random() % 10000)]]; // Random values for the graph
             [self.ArrayOfDates addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:2000 + i]]]; // Dates for the X-Axis of the graph
             

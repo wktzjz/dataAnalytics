@@ -21,7 +21,7 @@
 @interface dataDetailsViewController : UIViewController
 
 @property (nonatomic, weak) id <dataDetailsControllerDelegate> delegate;
-@property (nonatomic) dataVisualizedType dataVisualizedType;
+@property (nonatomic) viewType dataVisualizedType;
 @property (nonatomic) UIScrollView *scrollView;
 @property (nonatomic) NSString *viewTitleString;
 @property (nonatomic) UILabel *viewTitle;
@@ -30,6 +30,6 @@
 //- (instancetype)init;
 //- (instancetype)initWithFrame:(CGRect)frame;
 //- (instancetype)initWithFrame:(CGRect)frame type:(dataVisualizedType)type;
-- (instancetype)initWithFrame:(CGRect)frame type:(dataVisualizedType)type title:(NSString *)title;
+- (instancetype)initWithFrame:(CGRect)frame type:(viewType)type title:(NSString *)title;
 
 @end

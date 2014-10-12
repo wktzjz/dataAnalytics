@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSUInteger, swithViewType) {
+    demo = 0,
+    vistorGroup,
+};
+
 // Block
 typedef void(^switchAction)(NSInteger index);
 
@@ -15,6 +20,6 @@ typedef void(^switchAction)(NSInteger index);
 @interface indexSwitchController : UIViewController
 
 @property (nonatomic, copy) switchAction switchAction;
-- (instancetype)initWithFrame:(CGRect)frame;
+- (instancetype)initWithFrame:(CGRect)frame type:(swithViewType)type;
 
 @end

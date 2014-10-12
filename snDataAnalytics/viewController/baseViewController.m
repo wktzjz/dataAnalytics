@@ -91,7 +91,7 @@ typedef enum {
 //    [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
 //    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
 
-    [self setTitle:@"Data Analytics Main View"];
+    [self setTitle:@"概览"];
     
     [self addFrontAndBackgroundView];
     [self addDataView];
@@ -104,6 +104,7 @@ typedef enum {
     double delayInSeconds = 1.0;
     __weak id wself = self;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    
     dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         baseViewController *strongSelf = wself;
         [strongSelf onApplicationFinishedLaunching];
@@ -271,7 +272,7 @@ typedef enum {
     _scrollView1 = [[UIScrollView alloc] initWithFrame:CGRectMake(mainDataScrollViewMargin, 50, wkScreenWidth - mainDataScrollViewMargin * 2, self.view.frame.size.height)];
     [_scrollView1 setDelegate:self];
     [_scrollView1 setShowsVerticalScrollIndicator:NO];
-    [_scrollView1 setContentSize:CGSizeMake(0, self.view.bounds.size.height * 3)];
+    [_scrollView1 setContentSize:CGSizeMake(0, self.view.bounds.size.height * 4)];
     [_frontView addSubview:_scrollView1];
 
     CGFloat width = outleineContainerViewWidth;
@@ -279,22 +280,30 @@ typedef enum {
 //    NSLog(@"!!!!!width:%f",width);
     CGFloat originX = 0;
     
-    _outlineView1 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, 0, width, height) ifLoading:YES];
-    [_scrollView1 addSubview:_outlineView1];
     
-    _outlineView2 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _outlineView1.frame.origin.y + _outlineView1.frame.size.height + 30, width, height) ifLoading:YES];
-    [_scrollView1 addSubview:_outlineView2];
+    _realTimeView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, 0, width, height - 15) ifLoading:YES];
+    [_scrollView1 addSubview:_realTimeView];
     
-    _outlineView3 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _outlineView2.frame.origin.y + _outlineView2.frame.size.height + 30, width, height) ifLoading:YES];
-    [_scrollView1 addSubview:_outlineView3];
+    _vistorGruopView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _realTimeView.frame.origin.y + _realTimeView.frame.size.height + 20, width, height) ifLoading:YES];
+    [_scrollView1 addSubview:_vistorGruopView];
     
-    _outlineView4 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _outlineView3.frame.origin.y + _outlineView3.frame.size.height + 30, width, height) ifLoading:YES];
-    [_scrollView1 addSubview:_outlineView4];
+    _sourceView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _vistorGruopView.frame.origin.y + _vistorGruopView.frame.size.height + 20, width, height - 50.0) ifLoading:YES];
+    [_scrollView1 addSubview:_sourceView];
     
-    _outlineView5 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _outlineView4.frame.origin.y + _outlineView4.frame.size.height + 30, width, height) ifLoading:YES];
-    [_scrollView1 addSubview:_outlineView5];
+    _pageView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _sourceView.frame.origin.y + _sourceView.frame.size.height + 20, width, height) ifLoading:YES];
+    [_scrollView1 addSubview:_pageView];
     
-    _outLineViewArray = [[NSMutableArray alloc] initWithArray:@[_outlineView1,_outlineView2,_outlineView3,_outlineView4,_outlineView5]];
+    _hotCityView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _pageView.frame.origin.y + _pageView.frame.size.height + 20, width, height) ifLoading:YES];
+    [_scrollView1 addSubview:_hotCityView];
+    
+    _hotPageView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _hotCityView.frame.origin.y + _hotCityView.frame.size.height + 20, width, height) ifLoading:YES];
+    [_scrollView1 addSubview:_hotPageView];
+
+    _transformView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _hotPageView.frame.origin.y + _hotPageView.frame.size.height + 20, width, height) ifLoading:YES];
+    [_scrollView1 addSubview:_transformView];
+    
+    
+    _outLineViewArray = [[NSMutableArray alloc] initWithArray:@[_realTimeView,_vistorGruopView,_sourceView,_pageView,_hotCityView,_hotPageView,_transformView]];
 }
 
 
@@ -347,9 +356,11 @@ typedef enum {
 - (BOOL)handleInfoFromNetwork:(NSDictionary *)info
 {
     if(!info){
+        NSArray *vistorGroupData = @[@"实时",@"访客群体分析",@"来源分析",@"页面分析",@"热门城市",@"热门页面",@"转化分析"];
         dispatch_main_async_safe(^{
             [_outLineViewArray enumerateObjectsUsingBlock:^(dataOutlineViewContainer *view, NSUInteger idx, BOOL *stop) {
-                [view addDataViewType:(dataVisualizedType)idx inControllerType:outlineView data:nil];
+                    [view addDataViewType:(dataVisualizedType)idx inControllerType:outlineView data:vistorGroupData];
+                
             }];
         });
     }
@@ -370,20 +381,24 @@ typedef enum {
             if(CGRectContainsPoint(_scrollView1.frame, locationInMainView)){
                 CGPoint location = [recongnizer locationInView:_scrollView1];
                 
-                if(CGRectContainsPoint(_outlineView1.frame, location)){
+                if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[1]).frame, location)){
                     [self handleTappingOutlineView:1];
                 
-                }else if(CGRectContainsPoint(_outlineView2.frame, location)){
+                }else if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[2]).frame, location)){
                     [self handleTappingOutlineView:2];
                     
-                }else if(CGRectContainsPoint(_outlineView3.frame, location)){
+                }else if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[3]).frame, location)){
                     [self handleTappingOutlineView:3];
                     
-                }else if(CGRectContainsPoint(_outlineView4.frame, location)){
+                }else if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[4]).frame, location)){
                     [self handleTappingOutlineView:4];
                 }
-                else if(CGRectContainsPoint(_outlineView5.frame, location)){
+                else if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[5]).frame, location)){
                     [self handleTappingOutlineView:5];
+                }else if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[6]).frame, location)){
+                    [self handleTappingOutlineView:6];
+                }else{
+                    
                 }
         }
     }
@@ -395,23 +410,26 @@ typedef enum {
     
     switch (index) {
         case 1:{
-            targetView = _outlineView1;
+            targetView = _vistorGruopView;
             }
             break;
         case 2:{
-            targetView = _outlineView2;
+            targetView = _sourceView;
             }
             break;
         case 3:{
-            targetView = _outlineView3;
+            targetView = _pageView;
             }
             break;
         case 4:{
-            targetView = _outlineView4;
+            targetView = _hotCityView;
             }
             break;
         case 5:{
-            targetView = _outlineView5;
+            targetView = _hotPageView;
+        }
+        case 6:{
+            targetView = _transformView;
         }
             break;
         default:
@@ -424,7 +442,7 @@ typedef enum {
     frame = [_scrollView1 convertRect:frame toView:self.view];
     [self.navigationController setClickedViewFrame:@[@(frame.origin.x),@(frame.origin.y - navigationBarHeight),@(frame.size.width),@(frame.size.height)]];
     
-    [self transitOutlineView:targetView type:(dataVisualizedType)(index-1)];
+    [self transitOutlineView:targetView type:(viewType)(index)];
 }
 
 
@@ -445,7 +463,7 @@ typedef enum {
 }
 
 #pragma mark outlineView transite to detailsView
-- (void)transitOutlineView:(dataOutlineViewContainer *)view type:(dataVisualizedType)type
+- (void)transitOutlineView:(dataOutlineViewContainer *)view type:(viewType)type
 {
     _detailsViewController = [[dataDetailsViewController alloc] initWithFrame:wkScreen type:type title:@"Details"];
     _detailsViewController.delegate = self;

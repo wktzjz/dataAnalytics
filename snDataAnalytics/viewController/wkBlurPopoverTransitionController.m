@@ -10,7 +10,7 @@
 #import "wkBlurPopoverTransitionController.h"
 #import "wkBlurPopover.h"
 #import "UIView+snapShot.h"
-#import "UIImage+Blur.m"
+#import "UIImage+Blur.h"
 
 static const void *wkBlurViewKey     = "wkBlurViewKey";
 static const void *wkSnapshotViewKey = "wkSnapshotViewKey";

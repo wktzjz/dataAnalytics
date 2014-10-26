@@ -16,7 +16,8 @@
 }
 
 - (UIColor *)barColorAtIndex:(NSUInteger)index;
-
+//wk
+- (UIColor *)bar1ColorAtIndex:(NSUInteger)index;
 @end
 
 @implementation PNBarChart
@@ -42,6 +43,12 @@
         _barRadius           = 2.0;
         _showChartBorder     = NO;
         _yChartLabelWidth    = 18;
+        
+        //wk
+        _ifUseGradientColor = NO;
+        _showReferenceLines = NO;
+        _bars1              = [NSMutableArray array];
+        _referencesLines    = [NSMutableArray array];
     }
 
     return self;
@@ -61,6 +68,7 @@
 
     _xLabelWidth = (self.frame.size.width - _chartMargin * 2) / [_yValues count];
 }
+
 
 - (void)getYValueMax:(NSArray *)yLabels
 {
@@ -127,13 +135,21 @@
         
         //Add y labels
         
+        //wk clean refercnce lines
+            if (_referencesLines.count) {
+                [_referencesLines makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
+                [_referencesLines removeAllObjects];
+            }
+        
         float yLabelSectionHeight = (self.frame.size.height - _chartMargin * 2 - xLabelHeight) / _yLabelSum;
         
         for (int index = 0; index < _yLabelSum; index++) {
 
             NSString *labelText = _yLabelFormatter((float)_yValueMax * ( (_yLabelSum - index) / (float)_yLabelSum ));
-            
-            PNChartLabel * label = [[PNChartLabel alloc] initWithFrame:CGRectMake(0,
+           
+            //wk
+            float originX = _showChartBorder ? -5.0 : 0.0 ;
+            PNChartLabel * label = [[PNChartLabel alloc] initWithFrame:CGRectMake(originX,
                                                                                   yLabelSectionHeight * index + _chartMargin - yLabelHeight/2.0,
                                                                                   _yChartLabelWidth,
                                                                                   yLabelHeight)];
@@ -144,12 +160,53 @@
 
             [_labels addObject:label];
             [self addSubview:label];
+            
+            
+            //wk add to show reference lines
+            if(_showReferenceLines){
+                
+                if(index == 0) continue;
+                
+                CAShapeLayer *referenceLine = [CAShapeLayer layer];
+                referenceLine.lineCap      = kCALineCapButt;
+                referenceLine.fillColor    = [[UIColor whiteColor] CGColor];
+                referenceLine.lineWidth    = 1.0;
+                referenceLine.strokeEnd    = 0.0;
+                
+                UIBezierPath *progressline = [UIBezierPath bezierPath];
+                
+                [progressline moveToPoint:CGPointMake(label.frame.size.width,yLabelSectionHeight * index + _chartMargin )];
+                [progressline addLineToPoint:CGPointMake(self.frame.size.width - _chartMargin,  yLabelSectionHeight * index + _chartMargin )];
+                
+                [progressline setLineWidth:1.0];
+                [progressline setLineCapStyle:kCGLineCapSquare];
+                referenceLine.path = progressline.CGPath;
+                
+                referenceLine.strokeColor = [UIColor colorWithWhite:0.85 alpha:0.7].CGColor;
+                
+                
+                CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+                pathAnimation.duration = 0.5;
+                pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+                pathAnimation.fromValue = @0.0f;
+                pathAnimation.toValue = @1.0f;
+                [referenceLine addAnimation:pathAnimation forKey:@"strokeEndAnimation"];
+                
+                referenceLine.strokeEnd = 1.0;
+                
+                [self animateForLayer:referenceLine isAnimatingReferenceLine:YES];
+                
+                [self.layer addSublayer:referenceLine];
 
+                [_referencesLines addObject:referenceLine];
+            }
         }
     }
     
 
     [self viewCleanupForCollection:_bars];
+    //wk
+    [self viewCleanupForCollection:_bars1];
     
     
     //Add bars
@@ -205,9 +262,11 @@
         //Height Of Bar
         bar.grade = grade;
         
+        //wk add a switch to improve the performance
         // Add gradient
-        bar.barColorGradientStart = _barColorGradientStart;
-        
+        if(_ifUseGradientColor){
+           bar.barColorGradientStart = _barColorGradientStart;
+        }
 
         //For Click Index
         bar.tag = index;
@@ -217,6 +276,72 @@
         [self addSubview:bar];
 
         index += 1;
+    }
+    //wk add to draw bars1, usually is ratio barChart;
+    NSInteger index1 = 0;
+    for (NSNumber *valueString in _yValues1) {
+        float value = [valueString floatValue];
+        
+        float grade = (float)value / (float)_yValueMax;
+        
+        if (isnan(grade)) {
+            grade = 0;
+        }
+        
+        PNBar *bar;
+        CGFloat barWidth;
+        CGFloat barXPosition;
+        
+        if (_barWidth) {
+            barWidth = _barWidth;
+            barXPosition = index1 *  _xLabelWidth + _chartMargin + _xLabelWidth /2.0 - _barWidth /2.0;
+        }else{
+            barXPosition = index1 *  _xLabelWidth + _chartMargin + _xLabelWidth * 0.25;
+            if (_showLabel) {
+                barWidth = _xLabelWidth * 0.5;
+                
+            }
+            else {
+                barWidth = _xLabelWidth * 0.6;
+                
+            }
+        }
+        
+        bar = [[PNBar alloc] initWithFrame:CGRectMake(barXPosition, //Bar X position
+                                                      self.frame.size.height - chartCavanHeight - xLabelHeight - _chartMargin, //Bar Y position
+                                                      barWidth, // Bar witdh
+                                                      chartCavanHeight)]; //Bar height
+        
+        //Change Bar Radius
+        bar.barRadius = _barRadius;
+        
+        //Change Bar Background color
+        bar.backgroundColor = [UIColor clearColor];
+        
+        //Bar StrokColor First
+        if (self.strokeColor) {
+            bar.barColor = self.strokeColor1;
+        }else{
+            bar.barColor = [self barColorAtIndex:index1];
+        }
+        
+        //Height Of Bar
+        bar.grade = grade;
+        
+        //wk add a switch to improve the performance
+        // Add gradient
+        if(_ifUseGradientColor){
+            bar.barColorGradientStart = _barColorGradientStart;
+        }
+        
+        //For Click Index
+        bar.tag = index;
+        
+        
+        [_bars1 addObject:bar];
+        [self addSubview:bar];
+        
+        index1 += 1;
     }
     
     //Add chart border lines
@@ -284,8 +409,24 @@
         
         [self.layer addSublayer:_chartLeftLine];
     }
+    //wk
+    else{
+        [_chartBottomLine removeFromSuperlayer];
+        [_chartLeftLine removeFromSuperlayer];
+    }
 }
 
+//wk add line animation
+- (void)animateForLayer:(CAShapeLayer *)shapeLayer isAnimatingReferenceLine:(BOOL)shouldHalfOpacity
+{
+        CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+        pathAnimation.duration = 1.2;
+        pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
+        pathAnimation.toValue = [NSNumber numberWithFloat:1.0f];
+        [shapeLayer addAnimation:pathAnimation forKey:@"strokeEnd"];
+        
+        return;
+}
 
 - (void)viewCleanupForCollection:(NSMutableArray *)array
 {
@@ -295,6 +436,7 @@
     }
 }
 
+//wk
 - (void)removeLabelView
 {
     [self viewCleanupForCollection:_labels];
@@ -313,8 +455,17 @@
     }
 }
 
+- (UIColor *)bar1ColorAtIndex:(NSUInteger)index
+{
+    if ([self.strokeColors count] == [self.yValues count]) {
+        return self.strokeColors1[index];
+    }
+    else {
+        return self.strokeColor1;
+    }
+}
 
-#pragma mark - Touch detection
+//#pragma mark - Touch detection
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {

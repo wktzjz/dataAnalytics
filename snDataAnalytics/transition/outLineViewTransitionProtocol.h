@@ -12,7 +12,6 @@
 @protocol outLineViewTransitionProtocol <NSObject>
 
 @optional
-- (NSMutableArray *)outLineViewArray;
-- (NSNumber *)clickedOutlineIndex;
+- (void)detailViewControllerWillDismiss;
 
 @end

@@ -1,5 +1,5 @@
 //
-//  vistorGroupDetailOutlineView.h
+//  visitorGroupDetailOutlineView.h
 //  snDataAnalytics
 //
 //  Created by wktzjz on 14-10-9.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface vistorGroupDetailOutlineView : UIView
+@interface visitorGroupDetailOutlineView : UIView
 
 - (id)initWithFrame:(CGRect)frame;
 

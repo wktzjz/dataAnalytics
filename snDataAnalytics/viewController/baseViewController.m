@@ -17,13 +17,14 @@
 #import "UIViewController+clickedViewIndex.h"
 #import "TSMessage.h"
 
-#import "PresentingAnimator.h"
-#import "DismissingAnimator.h"
 #import "POP.h"
 #import "Colours.h"
 #import "changefulButton.h"
 
 #import "wkContextMenuView.h"
+
+#import "realTimeModel.h"
+#import "notificationDefine.h"
 
 typedef enum {
     dragUnknown = 0,
@@ -73,6 +74,8 @@ typedef enum {
     int _viewPresentedType;
     
     NSUserDefaults *_userDefaults;
+    
+    realTimeModel *_realTimeData;
 }
 
 #pragma mark viewDidLoad
@@ -100,13 +103,24 @@ typedef enum {
     [self addgestures];
 
     [self jumoToLoginView];
-    
+//    [self addModel];
+
     double delayInSeconds = 1.0;
     __weak id wself = self;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     
     dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         baseViewController *strongSelf = wself;
+        [strongSelf addModel];
+
+//        [strongSelf addObservers];
+        [[NSNotificationCenter defaultCenter] addObserver:strongSelf
+                                                 selector:@selector(handleRealTimeDataDidInitialize:)
+                                                     name:dataDidInitialize object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:strongSelf
+                                                 selector:@selector(handleRealTimeDataDidChange:)
+                                                     name:dataDidChange object:nil];
+        
         [strongSelf onApplicationFinishedLaunching];
 //        NSLog(@"width:%f, height:%f",wkScreenWidth,wkScreenHeight);
 //        NSLog(@"navigationbar height:%f",self.navigationController.navigationBar.frame.size.height);
@@ -122,36 +136,16 @@ typedef enum {
     
 }
 
-- (NSInteger)numberOfMenuItems
+- (void)addObservers
 {
-    return 3;
+    
 }
 
-- (UIImage *)imageForItemAtIndex:(NSInteger)index
+- (void)addModel
 {
-    NSString* imageName = nil;
-    switch (index) {
-        case 0:
-            imageName = @"facebook-white";
-            break;
-        case 1:
-            imageName = @"twitter-white";
-            break;
-        case 2:
-            imageName = @"google-plus-white";
-            break;
-        case 3:
-            imageName = @"linkedin-white";
-            break;
-        case 4:
-            imageName = @"pinterest-white";
-            break;
-            
-        default:
-            break;
-    }
-    return [UIImage imageNamed:imageName];
+    _realTimeData =  [[realTimeModel alloc] init];
 }
+
 
 - (void)didSelectItemAtIndex:(NSInteger)selectedIndex forMenuAtPoint:(CGPoint)point
 {
@@ -191,6 +185,10 @@ typedef enum {
     
     CGRect frontViewRect = CGRectMake(0, 0, wkScreenWidth, wkScreenHeight);
     _frontView = [[UIView alloc] initWithFrame:frontViewRect];
+    _frontView.layer.shadowOpacity = 0.5;
+    _frontView.layer.shadowRadius = 10;
+    _frontView.layer.shadowColor = [UIColor blackColor].CGColor;
+    _frontView.layer.shadowOffset = CGSizeMake(-3, 3);
     
     _text = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, 300, 50)];
     [_text setText:@"Data Outline View"];
@@ -281,13 +279,13 @@ typedef enum {
     CGFloat originX = 0;
     
     
-    _realTimeView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, 0, width, height - 15) ifLoading:YES];
+    _realTimeView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, 0, width, height + 410.0) ifLoading:YES];
     [_scrollView1 addSubview:_realTimeView];
     
-    _vistorGruopView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _realTimeView.frame.origin.y + _realTimeView.frame.size.height + 20, width, height) ifLoading:YES];
-    [_scrollView1 addSubview:_vistorGruopView];
+    _visitorGruopView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _realTimeView.frame.origin.y + _realTimeView.frame.size.height + 20, width, height) ifLoading:YES];
+    [_scrollView1 addSubview:_visitorGruopView];
     
-    _sourceView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _vistorGruopView.frame.origin.y + _vistorGruopView.frame.size.height + 20, width, height - 50.0) ifLoading:YES];
+    _sourceView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _visitorGruopView.frame.origin.y + _visitorGruopView.frame.size.height + 20, width, height - 50.0) ifLoading:YES];
     [_scrollView1 addSubview:_sourceView];
     
     _pageView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _sourceView.frame.origin.y + _sourceView.frame.size.height + 20, width, height) ifLoading:YES];
@@ -303,9 +301,30 @@ typedef enum {
     [_scrollView1 addSubview:_transformView];
     
     
-    _outLineViewArray = [[NSMutableArray alloc] initWithArray:@[_realTimeView,_vistorGruopView,_sourceView,_pageView,_hotCityView,_hotPageView,_transformView]];
+    _outLineViewArray = [[NSMutableArray alloc] initWithArray:@[_realTimeView,_visitorGruopView,_sourceView,_pageView,_hotCityView,_hotPageView,_transformView]];
 }
 
+#pragma mark - hdndle RealTimeData didChange
+
+- (void)handleRealTimeDataDidInitialize:(NSNotification *)notification
+{
+//    NSLog(@"handleRealTimeDataDidInitialize");
+    if(notification.userInfo != nil && notification.object == _realTimeData) {
+        dispatch_main_async_safe(^{
+            [_realTimeView addDataViewType:outlineRealTime inControllerType:outlineView data:nil];
+        })
+    }
+}
+
+- (void)handleRealTimeDataDidChange:(NSNotification *)notification
+{
+//    NSLog(@"handleRealTimeDataDidChange");
+    if(notification.userInfo != nil && notification.object == _realTimeData) {
+        dispatch_main_async_safe(^{
+            [_realTimeView reloadRealTimeData:notification.userInfo];
+        })
+    }
+} 
 
 #pragma mark - viewWillAppear
 - (void)viewWillAppear:(BOOL)animated
@@ -323,6 +342,7 @@ typedef enum {
         
         viewController.dismissBlock = ^{
             [self dismissViewControllerAnimated:YES completion:nil];
+//            [self addModel];
             [self getNetworkInfo];
         };
         
@@ -349,6 +369,7 @@ typedef enum {
     [networkManager sharedInstance].delegate = self;
     
     [[networkManager sharedInstance] getNetworkInfo:@"http://news-at.zhihu.com/api/3/news/latest"];
+     //@"http://news-at.zhihu.com/api/3/news/latest"];
     ////http://news-at.zhihu.com/api/3/news/hot;
 }
 
@@ -356,11 +377,12 @@ typedef enum {
 - (BOOL)handleInfoFromNetwork:(NSDictionary *)info
 {
     if(!info){
-        NSArray *vistorGroupData = @[@"实时",@"访客群体分析",@"来源分析",@"页面分析",@"热门城市",@"热门页面",@"转化分析"];
+        NSArray *visitorGroupData = @[@"实时",@"访客群体分析",@"来源分析",@"页面分析",@"热门城市",@"热门页面",@"转化分析"];
         dispatch_main_async_safe(^{
             [_outLineViewArray enumerateObjectsUsingBlock:^(dataOutlineViewContainer *view, NSUInteger idx, BOOL *stop) {
-                    [view addDataViewType:(viewType)idx inControllerType:outlineView data:vistorGroupData];
-                
+                if(idx != 0){
+                    [view addDataViewType:(viewType)idx inControllerType:outlineView data:visitorGroupData];
+                }
             }];
         });
     }
@@ -381,7 +403,10 @@ typedef enum {
             if(CGRectContainsPoint(_scrollView1.frame, locationInMainView)){
                 CGPoint location = [recongnizer locationInView:_scrollView1];
                 
-                if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[1]).frame, location)){
+                if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[0]).frame, location)){
+                    [self handleTappingOutlineView:0];
+                    
+                }else if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[1]).frame, location)){
                     [self handleTappingOutlineView:1];
                 
                 }else if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[2]).frame, location)){
@@ -392,8 +417,8 @@ typedef enum {
                     
                 }else if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[4]).frame, location)){
                     [self handleTappingOutlineView:4];
-                }
-                else if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[5]).frame, location)){
+                    
+                }else if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[5]).frame, location)){
                     [self handleTappingOutlineView:5];
                 }else if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[6]).frame, location)){
                     [self handleTappingOutlineView:6];
@@ -409,8 +434,12 @@ typedef enum {
     dataOutlineViewContainer *targetView;
     
     switch (index) {
+        case 0:{
+            targetView = _realTimeView;
+            }
+            break;
         case 1:{
-            targetView = _vistorGruopView;
+            targetView = _visitorGruopView;
             }
             break;
         case 2:{
@@ -449,6 +478,7 @@ typedef enum {
 #pragma mark dataDetailsControllerDelegate
 - (void)dismissDetailsController
 {
+    [_detailsViewController removeObservers];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -460,6 +490,8 @@ typedef enum {
      Netwokr weather instance
      *************************************/
     [self getNetworkInfo];
+//    [self handleInfoFromNetwork:nil];
+
 }
 
 #pragma mark outlineView transite to detailsView
@@ -475,13 +507,24 @@ typedef enum {
     _animator.behindViewScale = 0.5f;
     _animator.bounces  = YES;
     _animator.dragable = YES;
+    _animator.delegate = self;
     
 //    [_animator setContentScrollView:_detailsViewController.scrollView];
-    _animator.direction = transitonDirectionLeft/*(transitonDirection)fmodf(type, 3)*/;
+//    if(type == outlineRealTime){
+//        _animator.direction = transitonDirectionBottom;
+//        [_animator setContentScrollView:_detailsViewController.scrollView];
+//    }else{
+        _animator.direction = transitonDirectionRight/*(transitonDirection)fmodf(type, 3)*/;
+//    }
     
     _detailsViewController.transitioningDelegate = _animator;
     
     [self presentViewController:_detailsViewController animated:YES completion:nil];
+}
+
+- (void)detailViewControllerWillDismiss
+{
+    [_detailsViewController removeObservers];
 }
 
 #pragma mark - UIViewControllerTransitioningDelegate
@@ -499,15 +542,7 @@ typedef enum {
 //}
 
 #pragma mark outLineViewTransitionProtocol
-- (NSMutableArray *)outLineViewArray
-{
-    return _outLineViewArray;
-}
 
-- (NSNumber *)clickedOutlineIndex
-{
-    return _clickedOutLineViewIndex;
-}
 
 #pragma mark viewAnimations
 - (void)mainViewPullUpFromBottom
@@ -671,10 +706,12 @@ typedef enum {
         }
         case UIGestureRecognizerStateEnded:{
             if(_dragDirection == dragUp){
-                if (_progress >mainViewPullSuccessedRatio) {
-                    [self mainViewPullUpFromBottom];
-                }else{
-                    [self mainViewPullDownFromBottom];
+                if(_frontViewIsDraggedDown){
+                    if (_progress >mainViewPullSuccessedRatio) {
+                        [self mainViewPullUpFromBottom];
+                    }else{
+                        [self mainViewPullDownFromBottom];
+                    }
                 }
             }else{
                 if(!_frontViewIsDraggedDown){
@@ -740,6 +777,35 @@ typedef enum {
     return NO;
 }
 
+- (NSInteger)numberOfMenuItems
+{
+    return 3;
+}
 
+- (UIImage *)imageForItemAtIndex:(NSInteger)index
+{
+    NSString* imageName = nil;
+    switch (index) {
+        case 0:
+            imageName = @"facebook-white";
+            break;
+        case 1:
+            imageName = @"twitter-white";
+            break;
+        case 2:
+            imageName = @"google-plus-white";
+            break;
+        case 3:
+            imageName = @"linkedin-white";
+            break;
+        case 4:
+            imageName = @"pinterest-white";
+            break;
+            
+        default:
+            break;
+    }
+    return [UIImage imageNamed:imageName];
+}
 
 @end

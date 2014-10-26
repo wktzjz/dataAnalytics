@@ -12,7 +12,7 @@
 #import "PNLineChartDataItem.h"
 #import "BEMSimpleLineGraphView.h"
 
-#import "vistorGroupOutlineView.h"
+#import "visitorGroupOutlineView.h"
 #import "pageAnalyticsOutlineView.h"
 
 typedef NS_ENUM(NSUInteger, dataVisualizedType) {
@@ -28,7 +28,7 @@ typedef NS_ENUM(NSUInteger, dataVisualizedType) {
 
 typedef NS_ENUM(NSUInteger, viewType) {
     outlineRealTime = 0,
-    outlineVistorGroup,
+    outlinevisitorGroup,
     outlineSource,
     outlinePageAnalytics,
     outlineHotCity,
@@ -47,19 +47,18 @@ typedef NS_ENUM(NSUInteger, inViewType) {
 
 
 @property (nonatomic) UIImageView *snapView;
-@property (nonatomic) dataVisualizedType dataType;
+@property (nonatomic) viewType dataType;
 @property (nonatomic) UILabel * chartLabel;
 @property (nonatomic) PNLineChart * lineChart;
 @property (nonatomic) PNBarChart *barChart;
 @property (nonatomic) PNCircleChart *circleChart;
 @property (nonatomic) PNPieChart *pieChart;
 @property (nonatomic) BEMSimpleLineGraphView *myGraph;
-@property (nonatomic) vistorGroupOutlineView *vistorGroupView;
+@property (nonatomic) visitorGroupOutlineView *visitorGroupView;
 @property (nonatomic) pageAnalyticsOutlineView *pageView;
 
-
 - (instancetype)initWithFrame:(CGRect)frame ifLoading:(BOOL)ifLoading;
-- (instancetype)initWithFrame:(CGRect)frame dataType:(dataVisualizedType)type inControllerType:(inViewType)inViewType;
+- (instancetype)initWithFrame:(CGRect)frame dataType:(viewType)type inControllerType:(inViewType)inViewType;
 
 - (void)addView:(UIView *)view inControllerType:(inViewType)inViewType;
 
@@ -71,5 +70,5 @@ typedef NS_ENUM(NSUInteger, inViewType) {
 - (void)modifyPieChartInView:(UIView *)view type:(viewType)type WithDataArray:(NSArray *)dataArray groupColorArray:(NSArray *)colorArray groupPercentArray:(NSArray *)percentArray;
 - (void)modifyLineChartInView:(UIView *)view type:(viewType)type WithValueArray:(NSMutableArray *)valueArray dateArray:(NSMutableArray *)dateArray;
 
-
+- (void)reloadRealTimeData:(NSDictionary *)info;
 @end

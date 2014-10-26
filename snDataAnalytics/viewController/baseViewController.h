@@ -11,6 +11,7 @@
 #import "dataDetailsViewController.h"
 #import "networkManager.h"
 #import "outLineViewTransitionProtocol.h"
+#import "KeyValueObserver.h"
 
 
 
@@ -21,15 +22,17 @@
 @property (nonatomic) NSMutableArray *outLineViewArray;
 
 @property (nonatomic) dataOutlineViewContainer *realTimeView;
-@property (nonatomic) dataOutlineViewContainer *vistorGruopView;
+@property (nonatomic) dataOutlineViewContainer *visitorGruopView;
 @property (nonatomic) dataOutlineViewContainer *sourceView;
 @property (nonatomic) dataOutlineViewContainer *pageView;
 @property (nonatomic) dataOutlineViewContainer *hotCityView;
 @property (nonatomic) dataOutlineViewContainer *hotPageView;
 @property (nonatomic) dataOutlineViewContainer *transformView;
 
-
 @property (nonatomic,strong) dataDetailsViewController *detailsViewController;
+
+@property (nonatomic, strong) id observeToken;
+
 
 @property (nonatomic) NSNumber *clickedOutLineViewIndex;
 

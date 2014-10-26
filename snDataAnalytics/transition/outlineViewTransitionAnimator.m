@@ -8,7 +8,6 @@
 
 #import "outlineViewTransitionAnimator.h"
 #import "UIViewController+clickedViewIndex.h"
-#import "outLineViewTransitionProtocol.h"
 #import "defines.h"
 #import "UIView+snapShot.h"
 
@@ -37,7 +36,7 @@
     if (self) {
         _modalController = modalViewController;
         _dragable = NO;
-        _direction = transitonDirectionLeft;
+        _direction = transitonDirectionRight;
         _behindViewScale = 0.9f;
         _behindViewAlpha = 1.0f;
         }
@@ -157,7 +156,7 @@
         
         CGFloat animationScale = wkScreenWidth/220;
         
-        [UIView animateWithDuration:0.6
+        [UIView animateWithDuration:0.7
                               delay:0.0
              usingSpringWithDamping:0.6
               initialSpringVelocity:0.5
@@ -270,11 +269,11 @@
         _isInteractive = YES;
         
 /* add _snapView when the dismiss animation begins*/
-        if(_snapView && _direction!=transitonDirectionBottom){
-            _snapView.hidden = NO;
-            _snapView.alpha = 0.0;
-            [_snapView setFrame:_snapInitialFrame];
-        }
+//        if(_snapView && _direction!=transitonDirectionBottom){
+//            _snapView.hidden = NO;
+//            _snapView.alpha = 0.0;
+//            [_snapView setFrame:_snapInitialFrame];
+//        }
 /****************/
         
         if (self.direction == transitonDirectionBottom) {
@@ -282,6 +281,7 @@
         } else {
             _panLocationStart = location.x;
         }
+        
         [_modalController dismissViewControllerAnimated:YES completion:nil];
     }
     
@@ -437,6 +437,10 @@
                          }
                          
                          [transitionContext completeTransition:YES];
+                         // tell the modelview controller to remove observiers
+                         if (self.delegate && [self.delegate respondsToSelector:@selector(detailViewControllerWillDismiss)]) {
+                             [self.delegate detailViewControllerWillDismiss];
+                         }
                          _modalController = nil;
                      }];
     

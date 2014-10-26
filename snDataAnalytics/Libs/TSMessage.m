@@ -295,7 +295,7 @@ __weak static UIViewController *_defaultViewController;
     if (currentView.duration == TSMessageNotificationDurationAutomatic)
     {
         currentView.duration = kTSMessageAnimationDuration + kTSMessageDisplayTime + currentView.frame.size.height * kTSMessageExtraDisplayTimePerPixel;
-        NSLog(@"currentView.duration:%f",currentView.duration);
+//        NSLog(@"currentView.duration:%f",currentView.duration);
     }
     
     if (currentView.duration != TSMessageNotificationDurationEndless)

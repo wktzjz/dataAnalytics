@@ -68,7 +68,7 @@
     }
 }
 
-- (void)sendAsynchronousRequestWithURL:(NSString *)urlString failureBlock:(void (^)())failBlock successedBlock:(void (^)())succeedBlock
+- (void)sendAsynchronousRequestWithURL:(NSString *)urlString failureBlock:(void (^)(NSDictionary *data))failBlock successedBlock:(void (^)(NSDictionary *data))succeedBlock
 {
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5];
@@ -77,7 +77,7 @@
     [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError){
         
         NSDictionary *json;
-        networkManager *strongSelf = _wself;
+//        networkManager *strongSelf = _wself;
         
         if(data){
             json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&connectionError];
@@ -87,18 +87,18 @@
         
         if(nil == json){
             if(failBlock){
-                failBlock();
+                failBlock(json);
             }
             return ;
         }
         
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json options:NSJSONWritingPrettyPrinted error:nil];
-        NSLog(@"jsonData %@",[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]);
+//        NSLog(@"jsonData %@",[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]);
 
-        [strongSelf handleData];
+//        [strongSelf handleData];
         
         if(succeedBlock){
-            succeedBlock();
+            succeedBlock(json);
         }
       }
      

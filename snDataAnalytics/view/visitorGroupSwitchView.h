@@ -1,5 +1,5 @@
 //
-//  vistorGroupSwitchView.h
+//  visitorGroupSwitchView.h
 //  snDataAnalytics
 //
 //  Created by wktzjz on 14-10-9.
@@ -12,7 +12,7 @@
 typedef void(^switchAction)(NSInteger index);
 
 
-@interface vistorGroupSwitchView : UIView <TQTableViewDataSource,TQTableViewDelegate>
+@interface visitorGroupSwitchView : UIView <TQTableViewDataSource,TQTableViewDelegate>
 
 @property (nonatomic, copy) switchAction switchAction;
 @property (nonatomic, strong) TQMultistageTableView *mTableView;

@@ -10,7 +10,7 @@
 
 typedef NS_ENUM(NSUInteger, swithViewType) {
     demo = 0,
-    vistorGroup,
+    visitorGroup,
 };
 
 // Block

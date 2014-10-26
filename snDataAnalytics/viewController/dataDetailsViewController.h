@@ -31,5 +31,5 @@
 //- (instancetype)initWithFrame:(CGRect)frame;
 //- (instancetype)initWithFrame:(CGRect)frame type:(dataVisualizedType)type;
 - (instancetype)initWithFrame:(CGRect)frame type:(viewType)type title:(NSString *)title;
-
+- (void)removeObservers;
 @end

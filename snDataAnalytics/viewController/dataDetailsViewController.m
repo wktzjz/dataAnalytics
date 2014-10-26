@@ -26,7 +26,10 @@
 #import "wkContextMenuView.h"
 
 #import "test.h"
-#import "vistorGroupDetailOutlineView.h"
+#import "visitorGroupDetailOutlineView.h"
+#import "notificationDefine.h"
+#import "FRDLivelyButton.h"
+#import "calloutItemView.h"
 
 const static CGFloat titleViewHeight = 44.0f;
 
@@ -59,7 +62,14 @@ const static CGFloat titleViewHeight = 44.0f;
     
     UIView *_contentView;
     UIView *_barView;
-    UIButton *_tipButton;
+    FRDLivelyButton *_timeSwithButton;
+    UIView *_itemsView;
+    NSMutableArray     *_items;
+    NSMutableIndexSet  *_selectedIndices;
+    NSArray            *_borderColors;
+    NSArray            *_images;
+    BOOL               _itemsShowed;
+    BOOL               _isSingleSelect;
     
     THDatePickerViewController *_datePicker;
     NSDate *_curDate;
@@ -111,25 +121,276 @@ const static CGFloat titleViewHeight = 44.0f;
     [self addSettingButton];
     [self addDatePickerButton];
     [self addScrollView];
-    [self getDataFromNetwork];
     [self addOutlineDataView];
+    [self addTimeSwithButton];
     
     wkContextMenuView* overlay = [[wkContextMenuView alloc] init];
     overlay.dataSource = self;
     overlay.delegate = self;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleRealTimeDataDidChange:)
+                                                 name:dataDidChange object:nil];
     
     UILongPressGestureRecognizer* _longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:overlay action:@selector(longPressDetected:)];
     [self.scrollView setUserInteractionEnabled:YES];
     [self.scrollView addGestureRecognizer:_longPressRecognizer];
     
 //    testInstance = [[test alloc] init];
-//    UITapGestureRecognizer* tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:testInstance action:@selector(test1)];
-//    [self.view addGestureRecognizer:tapRecognizer];
+    UITapGestureRecognizer* tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+    [self.view addGestureRecognizer:tapRecognizer];
     
 }
 
-#pragma mark wkContextOverlayViewDataSource
+- (void)addTimeSwithButton
+{
+    _itemsView = [[UIView alloc] initWithFrame:CGRectMake(45, self.view.frame.size.height - 45, 300, 45)];
+    [self.view addSubview:_itemsView];
+    _timeSwithButton = [[FRDLivelyButton alloc] initWithFrame:CGRectMake(0,12, 25, 25)];
+    [_timeSwithButton setOptions:@{ kFRDLivelyButtonLineWidth: @(2.0f),
+                           kFRDLivelyButtonHighlightedColor: [UIColor colorWithRed:0.5 green:0.8 blue:1.0 alpha:1.0],
+                           kFRDLivelyButtonColor: PNTwitterColor
+                           }];
+    [_timeSwithButton setStyle:kFRDLivelyButtonStyleCirclePlus animated:NO];
+    [_timeSwithButton addTarget:self action:@selector(showItems:) forControlEvents:UIControlEventTouchUpInside];
+    _timeSwithButton.tag = 0;
+    [_itemsView addSubview:_timeSwithButton];
+    
+    _selectedIndices = [NSMutableIndexSet indexSet];
+    _items = [[NSMutableArray alloc] init];
+    _borderColors = @[  [UIColor colorWithWhite:0.7 alpha:1],
+                        [UIColor colorWithWhite:0.7 alpha:1],
+                        [UIColor colorWithWhite:0.7 alpha:1],
+                        [UIColor colorWithWhite:0.7 alpha:1]
+                        ];
+    _images = @[[UIImage imageNamed:@"icon_account"],
+                [UIImage imageNamed:@"icon_account"],
+                [UIImage imageNamed:@"icon_account"],
+                ];
+    
+    [_images enumerateObjectsUsingBlock:^(UIImage *image, NSUInteger idx, BOOL *stop) {
+        calloutItemView *view = [[calloutItemView alloc] init];
+        view.itemIndex = idx;
+        view.clipsToBounds = YES;
+        view.imageView.image = image;
+        
+        CGRect frame = CGRectMake(65 + idx * 60, 0 , 55, 55);
+        view.frame = frame;
+        view.layer.cornerRadius = frame.size.width/2.f;
+        view.originalBackgroundColor = [UIColor clearColor];
+        view.alpha = 0.0f;
+        
+        [_itemsView addSubview:view];
+        
+        [_items addObject:view];
+        
+        if (_borderColors && _selectedIndices && [_selectedIndices containsIndex:idx]) {
+            UIColor *color = _borderColors[idx];
+            view.layer.borderColor = color.CGColor;
+        }
+        else {
+            view.layer.borderColor = [UIColor clearColor].CGColor;
+        }
+    }];
+}
 
+- (void)handleTap:(UIGestureRecognizer *)recognizer
+{
+    if(!_itemsShowed){
+        CGPoint touchPoint = [recognizer locationInView:_contentView];
+        
+    }else{
+        NSInteger tapIndex = [self indexOfTap:[recognizer locationInView:_itemsView]];
+        
+        if (tapIndex != NSNotFound) {
+            [self didTapItemAtIndex:tapIndex];
+        }else{
+            [self dismissItems];
+        }
+    }
+}
+
+- (NSInteger)indexOfTap:(CGPoint)location
+{
+    __block NSUInteger index = NSNotFound;
+    
+    [_items enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
+        if (CGRectContainsPoint(view.frame, location)) {
+            index = idx;
+            *stop = YES;
+        }
+    }];
+    
+    return index;
+}
+
+- (void)didTapItemAtIndex:(NSUInteger)index
+{
+    BOOL didEnable = ! [_selectedIndices containsIndex:index];
+    
+    if (_borderColors) {
+        UIColor *stroke = _borderColors[index];
+        UIView *view = _items[index];
+        
+        if (didEnable) {
+            if (_isSingleSelect){
+                [_selectedIndices removeAllIndexes];
+                [_items enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    UIView *aView = (UIView *)obj;
+                    [[aView layer] setBorderColor:[[UIColor clearColor] CGColor]];
+                }];
+            }
+            view.layer.borderColor = stroke.CGColor;
+            
+            CABasicAnimation *borderAnimation = [CABasicAnimation animationWithKeyPath:@"borderColor"];
+            borderAnimation.fromValue = (id)[UIColor clearColor].CGColor;
+            borderAnimation.toValue = (id)stroke.CGColor;
+            borderAnimation.duration = 0.5f;
+            [view.layer addAnimation:borderAnimation forKey:nil];
+            
+            [_selectedIndices addIndex:index];
+        }
+        else {
+            if (!_isSingleSelect){
+                view.layer.borderColor = [UIColor clearColor].CGColor;
+                [_selectedIndices removeIndex:index];
+            }
+        }
+        
+        CGRect pathFrame = CGRectMake(-CGRectGetMidX(view.bounds), -CGRectGetMidY(view.bounds), view.bounds.size.width, view.bounds.size.height);
+        UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:pathFrame cornerRadius:view.layer.cornerRadius];
+        
+        // accounts for left/right offset and contentOffset of scroll view
+        CGPoint shapePosition = [_contentView convertPoint:view.center fromView:_itemsView];
+        
+        CAShapeLayer *circleShape = [CAShapeLayer layer];
+        circleShape.path = path.CGPath;
+        circleShape.position = shapePosition;
+        circleShape.fillColor = [UIColor clearColor].CGColor;
+        circleShape.opacity = 0;
+        circleShape.strokeColor = stroke.CGColor;
+        circleShape.lineWidth = 1.5;
+        
+        [self.view.layer addSublayer:circleShape];
+        
+        CABasicAnimation *scaleAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+        scaleAnimation.fromValue = [NSValue valueWithCATransform3D:CATransform3DIdentity];
+        scaleAnimation.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeScale(2.5, 2.5, 1)];
+        
+        CABasicAnimation *alphaAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+        alphaAnimation.fromValue = @1;
+        alphaAnimation.toValue = @0;
+        
+        CAAnimationGroup *animation = [CAAnimationGroup animation];
+        animation.animations = @[scaleAnimation, alphaAnimation];
+        animation.duration = 0.5f;
+        animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+        [circleShape addAnimation:animation forKey:nil];
+    }
+    
+    
+    //    if ([self.delegate respondsToSelector:@selector(sidebar:didTapItemAtIndex:)]) {
+    //        [self.delegate sidebar:self didTapItemAtIndex:index];
+    //    }
+    //    if ([self.delegate respondsToSelector:@selector(sidebar:didEnable:itemAtIndex:)]) {
+    //        [self.delegate sidebar:self didEnable:didEnable itemAtIndex:index];
+    //    }
+}
+#pragma mark - Show and dismiss items
+- (void)showItems:(id)sender
+{
+    if(_itemsShowed){
+        [self dismissItems];
+    }else{
+        _itemsShowed = YES;
+        [_timeSwithButton setStyle:kFRDLivelyButtonStyleCircleClose animated:YES];
+        
+        [_items enumerateObjectsUsingBlock:^(calloutItemView *view, NSUInteger idx, BOOL *stop) {
+            //        view.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1);
+            view.alpha = 0;
+            CGFloat y = view.center.y;
+            //        view.center =CGPointMake(view.center.x, view.center.y - 30);
+            view.originalBackgroundColor = [UIColor clearColor];
+            view.layer.borderWidth = 1.5f;
+            
+            [self showWithView:view idx:idx initDelay:0.1 centerY:y];
+        }];
+        
+//        _lastText1Alpha = _text1.alpha;
+//        _lastTextAlpha = _text.alpha;
+//        _lastHeaderAlpha = _header.alpha;
+//        _lastTitleAlpha = _title.alpha;
+//        
+        [UIView animateWithDuration:0.5 animations:^{
+            _contentView.alpha  *= 0.2;
+        }];
+    }
+}
+
+- (void)dismissItems
+{
+    _itemsShowed = NO;
+    [_timeSwithButton setStyle:kFRDLivelyButtonStyleCirclePlus animated:YES];
+    [_items enumerateObjectsUsingBlock:^(calloutItemView *view, NSUInteger idx, BOOL *stop) {
+        //        view.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1);
+        CGFloat y = view.center.y;
+        //        view.center =CGPointMake(view.center.x, view.center.y - 30);
+        view.originalBackgroundColor = [UIColor clearColor];
+        view.layer.borderWidth = 1.5f;
+        
+        [self dismissWithView:view idx:idx initDelay:0.5 centerY:y];
+    }];
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        _contentView.alpha = 1.0;
+    }];
+    
+}
+
+#pragma mark - Set how items show and dismiss
+- (void)showWithView:(calloutItemView *)view idx:(NSUInteger)idx initDelay:(CGFloat)initDelay centerY:(CGFloat)y
+{
+    [UIView animateWithDuration:0.7
+                          delay:(initDelay + idx*0.08f)
+         usingSpringWithDamping:0.6
+          initialSpringVelocity:0.5
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         //                        view.layer.transform = CATransform3DIdentity;
+                         //                         view.center = CGPointMake(view.center.x,y);
+                         //                         view.layer.transform = CATransform3DMakeScale(1.2, 1.2, 1);
+                         view.backgroundColor = [UIColor clearColor];
+                         view.alpha = 1.0;
+                     }
+                     completion:nil];
+}
+
+- (void)dismissWithView:(calloutItemView *)view idx:(NSUInteger)idx initDelay:(CGFloat)initDelay centerY:(CGFloat)y
+{
+    [UIView animateWithDuration:0.7
+                          delay:(initDelay - idx*0.08f)
+         usingSpringWithDamping:0.6
+          initialSpringVelocity:0.5
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         //                        view.layer.transform = CATransform3DIdentity;
+                         //                         view.center = CGPointMake(view.center.x,y);
+                         //                         view.layer.transform = CATransform3DMakeScale(1.2, 1.2, 1);
+                         view.backgroundColor = [UIColor clearColor];
+                         view.alpha = 0.0;
+                     }
+                     completion:nil];
+}
+
+#pragma mark removeObservers
+- (void)removeObservers
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:dataDidChange
+                                                  object:nil];
+}
+
+#pragma mark wkContextOverlayViewDataSource
 - (NSInteger) numberOfMenuItems
 {
     return 3;
@@ -221,12 +482,24 @@ const static CGFloat titleViewHeight = 44.0f;
     shimmeringLogo.shimmering      = YES;
     shimmeringLogo.center          = CGPointMake(_barView.center.x,_barView.center.y);
     [_barView addSubview:shimmeringLogo];
+    
+    
 }
 
 - (void)setViewTitleString:(NSString *)titleString
 {
     _viewTitleString = titleString;
     [_viewTitle setText:titleString];
+}
+
+- (void)addTimeSwitchButton
+{
+//    _tipButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//    _tipButton.frame = CGRectMake(0, 0, 160.0, 40.0);
+//    _tipButton.center = CGPointMake(self.view.center.x, self.view.center.y+150);
+//    [_tipButton setTitle:@"swipe or click" forState:UIControlStateNormal];
+//    [_tipButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+//    [_contentView addSubview:_tipButton];
 }
 
 - (void)addSettingButton
@@ -271,6 +544,7 @@ const static CGFloat titleViewHeight = 44.0f;
     datePickerButton.titleLabel.font = [UIFont fontWithName:@"Avenir-Medium"size:18];
     
     datePickerButton.backgroundColor = [UIColor clearColor];
+    datePickerButton.textColor = PNLightGreen;
     datePickerButton.translatesAutoresizingMaskIntoConstraints = NO;
     [datePickerButton setTitle:@"Date" forState:UIControlStateNormal];
     [datePickerButton addTarget:self action:@selector(datePickerButtonClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -303,13 +577,6 @@ const static CGFloat titleViewHeight = 44.0f;
     [_scrollView setShowsVerticalScrollIndicator:NO];
     [_scrollView setContentSize:CGSizeMake(0, self.view.bounds.size.height * 3)];
     [_contentView addSubview:_scrollView];
-    
-//    _tipButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-//    _tipButton.frame = CGRectMake(0, 0, 160.0, 40.0);
-//    _tipButton.center = CGPointMake(self.view.center.x, self.view.center.y+150);
-//    [_tipButton setTitle:@"swipe or click" forState:UIControlStateNormal];
-//    [_tipButton addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
-//    [_contentView addSubview:_tipButton];
 }
 
 - (void)addOutlineDataView
@@ -319,38 +586,43 @@ const static CGFloat titleViewHeight = 44.0f;
     float width   = wkScreenWidth - marginX * 2;
     float height  = wkScreenHeight/2 + 10;
     
-    if (_dataVisualizedType == outlinePageAnalytics) {
-        
-        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineTypeLine inControllerType:detailView];
+    if(_dataVisualizedType == outlineRealTime){
+        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height*2.5) dataType:outlineRealTime inControllerType:detailView];
         _dataContentView.backgroundColor = [UIColor whiteColor];
         [_scrollView addSubview:_dataContentView];
         
-       }else if (_dataVisualizedType == outlineHotCity){
+    }else if (_dataVisualizedType == outlinePageAnalytics) {
+        
+        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlinePageAnalytics inControllerType:detailView];
+        _dataContentView.backgroundColor = [UIColor whiteColor];
+        [_scrollView addSubview:_dataContentView];
+        
+    }else if (_dataVisualizedType == outlineHotCity){
         //Add BarChart
-        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineTypeBar inControllerType:detailView];
+        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineHotCity inControllerType:detailView];
         [_scrollView addSubview:_dataContentView];
         
            
     }else if (_dataVisualizedType == outlineSource){
         
         //Add CircleChart
-        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineTypeCircle inControllerType:detailView];
+        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineSource inControllerType:detailView];
         [_scrollView addSubview:_dataContentView];
         
-    }else if (_dataVisualizedType == outlineVistorGroup){
+    }else if (_dataVisualizedType == outlinevisitorGroup){
         
         //Add PieChart
         
-        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineTypePie inControllerType:detailView];
+        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlinevisitorGroup inControllerType:detailView];
         [_scrollView addSubview:_dataContentView];
         
-        vistorGroupDetailOutlineView *detailView = [[vistorGroupDetailOutlineView alloc] initWithFrame:CGRectMake(marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 20, width, height - 30.0)];
+        visitorGroupDetailOutlineView *detailView = [[visitorGroupDetailOutlineView alloc] initWithFrame:CGRectMake(marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 20, width, height - 30.0)];
         
         [_scrollView addSubview:detailView];
         _ifHasDetailsView = YES;
        
     }else if (_dataVisualizedType == outlineHotPage){
-        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineTypeLine1 inControllerType:detailView];
+        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineHotPage inControllerType:detailView];
         [_scrollView addSubview:_dataContentView];
         
     }
@@ -364,11 +636,6 @@ const static CGFloat titleViewHeight = 44.0f;
     }
 }
 
-#pragma mark settingButtonClicked
-- (void)getDataFromNetwork
-{
-    
-}
 
 #pragma mark settingButtonClicked
 - (void)settingButtonClicked
@@ -387,7 +654,7 @@ const static CGFloat titleViewHeight = 44.0f;
 //    wkBlurPopover *popover = [[wkBlurPopover alloc] initWithContentViewController:vc];
 //    [self presentViewController:popover animated:YES completion:nil];
     
-    indexSwitchController *vc = [[indexSwitchController alloc] initWithFrame:CGRectMake(0, 0, 280, 216) type:vistorGroup];
+    indexSwitchController *vc = [[indexSwitchController alloc] initWithFrame:CGRectMake(0, 0, 280, 216) type:visitorGroup];
         __weak typeof(self) weakSelf = self;
     
         vc.switchAction =^(NSInteger index){
@@ -463,7 +730,7 @@ const static CGFloat titleViewHeight = 44.0f;
         NSLog(@"selected Day:%@",[_formatter stringFromDate:day.date]);
     }];
     _curDate = datePicker.date;
-    [self refreshTitle];
+//    [self refreshTitle];
     [self dismissSemiModalView];
 }
 
@@ -479,10 +746,19 @@ const static CGFloat titleViewHeight = 44.0f;
 
 -(void)refreshTitle
 {
-    if(_curDate) {
-        [_tipButton setTitle:[_formatter stringFromDate:_curDate] forState:UIControlStateNormal];
-    }else {
-        [_tipButton setTitle:@"No date selected" forState:UIControlStateNormal];
+//    if(_curDate) {
+//        [_tipButton setTitle:[_formatter stringFromDate:_curDate] forState:UIControlStateNormal];
+//    }else {
+//        [_tipButton setTitle:@"No date selected" forState:UIControlStateNormal];
+//    }
+}
+
+#pragma mark handleRealTimeDataDidChange
+
+- (void)handleRealTimeDataDidChange:(NSNotification *)notification
+{
+    if(_dataVisualizedType == outlineRealTime){
+        [_dataContentView reloadRealTimeData:notification.userInfo];
     }
 }
 
@@ -499,7 +775,7 @@ const static CGFloat titleViewHeight = 44.0f;
             [_dataContentView modifyPieChartInView:_dataContentView.pageView type:outlinePageAnalytics WithDataArray: @[[PNPieChartDataItem dataItemWithValue:15 color:PNLightGreen],[PNPieChartDataItem dataItemWithValue:20 color:PNGreen ],[PNPieChartDataItem dataItemWithValue:20 color:PNFreshGreen ],[PNPieChartDataItem dataItemWithValue:45 color:PNDeepGreen]] groupColorArray:@[PNLightGreen,PNGreen,PNFreshGreen,PNDeepGreen] groupPercentArray:@[@15,@20,@20,@45]];
             [_dataContentView modifyLineChartInView:_dataContentView.pageView type:outlinePageAnalytics WithValueArray:nil dateArray:nil];
         }else if(clickedButtonIndex == 1){
-            [_dataContentView modifyPieChartInView:_dataContentView.pageView type:outlinePageAnalytics WithDataArray:@[[PNPieChartDataItem dataItemWithValue:15 color:PNBlue],[PNPieChartDataItem dataItemWithValue:20 color:PNBlue],[PNPieChartDataItem dataItemWithValue:30 color:PNLightBlue description:@"40%"],[PNPieChartDataItem dataItemWithValue:35 color:PNTwitterColor description:@"50%"]] groupColorArray:@[PNLightBlue,PNBlue,PNTwitterColor,[UIColor indigoColor]] groupPercentArray:@[@15,@20,@30,@35]];
+            [_dataContentView modifyPieChartInView:_dataContentView.pageView type:outlinePageAnalytics WithDataArray:@[[PNPieChartDataItem dataItemWithValue:15 color:[UIColor colorWithRed:135.0/255.0 green:206.0/255.0 blue:250.0/255.0 alpha:1]],[PNPieChartDataItem dataItemWithValue:20 color:PNTwitterColor],[PNPieChartDataItem dataItemWithValue:30 color:[UIColor colorWithRed:30.0/255.0 green:144.0/255.0 blue:255.0/255.0 alpha:1] description:@"40%"],[PNPieChartDataItem dataItemWithValue:35 color:PNBlue description:@"50%"]] groupColorArray:@[[UIColor colorWithRed:135.0/255.0 green:206.0/255.0 blue:250.0/255.0 alpha:1],PNTwitterColor,[UIColor colorWithRed:30.0/255.0 green:144.0/255.0 blue:255.0/255.0 alpha:1],PNBlue] groupPercentArray:@[@15,@20,@30,@35]];
             [_dataContentView modifyLineChartInView:_dataContentView.pageView type:outlinePageAnalytics WithValueArray:nil dateArray:nil];
         }
         
@@ -517,11 +793,11 @@ const static CGFloat titleViewHeight = 44.0f;
             [_dataContentView modifyCircleChartWithData:@60];
         }
         
-    }else if(_dataVisualizedType == outlineVistorGroup){
+    }else if(_dataVisualizedType == outlinevisitorGroup){
         if (clickedButtonIndex == 0) {
-            [_dataContentView modifyPieChartInView:_dataContentView.vistorGroupView type:outlineVistorGroup WithDataArray:@[[PNPieChartDataItem dataItemWithValue:10 color:PNBlue],[PNPieChartDataItem dataItemWithValue:40 color:PNLightBlue description:@"40%"],[PNPieChartDataItem dataItemWithValue:50 color:PNTwitterColor description:@"50%"]] groupColorArray:@[PNBlue,PNLightBlue,PNTwitterColor] groupPercentArray:@[@10,@40,@50]];
+            [_dataContentView modifyPieChartInView:_dataContentView.visitorGroupView type:outlinevisitorGroup WithDataArray:@[[PNPieChartDataItem dataItemWithValue:10 color:PNBlue],[PNPieChartDataItem dataItemWithValue:40 color:PNLightBlue description:@"40%"],[PNPieChartDataItem dataItemWithValue:50 color:PNTwitterColor description:@"50%"]] groupColorArray:@[PNBlue,PNLightBlue,PNTwitterColor] groupPercentArray:@[@10,@40,@50]];
         }else if(clickedButtonIndex == 1){
-            [_dataContentView modifyPieChartInView:_dataContentView.vistorGroupView type:outlineVistorGroup WithDataArray: @[[PNPieChartDataItem dataItemWithValue:15 color:PNLightGreen],[PNPieChartDataItem dataItemWithValue:30 color:PNFreshGreen ],[PNPieChartDataItem dataItemWithValue:55 color:PNDeepGreen]] groupColorArray:@[PNLightGreen,PNFreshGreen,PNDeepGreen] groupPercentArray:@[@15,@30,@55]];
+            [_dataContentView modifyPieChartInView:_dataContentView.visitorGroupView type:outlinevisitorGroup WithDataArray: @[[PNPieChartDataItem dataItemWithValue:15 color:PNLightGreen],[PNPieChartDataItem dataItemWithValue:30 color:PNFreshGreen ],[PNPieChartDataItem dataItemWithValue:55 color:PNDeepGreen]] groupColorArray:@[PNLightGreen,PNFreshGreen,PNDeepGreen] groupPercentArray:@[@15,@30,@55]];
         }
         
     }else if(_dataVisualizedType == outlineHotPage){
@@ -579,12 +855,12 @@ const static CGFloat titleViewHeight = 44.0f;
 //    self.labelDates.text = [NSString stringWithFormat:@"between 2000 and %@", [self.ArrayOfDates lastObject]];
 }
 
-- (void)handleTap:(id)sender
-{
-    if(self.delegate && [self.delegate respondsToSelector:@selector(dismissDetailsController)]){
-        [self.delegate dismissDetailsController];
-    }
-}
+//- (void)handleTap:(id)sender
+//{
+//    if(self.delegate && [self.delegate respondsToSelector:@selector(dismissDetailsController)]){
+//        [self.delegate dismissDetailsController];
+//    }
+//}
 
 - (void)buttonClicked:(id)sender
 {
@@ -597,7 +873,6 @@ const static CGFloat titleViewHeight = 44.0f;
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 
 
 @end

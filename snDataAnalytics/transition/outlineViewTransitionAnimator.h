@@ -10,6 +10,9 @@
 #import <UIKit/UIKit.h>
 #import <UIKit/UIGestureRecognizerSubclass.h>
 
+#import "outLineViewTransitionProtocol.h"
+
+
 typedef NS_ENUM(NSUInteger, transitonDirection) {
     transitonDirectionBottom,
     transitonDirectionLeft,
@@ -24,13 +27,15 @@ typedef NS_ENUM(NSUInteger, transitonDirection) {
 
 
 
-@interface outlineViewTransitionAnimator : UIPercentDrivenInteractiveTransition<UIViewControllerAnimatedTransitioning, UIViewControllerTransitioningDelegate, UIGestureRecognizerDelegate>
+@interface outlineViewTransitionAnimator : UIPercentDrivenInteractiveTransition<UIViewControllerAnimatedTransitioning, UIViewControllerTransitioningDelegate, UIGestureRecognizerDelegate,outLineViewTransitionProtocol>
 
 @property transitonDirection direction;
 @property BOOL bounces;
 @property CGFloat behindViewScale;
 @property CGFloat behindViewAlpha;
 @property (nonatomic, assign, getter=isDragable) BOOL dragable;
+
+@property (nonatomic, weak) id <outLineViewTransitionProtocol> delegate;
 
 - (id)initWithModalViewController:(UIViewController *)modalViewController;
 - (void)setContentScrollView:(UIScrollView *)scrollView;

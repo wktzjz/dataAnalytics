@@ -160,6 +160,8 @@
  @see  autoScaleYAxis - When set YES, Y-Axis will show minimum, maximum and middle label only.
  @todo Could enhance further by specifying the position of Y-Axis, i.e. Left or Right of the view.  Also auto detection on label overlapping. */
 @property (nonatomic) BOOL enableYAxisLabel;
+//wk
+@property (nonatomic) BOOL enableXAxisLabel;
 
 /** When set to YES, the points on the Y-axis will be set to all fit in the graph view. When set to NO, the points on the Y-axis will be set with their absolute value (which means that certain points might not be visible because they are outside of the view). Default value is YES. */
 @property (nonatomic) BOOL autoScaleYAxis;

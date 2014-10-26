@@ -9,8 +9,9 @@
 #import "indexSwitchController.h"
 #import "FlatButton.h"
 #import "Colours.h"
-#import "vistorGroupSwitchView.h"
+#import "visitorGroupSwitchView.h"
 
+#define viewHeight 176.0
 
 @interface indexSwitchController ()
 
@@ -53,7 +54,7 @@
     if(_type == demo){
        self.view.frame = CGRectMake(0, 0, 280, 160);
     }else{
-        self.view.frame = CGRectMake(0, 0, 280, 216);
+        self.view.frame = CGRectMake(0, 0, 280, viewHeight);
     }
     _contentView = [[UIView alloc] initWithFrame:self.view.frame];
 //    NSLog(@"222 switchView _contentView, origin,x:%f, y:%f ,width:%f, height:%f",_contentView.frame.origin.x,_contentView.frame.origin.y,_contentView.frame.size.width,_contentView.frame.size.height);
@@ -65,15 +66,15 @@
     
     if(_type == demo){
        [self addButton];
-    }else if(_type == vistorGroup){
-        [self addVistorSwitchView];
+    }else if(_type == visitorGroup){
+        [self addvisitorSwitchView];
     }
     
 }
 
-- (void)addVistorSwitchView
+- (void)addvisitorSwitchView
 {
-    vistorGroupSwitchView *view = [[vistorGroupSwitchView alloc]initWithFrame:self.view.frame];
+    visitorGroupSwitchView *view = [[visitorGroupSwitchView alloc]initWithFrame:self.view.frame];
     __weak typeof(self) weakSelf = self;
 
     view.switchAction =^(NSInteger index){
@@ -161,7 +162,7 @@
     if(_type == demo){
         return CGSizeMake(280, 160);
     }else{
-        return CGSizeMake(280, 216);
+        return CGSizeMake(280, viewHeight);
     }
 }
 

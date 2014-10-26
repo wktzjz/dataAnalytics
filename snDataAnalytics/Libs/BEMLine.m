@@ -190,7 +190,8 @@
             referenceLinesPathLayer.frame = self.bounds;
             referenceLinesPathLayer.path = referenceLinesPath.CGPath;
             referenceLinesPathLayer.opacity = self.lineAlpha/2;
-            referenceLinesPathLayer.strokeColor = self.color.CGColor;
+            referenceLinesPathLayer.strokeColor =[UIColor colorWithWhite:0.75 alpha:1.0].CGColor;
+            //wk  self.color.CGColor;
             referenceLinesPathLayer.fillColor = nil;
             referenceLinesPathLayer.lineWidth = self.lineWidth/2;
             [self animateForLayer:referenceLinesPathLayer withAnimationType:self.animationType isAnimatingReferenceLine:YES];

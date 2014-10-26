@@ -27,7 +27,7 @@ typedef void(^failureBlock)();
 
 - (BOOL)getNetworkInfo:(NSString *)URLString;
 
-- (void)sendAsynchronousRequestWithURL:(NSString *)urlString failureBlock:(void (^)())failBlock successedBlock:(void (^)())succeedBlock;
+- (void)sendAsynchronousRequestWithURL:(NSString *)urlString failureBlock:(void (^)(NSDictionary *data))failBlock successedBlock:(void (^)(NSDictionary *data))succeedBlock;
 @end
 
 

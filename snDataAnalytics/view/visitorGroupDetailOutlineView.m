@@ -1,20 +1,20 @@
 //
-//  vistorGroupDetailOutlineView.m
+//  visitorGroupDetailOutlineView.m
 //  snDataAnalytics
 //
 //  Created by wktzjz on 14-10-9.
 //  Copyright (c) 2014年 wktzjz. All rights reserved.
 //
 
-#import "vistorGroupDetailOutlineView.h"
+#import "visitorGroupDetailOutlineView.h"
 #import "defines.h"
 #import "PNColor.h"
 #import "BEMSimpleLineGraphView.h"
 
-@interface vistorGroupDetailOutlineView () <BEMSimpleLineGraphDataSource, BEMSimpleLineGraphDelegate>
+@interface visitorGroupDetailOutlineView () <BEMSimpleLineGraphDataSource, BEMSimpleLineGraphDelegate>
 
 @end
-@implementation vistorGroupDetailOutlineView
+@implementation visitorGroupDetailOutlineView
 {
     UILabel *_PVLabel;
     UILabel *_newUVLabel;

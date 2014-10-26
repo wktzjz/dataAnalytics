@@ -227,7 +227,7 @@ const CGFloat MAX_DELAY = 0.15;
         }];
         [self.attachmentsTo removeAllObjects];
         
-        if (gesture.state == UIGestureRecognizerStateEnded && touch.x > self.navigationController.view.frame.size.width * 0.7) {
+        if (gesture.state == UIGestureRecognizerStateEnded && touch.x > self.navigationController.view.frame.size.width * 0.3 /*0.7*/) {
             // Complete the transition
             [UIView animateWithDuration:0.3 animations:^{
                 if ([fromVC respondsToSelector:@selector(visibleCells)] && [fromVC visibleCells].count > 0) {

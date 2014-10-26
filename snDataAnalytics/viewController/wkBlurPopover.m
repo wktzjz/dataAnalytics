@@ -57,6 +57,9 @@
     frame.origin.y = (CGRectGetHeight(self.view.bounds) - self.contentViewController.preferredContentSize.height) / 2;
     frame.size = [self contentViewController].preferredContentSize;
     self.contentViewController.view.frame = frame;
+    
+    self.contentViewController.view.layer.shadowOpacity = 0.5;
+    self.contentViewController.view.layer.shadowRadius = 5;
 //    NSLog(@"popover frame, origin,x:%f, y:%f ,width:%f, height:%f",frame.origin.x,frame.origin.y,frame.size.width,frame.size.height);
 }
 

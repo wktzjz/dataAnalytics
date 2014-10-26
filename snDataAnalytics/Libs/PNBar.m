@@ -22,7 +22,8 @@
         _chartLine.fillColor    = [[UIColor whiteColor] CGColor];
         _chartLine.lineWidth    = self.frame.size.width;
         _chartLine.strokeEnd    = 0.0;
-        self.clipsToBounds      = YES;
+//wk removed the code to improve performance, it's drastically decreased performance when scrolling
+//        self.clipsToBounds      = YES;
         [self.layer addSublayer:_chartLine];
         self.barRadius = 2.0;
     }

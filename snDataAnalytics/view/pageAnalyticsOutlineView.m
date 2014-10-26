@@ -39,7 +39,7 @@
     
     if (self) {
         _groupPercentArray = @[@15,@20,@30,@35];
-        _groupColorArray   = @[PNLightBlue,PNBlue,PNTwitterColor,[UIColor indigoColor]];
+        _groupColorArray   = @[[UIColor colorWithRed:135.0/255.0 green:206.0/255.0 blue:250.0/255.0 alpha:1],PNTwitterColor,[UIColor colorWithRed:30.0/255.0 green:144.0/255.0 blue:255.0/255.0 alpha:1],PNBlue];
         [self addViews];
     }
     

@@ -28,17 +28,27 @@ typedef NSString *(^PNyLabelFromatter)(CGFloat yLabelValue);
 @property (nonatomic) NSArray *xLabels;
 @property (nonatomic) NSArray *yLabels;
 @property (nonatomic) NSArray *yValues;
+@property (nonatomic) NSArray *yValues1;
 
-@property (nonatomic) NSMutableArray * bars;
-
+@property (nonatomic) NSMutableArray *bars;
 @property (nonatomic) CGFloat xLabelWidth;
 @property (nonatomic) int yValueMax;
 @property (nonatomic) UIColor *strokeColor;
 @property (nonatomic) NSArray *strokeColors;
 
+
+//wk add the second barChart, usually is ratio barChart above the original bar chart
+@property (nonatomic) NSMutableArray *bars1;
+@property (nonatomic) UIColor *strokeColor1;
+@property (nonatomic) NSArray *strokeColors1;
+@property (nonatomic) NSMutableArray *referencesLines;
 //wk
 - (void)removeLabelView;
 
+/*
+ showChartBorder if the chart border Line should be deplay
+ */
+@property (nonatomic) BOOL showReferenceLines;
 
 /*
  chartMargin changes chart margin
@@ -131,6 +141,11 @@ typedef NSString *(^PNyLabelFromatter)(CGFloat yLabelValue);
  */
 @property (nonatomic) UIColor *barColorGradientStart;
 
+//wk
+/*
+ switch to indicate that the bar should be filled as a gradient
+ */
+@property (nonatomic) BOOL ifUseGradientColor;
 
 @property (nonatomic, retain) id<PNChartDelegate> delegate;
 

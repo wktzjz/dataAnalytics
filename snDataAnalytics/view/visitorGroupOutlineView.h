@@ -1,5 +1,5 @@
 //
-//  vistorGroupOutlineView.h
+//  visitorGroupOutlineView.h
 //  snDataAnalytics
 //
 //  Created by wktzjz on 14-10-8.
@@ -9,12 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "PNChart.h"
 
-@interface vistorGroupOutlineView : UIView
+@interface visitorGroupOutlineView : UIView
 
 @property (nonatomic) PNPieChart *pieChart;
 @property (nonatomic) NSInteger  UVNumber;
 @property (nonatomic) NSInteger  validUVNumber;
-@property (nonatomic) NSInteger  vistorNumber;
+@property (nonatomic) NSInteger  visitorNumber;
 @property (nonatomic) NSArray    *groupColorArray;
 @property (nonatomic) NSArray    *groupPercentArray;
 

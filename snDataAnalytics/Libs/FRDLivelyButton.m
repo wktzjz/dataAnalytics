@@ -364,7 +364,7 @@ NSString *const kFRDLivelyButtonStyleChangeAnimationDuration = @"kFRDLivelyButto
     self.line1Layer.opacity = newLine1Alpha;
     self.line2Layer.path = newLine2Path;
     self.line3Layer.path = newLine3Path;
-
+                                                                                
     CGPathRelease(newCirclePath);
     CGPathRelease(newLine1Path);
     CGPathRelease(newLine2Path);

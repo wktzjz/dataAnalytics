@@ -13,5 +13,6 @@
 @property (nonatomic) int fontSize;
 @property (nonatomic) UIColor *textColor;
 + (instancetype)button;
++ (instancetype)buttonWithTextColor:(UIColor *)color;
 
 @end

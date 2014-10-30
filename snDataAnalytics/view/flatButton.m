@@ -27,6 +27,7 @@
     return [self buttonWithType:UIButtonTypeCustom];
 }
 
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -77,10 +78,12 @@
    forControlEvents:UIControlEventTouchDragExit];
 }
 
-//- (void)setFontSize:(int)fontSize
-//{
-//    s
-//}
+- (void)setTextColor:(UIColor *)color
+{
+    _textColor = color;
+    [self setTitleColor:_textColor
+               forState:UIControlStateNormal];
+}
 
 - (void)scaleToSmall
 {

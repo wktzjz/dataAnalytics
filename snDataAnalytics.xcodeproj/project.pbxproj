@@ -162,6 +162,25 @@
 		35945E0D19F654CC00BF5EC3 /* JBChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35945E0919F654CC00BF5EC3 /* JBChartView.m */; };
 		35945E0E19F654CC00BF5EC3 /* JBLineChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35945E0B19F654CC00BF5EC3 /* JBLineChartView.m */; };
 		35945E1619F655E500BF5EC3 /* JBChartHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35945E1219F655E500BF5EC3 /* JBChartHeaderView.m */; };
+		35D3979419FE24350014B377 /* icon_graySettingButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 35D3979319FE24350014B377 /* icon_graySettingButton@2x.png */; };
+		35D397B819FE4FE10014B377 /* lineChartDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35D397B719FE4FE10014B377 /* lineChartDetailsView.m */; };
+		35D397D319FF2F2B0014B377 /* LTEasing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D397CA19FF2F2B0014B377 /* LTEasing.swift */; };
+		35D397D419FF2F2B0014B377 /* LTMorphingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D397CB19FF2F2B0014B377 /* LTMorphingLabel.swift */; };
+		35D397D519FF2F2B0014B377 /* LTMorphingLabel+Anvil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D397CC19FF2F2B0014B377 /* LTMorphingLabel+Anvil.swift */; };
+		35D397D619FF2F2B0014B377 /* LTMorphingLabel+Burn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D397CD19FF2F2B0014B377 /* LTMorphingLabel+Burn.swift */; };
+		35D397D719FF2F2B0014B377 /* LTMorphingLabel+Evaporate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D397CE19FF2F2B0014B377 /* LTMorphingLabel+Evaporate.swift */; };
+		35D397D819FF2F2B0014B377 /* LTMorphingLabel+Fall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D397CF19FF2F2B0014B377 /* LTMorphingLabel+Fall.swift */; };
+		35D397D919FF2F2B0014B377 /* LTMorphingLabel+Pixelate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D397D019FF2F2B0014B377 /* LTMorphingLabel+Pixelate.swift */; };
+		35D397DA19FF2F2B0014B377 /* LTMorphingLabel+Sparkle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D397D119FF2F2B0014B377 /* LTMorphingLabel+Sparkle.swift */; };
+		35D397DB19FF2F2B0014B377 /* NSString+LTMorphingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D397D219FF2F2B0014B377 /* NSString+LTMorphingLabel.swift */; };
+		35D397E719FF2F910014B377 /* NSObject+TLYSwizzlingHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 35D397DE19FF2F910014B377 /* NSObject+TLYSwizzlingHelpers.m */; };
+		35D397E819FF2F910014B377 /* UIViewController+BetterLayoutGuides.m in Sources */ = {isa = PBXBuildFile; fileRef = 35D397E019FF2F910014B377 /* UIViewController+BetterLayoutGuides.m */; };
+		35D397E919FF2F910014B377 /* TLYDelegateProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 35D397E219FF2F910014B377 /* TLYDelegateProxy.m */; };
+		35D397EA19FF2F910014B377 /* TLYShyNavBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 35D397E419FF2F910014B377 /* TLYShyNavBarManager.m */; };
+		35D397EB19FF2F910014B377 /* TLYShyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 35D397E619FF2F910014B377 /* TLYShyViewController.m */; };
+		35D397EF19FF90950014B377 /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35D397EE19FF90950014B377 /* FXBlurView.m */; };
+		35D397F31A0084EF0014B377 /* labelLineChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35D397F21A0084EF0014B377 /* labelLineChartView.m */; };
+		35D397F61A0090C20014B377 /* realTimeDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35D397F51A0090C20014B377 /* realTimeDetailsView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -443,6 +462,35 @@
 		35945E0B19F654CC00BF5EC3 /* JBLineChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBLineChartView.m; path = Libs/JBLineChartView.m; sourceTree = "<group>"; };
 		35945E1119F655E500BF5EC3 /* JBChartHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBChartHeaderView.h; path = Libs/JBChartHeaderView.h; sourceTree = "<group>"; };
 		35945E1219F655E500BF5EC3 /* JBChartHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBChartHeaderView.m; path = Libs/JBChartHeaderView.m; sourceTree = "<group>"; };
+		35D3979319FE24350014B377 /* icon_graySettingButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon_graySettingButton@2x.png"; path = "snDataAnalytics/Resourcs/Images/icon_graySettingButton@2x.png"; sourceTree = "<group>"; };
+		35D397A319FE31A20014B377 /* snDataAnalytics-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "snDataAnalytics-Bridging-Header.h"; sourceTree = "<group>"; };
+		35D397B619FE4FE10014B377 /* lineChartDetailsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lineChartDetailsView.h; path = view/lineChartDetailsView.h; sourceTree = "<group>"; };
+		35D397B719FE4FE10014B377 /* lineChartDetailsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = lineChartDetailsView.m; path = view/lineChartDetailsView.m; sourceTree = "<group>"; };
+		35D397CA19FF2F2B0014B377 /* LTEasing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LTEasing.swift; path = Libs/swift/LTEasing.swift; sourceTree = "<group>"; };
+		35D397CB19FF2F2B0014B377 /* LTMorphingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LTMorphingLabel.swift; path = Libs/swift/LTMorphingLabel.swift; sourceTree = "<group>"; };
+		35D397CC19FF2F2B0014B377 /* LTMorphingLabel+Anvil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "LTMorphingLabel+Anvil.swift"; path = "Libs/swift/LTMorphingLabel+Anvil.swift"; sourceTree = "<group>"; };
+		35D397CD19FF2F2B0014B377 /* LTMorphingLabel+Burn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "LTMorphingLabel+Burn.swift"; path = "Libs/swift/LTMorphingLabel+Burn.swift"; sourceTree = "<group>"; };
+		35D397CE19FF2F2B0014B377 /* LTMorphingLabel+Evaporate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "LTMorphingLabel+Evaporate.swift"; path = "Libs/swift/LTMorphingLabel+Evaporate.swift"; sourceTree = "<group>"; };
+		35D397CF19FF2F2B0014B377 /* LTMorphingLabel+Fall.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "LTMorphingLabel+Fall.swift"; path = "Libs/swift/LTMorphingLabel+Fall.swift"; sourceTree = "<group>"; };
+		35D397D019FF2F2B0014B377 /* LTMorphingLabel+Pixelate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "LTMorphingLabel+Pixelate.swift"; path = "Libs/swift/LTMorphingLabel+Pixelate.swift"; sourceTree = "<group>"; };
+		35D397D119FF2F2B0014B377 /* LTMorphingLabel+Sparkle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "LTMorphingLabel+Sparkle.swift"; path = "Libs/swift/LTMorphingLabel+Sparkle.swift"; sourceTree = "<group>"; };
+		35D397D219FF2F2B0014B377 /* NSString+LTMorphingLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSString+LTMorphingLabel.swift"; path = "Libs/swift/NSString+LTMorphingLabel.swift"; sourceTree = "<group>"; };
+		35D397DD19FF2F910014B377 /* NSObject+TLYSwizzlingHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+TLYSwizzlingHelpers.h"; sourceTree = "<group>"; };
+		35D397DE19FF2F910014B377 /* NSObject+TLYSwizzlingHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+TLYSwizzlingHelpers.m"; sourceTree = "<group>"; };
+		35D397DF19FF2F910014B377 /* UIViewController+BetterLayoutGuides.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+BetterLayoutGuides.h"; sourceTree = "<group>"; };
+		35D397E019FF2F910014B377 /* UIViewController+BetterLayoutGuides.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+BetterLayoutGuides.m"; sourceTree = "<group>"; };
+		35D397E119FF2F910014B377 /* TLYDelegateProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TLYDelegateProxy.h; path = Libs/TLYShyNavBar/TLYDelegateProxy.h; sourceTree = "<group>"; };
+		35D397E219FF2F910014B377 /* TLYDelegateProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TLYDelegateProxy.m; path = Libs/TLYShyNavBar/TLYDelegateProxy.m; sourceTree = "<group>"; };
+		35D397E319FF2F910014B377 /* TLYShyNavBarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TLYShyNavBarManager.h; path = Libs/TLYShyNavBar/TLYShyNavBarManager.h; sourceTree = "<group>"; };
+		35D397E419FF2F910014B377 /* TLYShyNavBarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TLYShyNavBarManager.m; path = Libs/TLYShyNavBar/TLYShyNavBarManager.m; sourceTree = "<group>"; };
+		35D397E519FF2F910014B377 /* TLYShyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TLYShyViewController.h; path = Libs/TLYShyNavBar/TLYShyViewController.h; sourceTree = "<group>"; };
+		35D397E619FF2F910014B377 /* TLYShyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TLYShyViewController.m; path = Libs/TLYShyNavBar/TLYShyViewController.m; sourceTree = "<group>"; };
+		35D397ED19FF90950014B377 /* FXBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXBlurView.h; sourceTree = "<group>"; };
+		35D397EE19FF90950014B377 /* FXBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXBlurView.m; sourceTree = "<group>"; };
+		35D397F11A0084EF0014B377 /* labelLineChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = labelLineChartView.h; path = view/labelLineChartView.h; sourceTree = "<group>"; };
+		35D397F21A0084EF0014B377 /* labelLineChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = labelLineChartView.m; path = view/labelLineChartView.m; sourceTree = "<group>"; };
+		35D397F41A0090C20014B377 /* realTimeDetailsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = realTimeDetailsView.h; path = view/realTimeDetailsView.h; sourceTree = "<group>"; };
+		35D397F51A0090C20014B377 /* realTimeDetailsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = realTimeDetailsView.m; path = view/realTimeDetailsView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -619,6 +667,7 @@
 		353FCE6B19DA4CE400072431 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				35D3979319FE24350014B377 /* icon_graySettingButton@2x.png */,
 				357E45DE19FD4ECD00719A2A /* icon_account@2x.png */,
 				357E441219FA046000719A2A /* facebook-white.png */,
 				357E441319FA046000719A2A /* facebook-white@2x.png */,
@@ -692,6 +741,7 @@
 		3562980219B44564004A8054 /* snDataAnalytics */ = {
 			isa = PBXGroup;
 			children = (
+				35D397A319FE31A20014B377 /* snDataAnalytics-Bridging-Header.h */,
 				3562983119B450AB004A8054 /* Categorys */,
 				3562982E19B4508C004A8054 /* Models */,
 				3562982F19B45093004A8054 /* Views */,
@@ -766,13 +816,15 @@
 		3562982F19B45093004A8054 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				357E45E019FD4F6500719A2A /* views */,
 				3562989419B7F97D004A8054 /* dataOutlineViewContainer.h */,
 				3562989519B7F97D004A8054 /* dataOutlineViewContainer.m */,
+				35D397F01A0084BA0014B377 /* labelLineChartView */,
+				35D397B919FE4FF30014B377 /* lineChartDetailsView */,
 				35945D3C19E8C46300BF5EC3 /* contextMenuView */,
 				35945CF519E8C22800BF5EC3 /* realTimeViews */,
 				35945CDE19E667EE00BF5EC3 /* visitorGroupViews */,
 				35945CE819E8C16900BF5EC3 /* pageAnalyticsViews */,
+				357E45E019FD4F6500719A2A /* otherViews */,
 				353FCE6919D951BC00072431 /* buttons */,
 			);
 			name = Views;
@@ -783,6 +835,8 @@
 			children = (
 				35945DEF19E9342F00BF5EC3 /* backgroundMenu */,
 				35F3999019CFC1D30077BA75 /* popupViewController */,
+				3562989719B83763004A8054 /* dataDetailsViewController.h */,
+				3562989819B83763004A8054 /* dataDetailsViewController.m */,
 				35945CF619E8C29900BF5EC3 /* indexSwitchController.h */,
 				35945CF719E8C29900BF5EC3 /* indexSwitchController.m */,
 				35945CF819E8C29900BF5EC3 /* loginViewController.h */,
@@ -791,8 +845,6 @@
 				3562987B19B46294004A8054 /* baseViewController.m */,
 				3562989119B7F61B004A8054 /* dataOutlineViewController.h */,
 				3562989219B7F61B004A8054 /* dataOutlineViewController.m */,
-				3562989719B83763004A8054 /* dataDetailsViewController.h */,
-				3562989819B83763004A8054 /* dataDetailsViewController.m */,
 				3524828219DA9B3800DA7FA5 /* test.h */,
 				3524828319DA9B3800DA7FA5 /* test.m */,
 			);
@@ -815,6 +867,8 @@
 		3562983319B4575E004A8054 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				35D397BA19FF2E930014B377 /* TLYShyNavBar */,
+				35D397A219FE316C0014B377 /* LTMorphingLabel */,
 				35945DFC19F6547C00BF5EC3 /* JBChartView */,
 				35791EED19D2605A00BAB351 /* THCalendarDatePicker */,
 				3522248E19C936A40048F57C /* JVFloatLabeledTextField */,
@@ -824,6 +878,7 @@
 				3562984719B45833004A8054 /* TSMessages */,
 				3562984019B457EB004A8054 /* NetworkReachablity */,
 				3562983819B457BB004A8054 /* FBShimmering */,
+				35D397EC19FF90950014B377 /* FXBlurView */,
 				3562983419B45780004A8054 /* livelyButton */,
 			);
 			name = Libs;
@@ -1046,13 +1101,13 @@
 			name = Fonts;
 			sourceTree = "<group>";
 		};
-		357E45E019FD4F6500719A2A /* views */ = {
+		357E45E019FD4F6500719A2A /* otherViews */ = {
 			isa = PBXGroup;
 			children = (
 				357E45E119FD4F9200719A2A /* calloutItemView.h */,
 				357E45E219FD4F9200719A2A /* calloutItemView.m */,
 			);
-			name = views;
+			name = otherViews;
 			sourceTree = "<group>";
 		};
 		35945CDE19E667EE00BF5EC3 /* visitorGroupViews */ = {
@@ -1082,6 +1137,8 @@
 			children = (
 				35945DA719E8CC6F00BF5EC3 /* realTimeOutlineView.h */,
 				35945DA819E8CC6F00BF5EC3 /* realTimeOutlineView.m */,
+				35D397F41A0090C20014B377 /* realTimeDetailsView.h */,
+				35D397F51A0090C20014B377 /* realTimeDetailsView.m */,
 			);
 			name = realTimeViews;
 			sourceTree = "<group>";
@@ -1168,6 +1225,76 @@
 				35945DBF19E8D05200BF5EC3 /* UIColor+CustomColors.m */,
 			);
 			name = color;
+			sourceTree = "<group>";
+		};
+		35D397A219FE316C0014B377 /* LTMorphingLabel */ = {
+			isa = PBXGroup;
+			children = (
+				35D397CA19FF2F2B0014B377 /* LTEasing.swift */,
+				35D397CB19FF2F2B0014B377 /* LTMorphingLabel.swift */,
+				35D397CC19FF2F2B0014B377 /* LTMorphingLabel+Anvil.swift */,
+				35D397CD19FF2F2B0014B377 /* LTMorphingLabel+Burn.swift */,
+				35D397CE19FF2F2B0014B377 /* LTMorphingLabel+Evaporate.swift */,
+				35D397CF19FF2F2B0014B377 /* LTMorphingLabel+Fall.swift */,
+				35D397D019FF2F2B0014B377 /* LTMorphingLabel+Pixelate.swift */,
+				35D397D119FF2F2B0014B377 /* LTMorphingLabel+Sparkle.swift */,
+				35D397D219FF2F2B0014B377 /* NSString+LTMorphingLabel.swift */,
+			);
+			name = LTMorphingLabel;
+			sourceTree = "<group>";
+		};
+		35D397B919FE4FF30014B377 /* lineChartDetailsView */ = {
+			isa = PBXGroup;
+			children = (
+				35D397B619FE4FE10014B377 /* lineChartDetailsView.h */,
+				35D397B719FE4FE10014B377 /* lineChartDetailsView.m */,
+			);
+			name = lineChartDetailsView;
+			sourceTree = "<group>";
+		};
+		35D397BA19FF2E930014B377 /* TLYShyNavBar */ = {
+			isa = PBXGroup;
+			children = (
+				35D397DC19FF2F910014B377 /* Categories */,
+				35D397E119FF2F910014B377 /* TLYDelegateProxy.h */,
+				35D397E219FF2F910014B377 /* TLYDelegateProxy.m */,
+				35D397E319FF2F910014B377 /* TLYShyNavBarManager.h */,
+				35D397E419FF2F910014B377 /* TLYShyNavBarManager.m */,
+				35D397E519FF2F910014B377 /* TLYShyViewController.h */,
+				35D397E619FF2F910014B377 /* TLYShyViewController.m */,
+			);
+			name = TLYShyNavBar;
+			sourceTree = "<group>";
+		};
+		35D397DC19FF2F910014B377 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				35D397DD19FF2F910014B377 /* NSObject+TLYSwizzlingHelpers.h */,
+				35D397DE19FF2F910014B377 /* NSObject+TLYSwizzlingHelpers.m */,
+				35D397DF19FF2F910014B377 /* UIViewController+BetterLayoutGuides.h */,
+				35D397E019FF2F910014B377 /* UIViewController+BetterLayoutGuides.m */,
+			);
+			name = Categories;
+			path = Libs/TLYShyNavBar/Categories;
+			sourceTree = "<group>";
+		};
+		35D397EC19FF90950014B377 /* FXBlurView */ = {
+			isa = PBXGroup;
+			children = (
+				35D397ED19FF90950014B377 /* FXBlurView.h */,
+				35D397EE19FF90950014B377 /* FXBlurView.m */,
+			);
+			name = FXBlurView;
+			path = Libs/FXBlurView;
+			sourceTree = "<group>";
+		};
+		35D397F01A0084BA0014B377 /* labelLineChartView */ = {
+			isa = PBXGroup;
+			children = (
+				35D397F11A0084EF0014B377 /* labelLineChartView.h */,
+				35D397F21A0084EF0014B377 /* labelLineChartView.m */,
+			);
+			name = labelLineChartView;
 			sourceTree = "<group>";
 		};
 		35F3999019CFC1D30077BA75 /* popupViewController */ = {
@@ -1276,6 +1403,7 @@
 				357E443319FA047700719A2A /* OpenSans-Light.ttf in Resources */,
 				35945D7919E8CA7E00BF5EC3 /* dialog_ok.png in Resources */,
 				35945D6719E8CA7E00BF5EC3 /* arrow_right.png in Resources */,
+				35D3979419FE24350014B377 /* icon_graySettingButton@2x.png in Resources */,
 				35945D7019E8CA7E00BF5EC3 /* calendar_ok-disabled@2x.png in Resources */,
 				357E442C19FA046000719A2A /* linkedin-white@2x.png in Resources */,
 				35945D9719E8CBE100BF5EC3 /* NotificationBackgroundSuccessIcon@2x.png in Resources */,
@@ -1345,6 +1473,7 @@
 				35945D4719E8C8B900BF5EC3 /* BEMLine.m in Sources */,
 				35945CF419E8C20A00BF5EC3 /* visitorGroupSwitchView.m in Sources */,
 				3524828419DA9B3800DA7FA5 /* test.m in Sources */,
+				35D397D919FF2F2B0014B377 /* LTMorphingLabel+Pixelate.swift in Sources */,
 				3522246A19C2C73D0048F57C /* POPAnimationRuntime.mm in Sources */,
 				35945D2419E8C37300BF5EC3 /* PNChartLabel.m in Sources */,
 				3562989919B83763004A8054 /* dataDetailsViewController.m in Sources */,
@@ -1362,20 +1491,28 @@
 				35945DD719E8D1F500BF5EC3 /* UICountingLabel.m in Sources */,
 				35945DD419E8D17700BF5EC3 /* AMWaveViewController.m in Sources */,
 				3522246C19C2C73D0048F57C /* POPAnimator.mm in Sources */,
+				35D397EA19FF2F910014B377 /* TLYShyNavBarManager.m in Sources */,
+				35D397D819FF2F2B0014B377 /* LTMorphingLabel+Fall.swift in Sources */,
 				35945CF219E8C20A00BF5EC3 /* visitorGroupDetailOutlineView.m in Sources */,
 				35945E0C19F654CC00BF5EC3 /* JBBarChartView.m in Sources */,
 				35945D7D19E8CB7500BF5EC3 /* HexColor.m in Sources */,
 				3522246F19C2C73D0048F57C /* POPCustomAnimation.mm in Sources */,
 				3522247419C2C73D0048F57C /* POPPropertyAnimation.mm in Sources */,
+				35D397EF19FF90950014B377 /* FXBlurView.m in Sources */,
+				35D397D319FF2F2B0014B377 /* LTEasing.swift in Sources */,
+				35D397D519FF2F2B0014B377 /* LTMorphingLabel+Anvil.swift in Sources */,
 				35945DC119E8D05200BF5EC3 /* UIColor+CustomColors.m in Sources */,
 				35945DB219E8CE6900BF5EC3 /* UIViewController+KNSemiModal.m in Sources */,
+				35D397E719FF2F910014B377 /* NSObject+TLYSwizzlingHelpers.m in Sources */,
 				3522247319C2C73D0048F57C /* POPMath.mm in Sources */,
 				3522246819C2C73D0048F57C /* POPAnimationEvent.mm in Sources */,
+				35D397F31A0084EF0014B377 /* labelLineChartView.m in Sources */,
 				35945D3B19E8C45600BF5EC3 /* wkBlurPopoverTransitionController.m in Sources */,
 				35945DAC19E8CD2100BF5EC3 /* UIView+snapShot.m in Sources */,
 				3522247219C2C73D0048F57C /* POPLayerExtras.mm in Sources */,
 				35945D2B19E8C37300BF5EC3 /* PNPieChartDataItem.m in Sources */,
 				357E45E319FD4F9200719A2A /* calloutItemView.m in Sources */,
+				35D397DA19FF2F2B0014B377 /* LTMorphingLabel+Sparkle.swift in Sources */,
 				35945CEB19E8C1D200BF5EC3 /* pageAnalyticsOutlineView.m in Sources */,
 				35945D4E19E8C9D400BF5EC3 /* flatButton.m in Sources */,
 				3562989319B7F61B004A8054 /* dataOutlineViewController.m in Sources */,
@@ -1387,6 +1524,7 @@
 				35945D3A19E8C45600BF5EC3 /* wkBlurPopover.m in Sources */,
 				35945CFD19E8C29900BF5EC3 /* loginViewController.m in Sources */,
 				35945D2319E8C37300BF5EC3 /* PNBarChart.m in Sources */,
+				35D397D719FF2F2B0014B377 /* LTMorphingLabel+Evaporate.swift in Sources */,
 				35945D2719E8C37300BF5EC3 /* PNLineChart.m in Sources */,
 				35945DC419E8D0B600BF5EC3 /* networkManager.m in Sources */,
 				35945D0419E8C32400BF5EC3 /* FBShimmeringLayer.m in Sources */,
@@ -1395,12 +1533,16 @@
 				3562989619B7F97D004A8054 /* dataOutlineViewContainer.m in Sources */,
 				35945DF319F0F3CE00BF5EC3 /* realTimeModel.m in Sources */,
 				35945DEC19E8D42400BF5EC3 /* TSMessageView.m in Sources */,
+				35D397B819FE4FE10014B377 /* lineChartDetailsView.m in Sources */,
 				35945D4D19E8C9D400BF5EC3 /* changefulButton.m in Sources */,
+				35D397D419FF2F2B0014B377 /* LTMorphingLabel.swift in Sources */,
 				35945DA419E8CC3300BF5EC3 /* JVFloatLabeledTextField.m in Sources */,
+				35D397F61A0090C20014B377 /* realTimeDetailsView.m in Sources */,
 				3522247619C2C73D0048F57C /* POPVector.mm in Sources */,
 				35945E1619F655E500BF5EC3 /* JBChartHeaderView.m in Sources */,
 				3562989019B5BE82004A8054 /* menuController.m in Sources */,
 				35945DB819E8D00300BF5EC3 /* PresentingAnimator.m in Sources */,
+				35D397D619FF2F2B0014B377 /* LTMorphingLabel+Burn.swift in Sources */,
 				35945DC019E8D05200BF5EC3 /* Colours.m in Sources */,
 				35945DEA19E8D42400BF5EC3 /* TSBlurView.m in Sources */,
 				35945D2619E8C37300BF5EC3 /* PNColor.m in Sources */,
@@ -1412,6 +1554,8 @@
 				3522246919C2C73D0048F57C /* POPAnimationExtras.mm in Sources */,
 				35945D3419E8C3AC00BF5EC3 /* THDatePickerViewController.m in Sources */,
 				35945DA619E8CC3300BF5EC3 /* NSString+TextDirectionality.m in Sources */,
+				35D397E819FF2F910014B377 /* UIViewController+BetterLayoutGuides.m in Sources */,
+				35D397DB19FF2F2B0014B377 /* NSString+LTMorphingLabel.swift in Sources */,
 				35945DC919E8D0D000BF5EC3 /* CheckNetwork.m in Sources */,
 				35945D3F19E8C49D00BF5EC3 /* wkContextMenuView.m in Sources */,
 				35945DBB19E8D02A00BF5EC3 /* DismissingAnimator.m in Sources */,
@@ -1422,9 +1566,11 @@
 				3522247119C2C73D0048F57C /* POPGeometry.mm in Sources */,
 				35945DCA19E8D0D000BF5EC3 /* Reachability.m in Sources */,
 				3522246D19C2C73D0048F57C /* POPBasicAnimation.mm in Sources */,
+				35D397E919FF2F910014B377 /* TLYDelegateProxy.m in Sources */,
 				35945DF719F0FC4400BF5EC3 /* KeyValueObserver.m in Sources */,
 				35945D0A19E8C33600BF5EC3 /* FRDLivelyButton.m in Sources */,
 				35945DFB19F64D1600BF5EC3 /* visitorGroupModel.m in Sources */,
+				35D397EB19FF2F910014B377 /* TLYShyViewController.m in Sources */,
 				35945D2519E8C37300BF5EC3 /* PNCircleChart.m in Sources */,
 				35945DD319E8D17700BF5EC3 /* AMWaveTransition.m in Sources */,
 				35945E0D19F654CC00BF5EC3 /* JBChartView.m in Sources */,
@@ -1534,7 +1680,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Lan Feng (HP5D7TZA52)";
+				DEFINES_MODULE = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREFIX_HEADER = "snDataAnalytics/snDataAnalytics-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -1545,6 +1693,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "snDataAnalytics/snDataAnalytics-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
@@ -1555,7 +1705,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Lan Feng (HP5D7TZA52)";
+				DEFINES_MODULE = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREFIX_HEADER = "snDataAnalytics/snDataAnalytics-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -1566,6 +1718,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "snDataAnalytics/snDataAnalytics-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 			};

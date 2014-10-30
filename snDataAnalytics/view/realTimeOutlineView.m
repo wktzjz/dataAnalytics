@@ -10,6 +10,7 @@
 #import "defines.h"
 #import "PNColor.h"
 #import "Colours.h"
+#import <snDataAnalytics-swift.h>
 
 CGFloat const kJBBarChartViewControllerChartHeight = 250.0f;
 CGFloat const kJBBarChartViewControllerChartPadding = 10.0f;
@@ -192,6 +193,7 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     CGRect r = _uvGroupLabel.frame;
     r.size.width = size.width;
     _uvGroupLabel.frame = r;
+//    _uvGroupLabel.morphingDuration = 0.07f;
     
     _visitorGroupLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _uvGroupLabel.frame.origin.y, outlineViewWidth/2, 20)];
     _visitorGroupLabel.text =[NSString stringWithFormat:@"visitor: %i",(arc4random() % 100000)];
@@ -256,6 +258,7 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     _dealMoneyLabel.textColor = PNDeepGrey;
     _dealMoneyLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
     _dealMoneyLabel.textAlignment = NSTextAlignmentLeft;
+//    _dealMoneyLabel.morphingDuration = 0.07f;
     
     _arrayOfValues = [[NSMutableArray alloc] init];
     _arrayOfDates = [[NSMutableArray alloc] init];
@@ -662,7 +665,7 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
 #pragma mark - relodData
 - (void)relodData:(NSDictionary *)info
 {
-    _dealMoneyLabel.text =[NSString stringWithFormat:@"付款金额:   %i",((NSNumber *)info[@"dealMoney"]).intValue];
+    _dealMoneyLabel.text =[NSString stringWithFormat:@"付款金额: %i",((NSNumber *)info[@"dealMoney"]).intValue];
 
     _arrayOfValues = (NSMutableArray *)info[@"arrayOfValues"];
     [_lineGraph reloadGraph];
@@ -726,30 +729,30 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     return [label stringByReplacingOccurrencesOfString:@" " withString:@"\n"];
 }
 
-- (void)lineGraph:(BEMSimpleLineGraphView *)graph didTouchGraphWithClosestIndex:(NSInteger)index {
-    //    self.labelValues.text = [NSString stringWithFormat:@"%@", [self.ArrayOfValues objectAtIndex:index]];
-    //    self.labelDates.text = [NSString stringWithFormat:@"in %@", [self.ArrayOfDates objectAtIndex:index]];
-}
+//- (void)lineGraph:(BEMSimpleLineGraphView *)graph didTouchGraphWithClosestIndex:(NSInteger)index {
+//    //    self.labelValues.text = [NSString stringWithFormat:@"%@", [self.ArrayOfValues objectAtIndex:index]];
+//    //    self.labelDates.text = [NSString stringWithFormat:@"in %@", [self.ArrayOfDates objectAtIndex:index]];
+//}
+//
+//- (void)lineGraph:(BEMSimpleLineGraphView *)graph didReleaseTouchFromGraphWithClosestIndex:(CGFloat)index {
+//    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+//        //        self.labelValues.alpha = 0.0;
+//        //        self.labelDates.alpha = 0.0;
+//    } completion:^(BOOL finished) {
+//        //        self.labelValues.text = [NSString stringWithFormat:@"%i", [[self.myGraph calculatePointValueSum] intValue]];
+//        //        self.labelDates.text = [NSString stringWithFormat:@"between 2000 and %@", [self.ArrayOfDates lastObject]];
+//        
+//        [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+//            //            self.labelValues.alpha = 1.0;
+//            //            self.labelDates.alpha = 1.0;
+//        } completion:nil];
+//    }];
+//}
 
-- (void)lineGraph:(BEMSimpleLineGraphView *)graph didReleaseTouchFromGraphWithClosestIndex:(CGFloat)index {
-    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        //        self.labelValues.alpha = 0.0;
-        //        self.labelDates.alpha = 0.0;
-    } completion:^(BOOL finished) {
-        //        self.labelValues.text = [NSString stringWithFormat:@"%i", [[self.myGraph calculatePointValueSum] intValue]];
-        //        self.labelDates.text = [NSString stringWithFormat:@"between 2000 and %@", [self.ArrayOfDates lastObject]];
-        
-        [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-            //            self.labelValues.alpha = 1.0;
-            //            self.labelDates.alpha = 1.0;
-        } completion:nil];
-    }];
-}
-
-- (void)lineGraphDidFinishLoading:(BEMSimpleLineGraphView *)graph {
-    //    self.labelValues.text = [NSString stringWithFormat:@"%i", [[self.myGraph calculatePointValueSum] intValue]];
-    //    self.labelDates.text = [NSString stringWithFormat:@"between 2000 and %@", [self.ArrayOfDates lastObject]];
-}
+//- (void)lineGraphDidFinishLoading:(BEMSimpleLineGraphView *)graph {
+//    //    self.labelValues.text = [NSString stringWithFormat:@"%i", [[self.myGraph calculatePointValueSum] intValue]];
+//    //    self.labelDates.text = [NSString stringWithFormat:@"between 2000 and %@", [self.ArrayOfDates lastObject]];
+//}
 
 #pragma mark - JBBarChartViewDataSource
 

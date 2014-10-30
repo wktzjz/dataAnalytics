@@ -370,4 +370,16 @@ static CGFloat angleOfView(UIView *view)
     return 0.4;
 }
 
+#pragma mark isIOS8
+- (BOOL)isIOS8
+{
+    NSComparisonResult order = [[UIDevice currentDevice].systemVersion compare: @"8.0" options: NSNumericSearch];
+    if (order == NSOrderedSame || order == NSOrderedDescending) {
+        // OS version >= 8.0
+        return YES;
+    }
+    return NO;
+}
+
+
 @end

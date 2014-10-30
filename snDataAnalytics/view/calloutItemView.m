@@ -24,11 +24,11 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    CGFloat inset = self.bounds.size.height/2;
-    //    self.imageView.frame = CGRectMake(0, 0, inset, inset);
-    self.imageView.frame = CGRectMake(7.5, 0, 45, 45);
-    //    PSLog(@"imageView.width:%f,height:%f",self.imageView.frame.size.width,self.imageView.frame.size.height);
-    //    self.imageView.center = self.center;
+//    CGFloat inset = self.bounds.size.height/2;
+    self.imageView.frame = CGRectMake(0, 0, self.bounds.size.height, self.bounds.size.height);
+//    self.imageView.frame = CGRectMake(7.5, 0, 45, 45);
+//    NSLog(@"imageView.width:%f,height:%f",self.imageView.frame.size.width,self.imageView.frame.size.height);
+//        self.imageView.center = self.center;
 }
 
 - (void)setOriginalBackgroundColor:(UIColor *)originalBackgroundColor {

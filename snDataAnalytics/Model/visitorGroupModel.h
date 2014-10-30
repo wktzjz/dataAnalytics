@@ -10,5 +10,11 @@
 
 @interface visitorGroupModel : NSObject
 
+@property (nonatomic) NSDictionary *initializeData;
+@property (nonatomic) NSDictionary *sendDict;
+
+@property (nonatomic,readonly) BOOL initializeDataReady;
+
++ (instancetype)sharedInstance;
 - (void)getNewData;
 @end

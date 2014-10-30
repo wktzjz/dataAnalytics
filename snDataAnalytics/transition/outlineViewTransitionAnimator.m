@@ -17,7 +17,7 @@
     id<UIViewControllerContextTransitioning> _transitionContext;
     detectScrollViewEndGestureRecognizer *_gesture;
     CGFloat _panLocationStart;
-    BOOL _isDismiss;
+//    BOOL _isDismiss;
     BOOL _isInteractive;
     CATransform3D _tempTransform;
     
@@ -137,34 +137,47 @@
         
 /* get the clicked outlineView we have stored in fromViewController */
         _clickedOutlineView = (UIView *)[fromViewController clickedView];
+//        NSLog(@"fromViewController:%@",fromViewController);
+//         NSLog(@"fromViewController.clickedView:%@",fromViewController.clickedView);
 
 /* get the imageSnapshot View of the clicked View */
-        _snapView = [[UIImageView alloc] initWithImage:[_clickedOutlineView snapshot]];
-        _snapView.layer.cornerRadius = 10.0;
-        
-/* set the snapshot view frame as the clicked outlineView is in mainView */
-        NSArray *arrayOfFrame = (NSArray *)[fromViewController clickedViewFrame];
-        _snapInitialFrame = CGRectMake( ((NSNumber *)arrayOfFrame[0]).floatValue, ((NSNumber *)arrayOfFrame[1]).floatValue + navigationBarHeight,((NSNumber *)arrayOfFrame[2]).floatValue, ((NSNumber *)arrayOfFrame[3]).floatValue );
-        [_snapView setFrame:_snapInitialFrame];
+        if(_clickedOutlineView){
+            _snapView = [[UIImageView alloc] initWithImage:[_clickedOutlineView snapshot]];
+            _snapView.layer.cornerRadius = 10.0;
+            
+            /* set the snapshot view frame as the clicked outlineView is in mainView */
+            NSArray *arrayOfFrame = (NSArray *)[fromViewController clickedViewFrame];
+            _snapInitialFrame = CGRectMake( ((NSNumber *)arrayOfFrame[0]).floatValue, ((NSNumber *)arrayOfFrame[1]).floatValue + navigationBarHeight,((NSNumber *)arrayOfFrame[2]).floatValue, ((NSNumber *)arrayOfFrame[3]).floatValue );
+            [_snapView setFrame:_snapInitialFrame];
+            
+            [containerView addSubview:_snapView];
+
+        }
+    
         
         
 //        NSLog(@"clickedOutlineView1 :%@",_clickedOutlineView);
 //        NSLog(@"imageView origin.x: %f, y:%f, width:%f, height:%f",_snapView.frame.origin.x,_snapView.frame.origin.y,_snapView.frame.size.width,_snapView.frame.size.height);
         
         toView.alpha = 0.0;
-        [containerView addSubview:_snapView];
         
         CGFloat animationScale = wkScreenWidth/220;
         
-        [UIView animateWithDuration:0.7
+        [UIView animateWithDuration:0.9
                               delay:0.0
              usingSpringWithDamping:0.6
               initialSpringVelocity:0.5
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
-            CGRect frameRect = _snapView.frame;
-            frameRect.origin = CGPointMake(20,10+44.0);
-            _snapView.frame = frameRect;
+                             if(_snapView){
+                                 CGRect frameRect = _snapView.frame;
+                                 frameRect.origin = CGPointMake(20,10+44.0);
+                                 _snapView.frame = frameRect;
+
+                             }
+//            CGRect frameRect = _snapView.frame;
+//            frameRect.origin = CGPointMake(20,10+44.0);
+//            _snapView.frame = frameRect;
             fromView.alpha = 0.00;
 //            fromView.transform = CGAffineTransformMakeScale(animationScale,animationScale);
 //            fromView.frame = CGRectMake(-(leftUpperPoint.x)*animationScale,
@@ -190,12 +203,14 @@
     // Grab the from and to view controllers from the context
     UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
 
-        if(_snapView){
-            _snapView.hidden = NO;
-           [_snapView setFrame:_snapInitialFrame];
-        }
+//        if(_snapView){
+//            _snapView.hidden = NO;
+//           [_snapView setFrame:_snapInitialFrame];
+//        }
+//        [[transitionContext containerView] addSubview: toViewController.view];
+
         [[transitionContext containerView] bringSubviewToFront:fromViewController.view];
-  
+
 //        NSLog(@"_snapInitialFrame.origin.x:%f, y:%f",_snapInitialFrame.origin.x,_snapInitialFrame.origin.y);
     
 //        if (![self isIOS8]) {
@@ -237,10 +252,11 @@
                              toViewController.view.alpha = 1.0f;
                              fromViewController.view.frame = endRect;
                          } completion:^(BOOL finished) {
-                             if(_snapView){
-                                [_snapView removeFromSuperview];
-                             }
+//                             if(_snapView){
+//                                [_snapView removeFromSuperview];
+//                             }
 //                             toViewController.view.layer.transform = CATransform3DIdentity;
+                              [fromViewController.view removeFromSuperview];
                              [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
                              
                          }];
@@ -282,6 +298,7 @@
             _panLocationStart = location.x;
         }
         
+//        [_modalController.navigationController popViewControllerAnimated:YES];
         [_modalController dismissViewControllerAnimated:YES completion:nil];
     }
     

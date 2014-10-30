@@ -35,6 +35,10 @@ typedef NS_ENUM(NSUInteger, transitonDirection) {
 @property CGFloat behindViewAlpha;
 @property (nonatomic, assign, getter=isDragable) BOOL dragable;
 
+//wk
+@property BOOL isDismiss;
+@property (nonatomic, weak) UINavigationController *navigationController;
+
 @property (nonatomic, weak) id <outLineViewTransitionProtocol> delegate;
 
 - (id)initWithModalViewController:(UIViewController *)modalViewController;

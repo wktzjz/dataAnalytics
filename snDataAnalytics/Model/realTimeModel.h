@@ -25,6 +25,14 @@
 @property (nonatomic) NSMutableArray *arrayOfValues;
 @property (nonatomic) NSMutableArray *arrayOfDates;
 
+@property (nonatomic) NSDictionary *initializeData;
+@property (nonatomic) NSDictionary *sendDict;
+
+@property (nonatomic,readonly) BOOL initializeDataReady;
+
++ (instancetype)sharedInstance;
+
+- (void)getInitializedRealTimeDeatilsData;
 - (void)getNewData;
 
 @end

@@ -27,6 +27,9 @@
 @property (nonatomic) UILabel *viewTitle;
 @property (nonatomic) dataOutlineViewContainer *dataContentView;
 
+@property (nonatomic) NSDictionary *initializedData;
+@property (nonatomic) BOOL initializedDataReady;
+
 //- (instancetype)init;
 //- (instancetype)initWithFrame:(CGRect)frame;
 //- (instancetype)initWithFrame:(CGRect)frame type:(dataVisualizedType)type;

@@ -1,25 +1,33 @@
 //
-//  visitorGroupDetailOutlineView.h
+//  realTimeDetailsView.h
 //  snDataAnalytics
 //
-//  Created by wktzjz on 14-10-9.
+//  Created by wktzjz on 14-10-29.
 //  Copyright (c) 2014年 wktzjz. All rights reserved.
 //
 
 #import "labelLineChartView.h"
-@interface visitorGroupDetailOutlineView : UIView
+
+typedef void(^viewClicked)(NSInteger markers);
+
+@interface realTimeDetailsView : UIView
 
 @property (nonatomic) labelLineChartView *UVView;
 @property (nonatomic) labelLineChartView *PVView;
 @property (nonatomic) labelLineChartView *visitorView;
 @property (nonatomic) labelLineChartView *newlyUVView;
 @property (nonatomic) labelLineChartView *validUVView;
-@property (nonatomic) labelLineChartView *averageRemainTimeView;
-@property (nonatomic) labelLineChartView *submittedDealconversionView;
+@property (nonatomic) labelLineChartView *payMoneyView;
+@property (nonatomic) labelLineChartView *vaildDealAmountView;
 @property (nonatomic) labelLineChartView *validDealConversionView;
 
+//@property (nonatomic) UIViewController *hostController;
+
+@property (nonatomic,copy) viewClicked viewClickedBlock;
+
 - (id)initWithFrame:(CGRect)frame;
-- (void)reloadData:(NSDictionary *)info;
+- (void)initViewsWithData:(NSDictionary *)data;
+- (void)reloadData:(NSDictionary *)data;
 - (void)shouldShowReferencedLines:(BOOL)show;
 
 @end

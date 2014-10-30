@@ -10,6 +10,21 @@
 #import "UIColor+CustomColors.h"
 #import "POP.h"
 
+@interface UIViewController (wkPresentingAnimator)
+
+- (void)_wkDismiss;
+
+@end
+
+@implementation UIViewController (wkPresentingAnimator)
+
+- (void)_wkDismiss
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+@end
+
 @implementation PresentingAnimator
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
@@ -19,19 +34,23 @@
 
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext
 {
-    UIView *fromView = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey].view;
+    UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    
+    UIView *fromView = fromVC.view;
+    UIView *toView = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey].view;
     fromView.tintAdjustmentMode = UIViewTintAdjustmentModeDimmed;
     fromView.userInteractionEnabled = NO;
 
     UIView *dimmingView = [[UIView alloc] initWithFrame:fromView.bounds];
     dimmingView.backgroundColor = [UIColor customGrayColor];
     dimmingView.layer.opacity = 0.0;
+    
+    [toView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:fromVC action:@selector(_wkDismiss)]];
 
-    UIView *toView = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey].view;
     toView.frame = CGRectMake(0,
                               0,
-                              CGRectGetWidth(transitionContext.containerView.bounds) - 104.f,
-                              CGRectGetHeight(transitionContext.containerView.bounds) - 288.f);
+                              CGRectGetWidth(transitionContext.containerView.bounds),
+                              CGRectGetHeight(transitionContext.containerView.bounds));
     toView.center = CGPointMake(transitionContext.containerView.center.x, -transitionContext.containerView.center.y);
 
     [transitionContext.containerView addSubview:dimmingView];

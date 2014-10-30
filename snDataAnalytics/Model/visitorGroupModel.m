@@ -18,7 +18,19 @@ static NSString *const dataDidInitialize = @"visitorGroupDataDidInitialize";
     __weak id      _wself ;
 }
 
-- (instancetype)init
++ (instancetype)sharedInstance
+{
+    static visitorGroupModel *sharedInstance = nil;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [[self alloc] _init];
+    });
+    
+    return sharedInstance;
+}
+
+- (instancetype)_init
 {
     self = [super init];
     
@@ -35,8 +47,6 @@ static NSString *const dataDidInitialize = @"visitorGroupDataDidInitialize";
                 [[NSNotificationCenter defaultCenter] postNotificationName:dataDidInitialize object:strongSelf userInfo:@{}];
             });
             
-            NSTimer *timer = [NSTimer timerWithTimeInterval:6.0f target:self selector:@selector(getNewData) userInfo:nil repeats:YES];
-            [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
         };
         
         [[networkManager sharedInstance] sendAsynchronousRequestWithURL:nil failureBlock:successefullyBlock successedBlock:successefullyBlock];

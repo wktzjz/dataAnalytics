@@ -25,6 +25,7 @@
 
 #import "realTimeModel.h"
 #import "notificationDefine.h"
+#import "TLYShyNavBarManager.h"
 
 typedef enum {
     dragUnknown = 0,
@@ -38,7 +39,7 @@ typedef enum {
     viewPresentedTypeDown
 } viewPresentedType;
 
-@interface baseViewController ()<wkContextOverlayViewDataSource, wkContextOverlayViewDelegate>
+@interface baseViewController ()<wkContextOverlayViewDataSource, wkContextOverlayViewDelegate/*,UINavigationControllerDelegate*/>
 
 @end
 
@@ -76,6 +77,9 @@ typedef enum {
     NSUserDefaults *_userDefaults;
     
     realTimeModel *_realTimeData;
+    
+    BOOL _ifUseFlexibleBar;
+    BOOL _statusBarShouldHide;
 }
 
 #pragma mark viewDidLoad
@@ -83,6 +87,10 @@ typedef enum {
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
+    
+     _ifUseFlexibleBar   = YES;
+    _statusBarShouldHide = NO;
+    
     [self setNeedsStatusBarAppearanceUpdate];
 
 //    self.view.BackgroundColor =[UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
@@ -136,6 +144,12 @@ typedef enum {
     
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.navigationController setDelegate:self];
+}
+
 - (void)addObservers
 {
     
@@ -143,7 +157,7 @@ typedef enum {
 
 - (void)addModel
 {
-    _realTimeData =  [[realTimeModel alloc] init];
+    _realTimeData =  [realTimeModel sharedInstance];
 }
 
 
@@ -190,11 +204,13 @@ typedef enum {
     _frontView.layer.shadowColor = [UIColor blackColor].CGColor;
     _frontView.layer.shadowOffset = CGSizeMake(-3, 3);
     
-    _text = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, 300, 50)];
-    [_text setText:@"Data Outline View"];
-    [_text setTextColor:[UIColor blackColor]];
-    _text.font = [UIFont boldSystemFontOfSize:33];
-    _text.textAlignment = NSTextAlignmentCenter;
+    if(!_ifUseFlexibleBar){
+        _text = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, 300, 50)];
+        [_text setText:@"Data Outline View"];
+        [_text setTextColor:[UIColor blackColor]];
+        _text.font = [UIFont boldSystemFontOfSize:33];
+        _text.textAlignment = NSTextAlignmentCenter;
+    }
     FBShimmeringView *shimmeringLogo = [[FBShimmeringView alloc] initWithFrame:CGRectMake(20, 0, 300, 50)];
     shimmeringLogo.contentView = _text;
     shimmeringLogo.shimmeringSpeed = 140;
@@ -267,19 +283,27 @@ typedef enum {
 #pragma mark addDataSubview
 - (void)addDataView
 {
-    _scrollView1 = [[UIScrollView alloc] initWithFrame:CGRectMake(mainDataScrollViewMargin, 50, wkScreenWidth - mainDataScrollViewMargin * 2, self.view.frame.size.height)];
+//    CGFloat originY = _ifUseFlexibleBar ? 10 : 50;
+    _scrollView1 = [[UIScrollView alloc] initWithFrame:CGRectMake(mainDataScrollViewMargin, 0 , wkScreenWidth - mainDataScrollViewMargin * 2, self.view.frame.size.height)];
     [_scrollView1 setDelegate:self];
     [_scrollView1 setShowsVerticalScrollIndicator:NO];
-    [_scrollView1 setContentSize:CGSizeMake(0, self.view.bounds.size.height * 4)];
+    [_scrollView1 setContentSize:CGSizeMake(0, self.view.bounds.size.height * 5)];
     [_frontView addSubview:_scrollView1];
+    [_scrollView1 setContentOffset:CGPointMake(0, -80)];
+    
+    if(_ifUseFlexibleBar){
+        /* Library code */
+        self.shyNavBarManager.scrollView = _scrollView1;
+        /* Can then be remove by setting the ExtensionView to nil */
+        [self.shyNavBarManager setExtensionView:nil];
+    }
 
     CGFloat width = outleineContainerViewWidth;
     CGFloat height = wkScreenHeight/2 + 10;
 //    NSLog(@"!!!!!width:%f",width);
     CGFloat originX = 0;
     
-    
-    _realTimeView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, 0, width, height + 410.0) ifLoading:YES];
+    _realTimeView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, 10, width, height + 410.0) ifLoading:YES];
     [_scrollView1 addSubview:_realTimeView];
     
     _visitorGruopView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _realTimeView.frame.origin.y + _realTimeView.frame.size.height + 20, width, height) ifLoading:YES];
@@ -350,7 +374,7 @@ typedef enum {
 //        viewController.title = @"Login";
 //        [self.navigationController pushViewController:viewController animated:YES];
         
-             [self presentViewController:viewController animated:YES completion:nil];
+        [self presentViewController:viewController animated:YES completion:nil];
     }
 }
 
@@ -368,7 +392,7 @@ typedef enum {
 {
     [networkManager sharedInstance].delegate = self;
     
-    [[networkManager sharedInstance] getNetworkInfo:@"http://news-at.zhihu.com/api/3/news/latest"];
+    [[networkManager sharedInstance] getNetworkInfo:nil];
      //@"http://news-at.zhihu.com/api/3/news/latest"];
     ////http://news-at.zhihu.com/api/3/news/hot;
 }
@@ -465,11 +489,17 @@ typedef enum {
             break;
     }
     
-    [self.navigationController setClickedView:targetView];
-
     CGRect frame = targetView.frame;
     frame = [_scrollView1 convertRect:frame toView:self.view];
-    [self.navigationController setClickedViewFrame:@[@(frame.origin.x),@(frame.origin.y - navigationBarHeight),@(frame.size.width),@(frame.size.height)]];
+    
+//    if(!_ifUseFlexibleBar){
+        [self.navigationController setClickedView:targetView];
+        [self.navigationController setClickedViewFrame:@[@(frame.origin.x),@(frame.origin.y - navigationBarHeight),@(frame.size.width),@(frame.size.height)]];
+//    }else{
+//        [self setClickedView:targetView];
+//        [self setClickedViewFrame:@[@(frame.origin.x),@(frame.origin.y - navigationBarHeight),@(frame.size.width),@(frame.size.height)]];
+//    }
+   
     
     [self transitOutlineView:targetView type:(viewType)(index)];
 }
@@ -499,8 +529,12 @@ typedef enum {
 {
     _detailsViewController = [[dataDetailsViewController alloc] initWithFrame:wkScreen type:type title:@"Details"];
     _detailsViewController.delegate = self;
-    _detailsViewController.viewTitleString = @"changed";
     _detailsViewController.modalPresentationStyle = UIModalPresentationCustom;
+    
+    _detailsViewController.initializedDataReady = _realTimeData.initializeDataReady;
+    if(type == outlineRealTime){
+        _detailsViewController.initializedData = _realTimeData.initializeData;
+    }
 
     _animator = [[outlineViewTransitionAnimator alloc] initWithModalViewController:_detailsViewController];
     _animator.behindViewAlpha = 0.5f;
@@ -518,13 +552,40 @@ typedef enum {
 //    }
     
     _detailsViewController.transitioningDelegate = _animator;
+    _detailsViewController.modalPresentationCapturesStatusBarAppearance = YES;
     
     [self presentViewController:_detailsViewController animated:YES completion:nil];
+
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                  animationControllerForOperation:(UINavigationControllerOperation)operation
+                                               fromViewController:(UIViewController*)fromVC
+                                                 toViewController:(UIViewController*)toVC
+{
+    if (operation != UINavigationControllerOperationNone) {
+        if(operation == UINavigationControllerOperationPush){
+            _animator.isDismiss = NO;
+        }else{
+            _animator.isDismiss = YES;
+        }
+        _animator.navigationController = self.navigationController;
+        return _animator;
+    }
+    return nil;
 }
 
 - (void)detailViewControllerWillDismiss
 {
     [_detailsViewController removeObservers];
+    
+    /*
+    _statusBarShouldHide = NO;
+    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        [self setNeedsStatusBarAppearanceUpdate];
+    } completion:nil];
+     */
+    
 }
 
 #pragma mark - UIViewControllerTransitioningDelegate
@@ -557,7 +618,7 @@ typedef enum {
                          _backgroundView.transform = CGAffineTransformMakeScale(backgroundInitialScale, backgroundInitialScale);
                          _frontView.center = CGPointMake(wkScreenWidth/2, wkScreenHeight/2);
                          _blackView.alpha  = blackViewMaximumAlpha;
-                         
+                          [self setTitle:@"概览"];
                      } completion:^(BOOL finished) {
                          _frontViewIsDraggedDown = NO;
                          _initalFrontCenterY = _frontView.center.y;
@@ -615,7 +676,7 @@ typedef enum {
                          _backgroundView.alpha = 1.0;
                          _frontView.center = CGPointMake(wkScreenWidth/2,(wkScreenHeight -frontViewRemainHeight) + wkScreenHeight/2);
                          _blackView.alpha = 0.0;
-                         
+                          [self setTitle:@"设置"];
                      } completion:^(BOOL finished) {
                          _initalFrontCenterY = _frontView.center.y;
                          _initalBackgroundCenterY = _backgroundView.center.y;
@@ -757,13 +818,12 @@ typedef enum {
     }else{
         return nil;
     }
-    
 }
 
 #pragma mark barSetting
 - (BOOL)prefersStatusBarHidden
 {
-    return YES;
+    return !_ifUseFlexibleBar;
 }
 
 #pragma mark isIOS8

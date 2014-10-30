@@ -28,7 +28,7 @@ typedef NS_ENUM(NSUInteger, dataVisualizedType) {
 
 typedef NS_ENUM(NSUInteger, viewType) {
     outlineRealTime = 0,
-    outlinevisitorGroup,
+    outlineVisitorGroup,
     outlineSource,
     outlinePageAnalytics,
     outlineHotCity,

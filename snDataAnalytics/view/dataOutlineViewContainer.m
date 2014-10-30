@@ -216,7 +216,7 @@ const static CGFloat loadingAnimationDuration = 0.7f;
         [_contentView addSubview:_chartLabel];
         [_contentView addSubview:_circleChart];
         
-    }else if (dataType == outlinevisitorGroup)
+    }else if (dataType == outlineVisitorGroup)
     {
 //        _contentView = nil;
         _visitorGroupView = [[visitorGroupOutlineView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
@@ -603,7 +603,7 @@ const static CGFloat loadingAnimationDuration = 0.7f;
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(delayTime,dispatch_get_main_queue(), ^{
         
-        if(type == outlinevisitorGroup){
+        if(type == outlineVisitorGroup){
             _visitorGroupView.groupColorArray = colorArray;
             _visitorGroupView.groupPercentArray = percentArray;
             [_visitorGroupView modifyGroupView];

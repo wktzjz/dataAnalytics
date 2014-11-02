@@ -25,14 +25,17 @@
 @property (nonatomic) NSMutableArray *arrayOfValues;
 @property (nonatomic) NSMutableArray *arrayOfDates;
 
+
+//use the folling methods
 @property (nonatomic) NSDictionary *initializeData;
 @property (nonatomic) NSDictionary *sendDict;
-
 @property (nonatomic,readonly) BOOL initializeDataReady;
 
 + (instancetype)sharedInstance;
 
 - (void)getInitializedRealTimeDeatilsData;
+
+//the Timer will automaticlly getNewData every 10s,and send async notifications to update;
 - (void)getNewData;
 
 @end

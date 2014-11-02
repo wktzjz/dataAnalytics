@@ -13,8 +13,12 @@
 @property (nonatomic) NSDictionary *initializeData;
 @property (nonatomic) NSDictionary *sendDict;
 
+@property (nonatomic) NSDictionary *defineDetails;
+
 @property (nonatomic,readonly) BOOL initializeDataReady;
 
 + (instancetype)sharedInstance;
+- (void)initDefineDetails;
+-(NSDictionary *)getDefineDetails;
 - (void)getNewData;
 @end

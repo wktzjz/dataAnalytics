@@ -40,6 +40,7 @@
 #import "DismissingAnimator.h"
 
 #import "visitorGroupModel.h"
+#import "lineChartDetailsViewController.h"
 
 const static CGFloat titleViewHeight = 44.0f;
 const static CGFloat itemsViewWidth  = 300.0f;
@@ -511,16 +512,14 @@ const static CGFloat itemsViewHeight = 145.0f;
             [_realTimeView initViewsWithData:_initializedData];
         }
         
+        //test
+        [[visitorGroupModel sharedInstance] initDefineDetails];;
         _realTimeView.viewClickedBlock = ^(NSInteger markers){
             [strongSelf handleRealTimeLineViewClicked:markers];
         };
         
         [_scrollView addSubview:_realTimeView];
     });
-    
-    //            _realTimeView = [[realTimeDetailsView alloc] initWithFrame:CGRectMake(marginX, _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, width, height*3.5)];
-    //            [_scrollView addSubview:_realTimeView];
-    
     
     _ifHasDetailsView = YES;
     self.viewTitleString = @"实时";
@@ -716,9 +715,11 @@ const static CGFloat itemsViewHeight = 145.0f;
     switch (markers) {
             
         case 0:{
-            UIViewController *vc = [[UIViewController alloc] init];
-            lineChartDetailsView *view = [[lineChartDetailsView alloc] initWithFrame:self.view.frame];
-            vc.view = view;
+            lineChartDetailsViewController *vc = [[lineChartDetailsViewController alloc] initWithFrame:self.view.frame data:nil];
+            
+            [vc reloadViewWithData:[[visitorGroupModel sharedInstance] getDefineDetails]];
+            vc.chartDetailsView.dimensionName = @"访客类型";
+            vc.chartDetailsView.indexName = @"UV";
             
             vc.transitioningDelegate = self;
             vc.modalPresentationStyle = UIModalPresentationCustom;

@@ -181,6 +181,8 @@
 		35D397EF19FF90950014B377 /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35D397EE19FF90950014B377 /* FXBlurView.m */; };
 		35D397F31A0084EF0014B377 /* labelLineChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35D397F21A0084EF0014B377 /* labelLineChartView.m */; };
 		35D397F61A0090C20014B377 /* realTimeDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35D397F51A0090C20014B377 /* realTimeDetailsView.m */; };
+		35D397F91A0336700014B377 /* lineChartDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 35D397F81A0336700014B377 /* lineChartDetailsViewController.m */; };
+		35D397FE1A033AC10014B377 /* detailsSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35D397FD1A033AC10014B377 /* detailsSwitchView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -491,6 +493,10 @@
 		35D397F21A0084EF0014B377 /* labelLineChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = labelLineChartView.m; path = view/labelLineChartView.m; sourceTree = "<group>"; };
 		35D397F41A0090C20014B377 /* realTimeDetailsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = realTimeDetailsView.h; path = view/realTimeDetailsView.h; sourceTree = "<group>"; };
 		35D397F51A0090C20014B377 /* realTimeDetailsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = realTimeDetailsView.m; path = view/realTimeDetailsView.m; sourceTree = "<group>"; };
+		35D397F71A0336700014B377 /* lineChartDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lineChartDetailsViewController.h; path = viewController/lineChartDetailsViewController.h; sourceTree = "<group>"; };
+		35D397F81A0336700014B377 /* lineChartDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = lineChartDetailsViewController.m; path = viewController/lineChartDetailsViewController.m; sourceTree = "<group>"; };
+		35D397FC1A033AC10014B377 /* detailsSwitchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = detailsSwitchView.h; path = view/detailsSwitchView.h; sourceTree = "<group>"; };
+		35D397FD1A033AC10014B377 /* detailsSwitchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = detailsSwitchView.m; path = view/detailsSwitchView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -820,6 +826,7 @@
 				3562989519B7F97D004A8054 /* dataOutlineViewContainer.m */,
 				35D397F01A0084BA0014B377 /* labelLineChartView */,
 				35D397B919FE4FF30014B377 /* lineChartDetailsView */,
+				35D397FB1A033AAE0014B377 /* detailsSwitchView */,
 				35945D3C19E8C46300BF5EC3 /* contextMenuView */,
 				35945CF519E8C22800BF5EC3 /* realTimeViews */,
 				35945CDE19E667EE00BF5EC3 /* visitorGroupViews */,
@@ -833,6 +840,7 @@
 		3562983019B45099004A8054 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				35D397FA1A0336E00014B377 /* lineChartDetailsViewController */,
 				35945DEF19E9342F00BF5EC3 /* backgroundMenu */,
 				35F3999019CFC1D30077BA75 /* popupViewController */,
 				3562989719B83763004A8054 /* dataDetailsViewController.h */,
@@ -1297,6 +1305,24 @@
 			name = labelLineChartView;
 			sourceTree = "<group>";
 		};
+		35D397FA1A0336E00014B377 /* lineChartDetailsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				35D397F71A0336700014B377 /* lineChartDetailsViewController.h */,
+				35D397F81A0336700014B377 /* lineChartDetailsViewController.m */,
+			);
+			name = lineChartDetailsViewController;
+			sourceTree = "<group>";
+		};
+		35D397FB1A033AAE0014B377 /* detailsSwitchView */ = {
+			isa = PBXGroup;
+			children = (
+				35D397FC1A033AC10014B377 /* detailsSwitchView.h */,
+				35D397FD1A033AC10014B377 /* detailsSwitchView.m */,
+			);
+			name = detailsSwitchView;
+			sourceTree = "<group>";
+		};
 		35F3999019CFC1D30077BA75 /* popupViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1558,8 +1584,10 @@
 				35D397DB19FF2F2B0014B377 /* NSString+LTMorphingLabel.swift in Sources */,
 				35945DC919E8D0D000BF5EC3 /* CheckNetwork.m in Sources */,
 				35945D3F19E8C49D00BF5EC3 /* wkContextMenuView.m in Sources */,
+				35D397FE1A033AC10014B377 /* detailsSwitchView.m in Sources */,
 				35945DBB19E8D02A00BF5EC3 /* DismissingAnimator.m in Sources */,
 				35945CF319E8C20A00BF5EC3 /* visitorGroupOutlineView.m in Sources */,
+				35D397F91A0336700014B377 /* lineChartDetailsViewController.m in Sources */,
 				35945D2A19E8C37300BF5EC3 /* PNPieChart.m in Sources */,
 				35945DDE19E8D36F00BF5EC3 /* main.m in Sources */,
 				3522247019C2C73D0048F57C /* POPDecayAnimation.mm in Sources */,

@@ -7,15 +7,19 @@
 //
 
 #import "labelLineChartView.h"
+#import "detailsSwitchView.h"
 
-@interface lineChartDetailsView : UIView 
+@interface lineChartDetailsView : UIView
 
 @property (nonatomic) labelLineChartView *lineView;
-@property (nonatomic) UIView *detailsView;
+@property (nonatomic) detailsSwitchView *detailsView;
+
+@property (nonatomic) NSString *dimensionName;
+@property (nonatomic) NSString *indexName;
 
 @property (nonatomic) NSString  *graphLabelName;
 
 - (id)initWithFrame:(CGRect)frame;
-- (void)relodData:(NSDictionary *)info;
+- (void)reloadViewWithData:(NSDictionary *)info;
 
 @end

@@ -36,7 +36,7 @@
 - (void)addViews
 {
     float marginX = 10.0;
-    float marginY = 10.0 ;
+    float marginY = 10.0;
     float width   = wkScreenWidth - 10 * 2;
     float height  = wkScreenHeight/2 - 15;
     
@@ -46,9 +46,7 @@
 
     [self addSubview:_lineView];
 
-    _detailsView = [[UIView alloc] initWithFrame:CGRectMake(marginX, _lineView.frame.origin.y + _lineView.frame.size.height + marginY, width, height)];
-    _detailsView.layer.cornerRadius = 10;
-    _detailsView.backgroundColor = [UIColor whiteColor];
+    _detailsView = [[detailsSwitchView alloc] initWithFrame:CGRectMake(marginX, _lineView.frame.origin.y + _lineView.frame.size.height + marginY, width, height)];
     [self addSubview:_detailsView];
     
 }
@@ -57,6 +55,23 @@
 {
     _graphLabelName       = labelString;
     _lineView.labelString = labelString;
+}
+
+- (void)reloadViewWithData:(NSDictionary *)data
+{
+    [_detailsView addViewsWithData:data];
+}
+
+- (void)setDimensionName:(NSString *)dimensionName
+{
+    _dimensionName = dimensionName;
+   _detailsView.dimensionName = dimensionName;
+}
+
+- (void)setIndexName:(NSString *)indexName
+{
+    _indexName = indexName;
+    _detailsView.indexName = indexName;
 }
 
 @end

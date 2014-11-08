@@ -7,6 +7,20 @@
 //
 
 #import "labelLineChartView.h"
+
+//typedef NS_ENUM(NSUInteger, vistorGroupIndexType) {
+//    outlineTypeRealTime = 0,
+//    outlineTypePie,
+//    outlineTypeCircle,
+//    outlineTypeLine,
+//    outlineTypeBar,
+//    //    outlineTypeCircle,
+//    //    outlineTypePie,
+//    outlineTypeLine1,
+//};
+
+typedef void(^viewClicked)(NSInteger markers);
+
 @interface visitorGroupDetailOutlineView : UIView
 
 @property (nonatomic) labelLineChartView *UVView;
@@ -18,7 +32,11 @@
 @property (nonatomic) labelLineChartView *submittedDealconversionView;
 @property (nonatomic) labelLineChartView *validDealConversionView;
 
+@property (nonatomic,copy) viewClicked viewClickedBlock;
+
 - (id)initWithFrame:(CGRect)frame;
+- (void)initViewsWithData:(NSDictionary *)data;
+
 - (void)reloadData:(NSDictionary *)info;
 - (void)shouldShowReferencedLines:(BOOL)show;
 

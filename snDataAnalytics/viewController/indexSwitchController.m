@@ -75,12 +75,15 @@
 - (void)addvisitorSwitchView
 {
     visitorGroupSwitchView *view = [[visitorGroupSwitchView alloc]initWithFrame:self.view.frame];
-    __weak typeof(self) weakSelf = self;
+//    __weak typeof(self) weakSelf = self;
 
     view.switchAction =^(NSInteger index){
-        typeof(weakSelf) strongSelf = weakSelf;
-         strongSelf.switchAction(index);
-        };
+//        typeof(weakSelf) strongSelf = weakSelf;
+//         strongSelf.switchAction(index);
+        if(_switchAction){
+            _switchAction(index);
+        }
+    };
 
     [_contentView addSubview:view];
 }

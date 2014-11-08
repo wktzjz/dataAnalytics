@@ -9,6 +9,9 @@
 #import "labelLineChartView.h"
 #import "detailsSwitchView.h"
 
+typedef void(^dimensionButtonClicked)();
+typedef void(^indexButtonClicked)();
+
 @interface lineChartDetailsView : UIView
 
 @property (nonatomic) labelLineChartView *lineView;
@@ -16,10 +19,18 @@
 
 @property (nonatomic) NSString *dimensionName;
 @property (nonatomic) NSString *indexName;
-
 @property (nonatomic) NSString  *graphLabelName;
 
+@property (nonatomic,copy) dimensionButtonClicked dimensionButtonClickedBlock;
+@property (nonatomic,copy) indexButtonClicked indexButtonClickedBlock;
+
 - (id)initWithFrame:(CGRect)frame;
+
+- (void)addLineViewWithData:(NSDictionary *)data;
+
+- (void)addDetailsViewButtonWithData:(NSDictionary *)data;
+- (void)addDetailsViewWithData:(NSDictionary *)data;
+
 - (void)reloadViewWithData:(NSDictionary *)info;
 
 @end

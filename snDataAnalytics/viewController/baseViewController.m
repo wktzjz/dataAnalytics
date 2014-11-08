@@ -24,6 +24,7 @@
 #import "wkContextMenuView.h"
 
 #import "realTimeModel.h"
+#import "visitorGroupModel.h"
 #import "notificationDefine.h"
 #import "TLYShyNavBarManager.h"
 
@@ -129,6 +130,12 @@ typedef enum {
                                                  selector:@selector(handleRealTimeDataDidChange:)
                                                      name:dataDidChange object:nil];
         
+//        NSMutableArray *test1 = [[NSMutableArray alloc] initWithArray:@[@1,@2]];
+//        NSMutableArray *test2 = [[NSMutableArray alloc] initWithArray:test1];
+//        [test1 removeLastObject];
+//        [test2 addObject:@3];
+//        NSLog(@"!!!!!!!!!!!!!! test2.count:%i",test2.count);
+        
         [strongSelf onApplicationFinishedLaunching];
 //        NSLog(@"width:%f, height:%f",wkScreenWidth,wkScreenHeight);
 //        NSLog(@"navigationbar height:%f",self.navigationController.navigationBar.frame.size.height);
@@ -158,6 +165,9 @@ typedef enum {
 - (void)addModel
 {
     _realTimeData =  [realTimeModel sharedInstance];
+    [[visitorGroupModel sharedInstance] initDefineDetails];
+    [[visitorGroupModel sharedInstance] initDetailsData];
+
 }
 
 
@@ -531,9 +541,12 @@ typedef enum {
     _detailsViewController.delegate = self;
     _detailsViewController.modalPresentationStyle = UIModalPresentationCustom;
     
-    _detailsViewController.initializedDataReady = _realTimeData.initializeDataReady;
     if(type == outlineRealTime){
+        _detailsViewController.initializedDataReady = _realTimeData.initializeDataReady;
         _detailsViewController.initializedData = _realTimeData.initializeData;
+    }else if(type == outlineVisitorGroup){
+        _detailsViewController.initializedDataReady = [visitorGroupModel sharedInstance].initializeDataReady;
+        _detailsViewController.initializedData = [visitorGroupModel sharedInstance].initializeData;
     }
 
     _animator = [[outlineViewTransitionAnimator alloc] initWithModalViewController:_detailsViewController];

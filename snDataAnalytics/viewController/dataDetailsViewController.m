@@ -42,6 +42,8 @@
 #import "visitorGroupModel.h"
 #import "lineChartDetailsViewController.h"
 
+#import "lineChartDetailsViewFactory.h"
+
 const static CGFloat titleViewHeight = 44.0f;
 const static CGFloat itemsViewWidth  = 300.0f;
 const static CGFloat itemsViewHeight = 145.0f;
@@ -78,8 +80,13 @@ const static CGFloat itemsViewHeight = 145.0f;
     NSDate *_curDate;
     NSDateFormatter *_formatter;
     
-    NSMutableArray *_selectedDays;
+    NSMutableDictionary *_selectedDays;
     BOOL _ifHasDetailsView;
+    
+    float _marginX;
+    float _marginY;
+    float _width;
+    float _height;
     
 //    test *testInstance;
 }
@@ -100,10 +107,16 @@ const static CGFloat itemsViewHeight = 145.0f;
         
         _dataVisualizedType = viewType;
         _viewTitleString   = title;
-        self.view.frame = frame;
         _ifHasDetailsView = NO;
         
         _initializedDataReady = NO;
+        
+        _marginX = 20.0;
+        _marginY = 10.0 + titleViewHeight;
+        _width   = frame.size.width - _marginX * 2;
+        _height  = frame.size.height/2 + 10;
+        
+        self.view.frame = frame;
 //        self.view.backgroundColor = [UIColor clearColor];
     }
     return self;
@@ -292,7 +305,6 @@ const static CGFloat itemsViewHeight = 145.0f;
     _barView.blurEnabled = YES;
     _barView.dynamic  = YES;
     _barView.blurRadius = 40;
-
     [_contentView addSubview:_barView];
     
     _barView.frame = CGRectMake(0, 0, self.view.frame.size.width, titleViewHeight);
@@ -303,7 +315,7 @@ const static CGFloat itemsViewHeight = 145.0f;
     [_viewTitle setText:_viewTitleString];
     _viewTitle.textAlignment = NSTextAlignmentCenter;
 //    _viewTitle.font   = [UIFont fontWithName:@"HelveticaNeue-Light" size:20];
-    _viewTitle.font   = [UIFont fontWithName:@"Avenir-Medium" size:20];
+    _viewTitle.font   = [UIFont fontWithName:@"OpenSans-Light" size:20];
     CGSize sz    = [_viewTitle.text sizeWithAttributes:@{NSFontAttributeName:_viewTitle.font}];
     _viewTitle.frame  = CGRectMake(0, 0, sz.width*2, sz.height);
     _viewTitle.center = CGPointMake(_barView.center.x,_barView.center.y);
@@ -342,7 +354,7 @@ const static CGFloat itemsViewHeight = 145.0f;
 
 
     flatButton *settingButton = [flatButton button];
-    settingButton.titleLabel.font = [UIFont fontWithName:@"Avenir-Medium"size:18];
+    settingButton.titleLabel.font = [UIFont fontWithName:@"OpenSans-Light"size:18];
 
     settingButton.backgroundColor = [UIColor clearColor];
     settingButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -374,7 +386,7 @@ const static CGFloat itemsViewHeight = 145.0f;
 - (void)addDatePickerButton
 {
     flatButton *datePickerButton = [flatButton button];
-    datePickerButton.titleLabel.font = [UIFont fontWithName:@"Avenir-Medium"size:18];
+    datePickerButton.titleLabel.font = [UIFont fontWithName:@"OpenSans-Light"size:18];
     
     datePickerButton.backgroundColor = [UIColor clearColor];
     datePickerButton.textColor = PNTwitterColor;
@@ -406,9 +418,16 @@ const static CGFloat itemsViewHeight = 145.0f;
 {
     _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     _scrollView.backgroundColor = [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
-    [_scrollView setDelegate:self];
+
+//    [_scrollView setDelegate:self];
     [_scrollView setShowsVerticalScrollIndicator:NO];
-    [_scrollView setContentSize:CGSizeMake(0, 2100)];
+    
+    if(_dataVisualizedType == outlineRealTime){
+        [_scrollView setContentSize:CGSizeMake(0, 2100)];
+    }else{
+        [_scrollView setContentSize:CGSizeMake(0, 1650)];
+    }
+    
     [_contentView addSubview:_scrollView];
     [_contentView insertSubview:_barView aboveSubview:_scrollView];
     
@@ -462,16 +481,7 @@ const static CGFloat itemsViewHeight = 145.0f;
         
     }else if (_dataVisualizedType == outlineVisitorGroup){
         
-        //Add PieChart
-        
-        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineVisitorGroup inControllerType:detailView];
-        [_scrollView addSubview:_dataContentView];
-        
-        _visitorGroupView = [[visitorGroupDetailOutlineView alloc] initWithFrame:CGRectMake(marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, width, height*3.5)];
-        
-        [_scrollView addSubview:_visitorGroupView];
-        _ifHasDetailsView = YES;
-        self.viewTitleString = @"访客群体分析";
+        [self addVisitorGroupDetailsViewWithFrame:CGRectMake(marginX, marginY, width, height)];
         
     }else if (_dataVisualizedType == outlineHotPage){
         _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineHotPage inControllerType:detailView];
@@ -488,14 +498,10 @@ const static CGFloat itemsViewHeight = 145.0f;
     }
 }
 
+#pragma mark addViewsWithData
 - (void)addRealTimeDetailsViewWithFrame:(CGRect)frame
 {
-    const float marginX = 20.0;
-    const float marginY = 10.0 + titleViewHeight;
-    const float width   = wkScreenWidth - marginX * 2;
-    const float height  = wkScreenHeight/2 + 10;
-    
-    _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height*2.5) dataType:outlineRealTime inControllerType:detailView];
+    _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(_marginX, _marginY, _width, _height*2.5) dataType:outlineRealTime inControllerType:detailView];
     _dataContentView.backgroundColor = [UIColor whiteColor];
     [_scrollView addSubview:_dataContentView];
     
@@ -506,17 +512,16 @@ const static CGFloat itemsViewHeight = 145.0f;
     dispatch_after(popTime, dispatch_get_main_queue(), ^{
         typeof(weakself) strongSelf = weakself;
         
-        _realTimeView = [[realTimeDetailsView alloc] initWithFrame:CGRectMake(marginX, _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, width, height*3.5)];
+        _realTimeView = [[realTimeDetailsView alloc] initWithFrame:CGRectMake(_marginX, _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, _width, _height * 6)];
         
         if(_initializedDataReady){
             [_realTimeView initViewsWithData:_initializedData];
         }
         
-        //test
-        [[visitorGroupModel sharedInstance] initDefineDetails];;
-        _realTimeView.viewClickedBlock = ^(NSInteger markers){
-            [strongSelf handleRealTimeLineViewClicked:markers];
-        };
+//        //test
+//        _realTimeView.viewClickedBlock = ^(NSInteger markers){
+//            [strongSelf handleRealTimeLineViewClicked:markers];
+//        };
         
         [_scrollView addSubview:_realTimeView];
     });
@@ -524,6 +529,53 @@ const static CGFloat itemsViewHeight = 145.0f;
     _ifHasDetailsView = YES;
     self.viewTitleString = @"实时";
 
+}
+
+- (void)addVisitorGroupDetailsViewWithFrame:(CGRect)frame
+{
+    _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(_marginX, _marginY, _width, _height) dataType:outlineVisitorGroup inControllerType:detailView];
+    [_scrollView addSubview:_dataContentView];
+    
+    double delayInSeconds = 0.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    
+    __weak typeof(self) weakself = self;
+    dispatch_after(popTime, dispatch_get_main_queue(), ^{
+        typeof(weakself) strongSelf = weakself;
+        
+         _visitorGroupView = [[visitorGroupDetailOutlineView alloc] initWithFrame:CGRectMake(_marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, _width, _height * 5)];
+        
+        if(_initializedDataReady){
+            [_visitorGroupView initViewsWithData:_initializedData];
+        }
+        
+        _visitorGroupView.viewClickedBlock = ^(NSInteger markers){
+            [strongSelf handleVisitorGroupLineViewClicked:markers];
+        };
+        
+        [_scrollView addSubview:_visitorGroupView];
+    });
+    
+    [_scrollView addSubview:_visitorGroupView];
+    _ifHasDetailsView = YES;
+    self.viewTitleString = @"访客群体分析";
+}
+
+#pragma mark handleVisitorGroupLineViewClicked
+- (void)handleVisitorGroupLineViewClicked:(NSInteger)markers
+{
+    lineChartDetailsViewController *vc = [[lineChartDetailsViewFactory sharedInstance] getVisitorGroupControllerByType:(visitorGroupControllerType)markers];
+    
+    __weak typeof(self) weakSelf = self;
+    vc.dismissBlock = ^{
+        typeof(weakSelf) strongSelf = weakSelf;
+        [strongSelf dismissViewControllerAnimated:YES completion:nil];
+    };
+    
+    vc.transitioningDelegate = self;
+    vc.modalPresentationStyle = UIModalPresentationCustom;
+    
+    [self presentViewController:vc animated:YES completion:nil];
 }
 
 
@@ -613,12 +665,19 @@ const static CGFloat itemsViewHeight = 145.0f;
 }
 
 #pragma mark THDatePickerDelegate
--(void)datePickerDonePressed:(THDatePickerViewController *)datePicker selectedDays:(NSMutableArray *)selectedDays
+-(void)datePickerDonePressed:(THDatePickerViewController *)datePicker selectedDays:(NSMutableDictionary *)selectedDays
 {
     _selectedDays = selectedDays;
-    [_selectedDays enumerateObjectsUsingBlock:^(THDateDay* day, NSUInteger idx, BOOL *stop) {
-        NSLog(@"selected Day:%@",[_formatter stringFromDate:day.date]);
+
+    NSArray* arr = [selectedDays allKeys];
+    arr = [arr sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2){
+        NSComparisonResult result = [obj1 compare:obj2];
+        return result==NSOrderedDescending;
     }];
+    [arr enumerateObjectsUsingBlock:^(NSNumber *key, NSUInteger idx, BOOL *stop) {
+         NSLog(@"selected Day:%@",[_formatter stringFromDate:((THDateDay *)selectedDays[key]).date]);
+    }];
+
     _curDate = datePicker.date;
 //    [self refreshTitle];
     [self dismissSemiModalView];
@@ -628,8 +687,14 @@ const static CGFloat itemsViewHeight = 145.0f;
 {
     //[_datePicker slideDownAndOut];
     _selectedDays = datePicker.selectedDaysArray;
-    [_selectedDays enumerateObjectsUsingBlock:^(THDateDay* day, NSUInteger idx, BOOL *stop) {
-        NSLog(@"selected Day:%@",[_formatter stringFromDate:day.date]);
+
+    NSArray* arr = [_selectedDays allKeys];
+    arr = [arr sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2){
+        NSComparisonResult result = [obj1 compare:obj2];
+        return result==NSOrderedDescending;
+    }];
+    [arr enumerateObjectsUsingBlock:^(NSNumber *key, NSUInteger idx, BOOL *stop) {
+        NSLog(@"selected Day:%@",[_formatter stringFromDate:((THDateDay *)_selectedDays[key]).date]);
     }];
     [self dismissSemiModalView];
 }
@@ -707,30 +772,6 @@ const static CGFloat itemsViewHeight = 145.0f;
         }else if(clickedButtonIndex == 1){
             [_dataContentView modifyLineChartInView:nil type:0 WithValueArray:nil dateArray:nil];
         }
-    }
-}
-
-- (void)handleRealTimeLineViewClicked:(NSInteger)markers
-{
-    switch (markers) {
-            
-        case 0:{
-            lineChartDetailsViewController *vc = [[lineChartDetailsViewController alloc] initWithFrame:self.view.frame data:nil];
-            
-            [vc reloadViewWithData:[[visitorGroupModel sharedInstance] getDefineDetails]];
-            vc.chartDetailsView.dimensionName = @"访客类型";
-            vc.chartDetailsView.indexName = @"UV";
-            
-            vc.transitioningDelegate = self;
-            vc.modalPresentationStyle = UIModalPresentationCustom;
-            
-            [self presentViewController:vc animated:YES completion:nil];
-            
-        }
-        break;
-            
-        default:
-            break;
     }
 }
 

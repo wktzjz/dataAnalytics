@@ -18,13 +18,17 @@ typedef void(^viewClicked)(NSInteger markers);
 @property (nonatomic) NSMutableArray         *arrayOfValues;
 @property (nonatomic) NSMutableArray         *arrayOfDates;
 @property (nonatomic) NSString               *labelString;
+@property (nonatomic) NSNumber               *labelNumber;
 @property (nonatomic) UILabel                *label;
+@property (nonatomic) UILabel                *numberLabel;
 @property (nonatomic) BOOL                   shouldReferencedLinesShow;
 @property (nonatomic) NSInteger              viewMarker;
 
 @property (nonatomic, copy) viewClicked viewClickedBlock;
 
 - (id)initWithFrame:(CGRect)frame;
+- (id)initWithFrame:(CGRect)frame referencedLinesShow:(BOOL)show;
+
 - (void)addViewsWithData:(NSDictionary *)data;
 - (void)relodData:(NSDictionary *)data;
 

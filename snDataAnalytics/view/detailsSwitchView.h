@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^dimensionButtonClicked)();
+typedef void(^indexButtonClicked)();
+
 @interface detailsSwitchView : UIView
 
 @property (nonatomic) NSString *dimensionName;
@@ -19,8 +22,15 @@
 @property (nonatomic) NSArray *labelStringArray;
 @property (nonatomic) NSArray *valueArray;
 
+@property (nonatomic,copy) dimensionButtonClicked dimensionButtonClickedBlock;
+@property (nonatomic,copy) indexButtonClicked indexButtonClickedBlock;
+
 - (id)initWithFrame:(CGRect)frame;
+
+- (void)addLabelsWithData:(NSDictionary *)data;
 - (void)addViewsWithData:(NSDictionary *)data;
-- (void)reloadViewWithData:(NSDictionary *)data;
+
+- (void)reloadLabelsWithData:(NSDictionary *)data;
+- (void)reloadValuesWithData:(NSDictionary *)data;
 
 @end

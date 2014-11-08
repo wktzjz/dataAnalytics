@@ -24,6 +24,15 @@
     BOOL _disableFutureSelection;
     BOOL (^_dateHasItemsCallback)(NSDate *);
     NSDateComponents *_comps;
+    
+    //wk
+    NSMutableArray *_shownDays;
+    NSMutableArray *_shownDaysWithRepetition;
+    NSMutableArray *_shownDaysTag;
+    
+    NSMutableArray *_selectedDaysTag;
+
+    THDateDay *_lastSelectedDay;
 }
 @property (nonatomic, strong) NSDate * firstOfCurrentMonth;
 @property (nonatomic, strong) THDateDay * currentDay;
@@ -60,7 +69,13 @@
         _calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
         _allowClearDate = NO;
         _disableFutureSelection = NO;
-        _selectedDaysArray = [[NSMutableArray alloc] initWithCapacity:10];
+        //wk
+        _selectedDaysArray = [[NSMutableDictionary alloc] init];
+        _shownDays         = [[NSMutableArray alloc] initWithCapacity:10];
+        _shownDaysWithRepetition = [[NSMutableArray alloc] initWithCapacity:10];
+
+        _shownDaysTag      = [[NSMutableArray alloc] initWithCapacity:10];
+        _selectedDaysTag   = [[NSMutableArray alloc] initWithCapacity:10];
     }
     return self;
 }
@@ -188,6 +203,9 @@
     int origX = (areaWidth - cellWidth*7)/2;
     int curX = origX;
     [self redrawWeekdays:cellWidth];
+    //wk
+//    [_shownDays removeAllObjects];
+    
     for(int i = 0; i < days; i++){
         // @beginning
         if(i && !(i%7)) {
@@ -220,19 +238,31 @@
         NSInteger day1 = [_comps day];
         day.dayTag = month*100 + day1;
         
-        //wk
-        [_selectedDaysArray enumerateObjectsUsingBlock:^(THDateDay *storedDay, NSUInteger idx, BOOL *stop) {
-            if(storedDay.dayTag == day.dayTag){
-                [day setSelected:YES];
-                [_selectedDaysArray removeObject:storedDay];
-                [_selectedDaysArray addObject:day];
-            }
-        }];
+        //wk 遍历新生成的days，如果day的dayTag在_selectedDaysArray中有，表明这个day被选中，删除旧的day，添加新的day
+//        [_selectedDaysArray enumerateObjectsUsingBlock:^(THDateDay *storedDay, NSUInteger idx, BOOL *stop) {
+//            if(storedDay.dayTag == day.dayTag){
+//                [day setSelected:YES];
+//                [_selectedDaysArray removeObject:storedDay];
+//                [_selectedDaysArray addObject:day];
+//            }
+//        }];
+        if(_selectedDaysArray[@(day.dayTag)]){
+            [day setSelected:YES];
+            _selectedDaysArray[@(day.dayTag)] = day;
+        }
         
         NSDateComponents *comps = [_calendar components:NSDayCalendarUnit fromDate:date];
         [day.dateButton setTitle:[NSString stringWithFormat:@"%ld",(long)[comps day]]
                         forState:UIControlStateNormal];
         [self.calendarDaysView addSubview:day];
+        
+        //wk
+//        day.orderTag = i;
+//        if(![_shownDaysTag containsObject:@(day.dayTag)]){
+            [_shownDays addObject:day];
+//            [_shownDaysTag addObject:@(day.dayTag)];
+//        }
+        [_shownDaysWithRepetition addObject:day];
         
         // @end
         date = [_calendar dateByAddingComponents:offsetComponents toDate:date options:0];
@@ -363,9 +393,10 @@
 
 - (void)dateDayTapped:(THDateDay *)dateDay{
     //wk
-    if([_selectedDaysArray containsObject:dateDay]){
-        [dateDay setSelected:NO];
-        [_selectedDaysArray removeObject:dateDay];
+//    if([_selectedDaysArray containsObject:dateDay]){
+    if(_selectedDaysArray[@(dateDay.dayTag)]){
+//        [dateDay setSelected:NO];
+//        [_selectedDaysArray removeObject:dateDay];
         
     }else{
         _comps =[_calendar components:(NSYearCalendarUnit | NSMonthCalendarUnit |NSDayCalendarUnit)
@@ -373,8 +404,13 @@
         NSInteger month = [_comps month];
         NSInteger day = [_comps day];
         dateDay.dayTag = month*100 + day;
-        [_selectedDaysArray addObject:dateDay];
         
+        if(!_lastSelectedDay){
+            _lastSelectedDay = dateDay;
+        }
+//        [_selectedDaysArray addObject:dateDay];
+        [_selectedDaysArray setObject:dateDay forKey:@(dateDay.dayTag)];
+        [dateDay setSelected:YES];
 //        if(![self dateInCurrentMonth:dateDay.date]){
 //            double direction = [dateDay.date timeIntervalSinceDate:self.firstOfCurrentMonth];
 //            self.internalDate = dateDay.date;
@@ -383,7 +419,39 @@
 //        else
 //            if(!_internalDate || [_internalDate timeIntervalSinceDate:dateDay.date]){ // new date selected
 //            [self.currentDay setSelected:NO];
-            [dateDay setSelected:YES];
+        
+        for (THDateDay *day in _shownDays) {
+            
+            if((day.dayTag < _lastSelectedDay.dayTag && day.dayTag > dateDay.dayTag) || (day.dayTag > _lastSelectedDay.dayTag && day.dayTag < dateDay.dayTag)){
+                
+                [day setSelected:YES];
+                [_selectedDaysArray setObject:day forKey:@(day.dayTag)];
+            }
+        }
+        
+        NSLog(@"before _selectedDaysArray count:%i",(int)_selectedDaysArray.count);
+//        __block THDateDay *lastDay;
+//        [_selectedDaysArray enumerateObjectsUsingBlock:^(THDateDay *day, NSUInteger idx, BOOL *stop) {
+//            if(idx == 0){
+//                lastDay = day;
+//            }else{
+//                lastDay = _selectedDaysArray[idx - 1];
+//                if(lastDay.dayTag == day.dayTag){
+//                    [_selectedDaysArray removeObject:lastDay];
+//                }
+//            }
+//        }];
+//         NSLog(@"after _selectedDaysArray count:%i",(int)_selectedDaysArray.count);
+//        for(THDateDay *storedDay in _selectedDaysArray){
+////            NSLog(@"_selectedDaysArrayday.dayTag:%i",(int)day.dayTag);
+//            for (THDateDay *day in _shownDaysWithRepetition) {
+//                if(storedDay.dayTag == day.dayTag){
+//                        [day setSelected:YES];
+//                    
+//                }
+//            }
+//        }
+//             [dateDay setSelected:YES];
 //            self.internalDate = dateDay.date;
             self.currentDay = dateDay;
             if (_autoCloseOnSelectDate) {
@@ -453,9 +521,19 @@
 
 - (IBAction)clearPressed:(id)sender {
     if(self.clearBtn.enabled){
-        self.internalDate = nil;
-        [self.currentDay setSelected:NO];
-        self.currentDay = nil;
+//        for (THDateDay *day in _shownDays) {
+//            [day setSelected:NO];
+//        }
+        [_selectedDaysArray enumerateKeysAndObjectsUsingBlock:^(NSNumber *tag, THDateDay *day, BOOL *stop) {
+            [day setSelected:NO];
+        }];
+        [_selectedDaysArray removeAllObjects];
+//        [_selectedDaysTag removeAllObjects];
+        
+        _lastSelectedDay = nil;
+//        self.internalDate = nil;
+//        [self.currentDay setSelected:NO];
+//        self.currentDay = nil;
     }
 }
 

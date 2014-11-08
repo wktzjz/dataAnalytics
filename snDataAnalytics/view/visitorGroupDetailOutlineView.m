@@ -65,10 +65,20 @@
         view.viewMarker  = idx;
         
         view.viewClickedBlock =  ^(NSInteger viewMarker){
-            NSLog(@"%@ clicked",(NSString *)_lableNameArray[viewMarker]);
+//            NSLog(@"%@ clicked",(NSString *)_lableNameArray[viewMarker]);
+            if(_viewClickedBlock){
+                _viewClickedBlock(viewMarker);
+            }
         };
         
         [self addSubview:view];
+    }];
+}
+
+- (void)initViewsWithData:(NSDictionary *)data
+{
+    [_viewArray enumerateObjectsUsingBlock:^(labelLineChartView *view, NSUInteger idx, BOOL *stop) {
+        [view addViewsWithData:data];
     }];
 }
 

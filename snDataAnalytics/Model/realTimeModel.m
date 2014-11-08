@@ -90,13 +90,24 @@ static NSString *const dataDidInitialize = @"realTimeDataDidInitialize";
             
             // Random values for the graph
         }
-        _initializeData = @{@"groupUV":@(_groupUV),@"validUVRatio":@(_validUVRatio),@"validGroupUV":@(_validGroupUV),@"groupPercentArray":_groupPercentArray,@"validSourceUVPercentArray":_validSourceUVPercentArray,@"groupColorArray":_groupColorArray,@"validSourceUVColorArray":_validSourceUVColorArray,@"arrayOfDates":_arrayOfDates,@"UV_arrayOfValues":array1,@"PV_arrayOfValues":array2,@"Visitor_arrayOfValues":array3,@"新UV_arrayOfValues":array4,@"有效UV_arrayOfValues":array5,@"付款金额_arrayOfValues":array6,@"有效订单数_arrayOfValues":array7,@"有效订单转化率_arrayOfValues":array8};
+        _initializeData = @{@"groupUV":@(_groupUV),@"validUVRatio":@(_validUVRatio),@"validGroupUV":@(_validGroupUV),@"groupPercentArray":_groupPercentArray,@"validSourceUVPercentArray":_validSourceUVPercentArray,@"groupColorArray":_groupColorArray,@"validSourceUVColorArray":_validSourceUVColorArray,@"arrayOfDates":_arrayOfDates,@"UV_arrayOfValues":array1,@"PV_arrayOfValues":array2,@"Visitor_arrayOfValues":array3,@"新UV_arrayOfValues":array4,@"有效UV_arrayOfValues":array5,@"付款金额_arrayOfValues":array6,@"有效订单数_arrayOfValues":array7,@"有效订单转化率_arrayOfValues":array8,
+           @"UV_number":@(arc4random() % 20000),@"PV_number":@(arc4random() % 20000),@"Visitor_number":@(arc4random() % 20000),@"新UV_number":@(arc4random() % 10000),@"有效UV_number":@(arc4random() % 2000),@"付款金额_number":@(arc4random() % 20000),@"有效订单数_number":@(arc4random() % 200),@"有效订单转化率_number":@(arc4random() % 100)};
         
         _initializeDataReady = YES;
         
-        dispatch_async(dispatch_get_main_queue(),^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:dataDidInitialize object:strongSelf userInfo:_initializeData];
+//        dispatch_async(dispatch_get_main_queue(),^{
+//            [[NSNotificationCenter defaultCenter] postNotificationName:dataDidInitialize object:strongSelf userInfo:_initializeData];
+//        });
+        
+        NSNotification *notification = [[NSNotification alloc] initWithName:dataDidInitialize object:strongSelf userInfo:_initializeData];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationQueue defaultQueue] enqueueNotification:notification
+                                                       postingStyle:NSPostASAP
+                                                       coalesceMask:NSNotificationCoalescingOnName forModes:@[NSDefaultRunLoopMode]];
+            
         });
+
         //            if(![NSThread isMainThread]){
         //                NSLog(@"not in mainThread");
         //            }
@@ -140,23 +151,33 @@ static NSString *const dataDidInitialize = @"realTimeDataDidInitialize";
          NSMutableArray *array6 = [[NSMutableArray alloc] init];
          NSMutableArray *array7 = [[NSMutableArray alloc] init];
          NSMutableArray *array8 = [[NSMutableArray alloc] init];
-
+         NSArray *parallelArray = @[array1,array2,array3,array4,array5,array6,array7,array8];
+         
          [_arrayOfValues removeAllObjects];
          for (int i = 0; i < 20; i++) {
              [_arrayOfValues addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-             [array1 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-             [array2 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-             [array3 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-             [array4 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-             [array5 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-             [array6 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-             [array7 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-             [array8 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
+//             [array1 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
+//             [array2 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
+//             [array3 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
+//             [array4 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
+//             [array5 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
+//             [array6 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
+//             [array7 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
+//             [array8 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
 
              // Random values for the graph
          }
          
-         _sendDict = @{@"groupUV":@(_groupUV),@"validUVRatio":@(_validUVRatio),@"validGroupUV":@(_validGroupUV),@"arrayOfValues":_arrayOfValues,@"dealMoney":@(_dealMoney),@"UV_arrayOfValues":array1,@"PV_arrayOfValues":array2,@"Visitor_arrayOfValues":array3,@"新UV_arrayOfValues":array4,@"有效UV_arrayOfValues":array5,@"付款金额_arrayOfValues":array6,@"有效订单数_arrayOfValues":array7,@"有效订单转化率_arrayOfValues":array8};
+         //同步的并行处理
+         dispatch_apply(8, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t index) {
+//             NSLog(@"parallel %i",index);
+             [strongSelf addNumberToArray:parallelArray[index]];
+         });
+         
+//         NSLog(@"after dispatch_apply");
+         
+         _sendDict = @{@"groupUV":@(_groupUV),@"validUVRatio":@(_validUVRatio),@"validGroupUV":@(_validGroupUV),@"arrayOfValues":_arrayOfValues,@"dealMoney":@(_dealMoney),@"UV_arrayOfValues":array1,@"PV_arrayOfValues":array2,@"Visitor_arrayOfValues":array3,@"新UV_arrayOfValues":array4,@"有效UV_arrayOfValues":array5,@"付款金额_arrayOfValues":array6,@"有效订单数_arrayOfValues":array7,@"有效订单转化率_arrayOfValues":array8,
+            @"UV_number":@(arc4random() % 20000),@"PV_number":@(arc4random() % 20000),@"Visitor_number":@(arc4random() % 20000),@"新UV_number":@(arc4random() % 10000),@"有效UV_number":@(arc4random() % 2000),@"付款金额_number":@(arc4random() % 20000),@"有效订单数_number":@(arc4random() % 200),@"有效订单转化率_number":@(arc4random() % 100)};
          
          NSNotification *notification = [[NSNotification alloc] initWithName:dataDidChange object:strongSelf userInfo:_sendDict];
          
@@ -179,6 +200,13 @@ static NSString *const dataDidInitialize = @"realTimeDataDidInitialize";
      };
     
     [[networkManager sharedInstance] sendAsynchronousRequestWithURL:@"http://news-at.zhihu.com/api/3/news/latest" failureBlock:successefullyBlock successedBlock:successefullyBlock];
+}
+
+- (void)addNumberToArray:(NSMutableArray *)array
+{
+    for (int i = 0; i < 20; i++) {
+        [array addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
+    }
 }
 
 @end

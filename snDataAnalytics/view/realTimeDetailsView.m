@@ -73,11 +73,13 @@
         view.labelString = (NSString *)_lableNameArray[idx];
         view.viewMarker  = idx;
         
-        view.viewClickedBlock = ^(NSInteger viewMarker){
-//            NSLog(@"%@ clicked",(NSString *)_lableNameArray[viewMarker]);
-            
-            _viewClickedBlock(viewMarker);
-            };
+//        view.viewClickedBlock = ^(NSInteger viewMarker){
+////            NSLog(@"%@ clicked",(NSString *)_lableNameArray[viewMarker]);
+//            
+//            if(_viewClickedBlock){
+//                _viewClickedBlock(viewMarker);
+//            }
+//        };
         
         [self addSubview:view];
     }];

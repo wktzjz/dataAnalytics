@@ -1,9 +1,9 @@
 //
-//  PopAnimator.m
-//  Popping
+//  PresentingAnimator.m
+//  snDataAnalytics
 //
-//  Created by André Schneider on 14.05.14.
-//  Copyright (c) 2014 André Schneider. All rights reserved.
+//  Created by wktzjz on 14-10-21.
+//  Copyright (c) 2014年 wktzjz. All rights reserved.
 //
 
 #import "PresentingAnimator.h"
@@ -29,7 +29,7 @@
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
 {
-    return 0.5f;
+    return 0.6f;
 }
 
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext
@@ -51,27 +51,34 @@
                               0,
                               CGRectGetWidth(transitionContext.containerView.bounds),
                               CGRectGetHeight(transitionContext.containerView.bounds));
-    toView.center = CGPointMake(transitionContext.containerView.center.x, -transitionContext.containerView.center.y);
-
+    toView.center = CGPointMake(transitionContext.containerView.center.x, transitionContext.containerView.center.y);
+    toView.alpha = 0.0;
     [transitionContext.containerView addSubview:dimmingView];
     [transitionContext.containerView addSubview:toView];
 
-    POPSpringAnimation *positionAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerPositionY];
-    positionAnimation.toValue = @(transitionContext.containerView.center.y);
-    positionAnimation.springBounciness = 10;
-    [positionAnimation setCompletionBlock:^(POPAnimation *anim, BOOL finished) {
-        [transitionContext completeTransition:YES];
-    }];
+//    POPSpringAnimation *positionAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerPositionY];
+//    positionAnimation.toValue = @(transitionContext.containerView.center.y);
+//    positionAnimation.springBounciness = 10;
+//    [positionAnimation setCompletionBlock:^(POPAnimation *anim, BOOL finished) {
+//        [transitionContext completeTransition:YES];
+//    }];
 
     POPSpringAnimation *scaleAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerScaleXY];
-    scaleAnimation.springBounciness = 20;
-    scaleAnimation.fromValue = [NSValue valueWithCGPoint:CGPointMake(1.2, 1.4)];
+    scaleAnimation.springBounciness = 5;
+    scaleAnimation.fromValue = [NSValue valueWithCGPoint:CGPointMake(2.5, 2.5)];
+//    scaleAnimation.toValue = [NSValue valueWithCGPoint:CGPointMake(1.4, 1.4)];
+    [scaleAnimation setCompletionBlock:^(POPAnimation *anim, BOOL finished) {
+                [transitionContext completeTransition:YES];
+            }];
 
     POPBasicAnimation *opacityAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
     opacityAnimation.toValue = @(0.2);
+    POPBasicAnimation *opacityAnimation1 = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
+    opacityAnimation1.toValue = @(1.0);
 
-    [toView.layer pop_addAnimation:positionAnimation forKey:@"positionAnimation"];
+//    [toView.layer pop_addAnimation:positionAnimation forKey:@"positionAnimation"];
     [toView.layer pop_addAnimation:scaleAnimation forKey:@"scaleAnimation"];
+    [toView.layer pop_addAnimation:opacityAnimation1 forKey:@"opacityAnimation1"];
     [dimmingView.layer pop_addAnimation:opacityAnimation forKey:@"opacityAnimation"];
 }
 

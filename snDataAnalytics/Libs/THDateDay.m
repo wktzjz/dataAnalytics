@@ -42,6 +42,7 @@
 }
 
 -(void)setSelected:(BOOL)selected{
+    _isSelectd = selected;
     if(selected) {
         [self setBackgroundColor:self.selectedBackgroundColor];
         [self.dateButton setSelected:YES];

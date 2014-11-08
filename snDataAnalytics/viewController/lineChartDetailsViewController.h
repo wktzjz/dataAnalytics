@@ -12,12 +12,31 @@
 //    realtimePV,
 //};
 
+// Block
+typedef void(^dismiss)();
+typedef void(^dimensionChoosed)(NSInteger i);
+typedef void(^indexChoosed)(NSInteger i);
+
 @interface lineChartDetailsViewController : UIViewController
 
-@property (nonatomic) NSDictionary *data;
 @property lineChartDetailsView *chartDetailsView;
+@property (nonatomic) NSString *titleString;
+
+@property (nonatomic) NSDictionary *data;
+@property (nonatomic) NSMutableDictionary *selectedDays;
+@property (nonatomic) NSMutableArray *dimensionArray;
+@property (nonatomic) NSMutableArray *indexArray;
+
+@property (nonatomic,copy) dismiss dismissBlock;
+@property (nonatomic,copy) dimensionChoosed dimensionChoosedBlock;
+@property (nonatomic,copy) indexChoosed indexChoosedBlock;
 
 - (instancetype)initWithFrame:(CGRect)frame data:(NSDictionary *)data;
 - (void)reloadViewWithData:(NSDictionary *)data;
+
+- (void)addDetailsViewButtonWithData:(NSDictionary *)data;
+- (void)addDetailsViewWithData:(NSDictionary *)data;
+
+- (void)addLineViewWithData:(NSDictionary *)data;
 
 @end

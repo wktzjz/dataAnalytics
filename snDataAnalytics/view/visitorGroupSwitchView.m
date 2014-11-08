@@ -252,12 +252,12 @@
 - (void)mTableView:(TQMultistageTableView *)mTableView didSelectHeaderAtSection:(NSInteger)section
 {
     if(section == 0){
-        if(self.switchAction){
-            self.switchAction(section);
+        if(_switchAction){
+            _switchAction(section);
         }
     }else if (section == 2){
-        if(self.switchAction){
-            self.switchAction(1);
+        if(_switchAction){
+            _switchAction(1);
         }
     }
 }

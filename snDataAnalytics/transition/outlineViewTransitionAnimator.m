@@ -153,8 +153,6 @@
             [containerView addSubview:_snapView];
 
         }
-    
-        
         
 //        NSLog(@"clickedOutlineView1 :%@",_clickedOutlineView);
 //        NSLog(@"imageView origin.x: %f, y:%f, width:%f, height:%f",_snapView.frame.origin.x,_snapView.frame.origin.y,_snapView.frame.size.width,_snapView.frame.size.height);

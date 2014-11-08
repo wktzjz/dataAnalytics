@@ -16,7 +16,7 @@
 @class THDatePickerViewController;
 @protocol THDatePickerDelegate <NSObject>
 -(void)datePickerDonePressed:(THDatePickerViewController *)datePicker;
--(void)datePickerDonePressed:(THDatePickerViewController *)datePicker selectedDays:(NSMutableArray *)selectedDays;
+-(void)datePickerDonePressed:(THDatePickerViewController *)datePicker selectedDays:(NSMutableDictionary *)selectedDays;
 -(void)datePickerCancelPressed:(THDatePickerViewController *)datePicker;
 @end
 
@@ -29,7 +29,7 @@
 @property (strong, nonatomic) UIColor *selectedBackgroundColor;
 @property (strong, nonatomic) UIColor *currentDateColor;
 //wk
-@property (strong, nonatomic) NSMutableArray *selectedDaysArray;
+@property (strong, nonatomic) NSMutableDictionary *selectedDaysArray;
 
 - (void)setDateHasItemsCallback:(BOOL (^)(NSDate * date))callback;
 - (void)setAllowClearDate:(BOOL)allow;

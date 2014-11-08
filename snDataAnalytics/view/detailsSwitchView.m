@@ -10,7 +10,7 @@
 #import "flatButton.h"
 #import "FBShimmeringView.h"
 #import "PNColor.h"
-
+#import "Colours.h"
 
 @implementation detailsSwitchView
 {
@@ -19,6 +19,9 @@
     
     flatButton *_dimensionButton;
     flatButton *_indexButton;
+    
+    NSMutableArray *_valueLabelArray;
+    NSMutableArray *_labelArray;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -37,6 +40,9 @@
         _labelStringArray = [[NSArray alloc] init];
         _valueArray = [[NSArray alloc] init];
         
+        _labelArray = [[NSMutableArray alloc] initWithCapacity:10];
+        _valueLabelArray = [[NSMutableArray alloc] initWithCapacity:10];
+
         [self addButtons];
         [self addLoadingView];
 
@@ -55,7 +61,8 @@
     _dimensionButton.translatesAutoresizingMaskIntoConstraints = NO;
     _dimensionButton.textColor = PNTwitterColor;
     [_dimensionButton setTitle:_dimensionName forState:UIControlStateNormal];
-//    [_dimensionButton addTarget:self action:@selector(settingButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [_dimensionButton addTarget:self action:@selector(dimensionButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    
     
     [self addSubview:_dimensionButton];
     
@@ -65,7 +72,7 @@
                                                             toItem:self
                                                          attribute:NSLayoutAttributeLeft
                                                         multiplier:1.f
-                                                          constant:20.0f]];
+                                                          constant:15.0f]];
     
     
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_dimensionButton
@@ -74,7 +81,7 @@
                                                             toItem:self
                                                          attribute:NSLayoutAttributeTop
                                                         multiplier:1.0f
-                                                          constant:5.f]];
+                                                          constant:-10.f]];
     
     _indexButton = [flatButton button];
     _indexButton.titleLabel.font = [UIFont fontWithName:@"OpenSans-Light"size:20];
@@ -83,7 +90,7 @@
     _indexButton.translatesAutoresizingMaskIntoConstraints = NO;
     _indexButton.textColor = PNTwitterColor;
     [_indexButton setTitle:_indexName forState:UIControlStateNormal];
-//    [_indexButton addTarget:self action:@selector(settingButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [_indexButton addTarget:self action:@selector(indexButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     
     [self addSubview:_indexButton];
     
@@ -93,7 +100,7 @@
                                                         toItem:self
                                                      attribute:NSLayoutAttributeRight
                                                     multiplier:1.f
-                                                      constant:-20.0f]];
+                                                      constant:-15.0f]];
     
     
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_indexButton
@@ -102,9 +109,23 @@
                                                         toItem:self
                                                      attribute:NSLayoutAttributeTop
                                                     multiplier:1.0f
-                                                      constant:5.f]];
+                                                      constant:-10.f]];
 
 
+}
+
+- (void)dimensionButtonClicked
+{
+    if(_dimensionButtonClickedBlock){
+        _dimensionButtonClickedBlock();
+    }
+}
+
+- (void)indexButtonClicked
+{
+    if(_indexButtonClickedBlock){
+        _indexButtonClickedBlock();
+    }
 }
 
 - (void)addLoadingView
@@ -125,6 +146,13 @@
     _ifLoadingLogoShowing = YES;
 }
 
+- (void)addLabelsWithData:(NSDictionary *)data
+{
+    assert(_dimensionName);
+    _labelStringArray = (NSArray *)(((NSDictionary *)data[_dimensionName])[@"labelStringArray"]);
+    [self addLabels];
+}
+
 - (void)addViewsWithData:(NSDictionary *)data
 {
     if(_ifLoadingLogoShowing){
@@ -136,10 +164,13 @@
         }];
     }
     
-    _labelStringArray = (NSArray *)((NSDictionary *)data[@"访客类型"])[@"labelStringArray"];
-    [self addLabels];
+    _valueArray = (NSArray *)((NSDictionary *)data[@"labelValues"]);
     [self addValues];
 }
+
+
+
+#pragma mark add Views
 
 - (void)addLabels
 {
@@ -147,14 +178,14 @@
         float width = self.frame.size.width/2;
         
         [_labelStringArray enumerateObjectsUsingBlock:^(NSString *string, NSUInteger idx, BOOL *stop) {
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 70 + 40.0 *idx, width, 30)];
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(35.0, 50 + 40.0 *idx, width, 30)];
             label.text = string;
             label.textColor = PNDeepGrey;
             label.font = [UIFont fontWithName:@"OpenSans-Light" size:18.0];
             label.textAlignment = NSTextAlignmentLeft;
             
+            [_labelArray addObject:label];
             [self addSubview:label];
- 
         }];
     }
 }
@@ -162,20 +193,46 @@
 - (void)addValues
 {
     if(_valueArray){
-        float originX = self.frame.size.width/2;
-        float width = self.frame.size.width/2;
+        float originX = self.frame.size.width/2 + 10;
+        float width = self.frame.size.width/3;
 
         [_valueArray enumerateObjectsUsingBlock:^(NSNumber *value, NSUInteger idx, BOOL *stop) {
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(originX, 70 + 10.0 *idx, width, 30)];
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(originX, 50 + 40.0 *idx, width, 30)];
             label.text = [NSString stringWithFormat:@"%i",value.intValue];
-            label.textColor = PNDeepGrey;
+            label.textColor = [UIColor fadedBlueColor];
             label.font = [UIFont fontWithName:@"OpenSans-Light" size:18.0];
-            label.textAlignment = NSTextAlignmentLeft;
+            label.textAlignment = NSTextAlignmentRight;
             
+            [_valueLabelArray addObject:label];
             [self addSubview:label];
         }];
     }
 }
+
+#pragma mark reload views
+
+- (void)reloadLabelsWithData:(NSDictionary *)data
+{
+    [_labelArray enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop) {
+        [label removeFromSuperview];
+    }];
+    [_labelArray removeAllObjects];
+    
+    _labelStringArray = (NSArray *)(((NSDictionary *)data[_dimensionName])[@"labelStringArray"]);
+    [self addLabels];
+}
+
+- (void)reloadValuesWithData:(NSDictionary *)data
+{
+    [_valueLabelArray enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop) {
+        [label removeFromSuperview];
+    }];
+    [_valueLabelArray removeAllObjects];
+    
+    _valueArray = (NSArray *)((NSDictionary *)data[@"labelValues"]);
+    [self addValues];
+}
+
 
 - (void)setDimensionName:(NSString *)dimensionName
 {

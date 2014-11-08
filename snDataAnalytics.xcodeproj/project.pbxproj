@@ -162,6 +162,7 @@
 		35945E0D19F654CC00BF5EC3 /* JBChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35945E0919F654CC00BF5EC3 /* JBChartView.m */; };
 		35945E0E19F654CC00BF5EC3 /* JBLineChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35945E0B19F654CC00BF5EC3 /* JBLineChartView.m */; };
 		35945E1619F655E500BF5EC3 /* JBChartHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35945E1219F655E500BF5EC3 /* JBChartHeaderView.m */; };
+		35AE1ABA1A0A247A00167096 /* lineChartDetailsViewFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 35AE1AB91A0A247A00167096 /* lineChartDetailsViewFactory.m */; };
 		35D3979419FE24350014B377 /* icon_graySettingButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 35D3979319FE24350014B377 /* icon_graySettingButton@2x.png */; };
 		35D397B819FE4FE10014B377 /* lineChartDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35D397B719FE4FE10014B377 /* lineChartDetailsView.m */; };
 		35D397D319FF2F2B0014B377 /* LTEasing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D397CA19FF2F2B0014B377 /* LTEasing.swift */; };
@@ -464,6 +465,8 @@
 		35945E0B19F654CC00BF5EC3 /* JBLineChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBLineChartView.m; path = Libs/JBLineChartView.m; sourceTree = "<group>"; };
 		35945E1119F655E500BF5EC3 /* JBChartHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBChartHeaderView.h; path = Libs/JBChartHeaderView.h; sourceTree = "<group>"; };
 		35945E1219F655E500BF5EC3 /* JBChartHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBChartHeaderView.m; path = Libs/JBChartHeaderView.m; sourceTree = "<group>"; };
+		35AE1AB81A0A247A00167096 /* lineChartDetailsViewFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lineChartDetailsViewFactory.h; path = viewController/Factory/lineChartDetailsViewFactory.h; sourceTree = "<group>"; };
+		35AE1AB91A0A247A00167096 /* lineChartDetailsViewFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = lineChartDetailsViewFactory.m; path = viewController/Factory/lineChartDetailsViewFactory.m; sourceTree = "<group>"; };
 		35D3979319FE24350014B377 /* icon_graySettingButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon_graySettingButton@2x.png"; path = "snDataAnalytics/Resourcs/Images/icon_graySettingButton@2x.png"; sourceTree = "<group>"; };
 		35D397A319FE31A20014B377 /* snDataAnalytics-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "snDataAnalytics-Bridging-Header.h"; sourceTree = "<group>"; };
 		35D397B619FE4FE10014B377 /* lineChartDetailsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lineChartDetailsView.h; path = view/lineChartDetailsView.h; sourceTree = "<group>"; };
@@ -814,6 +817,7 @@
 		3562982E19B4508C004A8054 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				35D397FF1A07590F0014B377 /* visitorGroup */,
 				35945DF019F0F39C00BF5EC3 /* realTime */,
 			);
 			name = Models;
@@ -822,11 +826,10 @@
 		3562982F19B45093004A8054 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				3562989419B7F97D004A8054 /* dataOutlineViewContainer.h */,
-				3562989519B7F97D004A8054 /* dataOutlineViewContainer.m */,
+				35D398001A0784520014B377 /* OutlineViewContainer */,
 				35D397F01A0084BA0014B377 /* labelLineChartView */,
-				35D397B919FE4FF30014B377 /* lineChartDetailsView */,
 				35D397FB1A033AAE0014B377 /* detailsSwitchView */,
+				35D397B919FE4FF30014B377 /* lineChartDetailsView */,
 				35945D3C19E8C46300BF5EC3 /* contextMenuView */,
 				35945CF519E8C22800BF5EC3 /* realTimeViews */,
 				35945CDE19E667EE00BF5EC3 /* visitorGroupViews */,
@@ -840,9 +843,8 @@
 		3562983019B45099004A8054 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				35AE1ABB1A0B6F6D00167096 /* lineChartDetailsViewFactory */,
 				35D397FA1A0336E00014B377 /* lineChartDetailsViewController */,
-				35945DEF19E9342F00BF5EC3 /* backgroundMenu */,
-				35F3999019CFC1D30077BA75 /* popupViewController */,
 				3562989719B83763004A8054 /* dataDetailsViewController.h */,
 				3562989819B83763004A8054 /* dataDetailsViewController.m */,
 				35945CF619E8C29900BF5EC3 /* indexSwitchController.h */,
@@ -855,6 +857,8 @@
 				3562989219B7F61B004A8054 /* dataOutlineViewController.m */,
 				3524828219DA9B3800DA7FA5 /* test.h */,
 				3524828319DA9B3800DA7FA5 /* test.m */,
+				35945DEF19E9342F00BF5EC3 /* backgroundMenu */,
+				35F3999019CFC1D30077BA75 /* popupViewController */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1176,8 +1180,6 @@
 			children = (
 				35945DF119F0F3CE00BF5EC3 /* realTimeModel.h */,
 				35945DF219F0F3CE00BF5EC3 /* realTimeModel.m */,
-				35945DF919F64D1600BF5EC3 /* visitorGroupModel.h */,
-				35945DFA19F64D1600BF5EC3 /* visitorGroupModel.m */,
 			);
 			name = realTime;
 			sourceTree = "<group>";
@@ -1204,6 +1206,15 @@
 				35945E0B19F654CC00BF5EC3 /* JBLineChartView.m */,
 			);
 			name = JBChartView;
+			sourceTree = "<group>";
+		};
+		35AE1ABB1A0B6F6D00167096 /* lineChartDetailsViewFactory */ = {
+			isa = PBXGroup;
+			children = (
+				35AE1AB81A0A247A00167096 /* lineChartDetailsViewFactory.h */,
+				35AE1AB91A0A247A00167096 /* lineChartDetailsViewFactory.m */,
+			);
+			name = lineChartDetailsViewFactory;
 			sourceTree = "<group>";
 		};
 		35BDE10419C28A3C00A1D90B /* snapshot */ = {
@@ -1321,6 +1332,24 @@
 				35D397FD1A033AC10014B377 /* detailsSwitchView.m */,
 			);
 			name = detailsSwitchView;
+			sourceTree = "<group>";
+		};
+		35D397FF1A07590F0014B377 /* visitorGroup */ = {
+			isa = PBXGroup;
+			children = (
+				35945DF919F64D1600BF5EC3 /* visitorGroupModel.h */,
+				35945DFA19F64D1600BF5EC3 /* visitorGroupModel.m */,
+			);
+			name = visitorGroup;
+			sourceTree = "<group>";
+		};
+		35D398001A0784520014B377 /* OutlineViewContainer */ = {
+			isa = PBXGroup;
+			children = (
+				3562989419B7F97D004A8054 /* dataOutlineViewContainer.h */,
+				3562989519B7F97D004A8054 /* dataOutlineViewContainer.m */,
+			);
+			name = OutlineViewContainer;
 			sourceTree = "<group>";
 		};
 		35F3999019CFC1D30077BA75 /* popupViewController */ = {
@@ -1511,6 +1540,7 @@
 				35945D2919E8C37300BF5EC3 /* PNLineChartDataItem.m in Sources */,
 				3522247519C2C73D0048F57C /* POPSpringAnimation.mm in Sources */,
 				35945CFE19E8C29900BF5EC3 /* menuViewController.m in Sources */,
+				35AE1ABA1A0A247A00167096 /* lineChartDetailsViewFactory.m in Sources */,
 				3562987C19B46294004A8054 /* baseViewController.m in Sources */,
 				35945D2219E8C37300BF5EC3 /* PNBar.m in Sources */,
 				35945D2819E8C37300BF5EC3 /* PNLineChartData.m in Sources */,

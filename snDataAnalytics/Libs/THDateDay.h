@@ -24,7 +24,9 @@
 @property (strong, nonatomic) UIColor *selectedBackgroundColor;
 @property (strong, nonatomic) UIColor *currentDateColor;
 //wk
+@property (nonatomic) BOOL isSelectd;
 @property (nonatomic) NSInteger dayTag;
+@property (nonatomic) int orderTag;
 
 
 -(void)setLightText:(BOOL)light;

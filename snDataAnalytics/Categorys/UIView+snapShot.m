@@ -12,7 +12,8 @@
 
 - (UIImage *)snapshot
 {
-    UIGraphicsBeginImageContext(self.bounds.size);
+//    UIGraphicsBeginImageContext(self.bounds.size);
+    UIGraphicsBeginImageContextWithOptions(self.bounds.size, NO, [UIScreen mainScreen].scale);
     if([self respondsToSelector:@selector(drawViewHierarchyInRect:afterScreenUpdates:)]){
         [self drawViewHierarchyInRect:self.bounds afterScreenUpdates:NO];
     }

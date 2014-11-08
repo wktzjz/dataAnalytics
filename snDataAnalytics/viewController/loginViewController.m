@@ -272,7 +272,7 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
 //        [self.delegate dismissLoginController];
 //    }
     
-    if(self.dismissBlock){
+    if(_dismissBlock){
         _dismissBlock();
     }
     

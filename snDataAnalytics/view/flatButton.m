@@ -61,7 +61,7 @@
 
 - (void)setup
 {
-    self.backgroundColor = self.tintColor;
+    self.backgroundColor = [UIColor yellowColor];
     self.layer.cornerRadius = 4.f;
     _textColor = _textColor ? _textColor : [UIColor whiteColor];
     [self setTitleColor:_textColor
@@ -81,8 +81,7 @@
 - (void)setTextColor:(UIColor *)color
 {
     _textColor = color;
-    [self setTitleColor:_textColor
-               forState:UIControlStateNormal];
+    [self setTitleColor:_textColor forState:UIControlStateNormal];
 }
 
 - (void)scaleToSmall

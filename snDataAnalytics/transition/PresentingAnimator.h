@@ -1,9 +1,9 @@
 //
-//  PopAnimator.h
-//  Popping
+//  PresentingAnimator.h
+//  snDataAnalytics
 //
-//  Created by André Schneider on 14.05.14.
-//  Copyright (c) 2014 André Schneider. All rights reserved.
+//  Created by wktzjz on 14-10-21.
+//  Copyright (c) 2014年 wktzjz. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

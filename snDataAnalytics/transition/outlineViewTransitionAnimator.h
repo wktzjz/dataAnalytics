@@ -34,6 +34,7 @@ typedef NS_ENUM(NSUInteger, transitonDirection) {
 @property CGFloat behindViewScale;
 @property CGFloat behindViewAlpha;
 @property (nonatomic, assign, getter=isDragable) BOOL dragable;
+@property (nonatomic) BOOL showSnapView;
 
 //wk
 @property BOOL isDismiss;
@@ -41,7 +42,7 @@ typedef NS_ENUM(NSUInteger, transitonDirection) {
 
 @property (nonatomic, weak) id <outLineViewTransitionProtocol> delegate;
 
-- (id)initWithModalViewController:(UIViewController *)modalViewController;
+- (instancetype)initWithModalViewController:(UIViewController *)modalViewController;
 - (void)setContentScrollView:(UIScrollView *)scrollView;
 
 @end

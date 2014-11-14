@@ -10,6 +10,7 @@
 #import "THDatePickerViewController.h"
 #import "wkContextMenuView.h"
 #import "FBShimmeringView.h"
+#import "BFPaperButton.h"
 #import "flatButton.h"
 #import "PNColor.h"
 #import "Colours.h"
@@ -273,7 +274,7 @@ const static CGFloat titleViewHeight = 44.0f;
     if(array.count >0){
         
         [array enumerateObjectsUsingBlock:^(NSString *dimensionString, NSUInteger idx, BOOL *stop) {
-            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+            UIButton *button = [[BFPaperButton alloc] initWithFrame:CGRectMake(25, 355 + idx * 30 , 150, 30) raised:NO];
             button.tag = idx;
             [button setTitle:dimensionString forState:UIControlStateNormal];
             button.titleLabel.font = [UIFont fontWithName:@"OpenSans-Light"
@@ -284,7 +285,11 @@ const static CGFloat titleViewHeight = 44.0f;
             button.backgroundColor = [UIColor clearColor];
             button.alpha = 0.0f;
             
-            [button addTarget:self action:@selector(handleDimensionClicked:) forControlEvents:UIControlEventTouchUpInside];
+            if(type == Dimension){
+                [button addTarget:self action:@selector(handleDimensionClicked:) forControlEvents:UIControlEventTouchUpInside];
+            }else{
+                [button addTarget:self action:@selector(handleIndexClicked:) forControlEvents:UIControlEventTouchUpInside];
+            }
             
             [self.view addSubview:button];
             

@@ -11,20 +11,23 @@
 #import "FBShimmeringView.h"
 #import "PNColor.h"
 #import "Colours.h"
+#import "BFPaperButton.h"
 
 @implementation detailsSwitchView
 {
     FBShimmeringView *_loadingLogo;
     BOOL _ifLoadingLogoShowing;
     
-    flatButton *_dimensionButton;
-    flatButton *_indexButton;
+//    flatButton *_dimensionButton;
+//    flatButton *_indexButton;
+    BFPaperButton *_dimensionButton;
+    BFPaperButton *_indexButton;
     
     NSMutableArray *_valueLabelArray;
     NSMutableArray *_labelArray;
 }
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     
@@ -54,62 +57,49 @@
 
 - (void)addButtons
 {
-    _dimensionButton = [flatButton button];
-    _dimensionButton.titleLabel.font = [UIFont fontWithName:@"OpenSans-Light"size:20];
+//    _dimensionButton = [flatButton button];
+//    _dimensionButton.titleLabel.font = [UIFont fontWithName:@"OpenSans-Light"size:20];
+//    
+//    _dimensionButton.backgroundColor = [UIColor clearColor];
+//    _dimensionButton.translatesAutoresizingMaskIntoConstraints = NO;
+//    _dimensionButton.textColor = PNTwitterColor;
+//    [_dimensionButton setTitle:_dimensionName forState:UIControlStateNormal];
+//    [_dimensionButton addTarget:self action:@selector(dimensionButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+//    
+//    
+//    [self addSubview:_dimensionButton];
+//    
+//    [self addConstraint:[NSLayoutConstraint constraintWithItem:_dimensionButton
+//                                                         attribute:NSLayoutAttributeLeft
+//                                                         relatedBy:NSLayoutRelationEqual
+//                                                            toItem:self
+//                                                         attribute:NSLayoutAttributeLeft
+//                                                        multiplier:1.f
+//                                                          constant:15.0f]];
+//    
+//    
+//    [self addConstraint:[NSLayoutConstraint constraintWithItem:_dimensionButton
+//                                                         attribute:NSLayoutAttributeTop
+//                                                         relatedBy:NSLayoutRelationEqual
+//                                                            toItem:self
+//                                                         attribute:NSLayoutAttributeTop
+//                                                        multiplier:1.0f
+//                                                          constant:-10.f]];
     
-    _dimensionButton.backgroundColor = [UIColor clearColor];
-    _dimensionButton.translatesAutoresizingMaskIntoConstraints = NO;
-    _dimensionButton.textColor = PNTwitterColor;
+    _dimensionButton = [[BFPaperButton alloc] initWithFrame:CGRectMake(0.0, -10.0, self.frame.size.width/2 - 10.0, 40) raised:NO];
     [_dimensionButton setTitle:_dimensionName forState:UIControlStateNormal];
+//    [_dimensionButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+    [_dimensionButton setTitleColor:PNTwitterColor forState:UIControlStateNormal];
     [_dimensionButton addTarget:self action:@selector(dimensionButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    
-    
     [self addSubview:_dimensionButton];
     
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_dimensionButton
-                                                         attribute:NSLayoutAttributeLeft
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:self
-                                                         attribute:NSLayoutAttributeLeft
-                                                        multiplier:1.f
-                                                          constant:15.0f]];
     
-    
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_dimensionButton
-                                                         attribute:NSLayoutAttributeTop
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:self
-                                                         attribute:NSLayoutAttributeTop
-                                                        multiplier:1.0f
-                                                          constant:-10.f]];
-    
-    _indexButton = [flatButton button];
-    _indexButton.titleLabel.font = [UIFont fontWithName:@"OpenSans-Light"size:20];
-    
-    _indexButton.backgroundColor = [UIColor clearColor];
-    _indexButton.translatesAutoresizingMaskIntoConstraints = NO;
-    _indexButton.textColor = PNTwitterColor;
+    _indexButton = [[BFPaperButton alloc] initWithFrame:CGRectMake(self.frame.size.width/2 + 10.0, -10.0, self.frame.size.width/2 - 10.0, 40) raised:NO];
     [_indexButton setTitle:_indexName forState:UIControlStateNormal];
+//    [_indexButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
+    [_indexButton setTitleColor:PNTwitterColor forState:UIControlStateNormal];
     [_indexButton addTarget:self action:@selector(indexButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    
     [self addSubview:_indexButton];
-    
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_indexButton
-                                                     attribute:NSLayoutAttributeRight
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
-                                                     attribute:NSLayoutAttributeRight
-                                                    multiplier:1.f
-                                                      constant:-15.0f]];
-    
-    
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_indexButton
-                                                     attribute:NSLayoutAttributeTop
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
-                                                     attribute:NSLayoutAttributeTop
-                                                    multiplier:1.0f
-                                                      constant:-10.f]];
 
 
 }
@@ -176,14 +166,15 @@
 {
     if(_labelStringArray){
         float width = self.frame.size.width/2;
+        float centerX = _dimensionButton.center.x;
         
         [_labelStringArray enumerateObjectsUsingBlock:^(NSString *string, NSUInteger idx, BOOL *stop) {
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(35.0, 50 + 40.0 *idx, width, 30)];
             label.text = string;
             label.textColor = PNDeepGrey;
             label.font = [UIFont fontWithName:@"OpenSans-Light" size:18.0];
-            label.textAlignment = NSTextAlignmentLeft;
-            
+            label.textAlignment = NSTextAlignmentCenter;
+            label.center = CGPointMake(centerX, label.center.y);
             [_labelArray addObject:label];
             [self addSubview:label];
         }];
@@ -195,14 +186,16 @@
     if(_valueArray){
         float originX = self.frame.size.width/2 + 10;
         float width = self.frame.size.width/3;
+        float centerX = _indexButton.center.x;
 
         [_valueArray enumerateObjectsUsingBlock:^(NSNumber *value, NSUInteger idx, BOOL *stop) {
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(originX, 50 + 40.0 *idx, width, 30)];
             label.text = [NSString stringWithFormat:@"%i",value.intValue];
             label.textColor = [UIColor fadedBlueColor];
             label.font = [UIFont fontWithName:@"OpenSans-Light" size:18.0];
-            label.textAlignment = NSTextAlignmentRight;
-            
+            label.textAlignment = NSTextAlignmentCenter;
+            label.center = CGPointMake(centerX, label.center.y);
+
             [_valueLabelArray addObject:label];
             [self addSubview:label];
         }];

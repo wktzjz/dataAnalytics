@@ -9,6 +9,17 @@
 #import <UIKit/UIKit.h>
 #import "dataDetailsViewController.h"
 
+typedef NS_ENUM(NSUInteger, cellType) {
+    account = 0,
+    chooseSource,
+    realTime,
+    visitorGroup,
+    source,
+    pageAnalytics,
+    transform,
+};
+
 @interface menuViewController : UIViewController<dataDetailsControllerDelegate>
 
+- (instancetype)initWithType:(cellType)type;
 @end

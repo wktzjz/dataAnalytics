@@ -29,6 +29,9 @@
 
 - (void)getDetailOutlineData;
 
+- (NSDictionary *)getInitializeData;
+- (void)createInitializeData;
+
 - (void)initDefineDetails;
 -(NSDictionary *)getDefineDetails;
 

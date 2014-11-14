@@ -13,6 +13,7 @@
 #import "UIColor+CustomColors.h"
 
 #import "realTimeOutlineView.h"
+#import "loadingView.h"
 
 const static CGFloat loadingAnimationDuration = 1.0f;
 
@@ -87,6 +88,8 @@ const static CGFloat loadingAnimationDuration = 1.0f;
             _ifLoadingLogoShowing = YES;
 
             [self addSubview:_loadingLogo];
+            
+            [self addLoadingView];
         }
     }
     
@@ -122,6 +125,15 @@ const static CGFloat loadingAnimationDuration = 1.0f;
         }
     
     return self;
+}
+
+- (void)addLoadingView
+{
+    _loadingView = [[LoadingView alloc] initWithFrame:CGRectMake(10,10,20,20)];
+    _loadingView.lineColor = PNTwitterColor;
+    [self addSubview:_loadingView];
+    
+    [_loadingView startAnimation];
 }
 
 
@@ -387,11 +399,13 @@ const static CGFloat loadingAnimationDuration = 1.0f;
     if(_ifLoadingLogoShowing){
         _contentView.alpha = 0.0;
         
+        //模拟网络数据加载
         double delayInSeconds = 1.5;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         
         dispatch_after(popTime, dispatch_get_main_queue(), ^{
             [self endLoadingAnimation];
+//            [self addLoadingView];
         });
 
     }

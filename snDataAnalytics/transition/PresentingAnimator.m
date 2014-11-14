@@ -45,7 +45,7 @@
     dimmingView.backgroundColor = [UIColor customGrayColor];
     dimmingView.layer.opacity = 0.0;
     
-    [toView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:fromVC action:@selector(_wkDismiss)]];
+//    [toView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:fromVC action:@selector(_wkDismiss)]];
 
     toView.frame = CGRectMake(0,
                               0,

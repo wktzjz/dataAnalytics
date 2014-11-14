@@ -22,6 +22,8 @@ static NSString *const dataDidInitialize = @"realTimeDataDidInitialize";
     NSTimer      *_timer;
 }
 
+#pragma mark - sharedInstance
+
 + (instancetype)sharedInstance
 {
     static realTimeModel *sharedInstance = nil;
@@ -45,6 +47,9 @@ static NSString *const dataDidInitialize = @"realTimeDataDidInitialize";
     }
     return self;
 }
+
+
+#pragma mark - getInitializedRealTimeDeatilsData
 
 - (void)getInitializedRealTimeDeatilsData
 {

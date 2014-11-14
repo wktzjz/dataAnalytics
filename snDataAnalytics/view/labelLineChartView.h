@@ -26,8 +26,8 @@ typedef void(^viewClicked)(NSInteger markers);
 
 @property (nonatomic, copy) viewClicked viewClickedBlock;
 
-- (id)initWithFrame:(CGRect)frame;
-- (id)initWithFrame:(CGRect)frame referencedLinesShow:(BOOL)show;
+- (instancetype)initWithFrame:(CGRect)frame;
+- (instancetype)initWithFrame:(CGRect)frame referencedLinesShow:(BOOL)show;
 
 - (void)addViewsWithData:(NSDictionary *)data;
 - (void)relodData:(NSDictionary *)data;

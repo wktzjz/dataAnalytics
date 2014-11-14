@@ -429,7 +429,7 @@
             }
         }
         
-        NSLog(@"before _selectedDaysArray count:%i",(int)_selectedDaysArray.count);
+//        NSLog(@"before _selectedDaysArray count:%i",(int)_selectedDaysArray.count);
 //        __block THDateDay *lastDay;
 //        [_selectedDaysArray enumerateObjectsUsingBlock:^(THDateDay *day, NSUInteger idx, BOOL *stop) {
 //            if(idx == 0){

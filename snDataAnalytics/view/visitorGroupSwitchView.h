@@ -17,6 +17,6 @@ typedef void(^switchAction)(NSInteger index);
 @property (nonatomic, copy) switchAction switchAction;
 @property (nonatomic, strong) TQMultistageTableView *mTableView;
 
-- (id)initWithFrame:(CGRect)frame;
+- (instancetype)initWithFrame:(CGRect)frame;
 
 @end

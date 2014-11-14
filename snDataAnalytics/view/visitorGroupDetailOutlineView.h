@@ -34,7 +34,7 @@ typedef void(^viewClicked)(NSInteger markers);
 
 @property (nonatomic,copy) viewClicked viewClickedBlock;
 
-- (id)initWithFrame:(CGRect)frame;
+- (instancetype)initWithFrame:(CGRect)frame;
 - (void)initViewsWithData:(NSDictionary *)data;
 
 - (void)reloadData:(NSDictionary *)info;

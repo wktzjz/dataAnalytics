@@ -6,15 +6,18 @@
 //  Copyright (c) 2014年 wktzjz. All rights reserved.
 //
 
+#import "Colours.h"
+#import "defines.h"
 #import "menuViewController.h"
 #import "AMWaveTransition.h"
-#import "defines.h"
 #import "outlineViewTransitionAnimator.h"
 #import "dataDetailsViewController.h"
-#import "Colours.h"
+#import "visitorGroupModel.h"
+#import "PresentingAnimator.h"
+#import "DismissingAnimator.h"
+#import "lineChartDetailsViewFactory.h"
 
-
-@interface menuViewController ()<UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate>
+@interface menuViewController ()<UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate,UIViewControllerTransitioningDelegate>
 
 @property (strong, nonatomic)  UITableView *tableView;
 @property (strong, nonatomic)  AMWaveTransition *interactive;
@@ -27,6 +30,11 @@
     dataDetailsViewController *_detailsViewController;
 
     NSArray *_dataArray;
+    NSArray *_titleArray;
+    
+    int _type;
+    DismissingAnimator *_dismissTransitionController;
+
 }
 
 - (instancetype)init
@@ -37,12 +45,27 @@
     return self;
 }
 
-- (void)viewDidLoad {
+- (instancetype)initWithType:(cellType)type
+{
+    if (self = [super init]) {
+        _type = type;
+        _titleArray = @[@"账户",@"选择数据来源",@"实时",@"访客群体分析",@"来源分析",@"页面分析",@"转化分析"];
+        _dataArray = @[@"概览",@"访客类型",@"终端类型",@"会员分析-整体",@"会员分析-新会员",@"会员分析-老会员",@"会员等级",@"城市分布"];
+        _dismissTransitionController = [DismissingAnimator new];
+
+    }
+    return self;
+    
+}
+
+
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     UIView *contentView = [[UIView alloc] initWithFrame:wkScreen];
     [self.view addSubview:contentView];
-    [self setTitle:@"Setting View"];
+    [self setTitle:_titleArray[_type]];
 //    NSLog(@"menuViewController self.navigationController:%@",self.navigationController);
 
 //    contnetView.BackgroundColor =[UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
@@ -65,7 +88,6 @@
 
     [self setNeedsStatusBarAppearanceUpdate];
     
-    _dataArray = @[@"Line",@"Bar",@"Line1",@"Circle"];
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -88,7 +110,17 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 6;
+    int returnValue;
+    switch (_type) {
+        case visitorGroup:
+            returnValue = 8;
+            break;
+            
+        default:
+            returnValue = 6;
+            break;
+    }
+    return returnValue;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -102,11 +134,11 @@
 
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
     if( nil == cell ) {
-         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     
-    cell.textLabel.text = @"Detail View";
-    cell.detailTextLabel.text = [_dataArray objectAtIndex:fmodf(indexPath.row, 4)];
+    cell.textLabel.text = [_dataArray objectAtIndex:indexPath.row];
+//    cell.detailTextLabel.text = [_dataArray objectAtIndex:indexPath.row];
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.detailTextLabel.textColor = [UIColor whiteColor];
     [cell setBackgroundColor:[UIColor clearColor]];
@@ -156,25 +188,100 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    _detailsViewController = [[dataDetailsViewController alloc] initWithFrame:wkScreen type:(viewType)indexPath.row/*fmodf(indexPath.row,3)*/ title:@"detailsView"];
-    _detailsViewController.delegate  = self;
+    if(_type == visitorGroup){
+        
+        if(indexPath.row == 0){
+            [self presentVistorGroupOverview];
+            
+        }else{
+//            _detailsViewController = [[dataDetailsViewController alloc] initWithFrame:wkScreen type:(viewType)indexPath.row title:@"Details"];
+//            _detailsViewController.delegate  = self;
+//            _detailsViewController.modalPresentationStyle = UIModalPresentationCustom;
+//            
+//            _animator = [[outlineViewTransitionAnimator alloc] initWithModalViewController:_detailsViewController];
+//            _animator.behindViewAlpha = 0.5f;
+//            _animator.behindViewScale = 0.5f;
+//            _animator.bounces  = YES;
+//            _animator.dragable = YES;
+//            _animator.showSnapView = NO;
+//            
+//            _detailsViewController.transitioningDelegate = _animator;
+//            
+//            [self presentViewController:_detailsViewController animated:YES completion:nil];
+            
+            lineChartDetailsViewController *vc = [[lineChartDetailsViewFactory sharedInstance] getVisitorGroupControllerByType:(visitorGroupControllerType)(indexPath.row - 1)];
+            
+            __weak typeof(self) weakSelf = self;
+            vc.dismissBlock = ^{
+                typeof(weakSelf) strongSelf = weakSelf;
+                [strongSelf dismissViewControllerAnimated:YES completion:nil];
+            };
+            
+            vc.transitioningDelegate = self;
+            vc.modalPresentationStyle = UIModalPresentationCustom;
+            
+            [_dismissTransitionController wireToViewController:vc];
+            _dismissTransitionController.dismissModalViewControllerBlock = ^{
+                typeof(weakSelf) strongSelf = weakSelf;
+                [strongSelf dismissViewControllerAnimated:YES completion:nil];
+            };
+            
+            [self presentViewController:vc animated:YES completion:nil];
+        }
+    }
+}
+
+- (void)presentVistorGroupOverview
+{
+    _detailsViewController = [[dataDetailsViewController alloc] initWithFrame:wkScreen type:outlineVisitorGroup title:@"访客群体分析"];
+    _detailsViewController.delegate = self;
     _detailsViewController.modalPresentationStyle = UIModalPresentationCustom;
+    
+    _detailsViewController.initializedDataReady = [visitorGroupModel sharedInstance].initializeDataReady;
+    _detailsViewController.initializedData = [visitorGroupModel sharedInstance].initializeData;
     
     _animator = [[outlineViewTransitionAnimator alloc] initWithModalViewController:_detailsViewController];
     _animator.behindViewAlpha = 0.5f;
     _animator.behindViewScale = 0.5f;
-    _animator.bounces = YES;
+    _animator.bounces  = YES;
     _animator.dragable = YES;
-    
+    _animator.showSnapView = NO;
+
     _detailsViewController.transitioningDelegate = _animator;
+    _detailsViewController.modalPresentationCapturesStatusBarAppearance = YES;
     
     [self presentViewController:_detailsViewController animated:YES completion:nil];
+}
+
+- (void)detailViewControllerWillDismiss
+{
+    [_detailsViewController removeObservers];
+    
 }
 
 #pragma mark dataDetailsControllerDelegate
 - (void)dismissDetailsController
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - UIViewControllerTransitioningDelegate
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented
+                                                                  presentingController:(UIViewController *)presenting
+                                                                      sourceController:(UIViewController *)source
+{
+    return [PresentingAnimator new];
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+{
+    return _dismissTransitionController;
+}
+
+-(id<UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id<UIViewControllerAnimatedTransitioning>)animator
+{
+    return _dismissTransitionController.interacting ? _dismissTransitionController : nil;
 }
 
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController          animationControllerForOperation:(UINavigationControllerOperation)operation

@@ -39,6 +39,7 @@
         _direction = transitonDirectionRight;
         _behindViewScale = 0.9f;
         _behindViewAlpha = 1.0f;
+        _showSnapView    = YES;
         }
     
     return self;
@@ -135,23 +136,26 @@
         [containerView addSubview:toView];
 
         
-/* get the clicked outlineView we have stored in fromViewController */
-        _clickedOutlineView = (UIView *)[fromViewController clickedView];
-//        NSLog(@"fromViewController:%@",fromViewController);
-//         NSLog(@"fromViewController.clickedView:%@",fromViewController.clickedView);
-
-/* get the imageSnapshot View of the clicked View */
-        if(_clickedOutlineView){
-            _snapView = [[UIImageView alloc] initWithImage:[_clickedOutlineView snapshot]];
-            _snapView.layer.cornerRadius = 10.0;
+        if(_showSnapView){
             
-            /* set the snapshot view frame as the clicked outlineView is in mainView */
-            NSArray *arrayOfFrame = (NSArray *)[fromViewController clickedViewFrame];
-            _snapInitialFrame = CGRectMake( ((NSNumber *)arrayOfFrame[0]).floatValue, ((NSNumber *)arrayOfFrame[1]).floatValue + navigationBarHeight,((NSNumber *)arrayOfFrame[2]).floatValue, ((NSNumber *)arrayOfFrame[3]).floatValue );
-            [_snapView setFrame:_snapInitialFrame];
-            
-            [containerView addSubview:_snapView];
+    /* get the clicked outlineView we have stored in fromViewController */
+            _clickedOutlineView = (UIView *)[fromViewController clickedView];
+    //        NSLog(@"fromViewController:%@",fromViewController);
+    //         NSLog(@"fromViewController.clickedView:%@",fromViewController.clickedView);
 
+    /* get the imageSnapshot View of the clicked View */
+            if(_clickedOutlineView){
+                _snapView = [[UIImageView alloc] initWithImage:[_clickedOutlineView snapshot]];
+                _snapView.layer.cornerRadius = 10.0;
+                
+                /* set the snapshot view frame as the clicked outlineView is in mainView */
+                NSArray *arrayOfFrame = (NSArray *)[fromViewController clickedViewFrame];
+                _snapInitialFrame = CGRectMake( ((NSNumber *)arrayOfFrame[0]).floatValue, ((NSNumber *)arrayOfFrame[1]).floatValue + navigationBarHeight,((NSNumber *)arrayOfFrame[2]).floatValue, ((NSNumber *)arrayOfFrame[3]).floatValue );
+                [_snapView setFrame:_snapInitialFrame];
+                
+                [containerView addSubview:_snapView];
+
+            }
         }
         
 //        NSLog(@"clickedOutlineView1 :%@",_clickedOutlineView);

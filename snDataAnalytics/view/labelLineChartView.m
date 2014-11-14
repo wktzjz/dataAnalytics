@@ -17,7 +17,7 @@
     BOOL _ifLoadingLogoShowing;
 }
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     
@@ -41,7 +41,7 @@
     return self;
 }
 
-- (id)initWithFrame:(CGRect)frame referencedLinesShow:(BOOL)show
+- (instancetype)initWithFrame:(CGRect)frame referencedLinesShow:(BOOL)show
 {
     self = [super initWithFrame:frame];
     
@@ -77,15 +77,23 @@
 
 - (void)addLoadingView
 {
+    _label = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 5, self.frame.size.width/2 + 20, 30)];
+    _label.text = _labelString;
+    _label.textColor = PNDeepGrey;
+    _label.font = [UIFont fontWithName:@"OpenSans-Light" size:20.0];
+    _label.textAlignment = NSTextAlignmentLeft;
+    
+    [self addSubview:_label];
+    
     UILabel *text = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, self.frame.size.width - 20, 50)];
     [text setText:@"Loading"];
     [text setTextColor:[UIColor blackColor]];
-    text.font = [UIFont boldSystemFontOfSize:33];
+    text.font = [UIFont boldSystemFontOfSize:25];
     text.textAlignment = NSTextAlignmentCenter;
 
     _loadingLogo = [[FBShimmeringView alloc] initWithFrame:CGRectMake(20, 100, self.frame.size.width - 20, 50)];
     _loadingLogo.contentView = text;
-    _loadingLogo.shimmeringSpeed = 180;
+    _loadingLogo.shimmeringSpeed = 130;
     _loadingLogo.center = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
     _loadingLogo.shimmering = YES;
     
@@ -137,14 +145,6 @@
 
 - (void)addLabel
 {
-    _label = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 5, self.frame.size.width/2 + 20, 30)];
-    _label.text = _labelString;
-    _label.textColor = PNDeepGrey;
-    _label.font = [UIFont fontWithName:@"OpenSans-Light" size:20.0];
-    _label.textAlignment = NSTextAlignmentLeft;
-    
-    [self addSubview:_label];
-    
     _numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width/2, 5, self.frame.size.width/2 - 20, 30)];
     _numberLabel.text = [NSString stringWithFormat:@"%@", _labelNumber];
     _numberLabel.textColor = [UIColor fadedBlueColor];

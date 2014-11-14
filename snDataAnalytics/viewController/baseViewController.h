@@ -13,8 +13,6 @@
 #import "outLineViewTransitionProtocol.h"
 #import "KeyValueObserver.h"
 
-
-
 @interface baseViewController : UIViewController <networkDelegate,UIScrollViewDelegate,UIGestureRecognizerDelegate,dataDetailsControllerDelegate,outLineViewTransitionProtocol>
 
 @property (nonatomic) UIView *settingView;
@@ -32,7 +30,6 @@
 @property (nonatomic,strong) dataDetailsViewController *detailsViewController;
 
 @property (nonatomic, strong) id observeToken;
-
 
 @property (nonatomic) NSNumber *clickedOutLineViewIndex;
 

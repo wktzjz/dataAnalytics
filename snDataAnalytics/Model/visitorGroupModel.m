@@ -38,69 +38,10 @@ static NSString *const dataDidInitialize = @"visitorGroupDataDidInitialize";
     self = [super init];
     
     if (self) {
+        
         _wself = self;
         _arrayOfDates = [[NSMutableArray alloc] init];
-        _defineDetails = [NSDictionary dictionary];
-        
-        void (^successefullyBlock)(NSDictionary *) = ^(NSDictionary *data){
-            
-            _groupUV = arc4random() % 20000;
-            float validUVRatio = ((arc4random() % 500) + 500) / 1000.0;
-            _validGroupUV = _groupUV * validUVRatio;
-            _visitor = arc4random() % 30000;
-            
-            _groupPercentArray = @[@15,@30,@55];
-            _groupColorArray = @[PNLightGreen,PNFreshGreen,PNDeepGreen];
-            
-            visitorGroupModel *strongSelf = _wself;
-            
-            NSMutableArray *array1 = [[NSMutableArray alloc] init];
-            NSMutableArray *array2 = [[NSMutableArray alloc] init];
-            NSMutableArray *array3 = [[NSMutableArray alloc] init];
-            NSMutableArray *array4 = [[NSMutableArray alloc] init];
-            NSMutableArray *array5 = [[NSMutableArray alloc] init];
-            NSMutableArray *array6 = [[NSMutableArray alloc] init];
-            NSMutableArray *array7 = [[NSMutableArray alloc] init];
-            NSMutableArray *array8 = [[NSMutableArray alloc] init];
-            
-            NSArray *parallelArray = @[array1,array2,array3,array4,array5,array6,array7,array8];
-            for (int i = 0; i < 20; i++) {
-                [_arrayOfDates addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:i]]];
-                
-//                [array1 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-//                [array2 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-//                [array3 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-//                [array4 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-//                [array5 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-//                [array6 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-//                [array7 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-//                [array8 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-                
-                // Random values for the graph
-            }
-            
-            //同步并行处理数据
-            dispatch_apply(8, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t index) {
-                [strongSelf addNumberToArray:parallelArray[index]];
-            });
-
-            _initializeData = @{@"groupUV":@(_groupUV),@"visitor":@(_visitor),@"validGroupUV":@(_validGroupUV),@"groupPercentArray":_groupPercentArray,@"groupColorArray":_groupColorArray,@"arrayOfDates":_arrayOfDates,@"UV_arrayOfValues":array1,@"PV_arrayOfValues":array2,@"Visitor_arrayOfValues":array3,@"新UV_arrayOfValues":array4,@"有效UV_arrayOfValues":array5,@"平均页面停留时间_arrayOfValues":array6,@"提交订单转化率_arrayOfValues":array7,@"有效订单转化率_arrayOfValues":array8,
-                @"UV_number":@(arc4random() % 20000),@"PV_number":@(arc4random() % 20000),@"Visitor_number":@(arc4random() % 20000),@"新UV_number":@(arc4random() % 10000),@"有效UV_number":@(arc4random() % 2000),@"平均页面停留时间_number":@(arc4random() % 200),@"提交订单转化率_number":@(arc4random() % 100),@"有效订单转化率_number":@(arc4random() % 100)};
-            
-            _initializeDataReady = YES;
-            
-            NSNotification *notification = [[NSNotification alloc] initWithName:dataDidInitialize object:strongSelf userInfo:_initializeData];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[NSNotificationQueue defaultQueue] enqueueNotification:notification
-                                                           postingStyle:NSPostASAP
-                                                           coalesceMask:NSNotificationCoalescingOnName forModes:@[NSDefaultRunLoopMode]];
-            });
-            
-        };
-        
-                           
-        [[networkManager sharedInstance] sendAsynchronousRequestWithURL:nil failureBlock:successefullyBlock successedBlock:successefullyBlock];
+//        _defineDetails = [NSDictionary dictionary];
 
     }
 
@@ -129,6 +70,79 @@ static NSString *const dataDidInitialize = @"visitorGroupDataDidInitialize";
                                                        coalesceMask:NSNotificationCoalescingOnName forModes:@[NSDefaultRunLoopMode]];
         });
     };
+    
+    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:nil failureBlock:successefullyBlock successedBlock:successefullyBlock];
+}
+
+- (NSDictionary *)getInitializeData
+{
+    if(!_initializeData){
+        [self createInitializeData];
+        return _initializeData;
+    }else{
+        return _initializeData;
+    }
+}
+
+- (void)createInitializeData
+{
+    void (^successefullyBlock)(NSDictionary *) = ^(NSDictionary *data){
+        
+        _groupUV = arc4random() % 20000;
+        float validUVRatio = ((arc4random() % 500) + 500) / 1000.0;
+        _validGroupUV = _groupUV * validUVRatio;
+        _visitor = arc4random() % 30000;
+        
+        _groupPercentArray = @[@15,@30,@55];
+        _groupColorArray = @[PNLightGreen,PNFreshGreen,PNDeepGreen];
+        
+        visitorGroupModel *strongSelf = _wself;
+        
+        NSMutableArray *array1 = [[NSMutableArray alloc] init];
+        NSMutableArray *array2 = [[NSMutableArray alloc] init];
+        NSMutableArray *array3 = [[NSMutableArray alloc] init];
+        NSMutableArray *array4 = [[NSMutableArray alloc] init];
+        NSMutableArray *array5 = [[NSMutableArray alloc] init];
+        NSMutableArray *array6 = [[NSMutableArray alloc] init];
+        NSMutableArray *array7 = [[NSMutableArray alloc] init];
+        NSMutableArray *array8 = [[NSMutableArray alloc] init];
+        
+        NSArray *parallelArray = @[array1,array2,array3,array4,array5,array6,array7,array8];
+        for (int i = 0; i < 20; i++) {
+            [_arrayOfDates addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:i]]];
+            
+            //                [array1 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
+            //                [array2 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
+            //                [array3 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
+            //                [array4 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
+            //                [array5 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
+            //                [array6 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
+            //                [array7 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
+            //                [array8 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
+            
+            // Random values for the graph
+        }
+        
+        //同步并行处理数据
+        dispatch_apply(8, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t index) {
+            [strongSelf addNumberToArray:parallelArray[index]];
+        });
+        
+        _initializeData = @{@"groupUV":@(_groupUV),@"visitor":@(_visitor),@"validGroupUV":@(_validGroupUV),@"groupPercentArray":_groupPercentArray,@"groupColorArray":_groupColorArray,@"arrayOfDates":_arrayOfDates,@"UV_arrayOfValues":array1,@"PV_arrayOfValues":array2,@"Visitor_arrayOfValues":array3,@"新UV_arrayOfValues":array4,@"有效UV_arrayOfValues":array5,@"平均页面停留时间_arrayOfValues":array6,@"提交订单转化率_arrayOfValues":array7,@"有效订单转化率_arrayOfValues":array8,
+                            @"UV_number":@(arc4random() % 20000),@"PV_number":@(arc4random() % 20000),@"Visitor_number":@(arc4random() % 20000),@"新UV_number":@(arc4random() % 10000),@"有效UV_number":@(arc4random() % 2000),@"平均页面停留时间_number":@(arc4random() % 200),@"提交订单转化率_number":@(arc4random() % 100),@"有效订单转化率_number":@(arc4random() % 100)};
+        
+        _initializeDataReady = YES;
+        
+        NSNotification *notification = [[NSNotification alloc] initWithName:dataDidInitialize object:strongSelf userInfo:_initializeData];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationQueue defaultQueue] enqueueNotification:notification
+                                                       postingStyle:NSPostASAP
+                                                       coalesceMask:NSNotificationCoalescingOnName forModes:@[NSDefaultRunLoopMode]];
+        });
+        
+    };
+    
     
     [[networkManager sharedInstance] sendAsynchronousRequestWithURL:nil failureBlock:successefullyBlock successedBlock:successefullyBlock];
 }

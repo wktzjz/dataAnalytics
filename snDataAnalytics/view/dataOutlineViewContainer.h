@@ -14,6 +14,8 @@
 
 #import "visitorGroupOutlineView.h"
 #import "pageAnalyticsOutlineView.h"
+#import "loadingView.h"
+
 
 typedef NS_ENUM(NSUInteger, dataVisualizedType) {
     outlineTypeRealTime = 0,
@@ -56,6 +58,8 @@ typedef NS_ENUM(NSUInteger, inViewType) {
 @property (nonatomic) BEMSimpleLineGraphView *myGraph;
 @property (nonatomic) visitorGroupOutlineView *visitorGroupView;
 @property (nonatomic) pageAnalyticsOutlineView *pageView;
+
+@property (nonatomic) LoadingView *loadingView;
 
 - (instancetype)initWithFrame:(CGRect)frame ifLoading:(BOOL)ifLoading;
 - (instancetype)initWithFrame:(CGRect)frame dataType:(viewType)type inControllerType:(inViewType)inViewType;

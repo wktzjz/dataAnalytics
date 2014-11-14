@@ -271,6 +271,7 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
 //    if(self.delegate && [self.delegate respondsToSelector:@selector(dismissLoginController)]){
 //        [self.delegate dismissLoginController];
 //    }
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"logInSucceeded"];
     
     if(_dismissBlock){
         _dismissBlock();

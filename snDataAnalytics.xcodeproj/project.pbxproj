@@ -28,12 +28,13 @@
 		3522247B19C2C7680048F57C /* TransformationMatrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3522247819C2C7680048F57C /* TransformationMatrix.cpp */; };
 		3522248A19C689740048F57C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3522248919C689740048F57C /* LaunchScreen.xib */; };
 		3524828419DA9B3800DA7FA5 /* test.m in Sources */ = {isa = PBXBuildFile; fileRef = 3524828319DA9B3800DA7FA5 /* test.m */; };
+		354AE1791A14923300564F9F /* loadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 354AE1781A14923300564F9F /* loadingView.m */; };
+		354AE1801A159E2600564F9F /* timeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 354AE17F1A159E2600564F9F /* timeView.m */; };
 		355900A219B8690C001AD1FF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 355900A119B8690C001AD1FF /* Foundation.framework */; };
 		3562981719B44564004A8054 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3562981619B44564004A8054 /* Images.xcassets */; };
 		3562982319B44564004A8054 /* snDataAnalyticsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3562982219B44564004A8054 /* snDataAnalyticsTests.m */; };
 		3562987C19B46294004A8054 /* baseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3562987B19B46294004A8054 /* baseViewController.m */; };
 		3562989019B5BE82004A8054 /* menuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3562988F19B5BE82004A8054 /* menuController.m */; };
-		3562989319B7F61B004A8054 /* dataOutlineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3562989219B7F61B004A8054 /* dataOutlineViewController.m */; };
 		3562989619B7F97D004A8054 /* dataOutlineViewContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3562989519B7F97D004A8054 /* dataOutlineViewContainer.m */; };
 		3562989919B83763004A8054 /* dataDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3562989819B83763004A8054 /* dataDetailsViewController.m */; };
 		356298BE19B850B4004A8054 /* outlineViewTransitionAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = 356298BD19B850B4004A8054 /* outlineViewTransitionAnimator.m */; };
@@ -163,6 +164,8 @@
 		35945E0E19F654CC00BF5EC3 /* JBLineChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35945E0B19F654CC00BF5EC3 /* JBLineChartView.m */; };
 		35945E1619F655E500BF5EC3 /* JBChartHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35945E1219F655E500BF5EC3 /* JBChartHeaderView.m */; };
 		35AE1ABA1A0A247A00167096 /* lineChartDetailsViewFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 35AE1AB91A0A247A00167096 /* lineChartDetailsViewFactory.m */; };
+		35AE1AC11A10B12C00167096 /* BFPaperButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 35AE1AC01A10B12C00167096 /* BFPaperButton.m */; };
+		35AE1AC41A10B3A800167096 /* UIColor+BFPaperColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 35AE1AC31A10B3A800167096 /* UIColor+BFPaperColors.m */; };
 		35D3979419FE24350014B377 /* icon_graySettingButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 35D3979319FE24350014B377 /* icon_graySettingButton@2x.png */; };
 		35D397B819FE4FE10014B377 /* lineChartDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35D397B719FE4FE10014B377 /* lineChartDetailsView.m */; };
 		35D397D319FF2F2B0014B377 /* LTEasing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D397CA19FF2F2B0014B377 /* LTEasing.swift */; };
@@ -253,6 +256,10 @@
 		3522248919C689740048F57C /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = LaunchScreen.xib; path = ../LaunchScreen.xib; sourceTree = "<group>"; };
 		3524828219DA9B3800DA7FA5 /* test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = test.h; sourceTree = "<group>"; };
 		3524828319DA9B3800DA7FA5 /* test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = test.m; sourceTree = "<group>"; };
+		354AE1771A14923300564F9F /* loadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = loadingView.h; path = view/loadingView.h; sourceTree = "<group>"; };
+		354AE1781A14923300564F9F /* loadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = loadingView.m; path = view/loadingView.m; sourceTree = "<group>"; };
+		354AE17E1A159E2600564F9F /* timeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = timeView.h; path = view/timeView.h; sourceTree = "<group>"; };
+		354AE17F1A159E2600564F9F /* timeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = timeView.m; path = view/timeView.m; sourceTree = "<group>"; };
 		355900A119B8690C001AD1FF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3562980019B44564004A8054 /* snDataAnalytics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = snDataAnalytics.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3562981619B44564004A8054 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -264,8 +271,6 @@
 		3562988619B4685E004A8054 /* snDataAnalytics-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "snDataAnalytics-Prefix.pch"; sourceTree = "<group>"; };
 		3562988E19B5BE82004A8054 /* menuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = menuController.h; path = viewController/menuController.h; sourceTree = "<group>"; };
 		3562988F19B5BE82004A8054 /* menuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = menuController.m; path = viewController/menuController.m; sourceTree = "<group>"; };
-		3562989119B7F61B004A8054 /* dataOutlineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dataOutlineViewController.h; path = viewController/dataOutlineViewController.h; sourceTree = "<group>"; };
-		3562989219B7F61B004A8054 /* dataOutlineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = dataOutlineViewController.m; path = viewController/dataOutlineViewController.m; sourceTree = "<group>"; };
 		3562989419B7F97D004A8054 /* dataOutlineViewContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dataOutlineViewContainer.h; path = view/dataOutlineViewContainer.h; sourceTree = "<group>"; };
 		3562989519B7F97D004A8054 /* dataOutlineViewContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = dataOutlineViewContainer.m; path = view/dataOutlineViewContainer.m; sourceTree = "<group>"; };
 		3562989719B83763004A8054 /* dataDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dataDetailsViewController.h; path = viewController/dataDetailsViewController.h; sourceTree = "<group>"; };
@@ -467,6 +472,10 @@
 		35945E1219F655E500BF5EC3 /* JBChartHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBChartHeaderView.m; path = Libs/JBChartHeaderView.m; sourceTree = "<group>"; };
 		35AE1AB81A0A247A00167096 /* lineChartDetailsViewFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lineChartDetailsViewFactory.h; path = viewController/Factory/lineChartDetailsViewFactory.h; sourceTree = "<group>"; };
 		35AE1AB91A0A247A00167096 /* lineChartDetailsViewFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = lineChartDetailsViewFactory.m; path = viewController/Factory/lineChartDetailsViewFactory.m; sourceTree = "<group>"; };
+		35AE1ABF1A10B12C00167096 /* BFPaperButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BFPaperButton.h; path = Libs/BFPaperButton.h; sourceTree = "<group>"; };
+		35AE1AC01A10B12C00167096 /* BFPaperButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BFPaperButton.m; path = Libs/BFPaperButton.m; sourceTree = "<group>"; };
+		35AE1AC21A10B3A800167096 /* UIColor+BFPaperColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+BFPaperColors.h"; path = "Libs/UIColor+BFPaperColors.h"; sourceTree = "<group>"; };
+		35AE1AC31A10B3A800167096 /* UIColor+BFPaperColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+BFPaperColors.m"; path = "Libs/UIColor+BFPaperColors.m"; sourceTree = "<group>"; };
 		35D3979319FE24350014B377 /* icon_graySettingButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon_graySettingButton@2x.png"; path = "snDataAnalytics/Resourcs/Images/icon_graySettingButton@2x.png"; sourceTree = "<group>"; };
 		35D397A319FE31A20014B377 /* snDataAnalytics-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "snDataAnalytics-Bridging-Header.h"; sourceTree = "<group>"; };
 		35D397B619FE4FE10014B377 /* lineChartDetailsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lineChartDetailsView.h; path = view/lineChartDetailsView.h; sourceTree = "<group>"; };
@@ -653,6 +662,8 @@
 		353FCE6919D951BC00072431 /* buttons */ = {
 			isa = PBXGroup;
 			children = (
+				35AE1ABF1A10B12C00167096 /* BFPaperButton.h */,
+				35AE1AC01A10B12C00167096 /* BFPaperButton.m */,
 				35945DCC19E8D11B00BF5EC3 /* TQMultistageTableView.h */,
 				35945DCD19E8D11B00BF5EC3 /* TQMultistageTableView.m */,
 				35945D4919E8C9D400BF5EC3 /* changefulButton.h */,
@@ -696,6 +707,60 @@
 				357E442119FA046000719A2A /* twitter.png */,
 			);
 			name = Images;
+			sourceTree = "<group>";
+		};
+		354AE1721A144B3200564F9F /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				35945CF819E8C29900BF5EC3 /* loginViewController.h */,
+				35945CF919E8C29900BF5EC3 /* loginViewController.m */,
+			);
+			name = Login;
+			sourceTree = "<group>";
+		};
+		354AE1731A144B4B00564F9F /* mainViewController */ = {
+			isa = PBXGroup;
+			children = (
+				3562987A19B46294004A8054 /* baseViewController.h */,
+				3562987B19B46294004A8054 /* baseViewController.m */,
+			);
+			name = mainViewController;
+			sourceTree = "<group>";
+		};
+		354AE1741A144B5E00564F9F /* dataDetailsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				3562989719B83763004A8054 /* dataDetailsViewController.h */,
+				3562989819B83763004A8054 /* dataDetailsViewController.m */,
+			);
+			name = dataDetailsViewController;
+			sourceTree = "<group>";
+		};
+		354AE1751A144B9200564F9F /* indexSwitchController */ = {
+			isa = PBXGroup;
+			children = (
+				35945CF619E8C29900BF5EC3 /* indexSwitchController.h */,
+				35945CF719E8C29900BF5EC3 /* indexSwitchController.m */,
+			);
+			name = indexSwitchController;
+			sourceTree = "<group>";
+		};
+		354AE1761A14911C00564F9F /* loadingView */ = {
+			isa = PBXGroup;
+			children = (
+				354AE1771A14923300564F9F /* loadingView.h */,
+				354AE1781A14923300564F9F /* loadingView.m */,
+			);
+			name = loadingView;
+			sourceTree = "<group>";
+		};
+		354AE17D1A159E0F00564F9F /* timeView */ = {
+			isa = PBXGroup;
+			children = (
+				354AE17E1A159E2600564F9F /* timeView.h */,
+				354AE17F1A159E2600564F9F /* timeView.m */,
+			);
+			name = timeView;
 			sourceTree = "<group>";
 		};
 		355900A319B8693E001AD1FF /* Framework */ = {
@@ -755,6 +820,8 @@
 				3562982E19B4508C004A8054 /* Models */,
 				3562982F19B45093004A8054 /* Views */,
 				3562983019B45099004A8054 /* Controllers */,
+				3524828219DA9B3800DA7FA5 /* test.h */,
+				3524828319DA9B3800DA7FA5 /* test.m */,
 				3562982D19B45084004A8054 /* Helpers */,
 				3562983319B4575E004A8054 /* Libs */,
 				3562982C19B45077004A8054 /* Marco */,
@@ -826,6 +893,8 @@
 		3562982F19B45093004A8054 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				354AE17D1A159E0F00564F9F /* timeView */,
+				354AE1761A14911C00564F9F /* loadingView */,
 				35D398001A0784520014B377 /* OutlineViewContainer */,
 				35D397F01A0084BA0014B377 /* labelLineChartView */,
 				35D397FB1A033AAE0014B377 /* detailsSwitchView */,
@@ -843,20 +912,12 @@
 		3562983019B45099004A8054 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				354AE1741A144B5E00564F9F /* dataDetailsViewController */,
+				354AE1731A144B4B00564F9F /* mainViewController */,
+				354AE1721A144B3200564F9F /* Login */,
 				35AE1ABB1A0B6F6D00167096 /* lineChartDetailsViewFactory */,
 				35D397FA1A0336E00014B377 /* lineChartDetailsViewController */,
-				3562989719B83763004A8054 /* dataDetailsViewController.h */,
-				3562989819B83763004A8054 /* dataDetailsViewController.m */,
-				35945CF619E8C29900BF5EC3 /* indexSwitchController.h */,
-				35945CF719E8C29900BF5EC3 /* indexSwitchController.m */,
-				35945CF819E8C29900BF5EC3 /* loginViewController.h */,
-				35945CF919E8C29900BF5EC3 /* loginViewController.m */,
-				3562987A19B46294004A8054 /* baseViewController.h */,
-				3562987B19B46294004A8054 /* baseViewController.m */,
-				3562989119B7F61B004A8054 /* dataOutlineViewController.h */,
-				3562989219B7F61B004A8054 /* dataOutlineViewController.m */,
-				3524828219DA9B3800DA7FA5 /* test.h */,
-				3524828319DA9B3800DA7FA5 /* test.m */,
+				354AE1751A144B9200564F9F /* indexSwitchController */,
 				35945DEF19E9342F00BF5EC3 /* backgroundMenu */,
 				35F3999019CFC1D30077BA75 /* popupViewController */,
 			);
@@ -1238,6 +1299,8 @@
 		35BDE15019C28E5700A1D90B /* color */ = {
 			isa = PBXGroup;
 			children = (
+				35AE1AC21A10B3A800167096 /* UIColor+BFPaperColors.h */,
+				35AE1AC31A10B3A800167096 /* UIColor+BFPaperColors.m */,
 				35945DBC19E8D05200BF5EC3 /* Colours.h */,
 				35945DBD19E8D05200BF5EC3 /* Colours.m */,
 				35945DBE19E8D05200BF5EC3 /* UIColor+CustomColors.h */,
@@ -1526,6 +1589,7 @@
 			files = (
 				35945DE419E8D41600BF5EC3 /* TSMessage.m in Sources */,
 				35945D4719E8C8B900BF5EC3 /* BEMLine.m in Sources */,
+				354AE1791A14923300564F9F /* loadingView.m in Sources */,
 				35945CF419E8C20A00BF5EC3 /* visitorGroupSwitchView.m in Sources */,
 				3524828419DA9B3800DA7FA5 /* test.m in Sources */,
 				35D397D919FF2F2B0014B377 /* LTMorphingLabel+Pixelate.swift in Sources */,
@@ -1560,6 +1624,7 @@
 				35945DC119E8D05200BF5EC3 /* UIColor+CustomColors.m in Sources */,
 				35945DB219E8CE6900BF5EC3 /* UIViewController+KNSemiModal.m in Sources */,
 				35D397E719FF2F910014B377 /* NSObject+TLYSwizzlingHelpers.m in Sources */,
+				35AE1AC41A10B3A800167096 /* UIColor+BFPaperColors.m in Sources */,
 				3522247319C2C73D0048F57C /* POPMath.mm in Sources */,
 				3522246819C2C73D0048F57C /* POPAnimationEvent.mm in Sources */,
 				35D397F31A0084EF0014B377 /* labelLineChartView.m in Sources */,
@@ -1571,7 +1636,6 @@
 				35D397DA19FF2F2B0014B377 /* LTMorphingLabel+Sparkle.swift in Sources */,
 				35945CEB19E8C1D200BF5EC3 /* pageAnalyticsOutlineView.m in Sources */,
 				35945D4E19E8C9D400BF5EC3 /* flatButton.m in Sources */,
-				3562989319B7F61B004A8054 /* dataOutlineViewController.m in Sources */,
 				35945D4819E8C8B900BF5EC3 /* BEMSimpleLineGraphView.m in Sources */,
 				35945DA519E8CC3300BF5EC3 /* JVFloatLabeledTextView.m in Sources */,
 				35945D0519E8C32400BF5EC3 /* FBShimmeringView.m in Sources */,
@@ -1586,6 +1650,7 @@
 				35945D0419E8C32400BF5EC3 /* FBShimmeringLayer.m in Sources */,
 				35945DDC19E8D36F00BF5EC3 /* AppDelegate.m in Sources */,
 				356298BE19B850B4004A8054 /* outlineViewTransitionAnimator.m in Sources */,
+				35AE1AC11A10B12C00167096 /* BFPaperButton.m in Sources */,
 				3562989619B7F97D004A8054 /* dataOutlineViewContainer.m in Sources */,
 				35945DF319F0F3CE00BF5EC3 /* realTimeModel.m in Sources */,
 				35945DEC19E8D42400BF5EC3 /* TSMessageView.m in Sources */,
@@ -1601,6 +1666,7 @@
 				35D397D619FF2F2B0014B377 /* LTMorphingLabel+Burn.swift in Sources */,
 				35945DC019E8D05200BF5EC3 /* Colours.m in Sources */,
 				35945DEA19E8D42400BF5EC3 /* TSBlurView.m in Sources */,
+				354AE1801A159E2600564F9F /* timeView.m in Sources */,
 				35945D2619E8C37300BF5EC3 /* PNColor.m in Sources */,
 				3522246E19C2C73D0048F57C /* POPCGUtils.mm in Sources */,
 				35945D3219E8C3AC00BF5EC3 /* THDateDay.m in Sources */,

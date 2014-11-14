@@ -12,8 +12,12 @@
 #import "menuViewController.h"
 #import "defines.h"
 #import "Colours.h"
+#import "dataDetailsViewController.h"
+#import "outlineViewTransitionAnimator.h"
+#import "realTimeModel.h"
 
-@interface menuController () <UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate,UIViewControllerTransitioningDelegate>
+
+@interface menuController () <UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate,UIViewControllerTransitioningDelegate,dataDetailsControllerDelegate>
 
 @property (strong, nonatomic)  UITableView *tableView;
 @property (strong, nonatomic) NSArray *data;
@@ -22,6 +26,10 @@
 @end
 
 @implementation menuController
+{
+    outlineViewTransitionAnimator *_animator;
+    dataDetailsViewController *_detailsViewController;
+}
 
 - (instancetype)init
 {
@@ -43,6 +51,7 @@
     @[
       @{@"text": @"Setting1", @"icon": @"heart"},
       @{@"text": @"Setting2", @"icon": @"heart"},
+      @{@"text": @"实时", @"icon": @"puzzle"},
       @{@"text": @"访客群体分析", @"icon": @"puzzle"},
       @{@"text": @"来源分析", @"icon": @"puzzle"},
       @{@"text": @"页面分析", @"icon": @"puzzle"},
@@ -177,16 +186,59 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    _menuViewController = [[menuViewController alloc] init];
-    _menuViewController.view.frame = CGRectMake(0, 0, wkScreenWidth, wkScreenHeight-frontViewRemainHeight);
-//    NSLog(@"self.navigationController:%@",self.navigationController);
-    [self.navigationController pushViewController:_menuViewController animated:YES ];
-//    [self.navigationController pushViewController:_menuViewController animated:YES];
-//    [self addChildViewController:_menuViewController];
+    switch (indexPath.row) {
+        case account:
+            
+            break;
+        case chooseSource:
+            
+            break;
+        case realTime:{
+            
+            [self presentRealTimeViewController];
+        }
+            break;
+        case visitorGroup:{
+            _menuViewController = [[menuViewController alloc] initWithType:visitorGroup];
+            _menuViewController.view.frame = CGRectMake(0, 0, wkScreenWidth, wkScreenHeight-frontViewRemainHeight);
+            [self.navigationController pushViewController:_menuViewController animated:YES ];
+        }
+            
+            break;
+        default:
+            break;
+    }
+}
 
-//    [self presentViewController:_menuViewController animated:YES completion:^{
+
+- (void)presentRealTimeViewController
+{
+    _detailsViewController = [[dataDetailsViewController alloc] initWithFrame:wkScreen type:outlineRealTime title:@"实时"];
+    _detailsViewController.delegate  = self;
+    _detailsViewController.modalPresentationStyle = UIModalPresentationCustom;
     
-//    }];
+    _detailsViewController.initializedDataReady = [realTimeModel sharedInstance].initializeDataReady;
+    _detailsViewController.initializedData = [realTimeModel sharedInstance].initializeData;
+    
+    _animator = [[outlineViewTransitionAnimator alloc] initWithModalViewController:_detailsViewController];
+    _animator.behindViewAlpha = 0.5f;
+    _animator.behindViewScale = 0.5f;
+    _animator.bounces  = YES;
+    _animator.dragable = YES;
+    _animator.showSnapView = NO;
+    
+    _detailsViewController.modalPresentationCapturesStatusBarAppearance = YES;
+    
+    _detailsViewController.transitioningDelegate = _animator;
+    _detailsViewController.modalPresentationCapturesStatusBarAppearance = YES;
+    
+    [self presentViewController:_detailsViewController animated:YES completion:nil];
+}
+
+#pragma mark dataDetailsControllerDelegate
+- (void)dismissDetailsController
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController

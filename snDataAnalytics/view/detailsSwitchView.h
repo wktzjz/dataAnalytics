@@ -25,7 +25,7 @@ typedef void(^indexButtonClicked)();
 @property (nonatomic,copy) dimensionButtonClicked dimensionButtonClickedBlock;
 @property (nonatomic,copy) indexButtonClicked indexButtonClickedBlock;
 
-- (id)initWithFrame:(CGRect)frame;
+- (instancetype)initWithFrame:(CGRect)frame;
 
 - (void)addLabelsWithData:(NSDictionary *)data;
 - (void)addViewsWithData:(NSDictionary *)data;

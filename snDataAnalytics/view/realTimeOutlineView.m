@@ -82,7 +82,7 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     UIButton *_referenceLineButton;
 }
 
-- (id)initWithFrame:(CGRect)frame 
+- (instancetype)initWithFrame:(CGRect)frame 
 {
     self = [super initWithFrame:frame];
     

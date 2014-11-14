@@ -8,6 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@interface DismissingAnimator : NSObject <UIViewControllerAnimatedTransitioning>
+typedef void(^dismissModalViewController)();
+
+@interface DismissingAnimator : UIPercentDrivenInteractiveTransition <UIViewControllerAnimatedTransitioning>
+
+@property (nonatomic) BOOL interacting;
+@property (nonatomic,copy) dismissModalViewController dismissModalViewControllerBlock;
+
+-(void)wireToViewController:(UIViewController *)viewController;
 
 @end

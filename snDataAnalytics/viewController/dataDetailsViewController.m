@@ -43,6 +43,7 @@
 #import "lineChartDetailsViewController.h"
 
 #import "lineChartDetailsViewFactory.h"
+#import "timeView.h"
 
 const static CGFloat titleViewHeight = 44.0f;
 const static CGFloat itemsViewWidth  = 300.0f;
@@ -87,6 +88,9 @@ const static CGFloat itemsViewHeight = 145.0f;
     float _marginY;
     float _width;
     float _height;
+    
+    DismissingAnimator *_dismissTransitionController;
+    timeView *_timeView;
     
 //    test *testInstance;
 }
@@ -144,6 +148,8 @@ const static CGFloat itemsViewHeight = 145.0f;
     [self addOutlineDataView];
     [self addTimeSwithButton];
     
+    _timeView = [[timeView alloc] initWithFrame:CGRectZero];
+    
     wkContextMenuView* overlay = [[wkContextMenuView alloc] init];
     overlay.dataSource = self;
     overlay.delegate = self;
@@ -158,9 +164,11 @@ const static CGFloat itemsViewHeight = 145.0f;
     
 //    testInstance = [[test alloc] init];
     UITapGestureRecognizer* tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-    [self.view addGestureRecognizer:tapRecognizer];
+//    [self.view addGestureRecognizer:tapRecognizer];
     
     [self setNeedsStatusBarAppearanceUpdate];
+    
+    _dismissTransitionController = [DismissingAnimator new];
 
 }
 
@@ -527,8 +535,10 @@ const static CGFloat itemsViewHeight = 145.0f;
     });
     
     _ifHasDetailsView = YES;
-    self.viewTitleString = @"实时";
-
+    
+    if([_viewTitleString isEqual: @"Details"]){
+        self.viewTitleString = @"实时";
+    }
 }
 
 - (void)addVisitorGroupDetailsViewWithFrame:(CGRect)frame
@@ -558,7 +568,15 @@ const static CGFloat itemsViewHeight = 145.0f;
     
     [_scrollView addSubview:_visitorGroupView];
     _ifHasDetailsView = YES;
-    self.viewTitleString = @"访客群体分析";
+    
+    if([_viewTitleString isEqual: @"Details"]){
+        self.viewTitleString = @"访客群体分析";
+    }
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        [[visitorGroupModel sharedInstance] initDefineDetails];
+        [[visitorGroupModel sharedInstance] initDetailsData];
+    });
 }
 
 #pragma mark handleVisitorGroupLineViewClicked
@@ -574,6 +592,12 @@ const static CGFloat itemsViewHeight = 145.0f;
     
     vc.transitioningDelegate = self;
     vc.modalPresentationStyle = UIModalPresentationCustom;
+    
+     [_dismissTransitionController wireToViewController:vc];
+    _dismissTransitionController.dismissModalViewControllerBlock = ^{
+          typeof(weakSelf) strongSelf = weakSelf;
+        [strongSelf dismissViewControllerAnimated:YES completion:nil];
+    };
     
     [self presentViewController:vc animated:YES completion:nil];
 }
@@ -674,12 +698,13 @@ const static CGFloat itemsViewHeight = 145.0f;
         NSComparisonResult result = [obj1 compare:obj2];
         return result==NSOrderedDescending;
     }];
-    [arr enumerateObjectsUsingBlock:^(NSNumber *key, NSUInteger idx, BOOL *stop) {
-         NSLog(@"selected Day:%@",[_formatter stringFromDate:((THDateDay *)selectedDays[key]).date]);
-    }];
+//    [arr enumerateObjectsUsingBlock:^(NSNumber *key, NSUInteger idx, BOOL *stop) {
+//        _timeView.toTime = ((THDateDay *)selectedDays[key]).date;
+//    }];
+    _timeView.fromTime = ((THDateDay *)selectedDays[(NSNumber *)arr[0]]).date;
 
-    _curDate = datePicker.date;
-//    [self refreshTitle];
+    _timeView.toTime = ((THDateDay *)selectedDays[[arr lastObject]]).date;
+
     [self dismissSemiModalView];
 }
 
@@ -786,7 +811,12 @@ const static CGFloat itemsViewHeight = 145.0f;
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
 {
-    return [DismissingAnimator new];
+    return _dismissTransitionController;
+}
+
+-(id<UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id<UIViewControllerAnimatedTransitioning>)animator
+{
+    return _dismissTransitionController.interacting ? _dismissTransitionController : nil;
 }
 
 - (void)handleTap:(UIGestureRecognizer *)recognizer

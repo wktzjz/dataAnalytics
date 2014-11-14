@@ -20,7 +20,7 @@
 @property (nonatomic) NSArray    *groupColorArray;
 @property (nonatomic) NSArray    *groupPercentArray;
 
-- (id)initWithFrame:(CGRect)frame;
+- (instancetype)initWithFrame:(CGRect)frame;
 - (void)modifyPageView;
 
 @end

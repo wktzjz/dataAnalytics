@@ -81,6 +81,9 @@ typedef enum {
     
     BOOL _ifUseFlexibleBar;
     BOOL _statusBarShouldHide;
+    
+    BOOL _visitorGroupDataLoaded;
+    LoadingView *_loadingView;
 }
 
 #pragma mark viewDidLoad
@@ -91,6 +94,7 @@ typedef enum {
     
      _ifUseFlexibleBar   = YES;
     _statusBarShouldHide = NO;
+    _visitorGroupDataLoaded = NO;
     
     [self setNeedsStatusBarAppearanceUpdate];
 
@@ -111,9 +115,10 @@ typedef enum {
     [self addMenuController];
     [self addgestures];
 
+    [self addLoadingBarItem];
     [self jumoToLoginView];
 //    [self addModel];
-
+    
     double delayInSeconds = 1.0;
     __weak id wself = self;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -157,16 +162,20 @@ typedef enum {
     [self.navigationController setDelegate:self];
 }
 
-- (void)addObservers
+- (void)addLoadingBarItem
 {
-    
+    _loadingView = [[LoadingView alloc]initWithFrame:CGRectMake(0, 0, 25, 25)];
+    UIBarButtonItem *loadingItem = [[UIBarButtonItem alloc]initWithCustomView:_loadingView];
+    _loadingView.lineColor = PNTwitterColor;
+    self.navigationItem.rightBarButtonItem = loadingItem;
+    [_loadingView startAnimation];
 }
 
 - (void)addModel
 {
     _realTimeData =  [realTimeModel sharedInstance];
-    [[visitorGroupModel sharedInstance] initDefineDetails];
-    [[visitorGroupModel sharedInstance] initDetailsData];
+//    [[visitorGroupModel sharedInstance] initDefineDetails];
+//    [[visitorGroupModel sharedInstance] initDetailsData];
 
 }
 
@@ -346,6 +355,7 @@ typedef enum {
     if(notification.userInfo != nil && notification.object == _realTimeData) {
         dispatch_main_async_safe(^{
             [_realTimeView addDataViewType:outlineRealTime inControllerType:outlineView data:nil];
+            [_realTimeView.loadingView stopAnimation];
         })
     }
 }
@@ -371,13 +381,13 @@ typedef enum {
 {
     _userDefaults = [NSUserDefaults standardUserDefaults];
     
-    if(![_userDefaults objectForKey:@"logInSucceeded" ]){
+    if(![_userDefaults boolForKey:@"logInSucceeded"]){
         loginViewController *viewController = [[loginViewController alloc] init];
         
         viewController.dismissBlock = ^{
             [self dismissViewControllerAnimated:YES completion:nil];
 //            [self addModel];
-            [self getNetworkInfo];
+//            [self getNetworkInfo];
         };
         
 //        viewController.delegate = self;
@@ -386,6 +396,9 @@ typedef enum {
         
         [self presentViewController:viewController animated:YES completion:nil];
     }
+    
+    [self getNetworkInfo];
+
 }
 
 - (void)onApplicationFinishedLaunching
@@ -416,16 +429,38 @@ typedef enum {
             [_outLineViewArray enumerateObjectsUsingBlock:^(dataOutlineViewContainer *view, NSUInteger idx, BOOL *stop) {
                 if(idx != 0){
                     [view addDataViewType:(viewType)idx inControllerType:outlineView data:visitorGroupData];
+                    if(idx != 1){
+                        [view.loadingView stopAnimation];
+                    }
+
                 }
             }];
         });
+        
+        //加载完概览页面后 预加载第二屏数据
+        [self getVisitorGroupDetailsData];
     }
     
     return YES;
 }
 
 
+#pragma mark getVisitorGroupData
+
+- (void)getVisitorGroupDetailsData
+{
+    [[visitorGroupModel sharedInstance] createInitializeData];
+//    [[visitorGroupModel sharedInstance] initDefineDetails];
+//    [[visitorGroupModel sharedInstance] initDetailsData];
+    
+    _visitorGroupDataLoaded = YES;
+    [_visitorGruopView.loadingView stopAnimation];
+//    [_loadingView stopAnimation];
+}
+
+
 #pragma mark Gesture Control - handleTap
+
 - (void)handleTap:(UITapGestureRecognizer *)recongnizer
 {
     if(_frontViewIsDraggedDown){
@@ -438,24 +473,26 @@ typedef enum {
                 CGPoint location = [recongnizer locationInView:_scrollView1];
                 
                 if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[0]).frame, location)){
-                    [self handleTappingOutlineView:0];
+                      [self handleTappingOutlineView:outlineRealTime];
                     
                 }else if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[1]).frame, location)){
-                    [self handleTappingOutlineView:1];
+                    if(_visitorGroupDataLoaded){
+                        [self handleTappingOutlineView:outlineVisitorGroup];
+                    }
                 
                 }else if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[2]).frame, location)){
-                    [self handleTappingOutlineView:2];
+                    [self handleTappingOutlineView:outlineSource];
                     
                 }else if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[3]).frame, location)){
-                    [self handleTappingOutlineView:3];
+                    [self handleTappingOutlineView:outlinePageAnalytics];
                     
-                }else if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[4]).frame, location)){
-                    [self handleTappingOutlineView:4];
-                    
-                }else if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[5]).frame, location)){
-                    [self handleTappingOutlineView:5];
+//                }else if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[4]).frame, location)){
+//                    [self handleTappingOutlineView:4];
+//                    
+//                }else if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[5]).frame, location)){
+//                    [self handleTappingOutlineView:5];
                 }else if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[6]).frame, location)){
-                    [self handleTappingOutlineView:6];
+                    [self handleTappingOutlineView:outlineTransform];
                 }else{
                     
                 }

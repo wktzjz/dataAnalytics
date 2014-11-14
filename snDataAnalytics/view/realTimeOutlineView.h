@@ -47,7 +47,7 @@
 @property (nonatomic, strong) NSArray *monthlySymbols;
 @property (nonatomic, strong) NSArray *sourcesStringArray;
 
-- (id)initWithFrame:(CGRect)frame;
+- (instancetype)initWithFrame:(CGRect)frame;
 - (void)relodData:(NSDictionary *)info;
 
 @end

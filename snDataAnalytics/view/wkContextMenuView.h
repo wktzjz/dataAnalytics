@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-typedef NS_ENUM(NSInteger, wkContextMenuActionType){
+typedef NS_ENUM(NSInteger, wkContextMenuActionType) {
     // Default
     wkContextMenuActionTypePan,
     // Allows tap action in order to trigger an action

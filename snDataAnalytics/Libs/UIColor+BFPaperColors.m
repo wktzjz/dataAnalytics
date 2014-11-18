@@ -377,7 +377,7 @@
         return YES;
     }
     
-    if(isGreyscale) {
+    if (isGreyscale) {
         if (components[1] <= 0) {
             return YES;
         }

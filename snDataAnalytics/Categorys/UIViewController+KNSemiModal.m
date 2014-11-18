@@ -76,7 +76,7 @@ static NSString * const modelBluredViewKey = @"modelBluredView";
     CATransform3D t1 = CATransform3DIdentity;
     t1.m34 = 1.0/-900;
     t1 = CATransform3DScale(t1, 0.95, 0.95, 1);
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad){
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         // The rotation angle is minor as the view is nearer
         t1 = CATransform3DRotate(t1, 7.5f*M_PI/180.0f, 1, 0, 0);
     } else {
@@ -86,7 +86,7 @@ static NSString * const modelBluredViewKey = @"modelBluredView";
     CATransform3D t2 = CATransform3DIdentity;
     t2.m34 = t1.m34;
     double scale = [[self ym_optionOrDefaultForKey:KNSemiModalOptionKeys.parentScale] doubleValue];
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad){
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         // Minor shift to mantai perspective
         t2 = CATransform3DTranslate(t2, 0, [self parentTarget].frame.size.height*-0.04, 0);
         t2 = CATransform3DScale(t2, scale, scale, 1);
@@ -217,7 +217,7 @@ static NSString * const modelBluredViewKey = @"modelBluredView";
         CGFloat semiViewHeight = view.frame.size.height;
         CGRect vf = target.bounds;
         CGRect semiViewFrame;
-        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad){
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
             // We center the view and mantain aspect ration
             semiViewFrame = CGRectMake((vf.size.width - view.frame.size.width) / 2.0, vf.size.height-semiViewHeight, view.frame.size.width, semiViewHeight);
         } else {
@@ -257,7 +257,7 @@ static NSString * const modelBluredViewKey = @"modelBluredView";
         objc_setAssociatedObject(view, &modelBluredViewKey, blurView,OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         
         // Dismiss button (if allow)
-        if(![[self ym_optionOrDefaultForKey:KNSemiModalOptionKeys.disableCancel] boolValue]) {
+        if (![[self ym_optionOrDefaultForKey:KNSemiModalOptionKeys.disableCancel] boolValue]) {
             // Don't use UITapGestureRecognizer to avoid complex handling
             UIButton * dismissButton = [UIButton buttonWithType:UIButtonTypeCustom];
             [dismissButton addTarget:self action:@selector(dismissSemiModalView) forControlEvents:UIControlEventTouchUpInside];
@@ -286,7 +286,7 @@ static NSString * const modelBluredViewKey = @"modelBluredView";
             view.alpha = 0.0;
         }
         
-        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad){
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
             // Don't resize the view width on rotating
             view.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         } else {
@@ -362,7 +362,7 @@ static NSString * const modelBluredViewKey = @"modelBluredView";
     
     [UIView animateWithDuration:duration animations:^{
         if (transitionStyle == KNSemiModalTransitionStyleSlideUp) {
-            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad){
+            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                 // As the view is centered, we perform a vertical translation
                 modal.frame = CGRectMake((target.bounds.size.width - modal.frame.size.width) / 2.0, target.bounds.size.height, modal.frame.size.width, modal.frame.size.height);
             } else {
@@ -402,7 +402,7 @@ static NSString * const modelBluredViewKey = @"modelBluredView";
     [UIView animateWithDuration:duration animations:^{
         ss.alpha = 1;
     } completion:^(BOOL finished) {
-        if(finished){
+        if (finished) {
             [[NSNotificationCenter defaultCenter] postNotificationName:kSemiModalDidHideNotification
                                                                 object:self];
             if (completion) {
@@ -428,7 +428,7 @@ static NSString * const modelBluredViewKey = @"modelBluredView";
         modal.frame = mf;
         button.frame = bf;
     } completion:^(BOOL finished) {
-        if(finished){
+        if (finished) {
             [[NSNotificationCenter defaultCenter] postNotificationName:kSemiModalWasResizedNotification
                                                                 object:self];
         }
@@ -486,7 +486,7 @@ static char const * const kYMStandardDefaultsTableName = "YMStandardDefaultsTabl
     BOOL isTabBarController = [nextResponder isKindOfClass:[UITabBarController class]];
     if (isViewController && !isTabBarController) {
         return nextResponder;
-    } else if(isTabBarController){
+    } else if (isTabBarController) {
         UITabBarController *tabBarController = nextResponder;
         return [tabBarController selectedViewController];
     } else if ([nextResponder isKindOfClass:[UIView class]]) {

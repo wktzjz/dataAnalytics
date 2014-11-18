@@ -133,7 +133,7 @@
     static NSString *cellIdentifier = @"Cell";
 
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-    if( nil == cell ) {
+    if ( nil == cell ) {
          cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     
@@ -188,9 +188,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(_type == visitorGroup){
+    if (_type == visitorGroup) {
         
-        if(indexPath.row == 0){
+        if (indexPath.row == 0) {
             [self presentVistorGroupOverview];
             
         }else{

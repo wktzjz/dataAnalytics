@@ -87,7 +87,7 @@ static CGFloat angleOfView(UIView *view)
 //    blurView.image = blurImage;
     
 
-    if([self isIOS8]){
+    if ([self isIOS8]) {
         UIVisualEffect *effect;
         effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
         blurView = [[UIVisualEffectView alloc] initWithEffect:effect];
@@ -116,7 +116,7 @@ static CGFloat angleOfView(UIView *view)
     content.transform = CGAffineTransformMakeTranslation(0, -CGRectGetMaxY(content.frame));
     
     [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:0 animations:^{
-        if([self isIOS8]){
+        if ([self isIOS8]) {
             blurView.alpha = 0.88;
         }else{
             blurView.alpha = 0.965;
@@ -357,7 +357,7 @@ static CGFloat angleOfView(UIView *view)
         if (UIDeviceOrientationIsLandscape([[UIDevice currentDevice] orientation]))
         {
             // fix final state for landscape
-            frame.size = (CGSize){.width = frame.size.height, .height = frame.size.width};
+            frame.size = (CGSize) {.width = frame.size.height, .height = frame.size.width};
             fromVC.view.transform = containerTransform;
             fromVC.view.frame = frame;
         }

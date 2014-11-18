@@ -62,7 +62,7 @@
     _validUVLabel.textAlignment = NSTextAlignmentLeft;
     
     _visitorLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 3 + _validUVLabel.frame.origin.y +_validUVLabel.frame.size.height, outlineViewWidth, 30)];
-    _visitorLabel.text =[NSString stringWithFormat:@"visitor:    %i",(arc4random() % 100000)];
+    _visitorLabel.text =[NSString stringWithFormat:@"VISIT:    %i",(arc4random() % 100000)];
     _visitorLabel.textColor = PNDeepGrey;
     _visitorLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:18.0];
     _visitorLabel.textAlignment = NSTextAlignmentLeft;

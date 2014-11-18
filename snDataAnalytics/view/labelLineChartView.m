@@ -104,7 +104,7 @@
 
 - (void)addViewsWithData:(NSDictionary *)data
 {
-    if(_ifLoadingLogoShowing){
+    if (_ifLoadingLogoShowing) {
         [UIView animateWithDuration:0.7 animations:^{
             _loadingLogo.alpha = 0.0;
         } completion:^(BOOL finished) {
@@ -120,19 +120,19 @@
     NSString *keyofDates  = @"arrayOfDates";
     NSString *keyofNumber = [NSString stringWithFormat:@"%@_number",_labelString];
     
-    if((NSMutableArray *)data[keyofNumber]){
+    if ((NSMutableArray *)data[keyofNumber]) {
         self.labelNumber = (NSNumber *)data[keyofNumber];
     }else{
         NSLog(@"%@ _labelNumber is nil",_labelString);
     }
-    if((NSMutableArray *)data[keyofValues]){
+    if ((NSMutableArray *)data[keyofValues]) {
         _arrayOfValues = (NSMutableArray *)data[keyofValues];
     }else{
         NSLog(@"%@ arrayOfValues is nil",_labelString);
     }
     
     assert((NSMutableArray *)data[keyofDates]);
-    if((NSMutableArray *)data[keyofDates]){
+    if ((NSMutableArray *)data[keyofDates]) {
         _arrayOfDates  = (NSMutableArray *)data[keyofDates];
     }else{
          NSLog(@"%@ arrayOfDates is nil",_labelString);
@@ -203,10 +203,10 @@
 
 - (void)setShouldReferencedLinesShow:(BOOL)show
 {
-    if(_shouldReferencedLinesShow != show){
+    if (_shouldReferencedLinesShow != show) {
         _shouldReferencedLinesShow = show;
         
-        if(_lineGraph){
+        if (_lineGraph) {
             _lineGraph.enableReferenceAxisLines = show;
             _lineGraph.enableYAxisLabel = show;
             _lineGraph.colorXaxisLabel = (_shouldReferencedLinesShow == NO) ? [UIColor clearColor] : [UIColor grayColor];
@@ -222,25 +222,25 @@
     NSString *keyofDates  = [NSString stringWithFormat:@"%@_arrayOfDates",_labelString];
     NSString *keyofNumber = [NSString stringWithFormat:@"%@_number",_labelString];
     
-    if((NSMutableArray *)data[keyofNumber]){
+    if ((NSMutableArray *)data[keyofNumber]) {
         self.labelNumber = (NSNumber *)data[keyofNumber];
     }else{
         NSLog(@"%@ _labelNumber is nil",_labelString);
     }
     
-    if((NSMutableArray *)data[keyofValues]){
+    if ((NSMutableArray *)data[keyofValues]) {
         _arrayOfValues = (NSMutableArray *)data[keyofValues];
     }else{
         NSLog(@"%@ arrayOfValues is nil",_labelString);
     }
     
-    if((NSMutableArray *)data[keyofDates]){
+    if ((NSMutableArray *)data[keyofDates]) {
        _arrayOfDates  = (NSMutableArray *)data[keyofDates];
     }else{
 //        NSLog(@"%@ arrayOfDates is nil",_labelString);
     }
     
-    if((NSMutableArray *)data[keyofValues] || (NSMutableArray *)data[keyofDates]){
+    if ((NSMutableArray *)data[keyofValues] || (NSMutableArray *)data[keyofDates]) {
         [_lineGraph reloadGraph];
     }
 }
@@ -265,7 +265,7 @@
 
 - (void)handleTap:(UIGestureRecognizer *)gesture
 {
-    if(_viewClickedBlock){
+    if (_viewClickedBlock) {
         _viewClickedBlock(_viewMarker);
     }
 }

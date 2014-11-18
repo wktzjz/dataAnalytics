@@ -30,6 +30,8 @@
 		3524828419DA9B3800DA7FA5 /* test.m in Sources */ = {isa = PBXBuildFile; fileRef = 3524828319DA9B3800DA7FA5 /* test.m */; };
 		354AE1791A14923300564F9F /* loadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 354AE1781A14923300564F9F /* loadingView.m */; };
 		354AE1801A159E2600564F9F /* timeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 354AE17F1A159E2600564F9F /* timeView.m */; };
+		3550C3B31A19A5CF00402F33 /* sourcesAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 3550C3B21A19A5CF00402F33 /* sourcesAnalytics.m */; };
+		3550C3B81A19CA8800402F33 /* sourceAnalyticsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3550C3B71A19CA8800402F33 /* sourceAnalyticsView.m */; };
 		355900A219B8690C001AD1FF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 355900A119B8690C001AD1FF /* Foundation.framework */; };
 		3562981719B44564004A8054 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3562981619B44564004A8054 /* Images.xcassets */; };
 		3562982319B44564004A8054 /* snDataAnalyticsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3562982219B44564004A8054 /* snDataAnalyticsTests.m */; };
@@ -260,6 +262,10 @@
 		354AE1781A14923300564F9F /* loadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = loadingView.m; path = view/loadingView.m; sourceTree = "<group>"; };
 		354AE17E1A159E2600564F9F /* timeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = timeView.h; path = view/timeView.h; sourceTree = "<group>"; };
 		354AE17F1A159E2600564F9F /* timeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = timeView.m; path = view/timeView.m; sourceTree = "<group>"; };
+		3550C3B11A19A5CF00402F33 /* sourcesAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sourcesAnalytics.h; path = Model/sourcesAnalytics.h; sourceTree = "<group>"; };
+		3550C3B21A19A5CF00402F33 /* sourcesAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = sourcesAnalytics.m; path = Model/sourcesAnalytics.m; sourceTree = "<group>"; };
+		3550C3B61A19CA8800402F33 /* sourceAnalyticsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sourceAnalyticsView.h; path = view/sourceAnalyticsView.h; sourceTree = "<group>"; };
+		3550C3B71A19CA8800402F33 /* sourceAnalyticsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = sourceAnalyticsView.m; path = view/sourceAnalyticsView.m; sourceTree = "<group>"; };
 		355900A119B8690C001AD1FF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3562980019B44564004A8054 /* snDataAnalytics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = snDataAnalytics.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3562981619B44564004A8054 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -763,6 +769,52 @@
 			name = timeView;
 			sourceTree = "<group>";
 		};
+		3550C3AA1A199FDF00402F33 /* sourcesAnalytics */ = {
+			isa = PBXGroup;
+			children = (
+				3550C3B11A19A5CF00402F33 /* sourcesAnalytics.h */,
+				3550C3B21A19A5CF00402F33 /* sourcesAnalytics.m */,
+			);
+			name = sourcesAnalytics;
+			sourceTree = "<group>";
+		};
+		3550C3AB1A199FE800402F33 /* pageAnalytics */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = pageAnalytics;
+			sourceTree = "<group>";
+		};
+		3550C3AC1A199FF700402F33 /* hotCity */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = hotCity;
+			sourceTree = "<group>";
+		};
+		3550C3AD1A19A00500402F33 /* hotPage */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = hotPage;
+			sourceTree = "<group>";
+		};
+		3550C3AE1A19A00F00402F33 /* transform */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = transform;
+			sourceTree = "<group>";
+		};
+		3550C3B51A19C89B00402F33 /* sourcesAnalyticsView */ = {
+			isa = PBXGroup;
+			children = (
+				3550C3B61A19CA8800402F33 /* sourceAnalyticsView.h */,
+				3550C3B71A19CA8800402F33 /* sourceAnalyticsView.m */,
+			);
+			name = sourcesAnalyticsView;
+			sourceTree = "<group>";
+		};
 		355900A319B8693E001AD1FF /* Framework */ = {
 			isa = PBXGroup;
 			children = (
@@ -884,6 +936,11 @@
 		3562982E19B4508C004A8054 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				3550C3AE1A19A00F00402F33 /* transform */,
+				3550C3AD1A19A00500402F33 /* hotPage */,
+				3550C3AC1A199FF700402F33 /* hotCity */,
+				3550C3AB1A199FE800402F33 /* pageAnalytics */,
+				3550C3AA1A199FDF00402F33 /* sourcesAnalytics */,
 				35D397FF1A07590F0014B377 /* visitorGroup */,
 				35945DF019F0F39C00BF5EC3 /* realTime */,
 			);
@@ -902,6 +959,7 @@
 				35945D3C19E8C46300BF5EC3 /* contextMenuView */,
 				35945CF519E8C22800BF5EC3 /* realTimeViews */,
 				35945CDE19E667EE00BF5EC3 /* visitorGroupViews */,
+				3550C3B51A19C89B00402F33 /* sourcesAnalyticsView */,
 				35945CE819E8C16900BF5EC3 /* pageAnalyticsViews */,
 				357E45E019FD4F6500719A2A /* otherViews */,
 				353FCE6919D951BC00072431 /* buttons */,
@@ -1615,6 +1673,7 @@
 				35D397D819FF2F2B0014B377 /* LTMorphingLabel+Fall.swift in Sources */,
 				35945CF219E8C20A00BF5EC3 /* visitorGroupDetailOutlineView.m in Sources */,
 				35945E0C19F654CC00BF5EC3 /* JBBarChartView.m in Sources */,
+				3550C3B81A19CA8800402F33 /* sourceAnalyticsView.m in Sources */,
 				35945D7D19E8CB7500BF5EC3 /* HexColor.m in Sources */,
 				3522246F19C2C73D0048F57C /* POPCustomAnimation.mm in Sources */,
 				3522247419C2C73D0048F57C /* POPPropertyAnimation.mm in Sources */,
@@ -1693,6 +1752,7 @@
 				35D397E919FF2F910014B377 /* TLYDelegateProxy.m in Sources */,
 				35945DF719F0FC4400BF5EC3 /* KeyValueObserver.m in Sources */,
 				35945D0A19E8C33600BF5EC3 /* FRDLivelyButton.m in Sources */,
+				3550C3B31A19A5CF00402F33 /* sourcesAnalytics.m in Sources */,
 				35945DFB19F64D1600BF5EC3 /* visitorGroupModel.m in Sources */,
 				35D397EB19FF2F910014B377 /* TLYShyViewController.m in Sources */,
 				35945D2519E8C37300BF5EC3 /* PNCircleChart.m in Sources */,

@@ -99,7 +99,7 @@ CGFloat const   WKAnimationDelay = WKAnimationDuration/5;
 - (NSInteger)indexOfClosestMatchAtPoint:(CGPoint)point {
     int i = 0;
     for( CALayer *menuItemLayer in self.menuItems ) {
-        if( CGRectContainsPoint( menuItemLayer.frame, point ) ) {
+        if ( CGRectContainsPoint( menuItemLayer.frame, point ) ) {
             NSLog( @"Touched Layer at index: %i", i);
             return i;
         }
@@ -119,11 +119,11 @@ CGFloat const   WKAnimationDelay = WKAnimationDuration/5;
         CGPoint touchPoint = [touch locationInView:self];
 
         NSInteger menuItemIndex = [self indexOfClosestMatchAtPoint:touchPoint];
-        if( menuItemIndex > -1 ) {
+        if ( menuItemIndex > -1 ) {
             menuAtPoint = [(CALayer *)self.menuItems[(NSUInteger)menuItemIndex] position];
         }
 
-        if( (self.prevIndex >= 0 && self.prevIndex != menuItemIndex)) {
+        if ( (self.prevIndex >= 0 && self.prevIndex != menuItemIndex)) {
             [self resetPreviousSelection];
         }
         self.prevIndex = menuItemIndex;
@@ -140,7 +140,7 @@ CGFloat const   WKAnimationDelay = WKAnimationDuration/5;
 // Split this out of the longPressDetected so that we can reuse it with touchesBegan (above)
 - (void)dismissWithSelectedIndexForMenuAtPoint:(CGPoint)point
 {
-    if(self.delegate && [self.delegate respondsToSelector:@selector(didSelectItemAtIndex: forMenuAtPoint:)] && self.prevIndex >= 0){
+    if (self.delegate && [self.delegate respondsToSelector:@selector(didSelectItemAtIndex: forMenuAtPoint:)] && self.prevIndex >= 0) {
         [self.delegate didSelectItemAtIndex:self.prevIndex forMenuAtPoint:point];
         self.prevIndex = -1;
     }
@@ -158,7 +158,7 @@ CGFloat const   WKAnimationDelay = WKAnimationDuration/5;
         
         _menuActionType = (pointInView.x <= [[UIScreen mainScreen] applicationFrame].size.width/2)?  wkContextMenuActionTypePan : wkContextMenuActionTypeTap ;
         
-        if (self.dataSource != nil && [self.dataSource respondsToSelector:@selector(shouldShowMenuAtPoint:)] && ![self.dataSource shouldShowMenuAtPoint:pointInView]){
+        if (self.dataSource != nil && [self.dataSource respondsToSelector:@selector(shouldShowMenuAtPoint:)] && ![self.dataSource shouldShowMenuAtPoint:pointInView]) {
             return;
         }
         
@@ -184,7 +184,7 @@ CGFloat const   WKAnimationDelay = WKAnimationDuration/5;
     }
     
     // Only trigger if we're using the wkContextMenuActionTypePan (default)
-    if( gestureRecognizer.state == UIGestureRecognizerStateEnded && self.menuActionType == wkContextMenuActionTypePan ) {
+    if ( gestureRecognizer.state == UIGestureRecognizerStateEnded && self.menuActionType == wkContextMenuActionTypePan ) {
         CGPoint menuAtPoint = [self convertPoint:self.longPressLocation toView:gestureRecognizer.view];
         [self dismissWithSelectedIndexForMenuAtPoint:menuAtPoint];
     }
@@ -301,7 +301,7 @@ CGFloat const   WKAnimationDelay = WKAnimationDuration/5;
     
     if (itemAngle > 2 *M_PI) {
         itemAngle -= 2*M_PI;
-    }else if (itemAngle < 0){
+    }else if (itemAngle < 0) {
         itemAngle += 2*M_PI;
     }
 
@@ -398,7 +398,7 @@ CGFloat const   WKAnimationDelay = WKAnimationDuration/5;
                 
                 self.prevIndex = closeToIndex;
                 
-            } else if(self.prevIndex >= 0) {
+            } else if (self.prevIndex >= 0) {
                 [self resetPreviousSelection];
             }
         }else {
@@ -455,7 +455,7 @@ CGFloat const   WKAnimationDelay = WKAnimationDuration/5;
 - (void)animationDidStart:(CAAnimation *)anim
 {
 //    NSLog(@"animationDidStart");
-    if([anim valueForKey:WKShowAnimationID]) {
+    if ([anim valueForKey:WKShowAnimationID]) {
         NSUInteger index = [[anim valueForKey:WKShowAnimationID] unsignedIntegerValue];
         CALayer *layer = self.menuItems[index];
         
@@ -466,7 +466,7 @@ CGFloat const   WKAnimationDelay = WKAnimationDuration/5;
         layer.opacity = toAlpha;
         
     }
-    else if([anim valueForKey:WKDismissAnimationID]) {
+    else if ([anim valueForKey:WKDismissAnimationID]) {
         NSUInteger index = [[anim valueForKey:WKDismissAnimationID] unsignedIntegerValue];
         CALayer *layer = self.menuItems[index];
         CGPoint toPosition = self.longPressLocation;

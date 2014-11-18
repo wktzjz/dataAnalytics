@@ -105,7 +105,7 @@
 - (void)viewDidLoad
 {
     [self configureButtonAppearances];
-    if(_allowClearDate) [self showClearButton];
+    if (_allowClearDate) [self showClearButton];
     else [self hideClearButton];
     [self addSwipeGestures];
  //   wk
@@ -128,11 +128,11 @@
 
 - (void)handleSwipeGesture:(UISwipeGestureRecognizer *)sender{
     //Gesture detect - swipe up/down , can be recognized direction
-    if(sender.direction == UISwipeGestureRecognizerDirectionUp){
+    if (sender.direction == UISwipeGestureRecognizerDirectionUp) {
         [self incrementMonth:1];
         [self slideTransitionViewInDirection:1];
     }
-    else if(sender.direction == UISwipeGestureRecognizerDirectionDown){
+    else if (sender.direction == UISwipeGestureRecognizerDirectionDown) {
         [self incrementMonth:-1];
         [self slideTransitionViewInDirection:-1];
     }
@@ -174,10 +174,10 @@
 #pragma mark - Redraw Dates
 
 - (void)redraw{
-//    if(!self.firstOfCurrentMonth) {
+//    if (!self.firstOfCurrentMonth) {
 //       [self setDisplayedMonthFromDate:[NSDate date]];
 //    }
-    for(UIView * view in self.calendarDaysView.subviews){ // clean view
+    for(UIView * view in self.calendarDaysView.subviews) { // clean view
         [view removeFromSuperview];
     }
     [self redrawDays];
@@ -206,9 +206,9 @@
     //wk
 //    [_shownDays removeAllObjects];
     
-    for(int i = 0; i < days; i++){
+    for(int i = 0; i < days; i++) {
         // @beginning
-        if(i && !(i%7)) {
+        if (i && !(i%7)) {
             curX = origX;
             curY += cellHeight;
         }
@@ -225,7 +225,7 @@
         day.date = [date dateByAddingTimeInterval:0];
         [day indicateDayHasItems:(_dateHasItemsCallback && _dateHasItemsCallback(date))];
         
-        if(_internalDate && ![date timeIntervalSinceDate:_internalDate]) {
+        if (_internalDate && ![date timeIntervalSinceDate:_internalDate]) {
             //wk
 //            [day setSelected:YES];
             [day.dateButton setTitleColor:self.currentDateColor forState:/*selected ? UIControlStateSelected :*/ UIControlStateNormal];
@@ -240,13 +240,13 @@
         
         //wk 遍历新生成的days，如果day的dayTag在_selectedDaysArray中有，表明这个day被选中，删除旧的day，添加新的day
 //        [_selectedDaysArray enumerateObjectsUsingBlock:^(THDateDay *storedDay, NSUInteger idx, BOOL *stop) {
-//            if(storedDay.dayTag == day.dayTag){
+//            if (storedDay.dayTag == day.dayTag) {
 //                [day setSelected:YES];
 //                [_selectedDaysArray removeObject:storedDay];
 //                [_selectedDaysArray addObject:day];
 //            }
 //        }];
-        if(_selectedDaysArray[@(day.dayTag)]){
+        if (_selectedDaysArray[@(day.dayTag)]) {
             [day setSelected:YES];
             _selectedDaysArray[@(day.dayTag)] = day;
         }
@@ -258,7 +258,7 @@
         
         //wk
 //        day.orderTag = i;
-//        if(![_shownDaysTag containsObject:@(day.dayTag)]){
+//        if (![_shownDaysTag containsObject:@(day.dayTag)]) {
             [_shownDays addObject:day];
 //            [_shownDaysTag addObject:@(day.dayTag)];
 //        }
@@ -271,7 +271,7 @@
 }
 
 - (void)redrawWeekdays:(int)dayWidth{
-    if(!self.weekdaysView.subviews.count) {
+    if (!self.weekdaysView.subviews.count) {
         CGSize fullSize = self.weekdaysView.frame.size;
         int curX = (fullSize.width - 7*dayWidth)/2;
         NSDateComponents * comps = [_calendar components:NSDayCalendarUnit fromDate:[NSDate date]];
@@ -285,7 +285,7 @@
         [offsetComponents setDay:1];
         [df setDateFormat:@"EE"];
         NSDate * date = [_calendar dateFromComponents:comps];
-        for(int i = 0; i < 7; i++){
+        for(int i = 0; i < 7; i++) {
             UILabel * dayLabel = [[UILabel alloc] initWithFrame:CGRectMake(curX, 0, dayWidth, fullSize.height)];
             dayLabel.textAlignment = NSTextAlignmentCenter;
             dayLabel.font = [UIFont systemFontOfSize:12];
@@ -307,8 +307,8 @@
 }
 
 - (NSDate *)date{
-    if(!self.internalDate) return nil;
-    else if(!_date) return self.internalDate;
+    if (!self.internalDate) return nil;
+    else if (!_date) return self.internalDate;
     else {
         int ymd = NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit;
         NSDateComponents* internalComps = [_calendar components:ymd fromDate:self.internalDate];
@@ -336,7 +336,7 @@
     self.clearBtn.enabled = !!internalDate;
 //    self.okBtn.enabled = [self shouldOkBeEnabled];
     self.okBtn.enabled = YES;
-    if(internalDate){
+    if (internalDate) {
         [self setDisplayedMonthFromDate:internalDate];
     }
     else {
@@ -374,7 +374,7 @@
         bufferDaysBeginning += 7;
     int daysInMonthWithBuffer = (int)(days.length + bufferDaysBeginning);
     int numberOfWeeks = daysInMonthWithBuffer / 7;
-    if(daysInMonthWithBuffer % 7) numberOfWeeks++;
+    if (daysInMonthWithBuffer % 7) numberOfWeeks++;
     
     _weeksOnCalendar = 6;
     _bufferDaysBeginning = bufferDaysBeginning;
@@ -393,8 +393,8 @@
 
 - (void)dateDayTapped:(THDateDay *)dateDay{
     //wk
-//    if([_selectedDaysArray containsObject:dateDay]){
-    if(_selectedDaysArray[@(dateDay.dayTag)]){
+//    if ([_selectedDaysArray containsObject:dateDay]) {
+    if (_selectedDaysArray[@(dateDay.dayTag)]) {
 //        [dateDay setSelected:NO];
 //        [_selectedDaysArray removeObject:dateDay];
         
@@ -405,24 +405,24 @@
         NSInteger day = [_comps day];
         dateDay.dayTag = month*100 + day;
         
-        if(!_lastSelectedDay){
+        if (!_lastSelectedDay) {
             _lastSelectedDay = dateDay;
         }
 //        [_selectedDaysArray addObject:dateDay];
         [_selectedDaysArray setObject:dateDay forKey:@(dateDay.dayTag)];
         [dateDay setSelected:YES];
-//        if(![self dateInCurrentMonth:dateDay.date]){
+//        if (![self dateInCurrentMonth:dateDay.date]) {
 //            double direction = [dateDay.date timeIntervalSinceDate:self.firstOfCurrentMonth];
 //            self.internalDate = dateDay.date;
 //            [self slideTransitionViewInDirection:direction];
 //        }
 //        else
-//            if(!_internalDate || [_internalDate timeIntervalSinceDate:dateDay.date]){ // new date selected
+//            if (!_internalDate || [_internalDate timeIntervalSinceDate:dateDay.date]) { // new date selected
 //            [self.currentDay setSelected:NO];
         
         for (THDateDay *day in _shownDays) {
             
-            if((day.dayTag < _lastSelectedDay.dayTag && day.dayTag > dateDay.dayTag) || (day.dayTag > _lastSelectedDay.dayTag && day.dayTag < dateDay.dayTag)){
+            if ((day.dayTag < _lastSelectedDay.dayTag && day.dayTag > dateDay.dayTag) || (day.dayTag > _lastSelectedDay.dayTag && day.dayTag < dateDay.dayTag)) {
                 
                 [day setSelected:YES];
                 [_selectedDaysArray setObject:day forKey:@(day.dayTag)];
@@ -432,20 +432,20 @@
 //        NSLog(@"before _selectedDaysArray count:%i",(int)_selectedDaysArray.count);
 //        __block THDateDay *lastDay;
 //        [_selectedDaysArray enumerateObjectsUsingBlock:^(THDateDay *day, NSUInteger idx, BOOL *stop) {
-//            if(idx == 0){
+//            if (idx == 0) {
 //                lastDay = day;
 //            }else{
 //                lastDay = _selectedDaysArray[idx - 1];
-//                if(lastDay.dayTag == day.dayTag){
+//                if (lastDay.dayTag == day.dayTag) {
 //                    [_selectedDaysArray removeObject:lastDay];
 //                }
 //            }
 //        }];
 //         NSLog(@"after _selectedDaysArray count:%i",(int)_selectedDaysArray.count);
-//        for(THDateDay *storedDay in _selectedDaysArray){
+//        for(THDateDay *storedDay in _selectedDaysArray) {
 ////            NSLog(@"_selectedDaysArrayday.dayTag:%i",(int)day.dayTag);
 //            for (THDateDay *day in _shownDaysWithRepetition) {
-//                if(storedDay.dayTag == day.dayTag){
+//                if (storedDay.dayTag == day.dayTag) {
 //                        [day setSelected:YES];
 //                    
 //                }
@@ -485,7 +485,7 @@
     }];
     
     //wk
-//    if(dir == -1){
+//    if (dir == -1) {
 //        for (THDateDay *day in _selectedDaysArray) {
 //            NSLog(@"day.date:%@",day.date);
 //            [day setSelected:YES];
@@ -506,7 +506,7 @@
 }
 
 - (IBAction)okPressed:(id)sender {
-//    if(self.okBtn.enabled) {
+//    if (self.okBtn.enabled) {
         if (_autoCloseOnSelectDate) {
             [self setDate:[NSDate date]];
             [self redraw];
@@ -520,7 +520,7 @@
 }
 
 - (IBAction)clearPressed:(id)sender {
-    if(self.clearBtn.enabled){
+    if (self.clearBtn.enabled) {
 //        for (THDateDay *day in _shownDays) {
 //            [day setSelected:NO];
 //        }
@@ -538,6 +538,12 @@
 }
 
 - (IBAction)closePressed:(id)sender {
+    [_selectedDaysArray enumerateKeysAndObjectsUsingBlock:^(NSNumber *tag, THDateDay *day, BOOL *stop) {
+        [day setSelected:NO];
+    }];
+    [_selectedDaysArray removeAllObjects];
+    _lastSelectedDay = nil;
+    
     [self.delegate datePickerCancelPressed:self];
 //    //wk
 //    [_selectedDaysArray enumerateObjectsUsingBlock:^(THDateDay *selectedDay, NSUInteger idx, BOOL *stop) {
@@ -591,7 +597,7 @@
 }
 
 - (NSDate *)dateWithOutTime:(NSDate *)datDate {
-    if( datDate == nil ) {
+    if ( datDate == nil ) {
         datDate = [NSDate date];
     }
     NSDateComponents* comps = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:datDate];

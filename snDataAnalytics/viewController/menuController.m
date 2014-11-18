@@ -101,12 +101,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if(indexPath.row == 0){
+//    if (indexPath.row == 0) {
 //        
 //        static NSString *cellIdentifier = @"AccountCell";
 //        
 //        UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"AccountCell"];
-//        if( nil == cell ) {
+//        if ( nil == cell ) {
 //            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
 //        }
 //        
@@ -119,12 +119,12 @@
 //        [cell.imageView setImage:[UIImage imageNamed:dict[@"icon"]]];
 //        
 //        return cell;
-//    }else if(indexPath.row == 1){
+//    }else if (indexPath.row == 1) {
 //        
 //        static NSString *cellIdentifier = @"choose Data Sources";
 //        
 //        UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"AccountCell"];
-//        if( nil == cell ) {
+//        if ( nil == cell ) {
 //            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
 //        }
 //        
@@ -143,7 +143,7 @@
 //        static NSString *cellIdentifier = @"Cell";
 //        
 //        UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-//        if( nil == cell ) {
+//        if ( nil == cell ) {
 //            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
 //        }
 //        
@@ -163,7 +163,7 @@
        NSDictionary* dict = self.data[indexPath.row];
     
         UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-        if( nil == cell ) {
+        if ( nil == cell ) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
             
             cell.textLabel.textColor = [UIColor whiteColor];
@@ -172,9 +172,9 @@
             [cell.imageView setImage:[UIImage imageNamed:dict[@"icon"]]];
         }
     
-    if(indexPath.row == 0){
+    if (indexPath.row == 0) {
          cell.textLabel.text = @"AccountName 王康";
-    }else if(indexPath.row == 1){
+    }else if (indexPath.row == 1) {
         cell.textLabel.text = @"Choose data origin";
         cell.detailTextLabel.text = @"选择数据来源";
         cell.detailTextLabel.textColor = [UIColor whiteColor];

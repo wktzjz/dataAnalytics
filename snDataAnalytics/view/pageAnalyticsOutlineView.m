@@ -212,47 +212,40 @@
 
 #pragma mark - SimpleLineGraph Data Source
 
-- (NSInteger)numberOfPointsInLineGraph:(BEMSimpleLineGraphView *)graph {
+- (NSInteger)numberOfPointsInLineGraph:(BEMSimpleLineGraphView *)graph
+{
     return (int)[_ArrayOfValues count];
 }
 
-- (CGFloat)lineGraph:(BEMSimpleLineGraphView *)graph valueForPointAtIndex:(NSInteger)index {
+- (CGFloat)lineGraph:(BEMSimpleLineGraphView *)graph valueForPointAtIndex:(NSInteger)index
+{
     return [[_ArrayOfValues objectAtIndex:index] floatValue];
 }
 
 #pragma mark - SimpleLineGraph Delegate
 
-- (NSInteger)numberOfGapsBetweenLabelsOnLineGraph:(BEMSimpleLineGraphView *)graph {
+- (NSInteger)numberOfGapsBetweenLabelsOnLineGraph:(BEMSimpleLineGraphView *)graph
+{
     return 1;
 }
 
-- (NSString *)lineGraph:(BEMSimpleLineGraphView *)graph labelOnXAxisForIndex:(NSInteger)index {
+- (NSString *)lineGraph:(BEMSimpleLineGraphView *)graph labelOnXAxisForIndex:(NSInteger)index
+{
     NSString *label = [_ArrayOfDates objectAtIndex:index];
     return [label stringByReplacingOccurrencesOfString:@" " withString:@"\n"];
 }
 
-- (void)lineGraph:(BEMSimpleLineGraphView *)graph didTouchGraphWithClosestIndex:(NSInteger)index {
-    //    self.labelValues.text = [NSString stringWithFormat:@"%@", [self.ArrayOfValues objectAtIndex:index]];
-    //    self.labelDates.text = [NSString stringWithFormat:@"in %@", [self.ArrayOfDates objectAtIndex:index]];
+- (void)lineGraph:(BEMSimpleLineGraphView *)graph didTouchGraphWithClosestIndex:(NSInteger)index
+{
+
 }
 
 - (void)lineGraph:(BEMSimpleLineGraphView *)graph didReleaseTouchFromGraphWithClosestIndex:(CGFloat)index {
     [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        //        self.labelValues.alpha = 0.0;
-        //        self.labelDates.alpha = 0.0;
-    } completion:^(BOOL finished) {
-        //        self.labelValues.text = [NSString stringWithFormat:@"%i", [[self.myGraph calculatePointValueSum] intValue]];
-        //        self.labelDates.text = [NSString stringWithFormat:@"between 2000 and %@", [self.ArrayOfDates lastObject]];
-        
-        [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-            //            self.labelValues.alpha = 1.0;
-            //            self.labelDates.alpha = 1.0;
-        } completion:nil];
-    }];
+    } completion:nil];
 }
 
 - (void)lineGraphDidFinishLoading:(BEMSimpleLineGraphView *)graph {
-    //    self.labelValues.text = [NSString stringWithFormat:@"%i", [[self.myGraph calculatePointValueSum] intValue]];
-    //    self.labelDates.text = [NSString stringWithFormat:@"between 2000 and %@", [self.ArrayOfDates lastObject]];
+
 }
 @end

@@ -64,9 +64,9 @@
         view.labelString = (NSString *)_lableNameArray[idx];
         view.viewMarker  = idx;
         
-        view.viewClickedBlock =  ^(NSInteger viewMarker){
+        view.viewClickedBlock =  ^(NSInteger viewMarker) {
 //            NSLog(@"%@ clicked",(NSString *)_lableNameArray[viewMarker]);
-            if(_viewClickedBlock){
+            if (_viewClickedBlock) {
                 _viewClickedBlock(viewMarker);
             }
         };
@@ -84,7 +84,7 @@
 
 - (void)shouldShowReferencedLines:(BOOL)show
 {
-    if(_showReferencedLines != show){
+    if (_showReferencedLines != show) {
         _showReferencedLines = show;
         
         [_viewArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {

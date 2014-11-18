@@ -88,7 +88,8 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
     [self addObserver];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 }
 
@@ -151,7 +152,7 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if(textField == _accountField){
+    if (textField == _accountField) {
         [_passwordField becomeFirstResponder];
     }else{
          [self.view endEditing:YES];
@@ -268,12 +269,12 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
 
 - (void)dismiss
 {
-//    if(self.delegate && [self.delegate respondsToSelector:@selector(dismissLoginController)]){
+//    if (self.delegate && [self.delegate respondsToSelector:@selector(dismissLoginController)]) {
 //        [self.delegate dismissLoginController];
 //    }
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"logInSucceeded"];
     
-    if(_dismissBlock){
+    if (_dismissBlock) {
         _dismissBlock();
     }
     
@@ -312,15 +313,15 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
     
     __block NSDictionary *json;
     
-    [NSURLConnection sendAsynchronousRequest:request1 queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError){
+    [NSURLConnection sendAsynchronousRequest:request1 queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         
-        if(data){
+        if (data) {
             json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&connectionError];
         }else{
             json = nil;
         }
         
-        if(nil == json){
+        if (nil == json) {
             NSLog(@"json is nil");
             
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -341,7 +342,7 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
 #pragma mark Login
 - (void)handleTap:(id)sender
 {
-    if(sender != _accountField && sender != _passwordField){
+    if (sender != _accountField && sender != _passwordField) {
         [self.view endEditing:YES];
     }
 }
@@ -398,7 +399,7 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
 {
     [self hideLabel];
     
-    if(!_keyboardShowed){
+    if (!_keyboardShowed) {
         _keyboardShowed = YES;
         
         CGRect r = _inputView.frame;
@@ -415,7 +416,7 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
 
 - (void)handlekeyboardHided
 {
-    if(_keyboardShowed){
+    if (_keyboardShowed) {
         _keyboardShowed = NO;
 
         CGRect r = _inputView.frame;

@@ -106,14 +106,14 @@
 
 - (void)dimensionButtonClicked
 {
-    if(_dimensionButtonClickedBlock){
+    if (_dimensionButtonClickedBlock) {
         _dimensionButtonClickedBlock();
     }
 }
 
 - (void)indexButtonClicked
 {
-    if(_indexButtonClickedBlock){
+    if (_indexButtonClickedBlock) {
         _indexButtonClickedBlock();
     }
 }
@@ -145,7 +145,7 @@
 
 - (void)addViewsWithData:(NSDictionary *)data
 {
-    if(_ifLoadingLogoShowing){
+    if (_ifLoadingLogoShowing) {
         [UIView animateWithDuration:0.7 animations:^{
             _loadingLogo.alpha = 0.0;
         } completion:^(BOOL finished) {
@@ -164,7 +164,7 @@
 
 - (void)addLabels
 {
-    if(_labelStringArray){
+    if (_labelStringArray) {
         float width = self.frame.size.width/2;
         float centerX = _dimensionButton.center.x;
         
@@ -183,7 +183,7 @@
 
 - (void)addValues
 {
-    if(_valueArray){
+    if (_valueArray) {
         float originX = self.frame.size.width/2 + 10;
         float width = self.frame.size.width/3;
         float centerX = _indexButton.center.x;

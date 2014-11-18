@@ -25,7 +25,7 @@ const static CGFloat loadingAnimationDuration = 1.0f;
     
     //    [self drawViewHierarchyInRect:self.bounds afterScreenUpdates:YES]; // Pre-iOS 7 Style [self.layer renderInContext:UIGraphicsGetCurrentContext()];
     
-    if([self respondsToSelector:@selector(drawViewHierarchyInRect:afterScreenUpdates:)]){
+    if ([self respondsToSelector:@selector(drawViewHierarchyInRect:afterScreenUpdates:)]) {
         [self drawViewHierarchyInRect:self.bounds afterScreenUpdates:NO];
     }
     else{
@@ -73,7 +73,7 @@ const static CGFloat loadingAnimationDuration = 1.0f;
         self.layer.cornerRadius = 10;
         self.backgroundColor = [UIColor whiteColor];
         
-        if(ifLoading){
+        if (ifLoading) {
             UILabel *text = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, frame.size.width - 20, 50)];
             [text setText:@"Loading"];
             [text setTextColor:[UIColor blackColor]];
@@ -166,7 +166,7 @@ const static CGFloat loadingAnimationDuration = 1.0f;
            _pieChart = _pageView.pieChart;
            _myGraph  = _pageView.lineGraph;
         
-    }else if (dataType == outlineHotCity){
+    }else if (dataType == outlineHotCity) {
         //Add BarChart
         
         _chartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
@@ -178,7 +178,7 @@ const static CGFloat loadingAnimationDuration = 1.0f;
         
         _barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 55.0, outlineViewWidth, outlineViewHeight)];
         _barChart.backgroundColor = [UIColor clearColor];
-        _barChart.yLabelFormatter = ^(CGFloat yValue){
+        _barChart.yLabelFormatter = ^(CGFloat yValue) {
             CGFloat yValueParsed = yValue;
             NSString * labelText = [NSString stringWithFormat:@"%1.f",yValueParsed];
             return labelText;
@@ -200,34 +200,38 @@ const static CGFloat loadingAnimationDuration = 1.0f;
         [_contentView addSubview:_chartLabel];
         [_contentView addSubview:self.barChart];
 
-    }else if (dataType == outlineSource){
+    }else if (dataType == outlineSource) {
+//        
+//        _chartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
+////        _chartLabel.text = (NSString *)data[dataType]?(NSString *)data[dataType]: @"Circle Chart";
+//        _chartLabel.text = @"来源分析";
+//        _chartLabel.textColor = PNFreshGreen;
+//        _chartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:23.0];
+//        _chartLabel.textAlignment = NSTextAlignmentCenter;
+//        
+//        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 10 + _chartLabel.frame.origin.y + _chartLabel.frame.size.height, outlineViewWidth, 30)];
+//        label.text = @"visitor占比:";
+//        label.textColor = PNDeepGrey;
+//        label.font = [UIFont fontWithName:@"Avenir-Medium" size:18.0];
+//        label.textAlignment = NSTextAlignmentLeft;
+//        
+//        _circleChart = [[PNCircleChart alloc] initWithFrame:CGRectMake(0,label.frame.origin.y + label.frame.size.height - 30.0, outlineViewWidth, 100.0) andTotal:@100 andCurrent:@60 andClockwise:YES andShadow:YES];
+//        _circleChart.backgroundColor = [UIColor clearColor];
+//
+//        [_circleChart setStrokeColor:[UIColor colorWithRed:77.0 / 255.0 green:106.0 / 255.0 blue:122.0 / 255.0 alpha:1.0f]];
+//        [_circleChart setStrokeColorGradientStart:[UIColor colorWithRed:77.0 / 255.0 green:236.0 / 255.0 blue:122.0 / 255.0 alpha:1.0f]];
+//        _circleChart.isRestroke = NO;
+//        [_circleChart strokeChart];
+//        
+////        [self addSubview:circleChartLabel];
+////        [self addSubview:circleChart];
+//        [_contentView addSubview:label];
+//        [_contentView addSubview:_chartLabel];
+//        [_contentView addSubview:_circleChart];
         
-        _chartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
-//        _chartLabel.text = (NSString *)data[dataType]?(NSString *)data[dataType]: @"Circle Chart";
-        _chartLabel.text = @"来源分析";
-        _chartLabel.textColor = PNFreshGreen;
-        _chartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:23.0];
-        _chartLabel.textAlignment = NSTextAlignmentCenter;
-        
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 10 + _chartLabel.frame.origin.y + _chartLabel.frame.size.height, outlineViewWidth, 30)];
-        label.text = @"visitor占比:";
-        label.textColor = PNDeepGrey;
-        label.font = [UIFont fontWithName:@"Avenir-Medium" size:18.0];
-        label.textAlignment = NSTextAlignmentLeft;
-        
-        _circleChart = [[PNCircleChart alloc] initWithFrame:CGRectMake(0,label.frame.origin.y + label.frame.size.height - 30.0, outlineViewWidth, 100.0) andTotal:@100 andCurrent:@60 andClockwise:YES andShadow:YES];
-        _circleChart.backgroundColor = [UIColor clearColor];
-
-        [_circleChart setStrokeColor:[UIColor colorWithRed:77.0 / 255.0 green:106.0 / 255.0 blue:122.0 / 255.0 alpha:1.0f]];
-        [_circleChart setStrokeColorGradientStart:[UIColor colorWithRed:77.0 / 255.0 green:236.0 / 255.0 blue:122.0 / 255.0 alpha:1.0f]];
-        _circleChart.isRestroke = NO;
-        [_circleChart strokeChart];
-        
-//        [self addSubview:circleChartLabel];
-//        [self addSubview:circleChart];
-        [_contentView addSubview:label];
-        [_contentView addSubview:_chartLabel];
-        [_contentView addSubview:_circleChart];
+        _sourceView= [[sourceAnalyticsView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+        [_contentView addSubview:_sourceView];
+        _circleChart = _sourceView.circleChart;
         
     }else if (dataType == outlineVisitorGroup)
     {
@@ -238,7 +242,7 @@ const static CGFloat loadingAnimationDuration = 1.0f;
         _pieChart = _visitorGroupView.pieChart;
         
         
-    }else if(dataType == outlineHotPage){
+    }else if (dataType == outlineHotPage) {
         _chartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
         //        _chartLabel.text =(NSString *)data[dataType]?(NSString *)data[dataType]: @"Bar Chart";
         _chartLabel.text = @"热门页面";
@@ -248,7 +252,7 @@ const static CGFloat loadingAnimationDuration = 1.0f;
         
         _barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 55.0, outlineViewWidth, outlineViewHeight)];
         _barChart.backgroundColor = [UIColor clearColor];
-        _barChart.yLabelFormatter = ^(CGFloat yValue){
+        _barChart.yLabelFormatter = ^(CGFloat yValue) {
             CGFloat yValueParsed = yValue;
             NSString * labelText = [NSString stringWithFormat:@"%1.f",yValueParsed];
             return labelText;
@@ -319,14 +323,14 @@ const static CGFloat loadingAnimationDuration = 1.0f;
         
         [_contentView addSubview:_myGraph];
         
-        if (inViewType == detailView){
+        if (inViewType == detailView) {
             _myGraph.alpha = 0.0;
             [UIView animateWithDuration:0.8 animations:^{
                 _myGraph.alpha = 1.0;
             }];
         }
     }
-    else if(dataType == outlineTransform){
+    else if (dataType == outlineTransform) {
         
         _chartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
         _chartLabel.text = (NSString *)data[dataType]?(NSString *)data[dataType]: @"Line Chart";
@@ -386,7 +390,7 @@ const static CGFloat loadingAnimationDuration = 1.0f;
         
         [_contentView addSubview:_myGraph];
 
-        if (inViewType == detailView){
+        if (inViewType == detailView) {
             _myGraph.alpha = 0.0;
             [UIView animateWithDuration:0.8 animations:^{
                 _myGraph.alpha = 1.0;
@@ -396,7 +400,7 @@ const static CGFloat loadingAnimationDuration = 1.0f;
     
     [self addSubview:_contentView];
     
-    if(_ifLoadingLogoShowing){
+    if (_ifLoadingLogoShowing) {
         _contentView.alpha = 0.0;
         
         //模拟网络数据加载
@@ -425,7 +429,7 @@ const static CGFloat loadingAnimationDuration = 1.0f;
           initialSpringVelocity:0.5
                         options:(UIViewAnimationOptionCurveEaseInOut)
                      animations:^{
-//                         if(_ifLoadingLogoShowing){
+//                         if (_ifLoadingLogoShowing) {
 //                             _loadingLogo.center = CGPointMake(-_loadingLogo.center.x, _loadingLogo.center.y);
                              _loadingLogo.alpha = 0.0;
 //                         }
@@ -545,7 +549,7 @@ const static CGFloat loadingAnimationDuration = 1.0f;
 #pragma mark - reloadRealTimeData
 - (void)reloadRealTimeData:(NSDictionary *)info
 {
-    if((realTimeOutlineView *)_contentView){
+    if ((realTimeOutlineView *)_contentView) {
     [((realTimeOutlineView *)_contentView) relodData:info];
     }
 }
@@ -633,12 +637,12 @@ const static CGFloat loadingAnimationDuration = 1.0f;
     dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(delayTime,dispatch_get_main_queue(), ^{
         
-        if(type == outlineVisitorGroup){
+        if (type == outlineVisitorGroup) {
             _visitorGroupView.groupColorArray = colorArray;
             _visitorGroupView.groupPercentArray = percentArray;
             [_visitorGroupView modifyGroupView];
             
-        }else if (type == outlinePageAnalytics){
+        }else if (type == outlinePageAnalytics) {
             _pageView.groupColorArray = colorArray;
             _pageView.groupPercentArray = percentArray;
             [_pageView modifyPageView];
@@ -660,7 +664,7 @@ const static CGFloat loadingAnimationDuration = 1.0f;
         
 //        self.ArrayOfValues = valueArray;
 //        self.ArrayOfDates = dateArray;
-        if(type == outlinePageAnalytics){
+        if (type == outlinePageAnalytics) {
             self.ArrayOfValues = ((pageAnalyticsOutlineView *)view).ArrayOfValues;
             self.ArrayOfDates = ((pageAnalyticsOutlineView *)view).ArrayOfDates;
         }

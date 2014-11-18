@@ -53,7 +53,7 @@ static NSString *const dataDidInitialize = @"realTimeDataDidInitialize";
 
 - (void)getInitializedRealTimeDeatilsData
 {
-    void (^successefullyBlock)(NSDictionary *) = ^(NSDictionary *data){
+    void (^successefullyBlock)(NSDictionary *) = ^(NSDictionary *data) {
         _groupUV = arc4random() % 20000;
         _validUVRatio = ((arc4random() % 500) + 500) / 1000.0;
         _validGroupUV = _groupUV * _validUVRatio;
@@ -113,7 +113,7 @@ static NSString *const dataDidInitialize = @"realTimeDataDidInitialize";
             
         });
 
-        //            if(![NSThread isMainThread]){
+        //            if (![NSThread isMainThread]) {
         //                NSLog(@"not in mainThread");
         //            }
         //            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -124,9 +124,9 @@ static NSString *const dataDidInitialize = @"realTimeDataDidInitialize";
         
     };
     
-    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:nil failureBlock:^(NSDictionary *data){
+    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:nil failureBlock:^(NSDictionary *data) {
         successefullyBlock(data);
-    }successedBlock:^(NSDictionary *data){
+    }successedBlock:^(NSDictionary *data) {
         successefullyBlock(data);
     }];
 }
@@ -139,7 +139,7 @@ static NSString *const dataDidInitialize = @"realTimeDataDidInitialize";
 
 - (void)getNewData
 {
-     void (^successefullyBlock)(NSDictionary *data) = ^(NSDictionary *data){
+     void (^successefullyBlock)(NSDictionary *data) = ^(NSDictionary *data) {
          realTimeModel *strongSelf = _wself;
          
          _groupUV = arc4random() % 20000;

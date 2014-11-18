@@ -305,7 +305,7 @@ const CGFloat MAX_DELAY = 0.15;
 {
     CGRect rect = view.frame;
     rect.origin.x = 0;
-    if(![self isIOS8]){
+    if (![self isIOS8]) {
         if (self.navigationController.navigationBar.translucent && !self.navigationController.navigationBar.hidden) {
             rect.origin.y -= self.navigationController.navigationBar.frame.origin.y + self.navigationController.navigationBar.frame.size.height;
         }
@@ -393,12 +393,12 @@ const CGFloat MAX_DELAY = 0.15;
         delta = view.frame.origin.x + view.frame.size.width / 2 + correction;
     }
     view.alpha = [self alphaForView:view];
-    [arrayWithAttachments[index] setAnchorPoint:(CGPoint){delta, [view.superview convertPoint:view.frame.origin toView:nil].y + view.frame.size.height / 2}];
+    [arrayWithAttachments[index] setAnchorPoint:(CGPoint) {delta, [view.superview convertPoint:view.frame.origin toView:nil].y + view.frame.size.height / 2}];
 }
 
 - (void)createAttachmentForView:(UIView *)view inVC:(AMWaveTransitionViewControllers)viewController
 {
-    UIAttachmentBehavior *attachment = [[UIAttachmentBehavior alloc] initWithItem:view attachedToAnchor:(CGPoint){0, [view.superview convertPoint:view.frame.origin toView:nil].y + view.frame.size.height / 2}];
+    UIAttachmentBehavior *attachment = [[UIAttachmentBehavior alloc] initWithItem:view attachedToAnchor:(CGPoint) {0, [view.superview convertPoint:view.frame.origin toView:nil].y + view.frame.size.height / 2}];
     [attachment setDamping:0.4];
     [attachment setFrequency:1];
     [self.animator addBehavior:attachment];
@@ -519,14 +519,14 @@ const CGFloat MAX_DELAY = 0.15;
         [view setTransform:CGAffineTransformMakeTranslation(delta, 0)];
         [view setAlpha:0];
     };
-    void (^completion)(BOOL) = ^(BOOL finished){
+    void (^completion)(BOOL) = ^(BOOL finished) {
         [view setTransform:CGAffineTransformIdentity];
     };
     if (self.transitionType == AMWaveTransitionTypeSubtle) {
         [UIView animateWithDuration:self.duration delay:delay options:UIViewAnimationOptionCurveEaseIn animations:animation completion:completion];
     } else if (self.transitionType == AMWaveTransitionTypeNervous) {
         [UIView animateWithDuration:self.duration delay:delay usingSpringWithDamping:0.75 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseIn animations:animation completion:completion];
-    } else if (self.transitionType == AMWaveTransitionTypeBounce){
+    } else if (self.transitionType == AMWaveTransitionTypeBounce) {
         [UIView animateWithDuration:self.duration delay:delay options:UIViewAnimationOptionCurveEaseInOut animations:animation completion:completion];
     }
 }
@@ -542,7 +542,7 @@ const CGFloat MAX_DELAY = 0.15;
         [UIView animateWithDuration:self.duration delay:delay options:UIViewAnimationOptionCurveEaseIn animations:animation completion:nil];
     } else if (self.transitionType == AMWaveTransitionTypeNervous) {
         [UIView animateWithDuration:self.duration delay:delay usingSpringWithDamping:0.75 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseIn animations:animation completion:nil];
-    } else if (self.transitionType == AMWaveTransitionTypeBounce){
+    } else if (self.transitionType == AMWaveTransitionTypeBounce) {
         [UIView animateWithDuration:self.duration delay:delay options:UIViewAnimationOptionCurveEaseInOut animations:animation completion:nil];
     }
 }

@@ -31,7 +31,7 @@
 //{
 ////     NSLog(@"0 indexSwitchController init");
 //    _type = type;
-//    if(demo == _type){
+//    if (demo == _type) {
 //      return [self initWithFrame:CGRectMake(0, 0, 280, 160) type:demo];
 //    }
 //}
@@ -51,7 +51,7 @@
 {
     [super viewDidLoad];
     
-    if(_type == demo){
+    if (_type == demo) {
        self.view.frame = CGRectMake(0, 0, 280, 160);
     }else{
         self.view.frame = CGRectMake(0, 0, 280, viewHeight);
@@ -64,9 +64,9 @@
 
     [self.view addSubview:_contentView];
     
-    if(_type == demo){
+    if (_type == demo) {
        [self addButton];
-    }else if(_type == visitorGroup){
+    }else if (_type == visitorGroup) {
         [self addvisitorSwitchView];
     }
     
@@ -77,10 +77,10 @@
     visitorGroupSwitchView *view = [[visitorGroupSwitchView alloc]initWithFrame:self.view.frame];
 //    __weak typeof(self) weakSelf = self;
 
-    view.switchAction =^(NSInteger index){
+    view.switchAction =^(NSInteger index) {
 //        typeof(weakSelf) strongSelf = weakSelf;
 //         strongSelf.switchAction(index);
-        if(_switchAction){
+        if (_switchAction) {
             _switchAction(index);
         }
     };
@@ -151,8 +151,8 @@
 
 - (void)switchButtonClicked:(flatButton *)sender
 {
-    if(self.switchAction){
-        if(sender == _switchButton2){
+    if (self.switchAction) {
+        if (sender == _switchButton2) {
             self.switchAction(1);
         }else{
             self.switchAction(0);
@@ -162,7 +162,7 @@
 
 - (CGSize)preferredContentSize
 {
-    if(_type == demo){
+    if (_type == demo) {
         return CGSizeMake(280, 160);
     }else{
         return CGSizeMake(280, viewHeight);

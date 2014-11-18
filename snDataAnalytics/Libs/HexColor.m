@@ -24,7 +24,7 @@
 + (HXColor *)colorWithHexString:(NSString *)hexString alpha:(CGFloat)alpha
 {
     // Check for hash and add the missing hash
-    if('#' != [hexString characterAtIndex:0])
+    if ('#' != [hexString characterAtIndex:0])
     {
         hexString = [NSString stringWithFormat:@"#%@", hexString];
     }
@@ -68,7 +68,7 @@
 
 + (NSString *)hexStringTransformFromThreeCharacters:(NSString *)hexString
 {
-    if(hexString.length == 4)
+    if (hexString.length == 4)
     {
         hexString = [NSString stringWithFormat:@"#%@%@%@%@%@%@",
                      [hexString substringWithRange:NSMakeRange(1, 1)],[hexString substringWithRange:NSMakeRange(1, 1)],

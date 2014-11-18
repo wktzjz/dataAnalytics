@@ -93,8 +93,8 @@
 
     __weak typeof(vc) weakVC = vc;
     
-    vc.indexChoosedBlock = ^(NSInteger i){
-        if(_visitorGroupChosenIndex != i){
+    vc.indexChoosedBlock = ^(NSInteger i) {
+        if (_visitorGroupChosenIndex != i) {
             _visitorGroupChosenIndex = i;
             
             typeof(weakVC) strongVC = weakVC;
@@ -112,8 +112,8 @@
     };
     
 
-    vc.dimensionChoosedBlock = ^(NSInteger i){
-        if(_visitorGroupChosenDimension != i){
+    vc.dimensionChoosedBlock = ^(NSInteger i) {
+        if (_visitorGroupChosenDimension != i) {
             typeof (weakVC) strongVC = weakVC;
             
             _visitorGroupChosenDimension = i;

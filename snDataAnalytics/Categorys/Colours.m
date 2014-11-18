@@ -24,7 +24,7 @@
 #import <objc/runtime.h>
 
 #pragma mark - Static Block
-static CGFloat (^RAD)(CGFloat) = ^CGFloat (CGFloat degree){
+static CGFloat (^RAD)(CGFloat) = ^CGFloat (CGFloat degree) {
     return degree * M_PI/180;
 };
 
@@ -223,7 +223,7 @@ static CGFloat (^RAD)(CGFloat) = ^CGFloat (CGFloat degree){
     
     // Create deltaF block
     void (^deltaF)(CGFloat *f);
-    deltaF = ^(CGFloat *f){
+    deltaF = ^(CGFloat *f) {
         *f = (*f > pow((6.0/29.0), 3.0)) ? pow(*f, 1.0/3.0) : (1/3)*pow((29.0/6.0), 2.0) * *f + 4/29.0;
     };
     deltaF(&X);
@@ -263,7 +263,7 @@ static CGFloat (^RAD)(CGFloat) = ^CGFloat (CGFloat degree){
     CGFloat Z = Y - B/200;
     
     void (^deltaXYZ)(CGFloat *);
-    deltaXYZ = ^(CGFloat *k){
+    deltaXYZ = ^(CGFloat *k) {
         *k = (pow(*k, 3.0) > 0.008856) ? pow(*k, 3.0) : (*k - 4/29.0)/7.787;
     };
     
@@ -280,7 +280,7 @@ static CGFloat (^RAD)(CGFloat) = ^CGFloat (CGFloat degree){
     CGFloat _B = X*0.0557 + Y*-0.2040 + Z*1.0570;
     
     void (^deltaRGB)(CGFloat *);
-    deltaRGB = ^(CGFloat *k){
+    deltaRGB = ^(CGFloat *k) {
         *k = (*k > 0.0031308) ? 1.055 * (pow(*k, (1/2.4))) - 0.055 : *k * 12.92;
     };
     
@@ -326,7 +326,7 @@ static CGFloat (^RAD)(CGFloat) = ^CGFloat (CGFloat degree){
     }
     else {
         void (^newCMYK)(CGFloat *);
-        newCMYK = ^(CGFloat *x){
+        newCMYK = ^(CGFloat *x) {
             *x = (*x - K)/(1 - K);
         };
         newCMYK(&C);
@@ -362,7 +362,7 @@ static CGFloat (^RAD)(CGFloat) = ^CGFloat (CGFloat degree){
     CGFloat Y = [cmyk[2] floatValue];
     CGFloat K = [cmyk[3] floatValue];
     void (^cmyTransform)(CGFloat *);
-    cmyTransform = ^(CGFloat *x){
+    cmyTransform = ^(CGFloat *x) {
         *x = *x * (1 - K) + K;
     };
     cmyTransform(&C);

@@ -12,7 +12,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 // Enums
-typedef NS_ENUM(NSUInteger, JBLineChartHorizontalIndexClamp){
+typedef NS_ENUM(NSUInteger, JBLineChartHorizontalIndexClamp) {
 	JBLineChartHorizontalIndexClampLeft,
     JBLineChartHorizontalIndexClampRight,
     JBLineChartHorizontalIndexClampNone

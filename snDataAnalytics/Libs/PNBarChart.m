@@ -163,9 +163,9 @@
             
             
             //wk add to show reference lines
-            if(_showReferenceLines){
+            if (_showReferenceLines) {
                 
-                if(index == 0) continue;
+                if (index == 0) continue;
                 
                 CAShapeLayer *referenceLine = [CAShapeLayer layer];
                 referenceLine.lineCap      = kCALineCapButt;
@@ -186,7 +186,7 @@
                 
                 
                 CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-                pathAnimation.duration = 0.5;
+                pathAnimation.duration = 1.2;
                 pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
                 pathAnimation.fromValue = @0.0f;
                 pathAnimation.toValue = @1.0f;
@@ -194,7 +194,7 @@
                 
                 referenceLine.strokeEnd = 1.0;
                 
-                [self animateForLayer:referenceLine isAnimatingReferenceLine:YES];
+//                [self animateForLayer:referenceLine isAnimatingReferenceLine:YES];
                 
                 [self.layer addSublayer:referenceLine];
 
@@ -264,7 +264,7 @@
         
         //wk add a switch to improve the performance
         // Add gradient
-        if(_ifUseGradientColor){
+        if (_ifUseGradientColor) {
            bar.barColorGradientStart = _barColorGradientStart;
         }
 
@@ -319,7 +319,7 @@
         bar.backgroundColor = [UIColor clearColor];
         
         //Bar StrokColor First
-        if (self.strokeColor) {
+        if (self.strokeColor1) {
             bar.barColor = self.strokeColor1;
         }else{
             bar.barColor = [self barColorAtIndex:index1];
@@ -330,7 +330,7 @@
         
         //wk add a switch to improve the performance
         // Add gradient
-        if(_ifUseGradientColor){
+        if (_ifUseGradientColor) {
             bar.barColorGradientStart = _barColorGradientStart;
         }
         
@@ -457,12 +457,12 @@
 
 - (UIColor *)bar1ColorAtIndex:(NSUInteger)index
 {
-    if ([self.strokeColors count] == [self.yValues count]) {
-        return self.strokeColors1[index];
-    }
-    else {
+//    if ([self.strokeColors count] == [self.yValues count]) {
+//        return self.strokeColors1[index];
+//    }
+//    else {
         return self.strokeColor1;
-    }
+//    }
 }
 
 //#pragma mark - Touch detection

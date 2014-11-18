@@ -365,7 +365,7 @@ static const CGFloat kDefultHeightForAtom   = 44.0f;
                 
                 double delayInSeconds = 0.4;
                 dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
                     
                     [self openOrCloseCellWithRow:indexPath.row];
                 });
@@ -413,7 +413,7 @@ static const CGFloat kDefultHeightForAtom   = 44.0f;
     CGFloat w = cell.bounds.size.width;
     CGRect rect = CGRectMake(0, 0, w, h);
     CGPoint point = [gesture locationInView:cell];
-    if(CGRectContainsPoint(rect,point))
+    if (CGRectContainsPoint(rect,point))
     {
         if (self.atomView)
         {
@@ -551,7 +551,7 @@ static const CGFloat kDefultHeightForAtom   = 44.0f;
 - (UIView *)invoke_viewForHeaderInSection:(NSInteger)section
 {
     UIView *view = nil;
-    if(self.delegate && [self.delegate respondsToSelector:@selector(mTableView: viewForHeaderInSection:)])
+    if (self.delegate && [self.delegate respondsToSelector:@selector(mTableView: viewForHeaderInSection:)])
     {
         view = [self.delegate mTableView:self viewForHeaderInSection:section];
     }

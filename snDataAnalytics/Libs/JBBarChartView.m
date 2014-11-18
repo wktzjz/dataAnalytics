@@ -442,7 +442,7 @@ static UIColor *kJBBarChartViewDefaultBarColor = nil;
 
 - (CGFloat)cachedMinHeight
 {
-    if(_cachedMinHeight == kJBBarChartViewUndefinedCachedHeight)
+    if (_cachedMinHeight == kJBBarChartViewUndefinedCachedHeight)
     {
         NSArray *chartValues = [[NSMutableArray arrayWithArray:[self.chartDataDictionary allValues]] sortedArrayUsingSelector:@selector(compare:)];
         _cachedMinHeight =  [[chartValues firstObject] floatValue];

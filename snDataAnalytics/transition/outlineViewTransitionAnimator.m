@@ -136,7 +136,7 @@
         [containerView addSubview:toView];
 
         
-        if(_showSnapView){
+        if (_showSnapView) {
             
     /* get the clicked outlineView we have stored in fromViewController */
             _clickedOutlineView = (UIView *)[fromViewController clickedView];
@@ -144,7 +144,7 @@
     //         NSLog(@"fromViewController.clickedView:%@",fromViewController.clickedView);
 
     /* get the imageSnapshot View of the clicked View */
-            if(_clickedOutlineView){
+            if (_clickedOutlineView) {
                 _snapView = [[UIImageView alloc] initWithImage:[_clickedOutlineView snapshot]];
                 _snapView.layer.cornerRadius = 10.0;
                 
@@ -171,9 +171,9 @@
               initialSpringVelocity:0.5
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
-                             if(_snapView){
+                             if (_snapView) {
                                  CGRect frameRect = _snapView.frame;
-                                 frameRect.origin = CGPointMake(20,10+44.0);
+                                 frameRect.origin = CGPointMake(20,10+44.0 + 50.0);
                                  _snapView.frame = frameRect;
 
                              }
@@ -205,7 +205,7 @@
     // Grab the from and to view controllers from the context
     UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
 
-//        if(_snapView){
+//        if (_snapView) {
 //            _snapView.hidden = NO;
 //           [_snapView setFrame:_snapInitialFrame];
 //        }
@@ -254,7 +254,7 @@
                              toViewController.view.alpha = 1.0f;
                              fromViewController.view.frame = endRect;
                          } completion:^(BOOL finished) {
-//                             if(_snapView){
+//                             if (_snapView) {
 //                                [_snapView removeFromSuperview];
 //                             }
 //                             toViewController.view.layer.transform = CATransform3DIdentity;
@@ -287,7 +287,7 @@
         _isInteractive = YES;
         
 /* add _snapView when the dismiss animation begins*/
-//        if(_snapView && _direction!=transitonDirectionBottom){
+//        if (_snapView && _direction!=transitonDirectionBottom) {
 //            _snapView.hidden = NO;
 //            _snapView.alpha = 0.0;
 //            [_snapView setFrame:_snapInitialFrame];
@@ -311,7 +311,7 @@
             animationRatio = (location.y - _panLocationStart) / (CGRectGetHeight([_modalController view].bounds));
         } else if (self.direction == transitonDirectionLeft) {
             animationRatio = (_panLocationStart - location.x) / (CGRectGetWidth([_modalController view].bounds));
-        } else if (self.direction == transitonDirectionRight){
+        } else if (self.direction == transitonDirectionRight) {
                 animationRatio = (location.x - _panLocationStart) / (CGRectGetWidth([_modalController view].bounds));
         }
         
@@ -381,7 +381,7 @@
     
     toViewController.view.alpha = self.behindViewAlpha + ((1 - self.behindViewAlpha) * percentComplete);
     
-    if(_snapView && _direction!=transitonDirectionBottom){
+    if (_snapView && _direction!=transitonDirectionBottom) {
         _snapView.alpha = toViewController.view.alpha + 0.4;
     }
     
@@ -451,7 +451,7 @@
                      } completion:^(BOOL finished) {
 //                         NSLog(@"finish");
                          
-                         if(_snapView && _direction!=transitonDirectionBottom){
+                         if (_snapView && _direction!=transitonDirectionBottom) {
                              [_snapView removeFromSuperview];
                          }
                          

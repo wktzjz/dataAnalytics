@@ -27,6 +27,9 @@
 #import "visitorGroupModel.h"
 #import "notificationDefine.h"
 #import "TLYShyNavBarManager.h"
+#import "timeView.h"
+#import "THDatePickerViewController.h"
+
 
 typedef enum {
     dragUnknown = 0,
@@ -40,7 +43,9 @@ typedef enum {
     viewPresentedTypeDown
 } viewPresentedType;
 
-@interface baseViewController ()<wkContextOverlayViewDataSource, wkContextOverlayViewDelegate/*,UINavigationControllerDelegate*/>
+const static CGFloat titleViewHeight = 44.0f;
+
+@interface baseViewController ()<THDatePickerDelegate,wkContextOverlayViewDataSource, wkContextOverlayViewDelegate/*,UINavigationControllerDelegate*/>
 
 @end
 
@@ -57,6 +62,7 @@ typedef enum {
     UIView          *_blackView;
     UIScrollView    *_scrollView1;
     changefulButton *_button;
+    timeView        *_timeView;
     
     UILabel *_title;
     UILabel *_text;
@@ -84,6 +90,11 @@ typedef enum {
     
     BOOL _visitorGroupDataLoaded;
     LoadingView *_loadingView;
+    
+    THDatePickerViewController *_datePicker;
+    NSDateFormatter *_formatter;
+    NSDate *_curDate;
+
 }
 
 #pragma mark viewDidLoad
@@ -110,6 +121,7 @@ typedef enum {
     [self setTitle:@"概览"];
     
     [self addFrontAndBackgroundView];
+    [self addTimeView];
     [self addDataView];
     [self addBarButton];
     [self addMenuController];
@@ -223,7 +235,7 @@ typedef enum {
     _frontView.layer.shadowColor = [UIColor blackColor].CGColor;
     _frontView.layer.shadowOffset = CGSizeMake(-3, 3);
     
-    if(!_ifUseFlexibleBar){
+    if (!_ifUseFlexibleBar) {
         _text = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, 300, 50)];
         [_text setText:@"Data Outline View"];
         [_text setTextColor:[UIColor blackColor]];
@@ -291,12 +303,85 @@ typedef enum {
 
 - (void)handleLeftBarButtonClicked
 {
-    if(!_frontViewIsDraggedDown){
+    if (!_frontViewIsDraggedDown) {
         _frontViewIsDraggedDown = YES;
         [self mainViewPullDownFromTop];
     }else{
         [self mainViewPullUpFromBottom];
     }
+}
+
+#pragma mark addDataSubview
+- (void)addTimeView
+{
+    _curDate = [NSDate date];
+    _formatter = [[NSDateFormatter alloc] init];
+    [_formatter setDateFormat:@"dd/MM/yyyy --- HH:mm"];
+    
+    _timeView = [[timeView alloc] initWithFrame:CGRectMake(0, 0.0,self.view.frame.size.width, 50.0)];
+    __weak typeof(self) weakSelf = self;
+    _timeView.timeViewChoosedBlock = ^{
+        typeof(weakSelf) strongSelf = weakSelf;
+        
+        [strongSelf datePickerButtonClicked];
+    };
+    
+//    [self.view addSubview:_timeView];
+}
+
+#pragma mark datePicker
+
+- (void)datePickerButtonClicked
+{
+    __weak typeof(self) weakself = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        typeof(weakself) strongSelf = weakself;
+        
+        if (!_datePicker) {
+            _datePicker = [THDatePickerViewController datePicker];
+        }
+        _datePicker.date = _curDate;
+        _datePicker.delegate = strongSelf;
+        [_datePicker setAllowClearDate:NO];
+        [_datePicker setAutoCloseOnSelectDate:NO];
+        [_datePicker setDisableFutureSelection:NO];
+        [_datePicker setSelectedBackgroundColor:[UIColor colorWithRed:125/255.0 green:208/255.0 blue:0/255.0 alpha:1.0]];
+        [_datePicker setCurrentDateColor:[UIColor colorWithRed:242/255.0 green:121/255.0 blue:53/255.0 alpha:1.0]];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [strongSelf presentSemiViewController:_datePicker withOptions:@{
+                                                                            KNSemiModalOptionKeys.pushParentBack    : @(NO),
+                                                                            KNSemiModalOptionKeys.animationDuration : @(0.6),
+                                                                            KNSemiModalOptionKeys.shadowOpacity     : @(0.3),
+                                                                            }];
+            
+        });
+    });
+}
+
+
+#pragma mark THDatePickerDelegate
+
+-(void)datePickerDonePressed:(THDatePickerViewController *)datePicker selectedDays:(NSMutableDictionary *)selectedDays
+{
+    [self dismissSemiModalView];
+    
+    NSArray* arr = [selectedDays allKeys];
+    arr = [arr sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        NSComparisonResult result = [obj1 compare:obj2];
+        return result==NSOrderedDescending;
+    }];
+    
+    if (arr.count > 0) {
+        _timeView.fromTime = ((THDateDay *)selectedDays[(NSNumber *)arr[0]]).date;
+        _timeView.toTime = ((THDateDay *)selectedDays[[arr lastObject]]).date;
+        
+    }}
+
+-(void)datePickerCancelPressed:(THDatePickerViewController *)datePicker
+{
+    [self dismissSemiModalView];
 }
 
 #pragma mark addDataSubview
@@ -308,21 +393,21 @@ typedef enum {
     [_scrollView1 setShowsVerticalScrollIndicator:NO];
     [_scrollView1 setContentSize:CGSizeMake(0, self.view.bounds.size.height * 5)];
     [_frontView addSubview:_scrollView1];
-    [_scrollView1 setContentOffset:CGPointMake(0, -80)];
+//    [_scrollView1 setContentOffset:CGPointMake(0, -100) animated:YES];
     
-    if(_ifUseFlexibleBar){
-        /* Library code */
+    if (_ifUseFlexibleBar) {
         self.shyNavBarManager.scrollView = _scrollView1;
-        /* Can then be remove by setting the ExtensionView to nil */
-        [self.shyNavBarManager setExtensionView:nil];
+        [self.shyNavBarManager setExtensionView:_timeView];
     }
+    [_scrollView1 setContentOffset:CGPointMake(0, -80) animated:YES];
+
 
     CGFloat width = outleineContainerViewWidth;
     CGFloat height = wkScreenHeight/2 + 10;
 //    NSLog(@"!!!!!width:%f",width);
     CGFloat originX = 0;
     
-    _realTimeView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, 10, width, height + 410.0) ifLoading:YES];
+    _realTimeView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, 0, width, height + 410.0) ifLoading:YES];
     [_scrollView1 addSubview:_realTimeView];
     
     _visitorGruopView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _realTimeView.frame.origin.y + _realTimeView.frame.size.height + 20, width, height) ifLoading:YES];
@@ -352,7 +437,7 @@ typedef enum {
 - (void)handleRealTimeDataDidInitialize:(NSNotification *)notification
 {
 //    NSLog(@"handleRealTimeDataDidInitialize");
-    if(notification.userInfo != nil && notification.object == _realTimeData) {
+    if (notification.userInfo != nil && notification.object == _realTimeData) {
         dispatch_main_async_safe(^{
             [_realTimeView addDataViewType:outlineRealTime inControllerType:outlineView data:nil];
             [_realTimeView.loadingView stopAnimation];
@@ -363,7 +448,7 @@ typedef enum {
 - (void)handleRealTimeDataDidChange:(NSNotification *)notification
 {
 //    NSLog(@"handleRealTimeDataDidChange");
-    if(notification.userInfo != nil && notification.object == _realTimeData) {
+    if (notification.userInfo != nil && notification.object == _realTimeData) {
         dispatch_main_async_safe(^{
             [_realTimeView reloadRealTimeData:notification.userInfo];
         })
@@ -381,7 +466,7 @@ typedef enum {
 {
     _userDefaults = [NSUserDefaults standardUserDefaults];
     
-    if(![_userDefaults boolForKey:@"logInSucceeded"]){
+    if (![_userDefaults boolForKey:@"logInSucceeded"]) {
         loginViewController *viewController = [[loginViewController alloc] init];
         
         viewController.dismissBlock = ^{
@@ -423,13 +508,13 @@ typedef enum {
 #pragma mark - handleInfoFromNetwork
 - (BOOL)handleInfoFromNetwork:(NSDictionary *)info
 {
-    if(!info){
+    if (!info) {
         NSArray *visitorGroupData = @[@"实时",@"访客群体分析",@"来源分析",@"页面分析",@"热门城市",@"热门页面",@"转化分析"];
         dispatch_main_async_safe(^{
             [_outLineViewArray enumerateObjectsUsingBlock:^(dataOutlineViewContainer *view, NSUInteger idx, BOOL *stop) {
-                if(idx != 0){
+                if (idx != 0) {
                     [view addDataViewType:(viewType)idx inControllerType:outlineView data:visitorGroupData];
-                    if(idx != 1){
+                    if (idx != 1) {
                         [view.loadingView stopAnimation];
                     }
 
@@ -463,35 +548,35 @@ typedef enum {
 
 - (void)handleTap:(UITapGestureRecognizer *)recongnizer
 {
-    if(_frontViewIsDraggedDown){
+    if (_frontViewIsDraggedDown) {
            [self mainViewPullUpFromBottom];
         
         }else{
         CGPoint locationInMainView = [recongnizer locationInView:_contentView];
             
-            if(CGRectContainsPoint(_scrollView1.frame, locationInMainView)){
+            if (CGRectContainsPoint(_scrollView1.frame, locationInMainView)) {
                 CGPoint location = [recongnizer locationInView:_scrollView1];
                 
-                if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[0]).frame, location)){
+                if (CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[0]).frame, location)) {
                       [self handleTappingOutlineView:outlineRealTime];
                     
-                }else if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[1]).frame, location)){
-                    if(_visitorGroupDataLoaded){
+                }else if (CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[1]).frame, location)) {
+                    if (_visitorGroupDataLoaded) {
                         [self handleTappingOutlineView:outlineVisitorGroup];
                     }
                 
-                }else if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[2]).frame, location)){
+                }else if (CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[2]).frame, location)) {
                     [self handleTappingOutlineView:outlineSource];
                     
-                }else if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[3]).frame, location)){
+                }else if (CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[3]).frame, location)) {
                     [self handleTappingOutlineView:outlinePageAnalytics];
                     
-//                }else if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[4]).frame, location)){
+//                }else if (CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[4]).frame, location)) {
 //                    [self handleTappingOutlineView:4];
 //                    
-//                }else if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[5]).frame, location)){
+//                }else if (CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[5]).frame, location)) {
 //                    [self handleTappingOutlineView:5];
-                }else if(CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[6]).frame, location)){
+                }else if (CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[6]).frame, location)) {
                     [self handleTappingOutlineView:outlineTransform];
                 }else{
                     
@@ -539,7 +624,7 @@ typedef enum {
     CGRect frame = targetView.frame;
     frame = [_scrollView1 convertRect:frame toView:self.view];
     
-//    if(!_ifUseFlexibleBar){
+//    if (!_ifUseFlexibleBar) {
         [self.navigationController setClickedView:targetView];
         [self.navigationController setClickedViewFrame:@[@(frame.origin.x),@(frame.origin.y - navigationBarHeight),@(frame.size.width),@(frame.size.height)]];
 //    }else{
@@ -578,10 +663,10 @@ typedef enum {
     _detailsViewController.delegate = self;
     _detailsViewController.modalPresentationStyle = UIModalPresentationCustom;
     
-    if(type == outlineRealTime){
+    if (type == outlineRealTime) {
         _detailsViewController.initializedDataReady = _realTimeData.initializeDataReady;
         _detailsViewController.initializedData = _realTimeData.initializeData;
-    }else if(type == outlineVisitorGroup){
+    }else if (type == outlineVisitorGroup) {
         _detailsViewController.initializedDataReady = [visitorGroupModel sharedInstance].initializeDataReady;
         _detailsViewController.initializedData = [visitorGroupModel sharedInstance].initializeData;
     }
@@ -594,7 +679,7 @@ typedef enum {
     _animator.delegate = self;
     
 //    [_animator setContentScrollView:_detailsViewController.scrollView];
-//    if(type == outlineRealTime){
+//    if (type == outlineRealTime) {
 //        _animator.direction = transitonDirectionBottom;
 //        [_animator setContentScrollView:_detailsViewController.scrollView];
 //    }else{
@@ -614,7 +699,7 @@ typedef enum {
                                                  toViewController:(UIViewController*)toVC
 {
     if (operation != UINavigationControllerOperationNone) {
-        if(operation == UINavigationControllerOperationPush){
+        if (operation == UINavigationControllerOperationPush) {
             _animator.isDismiss = NO;
         }else{
             _animator.isDismiss = YES;
@@ -741,7 +826,7 @@ typedef enum {
     _progress += translationY / (wkScreenHeight - frontViewRemainHeight);
     
     //we can not drag view up than its original place after we first drag view down.
-    if(_progress<0){
+    if (_progress<0) {
         return;
     }
     _progress = _progress >= 0 ? _progress : 0;
@@ -772,7 +857,7 @@ typedef enum {
 
 - (void)handlePan:(UIPanGestureRecognizer *)recognizer
 {
-    if(_initalSelfCenterY == 0.0){
+    if (_initalSelfCenterY == 0.0) {
         
         _initalSelfCenterY = recognizer.view.center.y;
         _initalBackgroundCenterY = _backgroundView.center.y;
@@ -781,11 +866,11 @@ typedef enum {
     
     CGPoint translation = [recognizer translationInView:self.view];
     
-    if((!_dragInProgress)){
-        if(!_frontViewIsDraggedDown && translation.y < 0){
+    if ((!_dragInProgress)) {
+        if (!_frontViewIsDraggedDown && translation.y < 0) {
             return;
         }
-        if( _progress == 0 && translation.y > 0) {
+        if ( _progress == 0 && translation.y > 0) {
 //            NSLog(@"drag down");
             _dragDirection = dragdown;
             _dragInProgress = YES;
@@ -805,10 +890,10 @@ typedef enum {
             
         case UIGestureRecognizerStateChanged:{
             
-            if(_frontViewIsDraggedDown && _dragDirection == dragUp){
+            if (_frontViewIsDraggedDown && _dragDirection == dragUp) {
                 [self handleDragUpWithTranslationY:translation.y];
             }else{
-                if(!_frontViewIsDraggedDown && _dragDirection == dragdown){
+                if (!_frontViewIsDraggedDown && _dragDirection == dragdown) {
                     [self handleDragDownWithTranslationY:translation.y];
 //                    NSLog(@"in dragdown handling");
                 }
@@ -816,8 +901,8 @@ typedef enum {
             break;
         }
         case UIGestureRecognizerStateEnded:{
-            if(_dragDirection == dragUp){
-                if(_frontViewIsDraggedDown){
+            if (_dragDirection == dragUp) {
+                if (_frontViewIsDraggedDown) {
                     if (_progress >mainViewPullSuccessedRatio) {
                         [self mainViewPullUpFromBottom];
                     }else{
@@ -825,7 +910,7 @@ typedef enum {
                     }
                 }
             }else{
-                if(!_frontViewIsDraggedDown){
+                if (!_frontViewIsDraggedDown) {
                     if (_progress >mainViewPullSuccessedRatio) {
                         _frontViewIsDraggedDown = YES;
                         [self mainViewPullDownFromTop];
@@ -863,7 +948,7 @@ typedef enum {
 #pragma mark visibleCells
 - (NSArray*)visibleCells
 {
-    if(_menuController){
+    if (_menuController) {
         return [_menuController visibleCells];
     }else{
         return nil;

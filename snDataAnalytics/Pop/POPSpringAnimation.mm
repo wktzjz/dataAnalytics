@@ -124,7 +124,7 @@ FB_PROPERTY_GET(POPSpringAnimationState, springBounciness, CGFloat);
 - (void)_updatedDynamicsTension
 {
   __state->userSpecifiedDynamics = true;
-  if(__state->tracing) {
+  if (__state->tracing) {
     [__state->tracer updateTension:__state->dynamicsTension];
   }
   __state->updatedDynamics();
@@ -133,7 +133,7 @@ FB_PROPERTY_GET(POPSpringAnimationState, springBounciness, CGFloat);
 - (void)_updatedDynamicsFriction
 {
   __state->userSpecifiedDynamics = true;
-  if(__state->tracing) {
+  if (__state->tracing) {
     [__state->tracer updateFriction:__state->dynamicsFriction];
   }
   __state->updatedDynamics();
@@ -142,7 +142,7 @@ FB_PROPERTY_GET(POPSpringAnimationState, springBounciness, CGFloat);
 - (void)_updatedDynamicsMass
 {
   __state->userSpecifiedDynamics = true;
-  if(__state->tracing) {
+  if (__state->tracing) {
     [__state->tracer updateMass:__state->dynamicsMass];
   }
   __state->updatedDynamics();

@@ -16,7 +16,7 @@ static NSString *const dataDidInitialize = @"visitorGroupDataDidInitialize";
 @implementation visitorGroupModel
 {
     NSDictionary *_sendDict;
-    __weak id      _wself ;
+    __weak id      _wself;
     NSArray *_groupColorArray;
     NSArray *_groupPercentArray;
 }
@@ -57,7 +57,7 @@ static NSString *const dataDidInitialize = @"visitorGroupDataDidInitialize";
 
 - (void)getDetailOutlineData
 {
-    void (^successefullyBlock)(NSDictionary *data) = ^(NSDictionary *data){
+    void (^successefullyBlock)(NSDictionary *data) = ^(NSDictionary *data) {
         visitorGroupModel *strongSelf = _wself;
         _sendDict = @{};
         
@@ -76,7 +76,7 @@ static NSString *const dataDidInitialize = @"visitorGroupDataDidInitialize";
 
 - (NSDictionary *)getInitializeData
 {
-    if(!_initializeData){
+    if (!_initializeData) {
         [self createInitializeData];
         return _initializeData;
     }else{
@@ -86,7 +86,7 @@ static NSString *const dataDidInitialize = @"visitorGroupDataDidInitialize";
 
 - (void)createInitializeData
 {
-    void (^successefullyBlock)(NSDictionary *) = ^(NSDictionary *data){
+    void (^successefullyBlock)(NSDictionary *) = ^(NSDictionary *data) {
         
         _groupUV = arc4random() % 20000;
         float validUVRatio = ((arc4random() % 500) + 500) / 1000.0;
@@ -149,7 +149,7 @@ static NSString *const dataDidInitialize = @"visitorGroupDataDidInitialize";
 
 - (NSDictionary *)getDefineDetails
 {
-    if(!_defineDetails){
+    if (!_defineDetails) {
         [self initDefineDetails];
         return _defineDetails;
     }else{
@@ -187,7 +187,7 @@ static NSString *const dataDidInitialize = @"visitorGroupDataDidInitialize";
 
 - (NSDictionary *)getDetailsData
 {
-    if(!_detailsData){
+    if (!_detailsData) {
         [self initDetailsData];
         return _detailsData;
     }else{

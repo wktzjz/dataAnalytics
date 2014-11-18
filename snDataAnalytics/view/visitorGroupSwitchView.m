@@ -61,7 +61,7 @@
 
 - (NSInteger)mTableView:(TQMultistageTableView *)mTableView numberOfRowsInSection:(NSInteger)section
 {
-    if(section != 1){
+    if (section != 1) {
         return 0;
     }else{
         return 2;
@@ -72,7 +72,7 @@
 {
     //    NSLog(@"row:%i",indexPath.row);
     
-    if(indexPath.row == 0){
+    if (indexPath.row == 0) {
         static NSString *cellIdentifier = @"tableViewCell1";
         UITableViewCell *cell = [mTableView dequeueReusableCellWithIdentifier:cellIdentifier];
         if (cell == nil)
@@ -213,7 +213,7 @@
 //- (void)mTableView:(TQMultistageTableView *)mTableView willOpenRowAtIndexPath:(NSIndexPath *)indexPath
 //{
 //    NSLog(@"Open Row ----%d",indexPath.row);
-//    if(indexPath.row == 0){
+//    if (indexPath.row == 0) {
 //        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.mTableView.bounds.size.width, 100)];
 //        view.backgroundColor = [UIColor colorWithRed:230.0/255.0 green:230.0/255.0 blue:230.0/255.0 alpha:1];
 //        
@@ -234,7 +234,7 @@
 - (void)mTableView:(TQMultistageTableView *)mTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"didSelectRow ----%d",indexPath.row);
-    if(indexPath.row == 0){
+    if (indexPath.row == 0) {
         _label.text = @" 整体 新会员 老会员";
     }else{
        _label.text = @" 普通会员 银卡会员 金卡会员 白金会员";
@@ -251,12 +251,12 @@
 
 - (void)mTableView:(TQMultistageTableView *)mTableView didSelectHeaderAtSection:(NSInteger)section
 {
-    if(section == 0){
-        if(_switchAction){
+    if (section == 0) {
+        if (_switchAction) {
             _switchAction(section);
         }
-    }else if (section == 2){
-        if(_switchAction){
+    }else if (section == 2) {
+        if (_switchAction) {
             _switchAction(1);
         }
     }

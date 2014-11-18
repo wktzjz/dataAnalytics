@@ -16,7 +16,7 @@ extern CGFloat const kJBChartViewDefaultAnimationDuration;
 /**
  * At a minimum, a chart can support two states, along with animations to-and-from.
  */
-typedef NS_ENUM(NSInteger, JBChartViewState){
+typedef NS_ENUM(NSInteger, JBChartViewState) {
     /**
      *  Expanded state: chart supports touches, interaction, etc.
      */

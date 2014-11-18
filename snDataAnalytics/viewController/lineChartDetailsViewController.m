@@ -259,7 +259,7 @@ const static CGFloat titleViewHeight = 44.0f;
     NSMutableArray *array;
     NSMutableArray *views;
     
-    if(type == Dimension){
+    if (type == Dimension) {
         array = _dimensionArray;
         views = _popupDimensionViews;
     }else{
@@ -271,7 +271,7 @@ const static CGFloat titleViewHeight = 44.0f;
         [views removeAllObjects];
     }
     
-    if(array.count >0){
+    if (array.count >0) {
         
         [array enumerateObjectsUsingBlock:^(NSString *dimensionString, NSUInteger idx, BOOL *stop) {
             UIButton *button = [[BFPaperButton alloc] initWithFrame:CGRectMake(25, 355 + idx * 30 , 150, 30) raised:NO];
@@ -285,7 +285,7 @@ const static CGFloat titleViewHeight = 44.0f;
             button.backgroundColor = [UIColor clearColor];
             button.alpha = 0.0f;
             
-            if(type == Dimension){
+            if (type == Dimension) {
                 [button addTarget:self action:@selector(handleDimensionClicked:) forControlEvents:UIControlEventTouchUpInside];
             }else{
                 [button addTarget:self action:@selector(handleIndexClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -302,7 +302,7 @@ const static CGFloat titleViewHeight = 44.0f;
 - (void)handleDimensionClicked:(UIButton *)button
 {
     [self dismissItemsType:Dimension];
-    if(_dimensionChoosedBlock){
+    if (_dimensionChoosedBlock) {
         _dimensionChoosedBlock((int)button.tag);
     }
 }
@@ -310,7 +310,7 @@ const static CGFloat titleViewHeight = 44.0f;
 - (void)handleIndexClicked:(UIButton *)button
 {
     [self dismissItemsType:Index];
-    if(_indexChoosedBlock){
+    if (_indexChoosedBlock) {
         _indexChoosedBlock((int)button.tag);
     }
 }
@@ -320,14 +320,14 @@ const static CGFloat titleViewHeight = 44.0f;
 
 - (void)showItemsType:(operationType)type delay:(float)delay
 {
-    if(_dimensionItemsShowed){
+    if (_dimensionItemsShowed) {
         [self dismissItemsType:Dimension];
-        if(type == Index){
+        if (type == Index) {
             [self showItemsType:Index delay:0.4];
         }
-    }else if(_indexItemsShowed){
+    }else if (_indexItemsShowed) {
         [self dismissItemsType:Index];
-        if(type == Dimension){
+        if (type == Dimension) {
             [self showItemsType:Dimension delay:0.4];
         }
     }else{
@@ -335,7 +335,7 @@ const static CGFloat titleViewHeight = 44.0f;
         NSMutableArray *views;
         CGFloat centerX;
         
-        if(type == Dimension){
+        if (type == Dimension) {
             views = _popupDimensionViews;
             _dimensionItemsShowed = YES;
             centerX = -105;
@@ -364,7 +364,7 @@ const static CGFloat titleViewHeight = 44.0f;
     NSMutableArray *views;
     CGFloat centerX;
     
-    if(type == Dimension){
+    if (type == Dimension) {
         _dimensionItemsShowed = NO;
         views = _popupDimensionViews;
         centerX = -105;
@@ -468,7 +468,7 @@ const static CGFloat titleViewHeight = 44.0f;
     switch (selectedIndex) {
         case 0:
             msg = @"1 Selected";
-            if(_dismissBlock){
+            if (_dismissBlock) {
                 _dismissBlock();
             }
             break;
@@ -499,7 +499,7 @@ const static CGFloat titleViewHeight = 44.0f;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         typeof(weakself) strongSelf = weakself;
         
-        if(!_datePicker){
+        if (!_datePicker) {
             _datePicker = [THDatePickerViewController datePicker];
         }
         _datePicker.date = _curDate;
@@ -530,7 +530,7 @@ const static CGFloat titleViewHeight = 44.0f;
     _selectedDays = selectedDays;
     
     NSArray* arr = [selectedDays allKeys];
-    arr = [arr sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2){
+    arr = [arr sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         NSComparisonResult result = [obj1 compare:obj2];
         return result==NSOrderedDescending;
     }];
@@ -547,7 +547,7 @@ const static CGFloat titleViewHeight = 44.0f;
     _selectedDays = datePicker.selectedDaysArray;
     
     NSArray* arr = [_selectedDays allKeys];
-    arr = [arr sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2){
+    arr = [arr sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         NSComparisonResult result = [obj1 compare:obj2];
         return result==NSOrderedDescending;
     }];

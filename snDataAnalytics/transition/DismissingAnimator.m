@@ -67,7 +67,7 @@
 
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext
 {
-    if(_interacting) return;
+    if (_interacting) return;
     
     // 1. Get controllers from transition context
     UIViewController *fromVC = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
@@ -124,7 +124,7 @@
         case UIGestureRecognizerStateBegan:
             // 1. Mark the interacting flag. Used when supplying it in delegate.
             _interacting = YES;
-            if(_dismissModalViewControllerBlock){
+            if (_dismissModalViewControllerBlock) {
                 _dismissModalViewControllerBlock();
             }
 //            [_presentingVC dismissViewControllerAnimated:YES completion:nil];
@@ -189,7 +189,7 @@
 
 - (void)updateInteractiveTransition:(CGFloat)percentComplete
 {
-    if(_percentComplete < 0) return;
+    if (_percentComplete < 0) return;
     
     id<UIViewControllerContextTransitioning> transitionContext = _transitionContext;
     

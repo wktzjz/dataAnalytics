@@ -14,6 +14,7 @@
 
 #import "visitorGroupOutlineView.h"
 #import "pageAnalyticsOutlineView.h"
+#import "sourceAnalyticsView.h"
 #import "loadingView.h"
 
 
@@ -48,18 +49,19 @@ typedef NS_ENUM(NSUInteger, inViewType) {
 @interface dataOutlineViewContainer : UIView
 
 
-@property (nonatomic) UIImageView *snapView;
+@property (nonatomic,strong) UIImageView *snapView;
 @property (nonatomic) viewType dataType;
-@property (nonatomic) UILabel * chartLabel;
-@property (nonatomic) PNLineChart * lineChart;
-@property (nonatomic) PNBarChart *barChart;
-@property (nonatomic) PNCircleChart *circleChart;
-@property (nonatomic) PNPieChart *pieChart;
-@property (nonatomic) BEMSimpleLineGraphView *myGraph;
-@property (nonatomic) visitorGroupOutlineView *visitorGroupView;
-@property (nonatomic) pageAnalyticsOutlineView *pageView;
+@property (nonatomic,strong) UILabel * chartLabel;
+@property (nonatomic,strong) PNLineChart * lineChart;
+@property (nonatomic,strong) PNBarChart *barChart;
+@property (nonatomic,strong) PNCircleChart *circleChart;
+@property (nonatomic,strong) PNPieChart *pieChart;
+@property (nonatomic,strong) BEMSimpleLineGraphView *myGraph;
+@property (nonatomic,strong) visitorGroupOutlineView *visitorGroupView;
+@property (nonatomic,strong) pageAnalyticsOutlineView *pageView;
+@property (nonatomic,strong) sourceAnalyticsView *sourceView;
 
-@property (nonatomic) LoadingView *loadingView;
+@property (nonatomic,strong) LoadingView *loadingView;
 
 - (instancetype)initWithFrame:(CGRect)frame ifLoading:(BOOL)ifLoading;
 - (instancetype)initWithFrame:(CGRect)frame dataType:(viewType)type inControllerType:(inViewType)inViewType;

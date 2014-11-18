@@ -41,7 +41,7 @@
 
 -(id)initWithFrame:(CGRect)frame items:(NSArray *)items{
 	self = [self initWithFrame:frame];
-	if(self){
+	if (self) {
 		_items = [NSArray arrayWithArray:items];
 		_outterCircleRadius = CGRectGetWidth(self.bounds)/2;
 		_innerCircleRadius  = CGRectGetWidth(self.bounds)/6;
@@ -126,7 +126,7 @@
 //    NSString *titleText = currentDataItem.description;
     NSString *titleText = currentDataItem.textDescription;
 
-    if(!titleText){
+    if (!titleText) {
         titleText = [NSString stringWithFormat:@"%.0f%%",currentDataItem.value/ _total * 100];
     }
     
@@ -215,7 +215,7 @@
 
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag{
     [_descriptionLabels enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [UIView animateWithDuration:0.2 animations:^(){
+        [UIView animateWithDuration:0.2 animations:^() {
             [obj setAlpha:1];
         }];
     }];

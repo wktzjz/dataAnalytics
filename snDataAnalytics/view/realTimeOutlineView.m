@@ -35,7 +35,7 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     UILabel *_realtimeCityLabel;
     UILabel *_realtimeTop5PagiesLabel;
     
-    UILabel *_uvGroupLabel;
+    LTMorphingLabel *_uvGroupLabel;
     UILabel *_validGroupUVLabel;
     UILabel *_visitorGroupLabel;
     UIView  *_UVLine;
@@ -157,22 +157,22 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
 
 - (void)referenceButtonClicked:(UIButton *)button
 {
-    if(_lineGraph){
+    if (_lineGraph) {
         _lineGraph.enableReferenceAxisLines = _lineGraph.enableReferenceAxisLines == NO ? YES : NO;
         _lineGraph.enableYAxisLabel = _lineGraph.enableYAxisLabel == NO ? YES : NO;
         _lineGraph.colorXaxisLabel = (_lineGraph.colorXaxisLabel == [UIColor grayColor]) ? [UIColor clearColor] : [UIColor grayColor];
 
         [_lineGraph reloadGraph];
     }
-    if(_vaildSourceBarChart){
+    if (_vaildSourceBarChart) {
        _vaildSourceBarChart.showChartBorder = _vaildSourceBarChart.showReferenceLines = _vaildSourceBarChart.showReferenceLines == NO ? YES : NO;
         [_vaildSourceBarChart strokeChart];
     }
-    if(_citiesBarChart){
+    if (_citiesBarChart) {
         _citiesBarChart.showChartBorder =_citiesBarChart.showReferenceLines = _citiesBarChart.showReferenceLines == NO ? YES : NO;
         [_citiesBarChart strokeChart];
     }
-    if(_pagesBarChart){
+    if (_pagesBarChart) {
         _pagesBarChart.showChartBorder = _pagesBarChart.showReferenceLines = _pagesBarChart.showReferenceLines == NO ? YES : NO;
         [_pagesBarChart strokeChart];
     }
@@ -184,7 +184,7 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     _validUVRatio = ((arc4random() % 500) + 500) / 1000.0;
     _validGroupUV = _groupUV * _validUVRatio;
     
-    _uvGroupLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 5 + _chartLabel.frame.origin.y +_chartLabel.frame.size.height, outlineViewWidth/2, 20)];
+    _uvGroupLabel = [[LTMorphingLabel alloc] initWithFrame:CGRectMake(20, 5 + _chartLabel.frame.origin.y +_chartLabel.frame.size.height, outlineViewWidth/2, 20)];
     _uvGroupLabel.text = [NSString stringWithFormat:@"UV:%i",_groupUV];
     _uvGroupLabel.textColor = PNDeepGrey;
     _uvGroupLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
@@ -196,7 +196,7 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
 //    _uvGroupLabel.morphingDuration = 0.07f;
     
     _visitorGroupLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _uvGroupLabel.frame.origin.y, outlineViewWidth/2, 20)];
-    _visitorGroupLabel.text =[NSString stringWithFormat:@"visitor: %i",(arc4random() % 100000)];
+    _visitorGroupLabel.text =[NSString stringWithFormat:@"VISIT: %i",(arc4random() % 100000)];
     _visitorGroupLabel.textColor = PNDeepGrey;
     _visitorGroupLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
     _visitorGroupLabel.textAlignment = NSTextAlignmentRight;
@@ -244,7 +244,7 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     center = _validUVRatioLabel.center;
     center.y = _UVLine.center.y;
     _validUVRatioLabel.center = center;
-    if(CGRectIntersectsRect(_validGroupUVLabel.frame,_validUVRatioLabel.frame)){
+    if (CGRectIntersectsRect(_validGroupUVLabel.frame,_validUVRatioLabel.frame)) {
         r.origin.x =  _UVLine.frame.origin.x + 5 ;
         _validUVRatioLabel.frame = r;
     }
@@ -332,7 +332,7 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     
     
     _visitorRatioLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 5 + _validDealTransformRatioLabel.frame.origin.y +_validDealTransformRatioLabel.frame.size.height, outlineViewWidth, 20)];
-    _visitorRatioLabel.text =@"visitor占比:";
+    _visitorRatioLabel.text =@"VISIT占比:";
     _visitorRatioLabel.textColor = PNDeepGrey;
     _visitorRatioLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
     _visitorRatioLabel.textAlignment = NSTextAlignmentLeft;
@@ -356,7 +356,7 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     _visitorColorDotViewArray = @[_visitorColorDotView1,_visitorColorDotView2,_visitorColorDotView3];
     
     [_visitorColorDotViewArray enumerateObjectsUsingBlock:^(UIView *dotView, NSUInteger idx, BOOL *stop) {
-        if(idx == 0){
+        if (idx == 0) {
             dotView.frame = CGRectMake(originDotViewX,20 + _visitorPieChart.frame.origin.y, 10, 10);
         }else{
             dotView.frame = CGRectMake(originDotViewX,3 + ((UIView *)_visitorColorDotViewArray[idx - 1]).frame.origin.y + _visitorColorDotView1.frame.size.height,10, 10);
@@ -376,7 +376,7 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     _visitorLabelArray = @[_visitorLabel1,_visitorLabel2,_visitorLabel3];
     
     [_visitorLabelArray enumerateObjectsUsingBlock:^(UILabel *labelView, NSUInteger idx, BOOL *stop) {
-        if(idx == 0){
+        if (idx == 0) {
             labelView.frame = CGRectMake(originX,  5 + _visitorRatioLabel.frame.origin.y + _visitorRatioLabel.frame.size.height, outlineViewWidth/2, 15);
         }else{
             labelView.frame = CGRectMake(originX, 3 +( (UILabel *)(_visitorLabelArray[idx - 1])).frame.origin.y + + _visitorLabel1.frame.size.height, outlineViewWidth/2, 15);
@@ -394,7 +394,7 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     
     
     _validUVSourceRatioLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0 + _visitorPieChart.frame.origin.y +_visitorPieChart.frame.size.height, outlineViewWidth, 20)];
-    _validUVSourceRatioLabel.text =@"来源有效UV占比:";
+    _validUVSourceRatioLabel.text =@"有效UV占比:";
     _validUVSourceRatioLabel.textColor = PNDeepGrey;
     _validUVSourceRatioLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
     _validUVSourceRatioLabel.textAlignment = NSTextAlignmentLeft;
@@ -402,7 +402,7 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     
     _vaildSourceBarChart = [[PNBarChart alloc] initWithFrame:CGRectMake(10,3+ _validUVSourceRatioLabel.frame.origin.y + _validUVSourceRatioLabel.frame.size.height, outlineViewWidth, outlineViewHeight/2)];
     _vaildSourceBarChart.backgroundColor = [UIColor clearColor];
-    _vaildSourceBarChart.yLabelFormatter = ^(CGFloat yValue){
+    _vaildSourceBarChart.yLabelFormatter = ^(CGFloat yValue) {
         CGFloat yValueParsed = yValue;
         NSString * labelText = [NSString stringWithFormat:@"%1.f",yValueParsed];
         return labelText;
@@ -432,7 +432,7 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
 //    _vaildSourceRatioBarChart = [[PNBarChart alloc] initWithFrame:CGRectMake(10,35+ _validUVSourceRatioLabel.frame.origin.y + _validUVSourceRatioLabel.frame.size.height, outlineViewWidth, outlineViewHeight/3)];
 //    _vaildSourceRatioBarChart.backgroundColor = [UIColor clearColor];
 //    _vaildSourceRatioBarChart.barBackgroundColor = [UIColor clearColor];
-//    _vaildSourceRatioBarChart.yLabelFormatter = ^(CGFloat yValue){
+//    _vaildSourceRatioBarChart.yLabelFormatter = ^(CGFloat yValue) {
 //        CGFloat yValueParsed = yValue;
 //        NSString * labelText = [NSString stringWithFormat:@"%1.f",yValueParsed];
 //        return labelText;
@@ -498,7 +498,7 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
 //    _validSourceLabelArray = @[_validSourceLabel1,_validSourceLabel2,_validSourceLabel3,_validSourceLabel4,_validSourceLabel5,_validSourceLabel6];
 //
 //    [_validSourceLabelArray enumerateObjectsUsingBlock:^(UILabel *labelView, NSUInteger idx, BOOL *stop) {
-//        if(idx == 0){
+//        if (idx == 0) {
 //            labelView.frame = CGRectMake(originX, 2 + _barChartView1.frame.origin.y + _barChartView1.frame.size.height, 35, 15);
 //        }else{
 //            labelView.frame = CGRectMake(15 +((UILabel *)(_validSourceLabelArray[idx - 1])).frame.origin.x + ((UILabel *)(_validSourceLabelArray[idx - 1])).frame.size.width, 2 + _barChartView1.frame.origin.y + _barChartView1.frame.size.height, 30, 15);
@@ -559,7 +559,7 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
 //    _validSourceColorDotViewArray = @[_validSourceColorDotView1,_validSourceColorDotView2,_validSourceColorDotView3,_validSourceColorDotView4,_validSourceColorDotView5,_validSourceColorDotView6,_validSourceColorDotView7];
 //    
 //    [_validSourceColorDotViewArray enumerateObjectsUsingBlock:^(UIView *dotView, NSUInteger idx, BOOL *stop) {
-//        if(idx == 0){
+//        if (idx == 0) {
 //            dotView.frame = CGRectMake(originDotViewX,15 + _vaildSourcePieChart.frame.origin.y, 10, 10);
 //        }else{
 //            dotView.frame = CGRectMake(originDotViewX,3 + ((UIView *)_validSourceColorDotViewArray[idx - 1]).frame.origin.y + _validSourceColorDotView1.frame.size.height,10, 10);
@@ -583,7 +583,7 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
 //    _validSourceLabelArray = @[_validSourceLabel1,_validSourceLabel2,_validSourceLabel3,_validSourceLabel4,_validSourceLabel5,_validSourceLabel6,_validSourceLabel7];
 //    
 //    [_validSourceLabelArray enumerateObjectsUsingBlock:^(UILabel *labelView, NSUInteger idx, BOOL *stop) {
-//        if(idx == 0){
+//        if (idx == 0) {
 //            labelView.frame = CGRectMake(originX, 2 + _vaildSourcePieChart.frame.origin.y, outlineViewWidth/2, 15);
 //        }else{
 //            labelView.frame = CGRectMake(originX, 14 +( (UILabel *)(_validSourceLabelArray[idx - 1])).frame.origin.y, outlineViewWidth/2, 15);
@@ -614,7 +614,7 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     
     _citiesBarChart = [[PNBarChart alloc] initWithFrame:CGRectMake(30, 0.0 + _realtimeCityLabel.frame.origin.y + _realtimeCityLabel.frame.size.height, outlineViewWidth - 40, outlineViewHeight/2)];
     _citiesBarChart.backgroundColor = [UIColor clearColor];
-    _citiesBarChart.yLabelFormatter = ^(CGFloat yValue){
+    _citiesBarChart.yLabelFormatter = ^(CGFloat yValue) {
         CGFloat yValueParsed = yValue;
         NSString * labelText = [NSString stringWithFormat:@"%1.f",yValueParsed];
         return labelText;
@@ -642,7 +642,7 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
 
     _pagesBarChart = [[PNBarChart alloc] initWithFrame:CGRectMake(30, 0.0 + _realtimeTop5PagiesLabel.frame.origin.y + _realtimeTop5PagiesLabel.frame.size.height, outlineViewWidth - 40, outlineViewHeight/2)];
     _pagesBarChart.backgroundColor = [UIColor clearColor];
-    _pagesBarChart.yLabelFormatter = ^(CGFloat yValue){
+    _pagesBarChart.yLabelFormatter = ^(CGFloat yValue) {
         CGFloat yValueParsed = yValue;
         NSString * labelText = [NSString stringWithFormat:@"%1.f",yValueParsed];
         return labelText;
@@ -693,7 +693,7 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     _validUVRatioLabel.frame = validUVRatioLabelRect;
     validUVRatioLabelRect.origin.x = UVLineRect.origin.x - 1 - validUVRatioLabelRect.size.width - 5;
     
-    if(CGRectIntersectsRect(_validGroupUVLabel.frame,validUVRatioLabelRect)){
+    if (CGRectIntersectsRect(_validGroupUVLabel.frame,validUVRatioLabelRect)) {
         validUVRatioLabelRect.origin.x =  UVLineRect.origin.x + 5 ;
     }
     
@@ -774,7 +774,7 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
 
 - (CGFloat)barChartView:(JBBarChartView *)barChartView heightForBarViewAtIndex:(NSUInteger)index
 {
-    if(barChartView == _barChartView1){
+    if (barChartView == _barChartView1) {
         return [[self.chartData1 objectAtIndex:index] floatValue];
     }else{
         return [[self.chartData objectAtIndex:index] floatValue];
@@ -783,7 +783,7 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
 
 - (UIColor *)barChartView:(JBBarChartView *)barChartView colorForBarViewAtIndex:(NSUInteger)index
 {
-    if(barChartView == _barChartView1){
+    if (barChartView == _barChartView1) {
         return [UIColor indigoColor];
     }else{
         return PNDeepGreen;

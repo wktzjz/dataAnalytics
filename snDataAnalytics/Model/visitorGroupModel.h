@@ -21,7 +21,6 @@
 
 @property (nonatomic) NSDictionary *defineDetails;
 
-
 @property (nonatomic,readonly) BOOL initializeDataReady;
 @property (nonatomic,readonly) BOOL detailsDataReady;
 

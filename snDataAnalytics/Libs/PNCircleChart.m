@@ -87,7 +87,7 @@
 
 //wk 重绘时需将circle layer 重绘
 //  [_circleChart.circle removeFromSuperlayer];
-    if(_isRestroke){
+    if (_isRestroke) {
         [_circle removeFromSuperlayer];
         
         CGFloat startAngle = -90.0f;

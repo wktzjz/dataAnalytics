@@ -112,7 +112,7 @@
     self.totalTime = duration;
     self.lastUpdate = [NSDate timeIntervalSinceReferenceDate];
     
-    if(self.format == nil)
+    if (self.format == nil)
         self.format = @"%f";
 
     switch(self.method)
@@ -144,7 +144,7 @@
     self.progress += now - self.lastUpdate;
     self.lastUpdate = now;
     
-    if(self.progress >= self.totalTime)
+    if (self.progress >= self.totalTime)
     {
         [timer invalidate];
         self.progress = self.totalTime;
@@ -155,14 +155,14 @@
     float value =  self.startingValue +  (updateVal * (self.destinationValue - self.startingValue));
     
     
-    if(self.formatBlock != nil)
+    if (self.formatBlock != nil)
     {
         self.text = self.formatBlock(value);
     }
     else
     {
         // check if counting with ints - cast to int
-        if([self.format rangeOfString:@"%(.*)d" options:NSRegularExpressionSearch].location != NSNotFound || [self.format rangeOfString:@"%(.*)i"].location != NSNotFound )
+        if ([self.format rangeOfString:@"%(.*)d" options:NSRegularExpressionSearch].location != NSNotFound || [self.format rangeOfString:@"%(.*)i"].location != NSNotFound )
         {
             self.text = [NSString stringWithFormat:self.format,(int)value];
         }
@@ -172,7 +172,7 @@
         }
     }
 
-	if(self.progress == self.totalTime && self.completionBlock != nil)
+	if (self.progress == self.totalTime && self.completionBlock != nil)
 	{
 		self.completionBlock();
 		self.completionBlock = nil;

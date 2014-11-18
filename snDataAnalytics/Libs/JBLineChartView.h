@@ -13,7 +13,7 @@
 /**
  * Current support for two line styles: solid (default) and dashed. 
  */
-typedef NS_ENUM(NSInteger, JBLineChartViewLineStyle){
+typedef NS_ENUM(NSInteger, JBLineChartViewLineStyle) {
     /**
      *  Solid line.
      */

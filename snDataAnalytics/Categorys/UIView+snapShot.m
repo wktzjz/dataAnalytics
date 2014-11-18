@@ -14,7 +14,7 @@
 {
 //    UIGraphicsBeginImageContext(self.bounds.size);
     UIGraphicsBeginImageContextWithOptions(self.bounds.size, NO, [UIScreen mainScreen].scale);
-    if([self respondsToSelector:@selector(drawViewHierarchyInRect:afterScreenUpdates:)]){
+    if ([self respondsToSelector:@selector(drawViewHierarchyInRect:afterScreenUpdates:)]) {
         [self drawViewHierarchyInRect:self.bounds afterScreenUpdates:NO];
     }
     else{
@@ -30,7 +30,7 @@
 - (UIImage *)screenshot
 {
     UIGraphicsBeginImageContext(self.bounds.size);
-    if([self respondsToSelector:@selector(drawViewHierarchyInRect:afterScreenUpdates:)]){
+    if ([self respondsToSelector:@selector(drawViewHierarchyInRect:afterScreenUpdates:)]) {
         [self drawViewHierarchyInRect:self.bounds afterScreenUpdates:NO];
     }
     else{

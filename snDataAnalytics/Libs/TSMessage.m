@@ -209,7 +209,7 @@ __weak static UIViewController *_defaultViewController;
     {
         UINavigationController *currentNavigationController;
         
-        if([currentView.viewController isKindOfClass:[UINavigationController class]])
+        if ([currentView.viewController isKindOfClass:[UINavigationController class]])
             currentNavigationController = (UINavigationController *)currentView.viewController;
         else
             currentNavigationController = (UINavigationController *)currentView.viewController.parentViewController;
@@ -311,7 +311,7 @@ __weak static UIViewController *_defaultViewController;
 
 + (BOOL)isNavigationBarInNavigationControllerHidden:(UINavigationController *)navController
 {
-    if([navController isNavigationBarHidden]) {
+    if ([navController isNavigationBarHidden]) {
         return YES;
     } else if ([[navController navigationBar] isHidden]) {
         return YES;
@@ -365,7 +365,7 @@ __weak static UIViewController *_defaultViewController;
              [self fadeInCurrentNotification];
          }
          
-         if(animationFinished) {
+         if (animationFinished) {
              animationFinished();
          }
      }];

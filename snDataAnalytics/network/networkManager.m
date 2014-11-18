@@ -61,7 +61,7 @@
         dispatch_group_enter(group);
         [NSURLConnection sendAsynchronousRequest:request
                                            queue:queue
-                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error){
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
                                    handler(response, data, error);
                                    dispatch_group_leave(group);
                                }];
@@ -74,19 +74,19 @@
     NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5];
     NSOperationQueue *queue = [[NSOperationQueue alloc] init];
     
-    [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError){
+    [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         
         NSDictionary *json;
 //        networkManager *strongSelf = _wself;
         
-        if(data){
+        if (data) {
             json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&connectionError];
         }else{
             json = nil;
         }
         
-        if(nil == json){
-            if(failBlock){
+        if (nil == json) {
+            if (failBlock) {
                 failBlock(json);
             }
             return ;
@@ -97,7 +97,7 @@
 
 //        [strongSelf handleData];
         
-        if(succeedBlock){
+        if (succeedBlock) {
             succeedBlock(json);
         }
       }
@@ -140,7 +140,7 @@
 {
     networkManager *strongSelf = _wself;
     
-    if(![CheckNetwork isExistenceNetwork]){
+    if (![CheckNetwork isExistenceNetwork]) {
         NSDictionary *sendDick = sendDick = @{@"title":[_userDefaults objectForKey:WKLastTitle],@"url":[_userDefaults objectForKey:WKLastUrl],@"imageUrl":[_userDefaults objectForKey:WKLastImgUrl]};
         if (strongSelf.delegate && [strongSelf.delegate respondsToSelector:@selector(handleInfoFromNetwork:)]) {
             _sendWeatherInfoCompleted = [strongSelf.delegate handleInfoFromNetwork:sendDick];
@@ -158,15 +158,15 @@
         
         __block NSDictionary *json;
         
-        [NSURLConnection sendAsynchronousRequest:request1 queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError){
+        [NSURLConnection sendAsynchronousRequest:request1 queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
             
-            if(data){
+            if (data) {
                 json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&connectionError];
             }else{
                 json = nil;
             }
             
-            if(nil == json){
+            if (nil == json) {
                 NSLog(@"json is nil");
                 
                 if (strongSelf.delegate && [strongSelf.delegate respondsToSelector:@selector(handleInfoFromNetwork:)]) {
@@ -183,18 +183,18 @@
             NSArray *array = [json objectForKey:[[json allKeys] objectAtIndex:1]];
             NSDictionary *json1 = [array objectAtIndex:0];
             NSString *title = [json1 objectForKey:@"title"];
-            if(title){
+            if (title) {
                 [_userDefaults setObject:title forKey:WKLastTitle];
             }
             //        [title encodeForURLWithEncoding:NSUTF8StringEncoding];
             NSString *stroyUrl = [json1 objectForKey:@"share_url"];
             //        url = [url substringFromIndex:29];
             stroyUrl = [stroyUrl stringByReplacingOccurrencesOfString:@"\\" withString:@""];
-            if(stroyUrl){
+            if (stroyUrl) {
                 [_userDefaults setObject:stroyUrl forKey:WKLastUrl];
             }
             NSString *imageUrl = [[[json1 objectForKey:@"images"] objectAtIndex:0] stringByReplacingOccurrencesOfString:@"\\" withString:@""];
-            if(imageUrl){
+            if (imageUrl) {
                 [_userDefaults setObject:imageUrl forKey:WKLastImgUrl];
             }
             
@@ -216,7 +216,7 @@
             
         }];
         
-        if(json){
+        if (json) {
             return YES;
         }else {
             return NO;
@@ -234,7 +234,7 @@
     sendArray = @[];
     sendDick  = @{};
     
-    //    if(currentTemp){
+    //    if (currentTemp) {
     //        NSString *humidity    = [data objectForKey:@"SD"];
     //        NSString *cityID      = [data objectForKey:@"cityid"];
     //        NSString *windPower   = [data objectForKey:@"WS"];
@@ -254,16 +254,16 @@
     //        [_userDefaults setObject:updatedTime forKey:PSLastUpdatedTime];
     
     //        NSNumber *weahterType;
-    //        if([weather rangeOfString:@"雪"].length>0){
+    //        if ([weather rangeOfString:@"雪"].length>0) {
     //            weahterType = [NSNumber numberWithInteger:Snowy];
     //            [_userDefaults setObject:weahterType forKey:PSLastMainWeatherType];
-    //        }else if([weather rangeOfString:@"雨"].length>0){
+    //        }else if ([weather rangeOfString:@"雨"].length>0) {
     //            weahterType = [NSNumber numberWithInteger:Rainy];
     //            [_userDefaults setObject:weahterType forKey:PSLastMainWeatherType];
-    //        }else if([weather rangeOfString:@"阴"].length>0 || [weather rangeOfString:@"云"].length>0){
+    //        }else if ([weather rangeOfString:@"阴"].length>0 || [weather rangeOfString:@"云"].length>0) {
     //            weahterType = [NSNumber numberWithInteger:Cloudy];
     //            [_userDefaults setObject:weahterType forKey:PSLastMainWeatherType];
-    //        }else if([weather rangeOfString:@"晴"].length>0){
+    //        }else if ([weather rangeOfString:@"晴"].length>0) {
     //            weahterType = [NSNumber numberWithInteger:Sunny];
     //            [_userDefaults setObject:weahterType forKey:PSLastMainWeatherType];
     //        }

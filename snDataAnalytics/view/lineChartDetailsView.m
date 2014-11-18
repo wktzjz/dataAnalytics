@@ -51,16 +51,16 @@
     
     __weak typeof(self) weakself = self;
     
-    _detailsView.dimensionButtonClickedBlock = ^(){
+    _detailsView.dimensionButtonClickedBlock = ^() {
         typeof(weakself) strongSelf = weakself;
-        if(strongSelf.dimensionButtonClickedBlock){
+        if (strongSelf.dimensionButtonClickedBlock) {
             strongSelf.dimensionButtonClickedBlock();
         }
     };
     
-    _detailsView.indexButtonClickedBlock = ^(){
+    _detailsView.indexButtonClickedBlock = ^() {
         typeof(weakself) strongSelf = weakself;
-        if(strongSelf.indexButtonClickedBlock){
+        if (strongSelf.indexButtonClickedBlock) {
             strongSelf.indexButtonClickedBlock();
         }
     };

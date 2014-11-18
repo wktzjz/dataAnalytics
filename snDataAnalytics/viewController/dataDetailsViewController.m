@@ -88,6 +88,7 @@ const static CGFloat itemsViewHeight = 145.0f;
     float _marginY;
     float _width;
     float _height;
+    float _timeViewHeight;
     
     DismissingAnimator *_dismissTransitionController;
     timeView *_timeView;
@@ -115,8 +116,9 @@ const static CGFloat itemsViewHeight = 145.0f;
         
         _initializedDataReady = NO;
         
+        _timeViewHeight = 50.0;
         _marginX = 20.0;
-        _marginY = 10.0 + titleViewHeight;
+        _marginY = 10.0 + titleViewHeight + _timeViewHeight;
         _width   = frame.size.width - _marginX * 2;
         _height  = frame.size.height/2 + 10;
         
@@ -147,8 +149,7 @@ const static CGFloat itemsViewHeight = 145.0f;
     [self addScrollView];
     [self addOutlineDataView];
     [self addTimeSwithButton];
-    
-    _timeView = [[timeView alloc] initWithFrame:CGRectZero];
+    [self addTimeView];
     
     wkContextMenuView* overlay = [[wkContextMenuView alloc] init];
     overlay.dataSource = self;
@@ -430,7 +431,7 @@ const static CGFloat itemsViewHeight = 145.0f;
 //    [_scrollView setDelegate:self];
     [_scrollView setShowsVerticalScrollIndicator:NO];
     
-    if(_dataVisualizedType == outlineRealTime){
+    if (_dataVisualizedType == outlineRealTime) {
         [_scrollView setContentSize:CGSizeMake(0, 2100)];
     }else{
         [_scrollView setContentSize:CGSizeMake(0, 1650)];
@@ -463,7 +464,7 @@ const static CGFloat itemsViewHeight = 145.0f;
     const float width   = wkScreenWidth - marginX * 2;
     const float height  = wkScreenHeight/2 + 10;
 
-    if(_dataVisualizedType == outlineRealTime){
+    if (_dataVisualizedType == outlineRealTime) {
         
         [self addRealTimeDetailsViewWithFrame:CGRectMake(marginX, marginY, width, height)];
     
@@ -474,36 +475,49 @@ const static CGFloat itemsViewHeight = 145.0f;
         [_scrollView addSubview:_dataContentView];
         self.viewTitleString = @"页面分析";
         
-    }else if (_dataVisualizedType == outlineHotCity){
+    }else if (_dataVisualizedType == outlineHotCity) {
         //Add BarChart
         _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineHotCity inControllerType:detailView];
         [_scrollView addSubview:_dataContentView];
         self.viewTitleString = @"城市分析";
         
-    }else if (_dataVisualizedType == outlineSource){
+    }else if (_dataVisualizedType == outlineSource) {
         
         //Add CircleChart
         _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineSource inControllerType:detailView];
         [_scrollView addSubview:_dataContentView];
         self.viewTitleString = @"来源分析";
         
-    }else if (_dataVisualizedType == outlineVisitorGroup){
+    }else if (_dataVisualizedType == outlineVisitorGroup) {
         
         [self addVisitorGroupDetailsViewWithFrame:CGRectMake(marginX, marginY, width, height)];
         
-    }else if (_dataVisualizedType == outlineHotPage){
+    }else if (_dataVisualizedType == outlineHotPage) {
         _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineHotPage inControllerType:detailView];
         [_scrollView addSubview:_dataContentView];
         
     }
 
-    if(!_ifHasDetailsView){
+    if (!_ifHasDetailsView) {
         dataOutlineViewContainer *dataContentView1 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 20, width, height) ifLoading:YES];
         dataOutlineViewContainer *dataContentView2 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX , dataContentView1.frame.origin.y + dataContentView1.frame.size.height + 20, width, height) ifLoading:YES];
         
         [_scrollView addSubview:dataContentView1];
         [_scrollView addSubview:dataContentView2];
     }
+}
+
+- (void)addTimeView
+{
+    _timeView = [[timeView alloc] initWithFrame:CGRectMake(0, 0.0 + titleViewHeight,self.view.frame.size.width, _timeViewHeight)];
+    __weak typeof(self) weakSelf = self;
+    _timeView.timeViewChoosedBlock = ^{
+        typeof(weakSelf) strongSelf = weakSelf;
+        
+        [strongSelf datePickerButtonClicked];
+    };
+    
+    [self.view addSubview:_timeView];
 }
 
 #pragma mark addViewsWithData
@@ -522,12 +536,12 @@ const static CGFloat itemsViewHeight = 145.0f;
         
         _realTimeView = [[realTimeDetailsView alloc] initWithFrame:CGRectMake(_marginX, _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, _width, _height * 6)];
         
-        if(_initializedDataReady){
+        if (_initializedDataReady) {
             [_realTimeView initViewsWithData:_initializedData];
         }
         
 //        //test
-//        _realTimeView.viewClickedBlock = ^(NSInteger markers){
+//        _realTimeView.viewClickedBlock = ^(NSInteger markers) {
 //            [strongSelf handleRealTimeLineViewClicked:markers];
 //        };
         
@@ -536,7 +550,7 @@ const static CGFloat itemsViewHeight = 145.0f;
     
     _ifHasDetailsView = YES;
     
-    if([_viewTitleString isEqual: @"Details"]){
+    if ([_viewTitleString isEqual: @"Details"]) {
         self.viewTitleString = @"实时";
     }
 }
@@ -555,11 +569,11 @@ const static CGFloat itemsViewHeight = 145.0f;
         
          _visitorGroupView = [[visitorGroupDetailOutlineView alloc] initWithFrame:CGRectMake(_marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, _width, _height * 5)];
         
-        if(_initializedDataReady){
+        if (_initializedDataReady) {
             [_visitorGroupView initViewsWithData:_initializedData];
         }
         
-        _visitorGroupView.viewClickedBlock = ^(NSInteger markers){
+        _visitorGroupView.viewClickedBlock = ^(NSInteger markers) {
             [strongSelf handleVisitorGroupLineViewClicked:markers];
         };
         
@@ -569,7 +583,7 @@ const static CGFloat itemsViewHeight = 145.0f;
     [_scrollView addSubview:_visitorGroupView];
     _ifHasDetailsView = YES;
     
-    if([_viewTitleString isEqual: @"Details"]){
+    if ([_viewTitleString isEqual: @"Details"]) {
         self.viewTitleString = @"访客群体分析";
     }
     
@@ -610,7 +624,7 @@ const static CGFloat itemsViewHeight = 145.0f;
 //    
 //    __weak typeof(self) weakSelf = self;
 //    
-//    vc.switchAction =^(NSInteger clickedButtonIndex){
+//    vc.switchAction =^(NSInteger clickedButtonIndex) {
 //        typeof(weakSelf) strongSelf = weakSelf;
 //
 //        [strongSelf dismissViewControllerAnimated:YES completion:nil];
@@ -623,7 +637,7 @@ const static CGFloat itemsViewHeight = 145.0f;
     indexSwitchController *vc = [[indexSwitchController alloc] initWithFrame:CGRectMake(0, 0, 280, 216) type:visitorGroup];
         __weak typeof(self) weakSelf = self;
     
-        vc.switchAction =^(NSInteger index){
+        vc.switchAction =^(NSInteger index) {
             typeof(weakSelf) strongSelf = weakSelf;
     
             [strongSelf dismissViewControllerAnimated:YES completion:nil];
@@ -643,7 +657,7 @@ const static CGFloat itemsViewHeight = 145.0f;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         typeof(weakself) strongSelf = weakself;
         
-        if(!_datePicker){
+        if (!_datePicker) {
             _datePicker = [THDatePickerViewController datePicker];
         }
         _datePicker.date = _curDate;
@@ -664,7 +678,7 @@ const static CGFloat itemsViewHeight = 145.0f;
 
         });
     });
-//    if(!_datePicker){
+//    if (!_datePicker) {
 //        _datePicker = [THDatePickerViewController datePicker];
 //    }
 //    _datePicker.date = _curDate;
@@ -677,7 +691,7 @@ const static CGFloat itemsViewHeight = 145.0f;
 //    
 ////    [_datePicker setDateHasItemsCallback:^BOOL(NSDate *date) {
 ////        int tmp = (arc4random() % 30)+1;
-////        if(tmp % 5 == 0)
+////        if (tmp % 5 == 0)
 ////            return YES;
 ////        return NO;
 ////    }];
@@ -691,42 +705,44 @@ const static CGFloat itemsViewHeight = 145.0f;
 #pragma mark THDatePickerDelegate
 -(void)datePickerDonePressed:(THDatePickerViewController *)datePicker selectedDays:(NSMutableDictionary *)selectedDays
 {
+    [self dismissSemiModalView];
+
     _selectedDays = selectedDays;
 
     NSArray* arr = [selectedDays allKeys];
-    arr = [arr sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2){
+    arr = [arr sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         NSComparisonResult result = [obj1 compare:obj2];
         return result==NSOrderedDescending;
     }];
 //    [arr enumerateObjectsUsingBlock:^(NSNumber *key, NSUInteger idx, BOOL *stop) {
 //        _timeView.toTime = ((THDateDay *)selectedDays[key]).date;
 //    }];
-    _timeView.fromTime = ((THDateDay *)selectedDays[(NSNumber *)arr[0]]).date;
+    if (arr.count > 0) {
+        _timeView.fromTime = ((THDateDay *)selectedDays[(NSNumber *)arr[0]]).date;
+        _timeView.toTime = ((THDateDay *)selectedDays[[arr lastObject]]).date;
 
-    _timeView.toTime = ((THDateDay *)selectedDays[[arr lastObject]]).date;
-
-    [self dismissSemiModalView];
+    }
 }
 
 -(void)datePickerCancelPressed:(THDatePickerViewController *)datePicker
 {
     //[_datePicker slideDownAndOut];
-    _selectedDays = datePicker.selectedDaysArray;
-
-    NSArray* arr = [_selectedDays allKeys];
-    arr = [arr sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2){
-        NSComparisonResult result = [obj1 compare:obj2];
-        return result==NSOrderedDescending;
-    }];
-    [arr enumerateObjectsUsingBlock:^(NSNumber *key, NSUInteger idx, BOOL *stop) {
-        NSLog(@"selected Day:%@",[_formatter stringFromDate:((THDateDay *)_selectedDays[key]).date]);
-    }];
+//    _selectedDays = datePicker.selectedDaysArray;
+//
+//    NSArray* arr = [_selectedDays allKeys];
+//    arr = [arr sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+//        NSComparisonResult result = [obj1 compare:obj2];
+//        return result==NSOrderedDescending;
+//    }];
+//    [arr enumerateObjectsUsingBlock:^(NSNumber *key, NSUInteger idx, BOOL *stop) {
+//        NSLog(@"selected Day:%@",[_formatter stringFromDate:((THDateDay *)_selectedDays[key]).date]);
+//    }];
     [self dismissSemiModalView];
 }
 
 -(void)refreshTitle
 {
-//    if(_curDate) {
+//    if (_curDate) {
 //        [_tipButton setTitle:[_formatter stringFromDate:_curDate] forState:UIControlStateNormal];
 //    }else {
 //        [_tipButton setTitle:@"No date selected" forState:UIControlStateNormal];
@@ -737,7 +753,7 @@ const static CGFloat itemsViewHeight = 145.0f;
 
 - (void)handleRealTimeDataDidChange:(NSNotification *)notification
 {
-    if(_dataVisualizedType == outlineRealTime){
+    if (_dataVisualizedType == outlineRealTime) {
         [_dataContentView reloadRealTimeData:notification.userInfo];
         
         [_realTimeView reloadData:notification.userInfo];
@@ -746,9 +762,9 @@ const static CGFloat itemsViewHeight = 145.0f;
 
 - (void)shouldShowReferenceLines:(BOOL)should
 {
-    if(_dataVisualizedType == outlineRealTime){
+    if (_dataVisualizedType == outlineRealTime) {
         [_realTimeView shouldShowReferencedLines:should];
-    }else if(_dataVisualizedType == outlineVisitorGroup){
+    }else if (_dataVisualizedType == outlineVisitorGroup) {
         [_visitorGroupView shouldShowReferencedLines:should];
     }
 }
@@ -756,45 +772,45 @@ const static CGFloat itemsViewHeight = 145.0f;
 #pragma mark modifyDataView
 - (void)modifyDataView:(NSInteger)clickedButtonIndex type:(swithViewType)viewType
 {
-    if(_dataVisualizedType == outlinePageAnalytics){
+    if (_dataVisualizedType == outlinePageAnalytics) {
 //        if (clickedButtonIndex == 0) {
 //            [_dataContentView modifyLineChartWithDataArray1:@[@160.1, @260.1, @36.4, @162.2, @86.2, @227.2, @76.2] dataArray2:@[@260.1, @60.1, @26.4, @262.2, @186.2, @227.2, @76.2] xLabelArray:@[@"10.1",@"10.2",@"10.3",@"10.4",@"10.5",@"10.6",@"10.7"]];
-//        }else if(clickedButtonIndex == 1){
+//        }else if (clickedButtonIndex == 1) {
 //            [_dataContentView modifyLineChartWithDataArray1: @[@60.1, @160.1, @126.4, @262.2, @186.2, @127.2, @176.2] dataArray2:@[@20.1, @180.1, @26.4, @202.2, @126.2, @167.2, @276.2] xLabelArray:@[@"9.1",@"9.2",@"9.3",@"9.4",@"9.5",@"9.6",@"9.7"]];
 //        }
         if (clickedButtonIndex == 0) {
             [_dataContentView modifyPieChartInView:_dataContentView.pageView type:outlinePageAnalytics WithDataArray: @[[PNPieChartDataItem dataItemWithValue:15 color:PNLightGreen],[PNPieChartDataItem dataItemWithValue:20 color:PNGreen ],[PNPieChartDataItem dataItemWithValue:20 color:PNFreshGreen ],[PNPieChartDataItem dataItemWithValue:45 color:PNDeepGreen]] groupColorArray:@[PNLightGreen,PNGreen,PNFreshGreen,PNDeepGreen] groupPercentArray:@[@15,@20,@20,@45]];
             [_dataContentView modifyLineChartInView:_dataContentView.pageView type:outlinePageAnalytics WithValueArray:nil dateArray:nil];
-        }else if(clickedButtonIndex == 1){
+        }else if (clickedButtonIndex == 1) {
             [_dataContentView modifyPieChartInView:_dataContentView.pageView type:outlinePageAnalytics WithDataArray:@[[PNPieChartDataItem dataItemWithValue:15 color:[UIColor colorWithRed:135.0/255.0 green:206.0/255.0 blue:250.0/255.0 alpha:1]],[PNPieChartDataItem dataItemWithValue:20 color:PNTwitterColor],[PNPieChartDataItem dataItemWithValue:30 color:[UIColor colorWithRed:30.0/255.0 green:144.0/255.0 blue:255.0/255.0 alpha:1] description:@"40%"],[PNPieChartDataItem dataItemWithValue:35 color:PNBlue description:@"50%"]] groupColorArray:@[[UIColor colorWithRed:135.0/255.0 green:206.0/255.0 blue:250.0/255.0 alpha:1],PNTwitterColor,[UIColor colorWithRed:30.0/255.0 green:144.0/255.0 blue:255.0/255.0 alpha:1],PNBlue] groupPercentArray:@[@15,@20,@30,@35]];
             [_dataContentView modifyLineChartInView:_dataContentView.pageView type:outlinePageAnalytics WithValueArray:nil dateArray:nil];
         }
         
-    }else if(_dataVisualizedType == outlineHotCity){
+    }else if (_dataVisualizedType == outlineHotCity) {
         if (clickedButtonIndex == 0) {
             [_dataContentView modifyBarChartWithDataArray:@[@31,@12,@20,@8,@21] xLabelArray:@[@"杭州",@"天津",@"成都",@"重庆",@"苏州"]];
-        }else if(clickedButtonIndex == 1){
+        }else if (clickedButtonIndex == 1) {
             [_dataContentView modifyBarChartWithDataArray: @[@24,@12,@18,@10,@21] xLabelArray:@[@"北京",@"上海",@"广州",@"深圳",@"南京"]];
         }
         
-    }else if(_dataVisualizedType == outlineSource){
+    }else if (_dataVisualizedType == outlineSource) {
         if (clickedButtonIndex == 0) {
             [_dataContentView modifyCircleChartWithData:@20];
-        }else if(clickedButtonIndex == 1){
+        }else if (clickedButtonIndex == 1) {
             [_dataContentView modifyCircleChartWithData:@60];
         }
         
-    }else if(_dataVisualizedType == outlineVisitorGroup){
+    }else if (_dataVisualizedType == outlineVisitorGroup) {
         if (clickedButtonIndex == 0) {
             [_dataContentView modifyPieChartInView:_dataContentView.visitorGroupView type:outlineVisitorGroup WithDataArray:@[[PNPieChartDataItem dataItemWithValue:10 color:PNBlue],[PNPieChartDataItem dataItemWithValue:40 color:PNLightBlue description:@"40%"],[PNPieChartDataItem dataItemWithValue:50 color:PNTwitterColor description:@"50%"]] groupColorArray:@[PNBlue,PNLightBlue,PNTwitterColor] groupPercentArray:@[@10,@40,@50]];
-        }else if(clickedButtonIndex == 1){
+        }else if (clickedButtonIndex == 1) {
             [_dataContentView modifyPieChartInView:_dataContentView.visitorGroupView type:outlineVisitorGroup WithDataArray: @[[PNPieChartDataItem dataItemWithValue:15 color:PNLightGreen],[PNPieChartDataItem dataItemWithValue:30 color:PNFreshGreen ],[PNPieChartDataItem dataItemWithValue:55 color:PNDeepGreen]] groupColorArray:@[PNLightGreen,PNFreshGreen,PNDeepGreen] groupPercentArray:@[@15,@30,@55]];
         }
         
-    }else if(_dataVisualizedType == outlineHotPage){
+    }else if (_dataVisualizedType == outlineHotPage) {
         if (clickedButtonIndex == 0) {
             [_dataContentView modifyLineChartInView:nil type:0 WithValueArray:nil dateArray:nil];
-        }else if(clickedButtonIndex == 1){
+        }else if (clickedButtonIndex == 1) {
             [_dataContentView modifyLineChartInView:nil type:0 WithValueArray:nil dateArray:nil];
         }
     }
@@ -821,7 +837,7 @@ const static CGFloat itemsViewHeight = 145.0f;
 
 - (void)handleTap:(UIGestureRecognizer *)recognizer
 {
-    if(!_itemsShowed){
+    if (!_itemsShowed) {
         CGPoint touchPoint = [recognizer locationInView:_contentView];
         
     }else{
@@ -858,7 +874,7 @@ const static CGFloat itemsViewHeight = 145.0f;
         UIView *view = _items[index];
         
         if (didEnable) {
-            if (_isSingleSelect){
+            if (_isSingleSelect) {
                 [_selectedIndices removeAllIndexes];
                 [_items enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     UIView *aView = (UIView *)obj;
@@ -876,7 +892,7 @@ const static CGFloat itemsViewHeight = 145.0f;
             [_selectedIndices addIndex:index];
         }
         else {
-            if (!_isSingleSelect){
+            if (!_isSingleSelect) {
                 view.layer.borderColor = [UIColor clearColor].CGColor;
                 [_selectedIndices removeIndex:index];
             }
@@ -924,7 +940,7 @@ const static CGFloat itemsViewHeight = 145.0f;
 #pragma mark - Show and dismiss items
 - (void)showItems:(id)sender
 {
-    if(_itemsShowed){
+    if (_itemsShowed) {
         [self dismissItems];
     }else{
         _itemsShowed = YES;
@@ -1056,14 +1072,14 @@ const static CGFloat itemsViewHeight = 145.0f;
 
 //- (void)handleTap:(id)sender
 //{
-//    if(self.delegate && [self.delegate respondsToSelector:@selector(dismissDetailsController)]){
+//    if (self.delegate && [self.delegate respondsToSelector:@selector(dismissDetailsController)]) {
 //        [self.delegate dismissDetailsController];
 //    }
 //}
 
 - (void)buttonClicked:(id)sender
 {
-    if(self.delegate && [self.delegate respondsToSelector:@selector(dismissDetailsController)]){
+    if (self.delegate && [self.delegate respondsToSelector:@selector(dismissDetailsController)]) {
         [self.delegate dismissDetailsController];
     }
 }

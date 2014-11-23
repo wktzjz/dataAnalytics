@@ -11,17 +11,7 @@
 #import "PNColor.h"
 #import "Colours.h"
 #import <snDataAnalytics-swift.h>
-
-CGFloat const kJBBarChartViewControllerChartHeight = 250.0f;
-CGFloat const kJBBarChartViewControllerChartPadding = 10.0f;
-CGFloat const kJBBarChartViewControllerChartHeaderHeight = 80.0f;
-CGFloat const kJBBarChartViewControllerChartHeaderPadding = 20.0f;
-CGFloat const kJBBarChartViewControllerChartFooterHeight = 25.0f;
-CGFloat const kJBBarChartViewControllerChartFooterPadding = 5.0f;
-CGFloat const kJBBarChartViewControllerBarPadding = 20.0f;
-NSInteger const kJBBarChartViewControllerNumBars = 6;
-NSInteger const kJBBarChartViewControllerMaxBarHeight = 10;
-NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
+#import "UIColor+BFPaperColors.h"
 
 @interface realTimeOutlineView () <BEMSimpleLineGraphDataSource, BEMSimpleLineGraphDelegate>
 
@@ -30,12 +20,14 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
 @implementation realTimeOutlineView
 {
     UILabel *_chartLabel;
-    UILabel *_realtimevisitorGroupLabel;
+    UILabel *_realtimeVisitorGroupLabel;
     UILabel *_realtimeDealLabel;
+    UILabel *_realtimeSourceLabel;
     UILabel *_realtimeCityLabel;
     UILabel *_realtimeTop5PagiesLabel;
     
-    LTMorphingLabel *_uvGroupLabel;
+//    LTMorphingLabel *_uvGroupLabel;
+    UILabel *_uvGroupLabel;
     UILabel *_validGroupUVLabel;
     UILabel *_visitorGroupLabel;
     UIView  *_UVLine;
@@ -51,9 +43,16 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     UILabel *_visitorLabel1;
     UILabel *_visitorLabel2;
     UILabel *_visitorLabel3;
+    UILabel *_visitorLabel4;
+    UILabel *_visitorLabel5;
+    UILabel *_visitorLabel6;
     UIView  *_visitorColorDotView1;
     UIView  *_visitorColorDotView2;
     UIView  *_visitorColorDotView3;
+    UIView  *_visitorColorDotView4;
+    UIView  *_visitorColorDotView5;
+    UIView  *_visitorColorDotView6;
+    
     NSArray *_visitorLabelArray;
     NSArray *_visitorColorDotViewArray;
 
@@ -82,16 +81,40 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     UIButton *_referenceLineButton;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame 
+- (instancetype)initWithFrame:(CGRect)frame withData:(NSDictionary *)data
 {
     self = [super initWithFrame:frame];
     
     if (self) {
-        _groupPercentArray = @[@15,@30,@55,@23,@33,@40,@20];
-        _validSourceUVPercentArray = @[@7,@14,@25,@11,@15,@19,@9];
-//        _groupColorArray   = @[PNTwitterColor,[UIColor colorWithRed:30.0/255.0 green:144.0/255.0 blue:255.0/255.0 alpha:1],PNBlue];
-        _groupColorArray = @[PNLightGreen,PNFreshGreen,PNDeepGreen,PNRed,PNTitleColor,PNYellow,PNBrown];
-        _validSourceUVColorArray = @[[UIColor robinEggColor],[UIColor pastelBlueColor],[UIColor turquoiseColor],[UIColor steelBlueColor],[UIColor denimColor],[UIColor emeraldColor],[UIColor cardTableColor]];
+        
+        _groupUV      = ((NSNumber *)data[@"groupUV"]).intValue;
+        _validUVRatio = ((NSNumber *)data[@"validUVRatio"]).floatValue;
+        _validGroupUV = ((NSNumber *)data[@"validGroupUV"]).intValue;
+        _VISITNumber  = ((NSNumber *)data[@"VISIT"]).intValue;
+        _dealMoney    = ((NSNumber *)data[@"dealMoney"]).intValue;
+        _validDealNumber         = ((NSNumber *)data[@"validDealNumber"]).intValue;
+        _validDealTransformRatio = ((NSNumber *)data[@"validDealTransformRatio"]).floatValue;
+        
+        _groupPercentArray      = (NSMutableArray *)data[@"groupPercentArray"];
+        _groupValidPercentArray = (NSMutableArray *)data[@"groupValidPercentArray"];
+        _cityNameArray          = (NSMutableArray *)data[@"cityNameArray"];
+        _cityValueArray         = (NSMutableArray *)data[@"cityValueArray"];
+        _pagesNameArray         = (NSMutableArray *)data[@"pagesNameArray"];
+        _pagesValueArray        = (NSMutableArray *)data[@"pagesValueArray"];
+        
+//        _groupPercentArray = [[NSMutableArray alloc] initWithArray:@[@15,@30,@55,@23,@33,@40,@20]];
+//        _groupValidPercentArray = [[NSMutableArray alloc] initWithArray:@[@7,@14,@25,@11,@15,@19,@9]];
+        _groupColorArray = [[NSMutableArray alloc] initWithArray:@[
+                                                                   PNLightGreen,
+                                                                   PNFreshGreen,
+                                                                   PNDeepGreen,
+                                                                   [UIColor paperColorTeal],
+                                                                   [UIColor paperColorCyan],
+                                                                   [UIColor paperColorLightBlue]
+                                                                   ]
+                            ];
+        
+//        _validSourceUVColorArray = @[[UIColor robinEggColor],[UIColor pastelBlueColor],[UIColor turquoiseColor],[UIColor steelBlueColor],[UIColor denimColor],[UIColor emeraldColor],[UIColor cardTableColor]];
 
         _sourcesStringArray = @[@"硬广",@"导航",@"搜索",@"广告联盟",@"直接流量",@"EDM"];
         [self addViews];
@@ -109,26 +132,7 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     [self addSourceView];
     [self addCitiesAnalyticsView];
     [self addPagesAnalyticsView];
-    
-    [self addSubview:_realtimevisitorGroupLabel];
-    [self addSubview:_UVLine];
-    [self addSubview:_validUVLine];
-    [self addSubview:_validUVRatioLabel];
-    [self addSubview:_validGroupUVLabel];
-    [self addSubview:_uvGroupLabel];
-    [self addSubview:_visitorGroupLabel];
 
-    [self addSubview:_dealMoneyLabel];
-    [self addSubview:_lineGraph];
-    [self addSubview:_validDealNumberLabel];
-    [self addSubview:_validDealTransformRatioLabel];
-    [self addSubview:_visitorRatioLabel];
-    [self addSubview:_visitorPieChart];
-    [self addSubview:_validUVSourceRatioLabel];
-
-//    [self addSubview:_vaildSourcePieChart];
-    [self addSubview:_realtimeCityLabel];
-    [self addSubview:_realtimeTop5PagiesLabel];
 }
 
 - (void)addTitleLabel
@@ -180,35 +184,48 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
 
 - (void)addvisitorGroupAnalyticsView
 {
-    _groupUV = arc4random() % 20000;
-    _validUVRatio = ((arc4random() % 500) + 500) / 1000.0;
-    _validGroupUV = _groupUV * _validUVRatio;
+    _realtimeVisitorGroupLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 2.5 + _chartLabel.frame.origin.y +_chartLabel.frame.size.height, outlineViewWidth/2, 20)];
+    _realtimeVisitorGroupLabel.text =@"访客群体分析:";
+    _realtimeVisitorGroupLabel.textColor = PNDeepGrey;
+    _realtimeVisitorGroupLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
+    _realtimeVisitorGroupLabel.textAlignment = NSTextAlignmentLeft;
+    CGSize size = [_realtimeVisitorGroupLabel.text sizeWithFont:_realtimeVisitorGroupLabel.font];
+    CGRect r = _realtimeVisitorGroupLabel.frame;
+    r.size.width = size.width;
+    _realtimeVisitorGroupLabel.frame = r;
+
+    UIView *backgroudLineView = [[UIView alloc] initWithFrame:CGRectMake(0,_chartLabel.frame.origin.y +_chartLabel.frame.size.height, outlineViewWidth, 25)];
+    backgroudLineView.backgroundColor = [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
     
-    _uvGroupLabel = [[LTMorphingLabel alloc] initWithFrame:CGRectMake(20, 5 + _chartLabel.frame.origin.y +_chartLabel.frame.size.height, outlineViewWidth/2, 20)];
+//    _groupUV = arc4random() % 20000;
+//    _validUVRatio = ((arc4random() % 500) + 500) / 1000.0;
+//    _validGroupUV = _groupUV * _validUVRatio;
+    
+    _uvGroupLabel = [[/*LTMorphingLabel*/UILabel alloc] initWithFrame:CGRectMake(20, 10 + _realtimeVisitorGroupLabel.frame.origin.y +_realtimeVisitorGroupLabel.frame.size.height, outlineViewWidth/2, 20)];
     _uvGroupLabel.text = [NSString stringWithFormat:@"UV:%i",_groupUV];
     _uvGroupLabel.textColor = PNDeepGrey;
     _uvGroupLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
     _uvGroupLabel.textAlignment = NSTextAlignmentLeft;
-    CGSize size = [_uvGroupLabel.text sizeWithFont:_uvGroupLabel.font];
-    CGRect r = _uvGroupLabel.frame;
+    size = [_uvGroupLabel.text sizeWithFont:_uvGroupLabel.font];
+    r = _uvGroupLabel.frame;
     r.size.width = size.width;
     _uvGroupLabel.frame = r;
 //    _uvGroupLabel.morphingDuration = 0.07f;
     
     _visitorGroupLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _uvGroupLabel.frame.origin.y, outlineViewWidth/2, 20)];
-    _visitorGroupLabel.text =[NSString stringWithFormat:@"VISIT: %i",(arc4random() % 100000)];
+    _visitorGroupLabel.text =[NSString stringWithFormat:@"VISIT: %i",_VISITNumber];
     _visitorGroupLabel.textColor = PNDeepGrey;
     _visitorGroupLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
     _visitorGroupLabel.textAlignment = NSTextAlignmentRight;
     size = [_visitorGroupLabel.text sizeWithFont:_visitorGroupLabel.font];
     r = _visitorGroupLabel.frame;
-    r.size.width = size.width;
-    r.origin.x = outlineViewWidth - size.width - 20;
+    r.size.width = size.width + 20;
+    r.origin.x = outlineViewWidth - size.width - 45;
     _visitorGroupLabel.frame = r;
     
-    _validUVLine = [[UIView alloc] initWithFrame:CGRectMake(0,5 + _uvGroupLabel.frame.origin.y+_uvGroupLabel.frame.size.height,(outlineViewWidth - 1)*_validUVRatio,30)];
+    _validUVLine = [[UIView alloc] initWithFrame:CGRectMake(2,5 + _uvGroupLabel.frame.origin.y+_uvGroupLabel.frame.size.height,(outlineViewWidth - 5)*_validUVRatio,30)];
     _validUVLine.backgroundColor = PNDeepGreen;
-    _UVLine = [[UIView alloc] initWithFrame:CGRectMake(1+_validUVLine.frame.origin.x+_validUVLine.frame.size.width,_validUVLine.frame.origin.y,(outlineViewWidth - 1)*(1 - _validUVRatio),30)];
+    _UVLine = [[UIView alloc] initWithFrame:CGRectMake(1+_validUVLine.frame.origin.x+_validUVLine.frame.size.width,_validUVLine.frame.origin.y,(outlineViewWidth - 5)*(1 - _validUVRatio),30)];
     _UVLine.backgroundColor = PNLightGreen;
     
     _validGroupUVLabel = [[UILabel alloc] initWithFrame:CGRectMake(20,3 + _uvGroupLabel.frame.origin.y + _uvGroupLabel.frame.size.height, outlineViewWidth/2 , 30)];
@@ -219,7 +236,7 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     _validGroupUVLabel.textAlignment = NSTextAlignmentLeft;
     size = [_validGroupUVLabel.text sizeWithFont:_validGroupUVLabel.font];
     r = _validGroupUVLabel.frame;
-    r.size.width = size.width;
+    r.size.width = size.width + 15;
     _validGroupUVLabel.frame = r;
     CGPoint center = _validGroupUVLabel.center;
     center.y = _UVLine.center.y;
@@ -248,13 +265,36 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
         r.origin.x =  _UVLine.frame.origin.x + 5 ;
         _validUVRatioLabel.frame = r;
     }
+    
+    [self addSubview:backgroudLineView];
+    [self addSubview:_realtimeVisitorGroupLabel];
+    [self addSubview:_UVLine];
+    [self addSubview:_validUVLine];
+    [self addSubview:_validUVRatioLabel];
+    [self addSubview:_validGroupUVLabel];
+    [self addSubview:_uvGroupLabel];
+    [self addSubview:_visitorGroupLabel];
 }
 
 - (void)addDealView
 {
     //    成交
-    _dealMoneyLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 5 + _UVLine.frame.origin.y +_UVLine.frame.size.height, outlineViewWidth, 20)];
-    _dealMoneyLabel.text =[NSString stringWithFormat:@"付款金额: %i",(arc4random() % 2000)];
+    
+    _realtimeDealLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 2.5 + _UVLine.frame.origin.y +_UVLine.frame.size.height, outlineViewWidth/2, 20)];
+    _realtimeDealLabel.text =@"成交:";
+    _realtimeDealLabel.textColor = PNDeepGrey;
+    _realtimeDealLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
+    _realtimeDealLabel.textAlignment = NSTextAlignmentLeft;
+    CGSize size = [_realtimeDealLabel.text sizeWithFont:_realtimeDealLabel.font];
+    CGRect r = _realtimeDealLabel.frame;
+    r.size.width = size.width;
+    _realtimeDealLabel.frame = r;
+    
+    UIView *backgroudLineView = [[UIView alloc] initWithFrame:CGRectMake(0, _UVLine.frame.origin.y +_UVLine.frame.size.height, outlineViewWidth, 25)];
+    backgroudLineView.backgroundColor = [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
+    
+    _dealMoneyLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 10 + _realtimeDealLabel.frame.origin.y +_realtimeDealLabel.frame.size.height, outlineViewWidth, 20)];
+    _dealMoneyLabel.text =[NSString stringWithFormat:@"付款金额: %li",_dealMoney];
     _dealMoneyLabel.textColor = PNDeepGrey;
     _dealMoneyLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
     _dealMoneyLabel.textAlignment = NSTextAlignmentLeft;
@@ -272,7 +312,7 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
         totalNumber = totalNumber + [[_arrayOfValues objectAtIndex:i] intValue]; // All of the values added together
     }
     
-    _lineGraph = [[BEMSimpleLineGraphView alloc] initWithFrame:CGRectMake(0, 15.0+_dealMoneyLabel.frame.origin.y +_dealMoneyLabel.frame.size.height, outlineViewWidth, 30.0)];
+    _lineGraph = [[BEMSimpleLineGraphView alloc] initWithFrame:CGRectMake(0, 5.0+_dealMoneyLabel.frame.origin.y +_dealMoneyLabel.frame.size.height, outlineViewWidth, 45.0)];
     _lineGraph.delegate = self;
     _lineGraph.dataSource = self;
     
@@ -289,8 +329,8 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     _lineGraph.enableTouchReport = YES;
     _lineGraph.enablePopUpReport = NO;
     _lineGraph.enableBezierCurve = YES;
-    _lineGraph.enableYAxisLabel = NO;
-    _lineGraph.autoScaleYAxis = YES;
+    _lineGraph.enableYAxisLabel  = NO;
+    _lineGraph.autoScaleYAxis    = YES;
     _lineGraph.alwaysDisplayDots = NO;
     _lineGraph.enableReferenceAxisLines = NO;
     _lineGraph.enableReferenceAxisFrame = NO;
@@ -302,47 +342,72 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     self.tintColor = [UIColor whiteColor];
     
     _validDealNumberLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 3 + _lineGraph.frame.origin.y +_lineGraph.frame.size.height, outlineViewWidth/2, 20)];
-    _validDealNumberLabel.text =[NSString stringWithFormat:@"有效订单数: %i",(arc4random() % 1000)];
+    _validDealNumberLabel.text =[NSString stringWithFormat:@"有效订单数: %li",_validDealNumber];
     _validDealNumberLabel.textColor = PNDeepGrey;
     _validDealNumberLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
     _validDealNumberLabel.textAlignment = NSTextAlignmentLeft;
-    CGRect r = _validDealNumberLabel.frame;
-    CGSize size = [_validDealNumberLabel.text sizeWithFont:_validDealNumberLabel.font];
-    r.size.width = size.width;
+    r = _validDealNumberLabel.frame;
+    size = [_validDealNumberLabel.text sizeWithFont:_validDealNumberLabel.font];
+    r.size.width = size.width + 20;
     _validDealNumberLabel.frame = r;
     
     _validDealTransformRatioLabel = [[UILabel alloc] initWithFrame:CGRectMake(15 + _validDealNumberLabel.frame.origin.x +_validDealNumberLabel.frame.size.width, _validDealNumberLabel.frame.origin.y, outlineViewWidth/2, 20)];
-    _validDealTransformRatioLabel.text =[NSString stringWithFormat:@"转化率: %.1f%%",((arc4random() % 1000)/1000.0)*100];
+    _validDealTransformRatioLabel.text =[NSString stringWithFormat:@"转化率: %.1f%%",_validDealTransformRatio];
     _validDealTransformRatioLabel.textColor = PNDeepGrey;
     _validDealTransformRatioLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
     _validDealTransformRatioLabel.textAlignment = NSTextAlignmentLeft;
     r = _validDealTransformRatioLabel.frame;
     size = [_validDealTransformRatioLabel.text sizeWithFont:_validDealTransformRatioLabel.font];
     r.size.width = size.width;
+    r.origin.x = outlineViewWidth - size.width - 20;
     _validDealTransformRatioLabel.frame = r;
+    
+    [self addSubview:backgroudLineView];
+    [self addSubview:_realtimeDealLabel];
+    [self addSubview:_dealMoneyLabel];
+    [self addSubview:_lineGraph];
+    [self addSubview:_validDealNumberLabel];
+    [self addSubview:_validDealTransformRatioLabel];
 }
 
 - (void)addSourceView
 {
     //    来源渠道
+    
+    _realtimeSourceLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 2.5 + _validDealTransformRatioLabel.frame.origin.y +_validDealTransformRatioLabel.frame.size.height, outlineViewWidth/2, 20)];
+    _realtimeSourceLabel.text =@"来源分析:";
+    _realtimeSourceLabel.textColor = PNDeepGrey;
+    _realtimeSourceLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
+    _realtimeSourceLabel.textAlignment = NSTextAlignmentLeft;
+    CGSize size = [_realtimeSourceLabel.text sizeWithFont:_realtimeSourceLabel.font];
+    CGRect r = _realtimeSourceLabel.frame;
+    r.size.width = size.width;
+    _realtimeSourceLabel.frame = r;
+    
+    UIView *backgroudLineView = [[UIView alloc] initWithFrame:CGRectMake(0, _validDealTransformRatioLabel.frame.origin.y +_validDealTransformRatioLabel.frame.size.height, outlineViewWidth, 25)];
+    backgroudLineView.backgroundColor = [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
+
     NSArray *items = @[[PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[0]).floatValue color:_groupColorArray[0]],
                        [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[1]).floatValue color:_groupColorArray[1]],
                        [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[2]).floatValue color:_groupColorArray[2]],
+                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[3]).floatValue color:_groupColorArray[3]],
+                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[4]).floatValue color:_groupColorArray[4]],
+                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[5]).floatValue color:_groupColorArray[5]],
                        ];
     
     
-    _visitorRatioLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 5 + _validDealTransformRatioLabel.frame.origin.y +_validDealTransformRatioLabel.frame.size.height, outlineViewWidth, 20)];
+    _visitorRatioLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 10 + _realtimeSourceLabel.frame.origin.y +_realtimeSourceLabel.frame.size.height, outlineViewWidth, 20)];
     _visitorRatioLabel.text =@"VISIT占比:";
     _visitorRatioLabel.textColor = PNDeepGrey;
     _visitorRatioLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
     _visitorRatioLabel.textAlignment = NSTextAlignmentLeft;
-    CGRect r = _visitorRatioLabel.frame;
-    CGSize size = [_visitorRatioLabel.text sizeWithFont:_visitorRatioLabel.font];
+    r = _visitorRatioLabel.frame;
+    size = [_visitorRatioLabel.text sizeWithFont:_visitorRatioLabel.font];
     r.size.width = size.width;
     _visitorRatioLabel.frame = r;
     
-    float pieWidth = 100.0;
-    _visitorPieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(45.0 + _visitorRatioLabel.frame.origin.x + _visitorRatioLabel.frame.size.width, _visitorRatioLabel.frame.origin.y ,pieWidth, pieWidth) items:items];
+    float pieWidth = 110.0;
+    _visitorPieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(85.0 + _visitorRatioLabel.frame.origin.x + _visitorRatioLabel.frame.size.width, _visitorRatioLabel.frame.origin.y - 5.0 ,pieWidth, pieWidth) items:items];
     _visitorPieChart.descriptionTextColor = [UIColor whiteColor];
     _visitorPieChart.descriptionTextFont  = [UIFont fontWithName:@"Avenir-Medium" size:12.0];
     _visitorPieChart.descriptionTextShadowColor = [UIColor clearColor];
@@ -353,7 +418,10 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     _visitorColorDotView1 = [[UIView alloc] init];
     _visitorColorDotView2 = [[UIView alloc] init];
     _visitorColorDotView3 = [[UIView alloc] init];
-    _visitorColorDotViewArray = @[_visitorColorDotView1,_visitorColorDotView2,_visitorColorDotView3];
+    _visitorColorDotView4 = [[UIView alloc] init];
+    _visitorColorDotView5 = [[UIView alloc] init];
+    _visitorColorDotView6 = [[UIView alloc] init];
+    _visitorColorDotViewArray = @[_visitorColorDotView1,_visitorColorDotView2,_visitorColorDotView3,_visitorColorDotView4,_visitorColorDotView5,_visitorColorDotView6];
     
     [_visitorColorDotViewArray enumerateObjectsUsingBlock:^(UIView *dotView, NSUInteger idx, BOOL *stop) {
         if (idx == 0) {
@@ -372,28 +440,35 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     _visitorLabel1 = [[UILabel alloc] init];
     _visitorLabel2 = [[UILabel alloc] init];
     _visitorLabel3 = [[UILabel alloc] init];
+    _visitorLabel4 = [[UILabel alloc] init];
+    _visitorLabel5 = [[UILabel alloc] init];
+    _visitorLabel6 = [[UILabel alloc] init];
     
-    _visitorLabelArray = @[_visitorLabel1,_visitorLabel2,_visitorLabel3];
+    _visitorLabelArray = @[_visitorLabel1,_visitorLabel2,_visitorLabel3,_visitorLabel4,_visitorLabel5,_visitorLabel6];
     
     [_visitorLabelArray enumerateObjectsUsingBlock:^(UILabel *labelView, NSUInteger idx, BOOL *stop) {
         if (idx == 0) {
-            labelView.frame = CGRectMake(originX,  5 + _visitorRatioLabel.frame.origin.y + _visitorRatioLabel.frame.size.height, outlineViewWidth/2, 15);
+            labelView.frame = CGRectMake(originX,  5 + _visitorRatioLabel.frame.origin.y + _visitorRatioLabel.frame.size.height, outlineViewWidth/7, 15);
+        }else if(idx == 1 || idx == 2){
+            labelView.frame = CGRectMake(originX, 3 + ((UILabel *)(_visitorLabelArray[idx - 1])).frame.origin.y + _visitorLabel1.frame.size.height, outlineViewWidth/7, 15);
+        }else if(idx == 3){
+            labelView.frame = CGRectMake(((UILabel *)(_visitorLabelArray[0])).frame.origin.x + _visitorLabel1.frame.size.width + 10.0, 5 + _visitorRatioLabel.frame.origin.y + _visitorRatioLabel.frame.size.height, outlineViewWidth/5, 15);
         }else{
-            labelView.frame = CGRectMake(originX, 3 +( (UILabel *)(_visitorLabelArray[idx - 1])).frame.origin.y + + _visitorLabel1.frame.size.height, outlineViewWidth/2, 15);
+            labelView.frame = CGRectMake(((UILabel *)(_visitorLabelArray[idx - 1])).frame.origin.x, 3 + ((UILabel *)(_visitorLabelArray[idx - 1])).frame.origin.y + _visitorLabel1.frame.size.height, outlineViewWidth/5, 15);
         }
-        labelView.text =[NSString stringWithFormat:@"群体%i: %i%%",idx,((NSNumber *)_groupPercentArray[idx]).intValue];
+        labelView.text = _sourcesStringArray[idx];
         labelView.textColor = (UIColor *)_groupColorArray[idx];
         labelView.font = [UIFont fontWithName:@"Avenir-Medium" size:13.0];
         labelView.textAlignment = NSTextAlignmentLeft;
         
         [self addSubview: labelView];
         
-        ((UIView *)_visitorColorDotViewArray[idx]).center = CGPointMake(((UIView *)_visitorColorDotViewArray[idx]).center.x,labelView.center.y);
+        ((UIView *)_visitorColorDotViewArray[idx]).center = CGPointMake(labelView.frame.origin.x - 8.0, labelView.center.y);
         
     }];
     
     
-    _validUVSourceRatioLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0 + _visitorPieChart.frame.origin.y +_visitorPieChart.frame.size.height, outlineViewWidth, 20)];
+    _validUVSourceRatioLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, -20.0 + _visitorPieChart.frame.origin.y +_visitorPieChart.frame.size.height, outlineViewWidth, 20)];
     _validUVSourceRatioLabel.text =@"有效UV占比:";
     _validUVSourceRatioLabel.textColor = PNDeepGrey;
     _validUVSourceRatioLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
@@ -410,14 +485,14 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     _vaildSourceBarChart.labelMarginTop = 5.0;
     _vaildSourceBarChart.yLabelSum = 5;
     [_vaildSourceBarChart setXLabels:_sourcesStringArray];
-    [_vaildSourceBarChart setYValues:@[@24,@12,@18,@10,@21,@15]];
-    [_vaildSourceBarChart setYValues1:@[@10,@7,@13,@6,@6,@9]];
+    [_vaildSourceBarChart setYValues:_groupPercentArray];
+    [_vaildSourceBarChart setYValues1:_groupValidPercentArray];
     _vaildSourceBarChart.labelFont = [UIFont fontWithName:@"OpenSans-Light" size:10.0];
-    [_vaildSourceBarChart setStrokeColor:PNDeepGreen];
+    [_vaildSourceBarChart setStrokeColor:[UIColor colorWithRed:0x6a/255.0 green:0xb9/255.0 blue:0xff/255.0 alpha:1.0]/*[UIColor colorWithRed:0x45/255.0 green:0xa7/255.0 blue:0xff/255.0 alpha:1]*/];
     [_vaildSourceBarChart setStrokeColor1:[UIColor indigoColor]];
 
     _vaildSourceBarChart.ifUseGradientColor = NO;
-    _vaildSourceBarChart.showChartBorder = NO;
+    _vaildSourceBarChart.showChartBorder    = NO;
     _vaildSourceBarChart.showReferenceLines = NO;
     
     // Adding gradient
@@ -426,193 +501,29 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     
     [_vaildSourceBarChart strokeChart];
     
+    [self addSubview:backgroudLineView];
+    [self addSubview:_realtimeSourceLabel];
+    [self addSubview:_visitorRatioLabel];
+    [self addSubview:_visitorPieChart];
+    [self addSubview:_validUVSourceRatioLabel];
     [self addSubview:_vaildSourceBarChart];
-    
-    
-//    _vaildSourceRatioBarChart = [[PNBarChart alloc] initWithFrame:CGRectMake(10,35+ _validUVSourceRatioLabel.frame.origin.y + _validUVSourceRatioLabel.frame.size.height, outlineViewWidth, outlineViewHeight/3)];
-//    _vaildSourceRatioBarChart.backgroundColor = [UIColor clearColor];
-//    _vaildSourceRatioBarChart.barBackgroundColor = [UIColor clearColor];
-//    _vaildSourceRatioBarChart.yLabelFormatter = ^(CGFloat yValue) {
-//        CGFloat yValueParsed = yValue;
-//        NSString * labelText = [NSString stringWithFormat:@"%1.f",yValueParsed];
-//        return labelText;
-//    };
-//    _vaildSourceRatioBarChart.labelMarginTop = 5.0;
-////    [_vaildSourceRatioBarChart setXLabels:@[@"1",@"2",@"搜索",@"广告联盟",@"直接流量",@"EDM"]];
-//    [_vaildSourceRatioBarChart setYValues:@[@10,@7,@13,@6,@6,@9]];
-//    _vaildSourceRatioBarChart.showLabel = NO;
-//    _vaildSourceRatioBarChart.barWidth = 20.0;
-//
-//    [_vaildSourceRatioBarChart setStrokeColor:[UIColor indigoColor]];
-//    // Adding gradient
-////    _vaildSourceRatioBarChart.barColorGradientStart = [UIColor indigoColor];
-//    
-//    [_vaildSourceRatioBarChart strokeChart];
-//    
-////    [self addSubview:_vaildSourceRatioBarChart];
-//    
-//    CGRect f = _vaildSourceRatioBarChart.frame;
-//    f.origin.y = _vaildSourceBarChart.frame.origin.y + _vaildSourceBarChart.frame.size.height - _vaildSourceRatioBarChart.frame.size.height;
-//    _vaildSourceRatioBarChart.frame = f;
-    
-    {
-//    [self initFakeData];
-//    
-//    
-//    self.barChartView = [[JBBarChartView alloc] init];
-//    self.barChartView.frame = CGRectMake(20, f.origin.y + f.size.height -20, outlineViewWidth - 40, outlineViewHeight/2);
-//    self.barChartView.delegate = self;
-//    self.barChartView.dataSource = self;
-//    self.barChartView.headerPadding = kJBBarChartViewControllerChartHeaderPadding;
-//    self.barChartView.minimumValue = 0.0f;
-//    self.barChartView.inverted = NO;
-//    self.barChartView.backgroundColor = [UIColor clearColor];
-//    
-//    [self addSubview:self.barChartView];
-//    [self.barChartView reloadData];
-//
-//    self.barChartView1 = [[JBBarChartView alloc] init];
-//    self.barChartView1.frame = CGRectMake(20, _barChartView.frame.origin.y + _barChartView.frame.size.height + 5,outlineViewWidth - 40, outlineViewHeight/4);
-//    self.barChartView1.delegate = self;
-//    self.barChartView1.dataSource = self;
-//    self.barChartView1.headerPadding = kJBBarChartViewControllerChartHeaderPadding;
-//    self.barChartView1.minimumValue = 0.0f;
-//    self.barChartView1.inverted = NO;
-//    self.barChartView1.backgroundColor = [UIColor clearColor];
-//    
-//    [self addSubview:self.barChartView1];
-//    [self.barChartView1 reloadData];
-//    
-//    f = _barChartView1.frame;
-//    f.origin.y = _barChartView.frame.origin.y + _barChartView.frame.size.height - f.size.height;
-//    _barChartView1.frame = f;
-//
-//    originX = 15;
-//    _validSourceLabel1 = [[UILabel alloc] init];
-//    _validSourceLabel2 = [[UILabel alloc] init];
-//    _validSourceLabel3 = [[UILabel alloc] init];
-//    _validSourceLabel4 = [[UILabel alloc] init];
-//    _validSourceLabel5 = [[UILabel alloc] init];
-//    _validSourceLabel6 = [[UILabel alloc] init];
-//
-//    _validSourceLabelArray = @[_validSourceLabel1,_validSourceLabel2,_validSourceLabel3,_validSourceLabel4,_validSourceLabel5,_validSourceLabel6];
-//
-//    [_validSourceLabelArray enumerateObjectsUsingBlock:^(UILabel *labelView, NSUInteger idx, BOOL *stop) {
-//        if (idx == 0) {
-//            labelView.frame = CGRectMake(originX, 2 + _barChartView1.frame.origin.y + _barChartView1.frame.size.height, 35, 15);
-//        }else{
-//            labelView.frame = CGRectMake(15 +((UILabel *)(_validSourceLabelArray[idx - 1])).frame.origin.x + ((UILabel *)(_validSourceLabelArray[idx - 1])).frame.size.width, 2 + _barChartView1.frame.origin.y + _barChartView1.frame.size.height, 30, 15);
-//        }
-//        labelView.text =_sourcesStringArray[idx];
-//        labelView.textColor = PNDeepGrey;
-//        labelView.font = [UIFont fontWithName:@"Avenir-Medium" size:10.0];
-//        labelView.textAlignment = NSTextAlignmentCenter;
-////        CGSize size = [labelView.text sizeWithFont:labelView.font];
-////        CGRect r = labelView.frame;
-////        r.size.width = size.width;
-////        labelView.frame = r;
-//        [self addSubview: labelView];
-//        
-//    }];
-//
-//    
-//    
-//    self.barChartView2 = [[JBBarChartView alloc] init];
-//    self.barChartView2.frame = CGRectMake(20,_barChartView1.frame.origin.y + _barChartView1.frame.size.height + 5, self.bounds.size.width - (kJBBarChartViewControllerChartPadding * 2), outlineViewHeight/3);
-//    self.barChartView2.delegate = self;
-//    self.barChartView2.dataSource = self;
-//    self.barChartView2.headerPadding = kJBBarChartViewControllerChartHeaderPadding;
-//    self.barChartView2.minimumValue = 0.0f;
-//    self.barChartView2.inverted = NO;
-//    self.barChartView2.backgroundColor = [UIColor clearColor];
-//    
-//    [self addSubview:self.barChartView2];
-//    [self.barChartView2 reloadData];
-//    
-//    [self.barChartView setState:JBChartViewStateExpanded animated:YES callback:^{
-//    }];
-    
-//    pieWidth = 100.0;
-//    NSArray *items1 = @[[PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[0]).floatValue color:_validSourceUVColorArray[0]],
-//                        [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[1]).floatValue color:_validSourceUVColorArray[1]],
-//                        [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[2]).floatValue color:_validSourceUVColorArray[2]],
-//                        [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[3]).floatValue color:_validSourceUVColorArray[3]],
-//                        [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[4]).floatValue color:_validSourceUVColorArray[4]],
-//                        [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[5]).floatValue color:_validSourceUVColorArray[5]],
-//                        [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[6]).floatValue color:_validSourceUVColorArray[6]],
-//                        ];
-//    _vaildSourcePieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(35.0 /*+ _validUVSourceRatioLabel.frame.origin.x + _validUVSourceRatioLabel.frame.size.width*/,3+ _validUVSourceRatioLabel.frame.origin.y + _validUVSourceRatioLabel.frame.size.height ,pieWidth, pieWidth) items:items1];
-//    _vaildSourcePieChart.descriptionTextColor = [UIColor whiteColor];
-//    _vaildSourcePieChart.descriptionTextFont  = [UIFont fontWithName:@"Avenir-Medium" size:10.0];
-//    _vaildSourcePieChart.descriptionTextShadowColor = [UIColor clearColor];
-//    [_vaildSourcePieChart strokeChart];
-//    
-//    originDotViewX = 30 + _vaildSourcePieChart.frame.origin.x + pieWidth;
-//    _validSourceColorDotView1 = [[UIView alloc] init];
-//    _validSourceColorDotView2 = [[UIView alloc] init];
-//    _validSourceColorDotView3 = [[UIView alloc] init];
-//    _validSourceColorDotView4 = [[UIView alloc] init];
-//    _validSourceColorDotView5 = [[UIView alloc] init];
-//    _validSourceColorDotView6 = [[UIView alloc] init];
-//    _validSourceColorDotView7 = [[UIView alloc] init];
-//    
-//    _validSourceColorDotViewArray = @[_validSourceColorDotView1,_validSourceColorDotView2,_validSourceColorDotView3,_validSourceColorDotView4,_validSourceColorDotView5,_validSourceColorDotView6,_validSourceColorDotView7];
-//    
-//    [_validSourceColorDotViewArray enumerateObjectsUsingBlock:^(UIView *dotView, NSUInteger idx, BOOL *stop) {
-//        if (idx == 0) {
-//            dotView.frame = CGRectMake(originDotViewX,15 + _vaildSourcePieChart.frame.origin.y, 10, 10);
-//        }else{
-//            dotView.frame = CGRectMake(originDotViewX,3 + ((UIView *)_validSourceColorDotViewArray[idx - 1]).frame.origin.y + _validSourceColorDotView1.frame.size.height,10, 10);
-//        }
-//        dotView.layer.cornerRadius = 5.0;
-//        dotView.backgroundColor = (UIColor *)_validSourceUVColorArray[idx];
-//        [self addSubview: dotView];
-//        
-//    }];
-//    
-//    
-//    originX = originDotViewX + _validSourceColorDotView1.frame.size.width + 7;
-//    _validSourceLabel1 = [[UILabel alloc] init];
-//    _validSourceLabel2 = [[UILabel alloc] init];
-//    _validSourceLabel3 = [[UILabel alloc] init];
-//    _validSourceLabel4 = [[UILabel alloc] init];
-//    _validSourceLabel5 = [[UILabel alloc] init];
-//    _validSourceLabel6 = [[UILabel alloc] init];
-//    _validSourceLabel7 = [[UILabel alloc] init];
-//    
-//    _validSourceLabelArray = @[_validSourceLabel1,_validSourceLabel2,_validSourceLabel3,_validSourceLabel4,_validSourceLabel5,_validSourceLabel6,_validSourceLabel7];
-//    
-//    [_validSourceLabelArray enumerateObjectsUsingBlock:^(UILabel *labelView, NSUInteger idx, BOOL *stop) {
-//        if (idx == 0) {
-//            labelView.frame = CGRectMake(originX, 2 + _vaildSourcePieChart.frame.origin.y, outlineViewWidth/2, 15);
-//        }else{
-//            labelView.frame = CGRectMake(originX, 14 +( (UILabel *)(_validSourceLabelArray[idx - 1])).frame.origin.y, outlineViewWidth/2, 15);
-//        }
-//        labelView.text =[NSString stringWithFormat:@"群体%i: %i%%",idx,((NSNumber *)_validSourceUVPercentArray[idx]).intValue];
-//        labelView.textColor = (UIColor *)_validSourceUVColorArray[idx];
-//        labelView.font = [UIFont fontWithName:@"Avenir-Medium" size:13.0];
-//        labelView.textAlignment = NSTextAlignmentLeft;
-//        
-//        [self addSubview: labelView];
-//        
-//        ((UIView *)_validSourceColorDotViewArray[idx]).center = CGPointMake(((UIView *)_validSourceColorDotViewArray[idx]).center.x,labelView.center.y);
-//        
-//    }];
-    }
 
 }
 
 - (void)addCitiesAnalyticsView
 {
 //    _realtimeCityLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, -5 + _barChartView2.frame.origin.y + _barChartView2.frame.size.height, outlineViewWidth, 20)];
-    _realtimeCityLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, -5 + _vaildSourceBarChart.frame.origin.y + _vaildSourceBarChart.frame.size.height, outlineViewWidth, 20)];
+    _realtimeCityLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, -7.5 + _vaildSourceBarChart.frame.origin.y + _vaildSourceBarChart.frame.size.height, outlineViewWidth, 20)];
 
     _realtimeCityLabel.text =@"城市分布:";
     _realtimeCityLabel.textColor = PNDeepGrey;
     _realtimeCityLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
     _realtimeCityLabel.textAlignment = NSTextAlignmentLeft;
     
-    _citiesBarChart = [[PNBarChart alloc] initWithFrame:CGRectMake(30, 0.0 + _realtimeCityLabel.frame.origin.y + _realtimeCityLabel.frame.size.height, outlineViewWidth - 40, outlineViewHeight/2)];
+    UIView *backgroudLineView = [[UIView alloc] initWithFrame:CGRectMake(0,-10 + _vaildSourceBarChart.frame.origin.y + _vaildSourceBarChart.frame.size.height, outlineViewWidth, 25)];
+    backgroudLineView.backgroundColor = [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
+    
+    _citiesBarChart = [[PNBarChart alloc] initWithFrame:CGRectMake(30, 5.0 + _realtimeCityLabel.frame.origin.y + _realtimeCityLabel.frame.size.height, outlineViewWidth - 40, outlineViewHeight/2)];
     _citiesBarChart.backgroundColor = [UIColor clearColor];
     _citiesBarChart.yLabelFormatter = ^(CGFloat yValue) {
         CGFloat yValueParsed = yValue;
@@ -620,8 +531,8 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
         return labelText;
     };
     _citiesBarChart.labelMarginTop = 5.0;
-    [_citiesBarChart setXLabels:@[@"北京",@"上海",@"广州",@"深圳",@"南京"]];
-    [_citiesBarChart setYValues:@[@24,@12,@18,@10,@21]];
+    [_citiesBarChart setXLabels:_cityNameArray];
+    [_citiesBarChart setYValues:_cityValueArray];
     [_citiesBarChart setStrokeColor:PNDeepGreen];
     _citiesBarChart.ifUseGradientColor = NO;
     // Adding gradient
@@ -629,18 +540,23 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     
     [_citiesBarChart strokeChart];
     
+    [self addSubview:backgroudLineView];
+    [self addSubview:_realtimeCityLabel];
     [self addSubview:_citiesBarChart];
 }
 
 - (void)addPagesAnalyticsView
 {
-    _realtimeTop5PagiesLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, -5 + _citiesBarChart.frame.origin.y +_citiesBarChart.frame.size.height, outlineViewWidth, 20)];
+    _realtimeTop5PagiesLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, -7.5 + _citiesBarChart.frame.origin.y +_citiesBarChart.frame.size.height, outlineViewWidth, 20)];
     _realtimeTop5PagiesLabel.text =@"TOP5页面:";
     _realtimeTop5PagiesLabel.textColor = PNDeepGrey;
     _realtimeTop5PagiesLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
     _realtimeTop5PagiesLabel.textAlignment = NSTextAlignmentLeft;
 
-    _pagesBarChart = [[PNBarChart alloc] initWithFrame:CGRectMake(30, 0.0 + _realtimeTop5PagiesLabel.frame.origin.y + _realtimeTop5PagiesLabel.frame.size.height, outlineViewWidth - 40, outlineViewHeight/2)];
+    UIView *backgroudLineView = [[UIView alloc] initWithFrame:CGRectMake(0,-10 +_citiesBarChart.frame.origin.y +_citiesBarChart.frame.size.height, outlineViewWidth, 25)];
+    backgroudLineView.backgroundColor = [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
+    
+    _pagesBarChart = [[PNBarChart alloc] initWithFrame:CGRectMake(30, 5.0 + _realtimeTop5PagiesLabel.frame.origin.y + _realtimeTop5PagiesLabel.frame.size.height, outlineViewWidth - 40, outlineViewHeight/2)];
     _pagesBarChart.backgroundColor = [UIColor clearColor];
     _pagesBarChart.yLabelFormatter = ^(CGFloat yValue) {
         CGFloat yValueParsed = yValue;
@@ -648,8 +564,8 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
         return labelText;
     };
     _pagesBarChart.labelMarginTop = 5.0;
-    [_pagesBarChart setXLabels:@[@"页面1",@"页面2",@"页面3",@"页面4",@"页面5"]];
-    [_pagesBarChart setYValues:@[@15,@10,@20,@30,@11]];
+    [_pagesBarChart setXLabels:_pagesNameArray];
+    [_pagesBarChart setYValues:_pagesValueArray];
     [_pagesBarChart setStrokeColor:[UIColor violetColor]];
     // Adding gradient
     _pagesBarChart.ifUseGradientColor = NO;
@@ -658,54 +574,129 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
     
     [_pagesBarChart strokeChart];
     
+    [self addSubview:backgroudLineView];
+    [self addSubview:_realtimeTop5PagiesLabel];
     [self addSubview:_pagesBarChart];
 }
 
 
 #pragma mark - relodData
-- (void)relodData:(NSDictionary *)info
+- (void)relodData:(NSDictionary *)data
 {
-    _dealMoneyLabel.text =[NSString stringWithFormat:@"付款金额: %i",((NSNumber *)info[@"dealMoney"]).intValue];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        
+        _arrayOfValues = (NSMutableArray *)data[@"arrayOfValues"];
+        _groupUV       = ((NSNumber *)data[@"groupUV"]).intValue;
+        _validUVRatio  = ((NSNumber *)data[@"validUVRatio"]).floatValue;
+        _validGroupUV  = ((NSNumber *)data[@"validGroupUV"]).intValue;
+        _VISITNumber   = ((NSNumber *)data[@"VISIT"]).intValue;
+        _dealMoney     = ((NSNumber *)data[@"dealMoney"]).intValue;
+        _validDealNumber         = ((NSNumber *)data[@"validDealNumber"]).intValue;
+        _validDealTransformRatio = ((NSNumber *)data[@"validDealTransformRatio"]).floatValue;
+        _cityNameArray          = (NSMutableArray *)data[@"cityNameArray"];
+        _cityValueArray         = (NSMutableArray *)data[@"cityValueArray"];
+        _pagesNameArray         = (NSMutableArray *)data[@"pagesNameArray"];
+        _pagesValueArray        = (NSMutableArray *)data[@"pagesValueArray"];
+        
+//        _validGroupUVLabel.text =[NSString stringWithFormat:@"有效UV: %i",_validGroupUV];
+        
+        CGSize size = [_validGroupUVLabel.text sizeWithFont:_validGroupUVLabel.font];
+        CGRect r = _validGroupUVLabel.frame;
+        r.size.width = size.width + 15.0;
+        _validGroupUVLabel.frame = r;
+        size = [_validGroupUVLabel.text sizeWithFont:_validGroupUVLabel.font];
+        r = _uvGroupLabel.frame;
+        r.size.width = size.width;
+        _uvGroupLabel.frame = r;
+        
+        CGRect validUVLineRect = CGRectMake(2,5 + _uvGroupLabel.frame.origin.y+_uvGroupLabel.frame.size.height,(outlineViewWidth - 5)*_validUVRatio,30);
+        CGRect UVLineRect = CGRectMake(1 + validUVLineRect.origin.x + validUVLineRect.size.width,validUVLineRect.origin.y,(outlineViewWidth - 5)*(1 - _validUVRatio),30);
+        
+        CGRect validUVRatioLabelRect = _validUVRatioLabel.frame;
+        _validUVRatioLabel.frame = validUVRatioLabelRect;
+        validUVRatioLabelRect.origin.x = UVLineRect.origin.x - 1 - validUVRatioLabelRect.size.width - 5;
+        
+        if (CGRectIntersectsRect(_validGroupUVLabel.frame,validUVRatioLabelRect)) {
+            validUVRatioLabelRect.origin.x =  UVLineRect.origin.x + 5 ;
+        }
 
-    _arrayOfValues = (NSMutableArray *)info[@"arrayOfValues"];
-    [_lineGraph reloadGraph];
-    
-    _groupUV = ((NSNumber *)info[@"groupUV"]).intValue;
-    _validUVRatio = ((NSNumber *)info[@"validUVRatio"]).floatValue;
-    _validGroupUV = ((NSNumber *)info[@"validGroupUV"]).intValue;
-    
-    _uvGroupLabel.text = [NSString stringWithFormat:@"UV: %i",_groupUV];
-    _validGroupUVLabel.text =[NSString stringWithFormat:@"有效UV: %i",_validGroupUV];
-    CGSize size = [_validGroupUVLabel.text sizeWithFont:_validGroupUVLabel.font];
-    CGRect r = _validGroupUVLabel.frame;
-    r.size.width = size.width;
-    _validGroupUVLabel.frame = r;
-    size = [_validGroupUVLabel.text sizeWithFont:_validGroupUVLabel.font];
-    r = _uvGroupLabel.frame;
-    r.size.width = size.width;
-    _uvGroupLabel.frame = r;
+        _groupPercentArray = (NSMutableArray *)data[@"groupPercentArray"];
+        
+        NSArray *items = @[[PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[0]).floatValue color:_groupColorArray[0]],
+                           [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[1]).floatValue color:_groupColorArray[1]],
+                           [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[2]).floatValue color:_groupColorArray[2]],
+                           [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[3]).floatValue color:_groupColorArray[3]],
+                           [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[4]).floatValue color:_groupColorArray[4]],
+                           [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[5]).floatValue color:_groupColorArray[5]],
+                           ];
+        
+        _visitorPieChart.items = items;
+        
+        [_vaildSourceBarChart setYValues:_groupPercentArray];
+        _groupValidPercentArray = (NSMutableArray *)data[@"groupValidPercentArray"];
+        [_vaildSourceBarChart setYValues1:_groupValidPercentArray];
+        
+        [_citiesBarChart setYValues:_cityValueArray];
+        [_pagesBarChart setYValues:_pagesValueArray];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_lineGraph reloadGraph];
+            
+            _uvGroupLabel.text = [NSString stringWithFormat:@"UV: %i",_groupUV];
+            _validGroupUVLabel.text =[NSString stringWithFormat:@"有效UV: %i",_validGroupUV];
+            _visitorGroupLabel.text =[NSString stringWithFormat:@"VISIT: %i",_VISITNumber];
+            _validUVRatioLabel.text =[NSString stringWithFormat:@"%.1f%%",_validUVRatio * 100.0];
+            _dealMoneyLabel.text = [NSString stringWithFormat:@"付款金额: %li",(long)_dealMoney];
+            _validDealNumberLabel.text =[NSString stringWithFormat:@"有效订单数: %li",_validDealNumber];
+            _validDealTransformRatioLabel.text =[NSString stringWithFormat:@"转化率: %.1f%%",_validDealTransformRatio];
 
-    CGRect validUVLineRect = CGRectMake(0,5 + _uvGroupLabel.frame.origin.y+_uvGroupLabel.frame.size.height,(outlineViewWidth - 1)*_validUVRatio,30);
-    CGRect UVLineRect = CGRectMake(1 + validUVLineRect.origin.x + validUVLineRect.size.width,validUVLineRect.origin.y,(outlineViewWidth - 1)*(1 - _validUVRatio),30);
-    _validUVRatioLabel.text =[NSString stringWithFormat:@"%.1f%%",_validUVRatio * 100.0];
+            [UIView animateWithDuration:0.8
+                                  delay:0.0
+                                options:UIViewAnimationOptionCurveEaseInOut
+                             animations:^{
+                                 _validUVLine.frame = validUVLineRect;
+                                 _UVLine.frame = UVLineRect;
+                                 _validUVRatioLabel.frame = validUVRatioLabelRect;
+                             } completion:nil];
+            
+            [_visitorPieChart strokeChart];
+            
+            [_vaildSourceBarChart strokeChart];
+            [_citiesBarChart strokeChart];
+            [_pagesBarChart strokeChart];
+        });
+    });
 
-    CGRect validUVRatioLabelRect = _validUVRatioLabel.frame;
-    _validUVRatioLabel.frame = validUVRatioLabelRect;
-    validUVRatioLabelRect.origin.x = UVLineRect.origin.x - 1 - validUVRatioLabelRect.size.width - 5;
+
+   
     
-    if (CGRectIntersectsRect(_validGroupUVLabel.frame,validUVRatioLabelRect)) {
-        validUVRatioLabelRect.origin.x =  UVLineRect.origin.x + 5 ;
-    }
     
-    [UIView animateWithDuration:0.8
-                          delay:0.0
-                        options:UIViewAnimationOptionCurveEaseInOut
-                     animations:^{
-                         _validUVLine.frame = validUVLineRect;
-                         _UVLine.frame = UVLineRect;
-                          _validUVRatioLabel.frame = validUVRatioLabelRect;
-                   } completion:nil];
+//    [UIView animateWithDuration:0.8
+//                          delay:0.0
+//                        options:UIViewAnimationOptionCurveEaseInOut
+//                     animations:^{
+//                         _validUVLine.frame = validUVLineRect;
+//                         _UVLine.frame = UVLineRect;
+//                          _validUVRatioLabel.frame = validUVRatioLabelRect;
+//                   } completion:nil];
     
+//    _groupPercentArray = (NSMutableArray *)data[@"groupPercentArray"];
+//    
+//    NSArray *items = @[[PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[0]).floatValue color:_groupColorArray[0]],
+//                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[1]).floatValue color:_groupColorArray[1]],
+//                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[2]).floatValue color:_groupColorArray[2]],
+//                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[3]).floatValue color:_groupColorArray[3]],
+//                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[4]).floatValue color:_groupColorArray[4]],
+//                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[5]).floatValue color:_groupColorArray[5]],
+//                       ];
+//    
+//    _visitorPieChart.items = items;
+//    [_visitorPieChart strokeChart];
+    
+//    [_vaildSourceBarChart setYValues:_groupPercentArray];
+//    _groupValidPercentArray = (NSMutableArray *)data[@"groupValidPercentArray"];
+//    [_vaildSourceBarChart strokeChart];
+
 }
 
 #pragma mark - SimpleLineGraph Data Source
@@ -754,72 +745,6 @@ NSInteger const kJBBarChartViewControllerMinBarHeight = 5;
 //    //    self.labelDates.text = [NSString stringWithFormat:@"between 2000 and %@", [self.ArrayOfDates lastObject]];
 //}
 
-#pragma mark - JBBarChartViewDataSource
-
-- (NSUInteger)numberOfBarsInBarChartView:(JBBarChartView *)barChartView
-{
-    return kJBBarChartViewControllerNumBars;
-}
-
-- (void)barChartView:(JBBarChartView *)barChartView didSelectBarAtIndex:(NSUInteger)index touchPoint:(CGPoint)touchPoint
-{
-}
-
-- (void)didDeselectBarChartView:(JBBarChartView *)barChartView
-{
-  
-}
-
-#pragma mark - JBBarChartViewDelegate
-
-- (CGFloat)barChartView:(JBBarChartView *)barChartView heightForBarViewAtIndex:(NSUInteger)index
-{
-    if (barChartView == _barChartView1) {
-        return [[self.chartData1 objectAtIndex:index] floatValue];
-    }else{
-        return [[self.chartData objectAtIndex:index] floatValue];
-    }
-}
-
-- (UIColor *)barChartView:(JBBarChartView *)barChartView colorForBarViewAtIndex:(NSUInteger)index
-{
-    if (barChartView == _barChartView1) {
-        return [UIColor indigoColor];
-    }else{
-        return PNDeepGreen;
-    }
-}
-
-- (UIColor *)barSelectionColorForBarChartView:(JBBarChartView *)barChartView
-{
-    return [UIColor whiteColor];
-}
-
-- (CGFloat)barPaddingForBarChartView:(JBBarChartView *)barChartView
-{
-    return kJBBarChartViewControllerBarPadding;
-}
-
-- (void)initFakeData
-{
-    NSMutableArray *mutableChartData = [NSMutableArray array];
-    for (int i=0; i<kJBBarChartViewControllerNumBars; i++)
-    {
-        NSInteger delta = (kJBBarChartViewControllerNumBars - abs((kJBBarChartViewControllerNumBars - i) - i)) + 2;
-        [mutableChartData addObject:[NSNumber numberWithFloat:MAX((delta * kJBBarChartViewControllerMinBarHeight), arc4random() % (delta * kJBBarChartViewControllerMaxBarHeight))]];
-        
-    }
-    _chartData = [NSArray arrayWithArray:mutableChartData];
-    
-    for (int i=0; i<kJBBarChartViewControllerNumBars; i++)
-    {
-        NSInteger delta = (kJBBarChartViewControllerNumBars - abs((kJBBarChartViewControllerNumBars - i) - i)) + 2;
-        [mutableChartData addObject:[NSNumber numberWithFloat:MAX((delta * kJBBarChartViewControllerMinBarHeight/2), arc4random() % (delta * kJBBarChartViewControllerMaxBarHeight/2))]];
-        
-    }
-    _chartData1 = [NSArray arrayWithArray:mutableChartData];
-    _monthlySymbols = [[[NSDateFormatter alloc] init] shortMonthSymbols];
-}
 
 
 

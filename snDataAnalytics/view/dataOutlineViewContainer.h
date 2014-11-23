@@ -64,12 +64,12 @@ typedef NS_ENUM(NSUInteger, inViewType) {
 @property (nonatomic,strong) LoadingView *loadingView;
 
 - (instancetype)initWithFrame:(CGRect)frame ifLoading:(BOOL)ifLoading;
-- (instancetype)initWithFrame:(CGRect)frame dataType:(viewType)type inControllerType:(inViewType)inViewType;
+- (instancetype)initWithFrame:(CGRect)frame dataType:(viewType)type data:(id)data inControllerType:(inViewType)inViewType;
 
 - (void)addView:(UIView *)view inControllerType:(inViewType)inViewType;
 
-
 - (void)addDataViewType:(viewType)dataType inControllerType:(inViewType)inViewType data:(id)data;
+
 - (void)modifyLineChartWithDataArray1:(NSArray *)dataArray1 dataArray2:(NSArray *)dataArray2 xLabelArray:(NSArray *)labelArray;
 - (void)modifyBarChartWithDataArray:(NSArray *)dataArray xLabelArray:(NSArray *)labelArray;
 - (void)modifyCircleChartWithData:(NSNumber *)data;

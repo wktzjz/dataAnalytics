@@ -14,6 +14,7 @@
 @implementation sourceAnalyticsView
 {
     UILabel *_visitorLabel;
+    float _marginX;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -24,10 +25,19 @@
         _groupPercentArray = [[NSMutableArray alloc] initWithArray:@[@30,@20,@20,@15,@10,@5]];
         _groupValidPercentArray = [[NSMutableArray alloc] initWithArray:@[@10,@7,@13,@6,@6,@9]];
 
-        _groupColorArray   = [[NSMutableArray alloc] initWithArray:@[[UIColor paperColorIndigo],[UIColor paperColorBlue],[UIColor paperColorLightBlue],[UIColor paperColorCyan],[UIColor paperColorTeal],[UIColor paperColorGreen]]];
+        _groupColorArray   = [[NSMutableArray alloc] initWithArray:@[PNLightGreen,
+                                                                     PNFreshGreen,
+                                                                     PNDeepGreen,
+                                                                     [UIColor paperColorTeal],
+                                                                     [UIColor paperColorCyan],
+                                                                     [UIColor paperColorLightBlue]
+                                                                     ]
+                              ];
         
         _sourcesStringArray = [[NSMutableArray alloc] initWithArray: @[@"硬广",@"导航",@"搜索",@"广告联盟",@"直接流量",@"EDM"]];
 
+        _marginX = 20.0;
+        
         [self addViews];
     }
     
@@ -54,7 +64,7 @@
 
 - (void)addVisitorPieChart
 {
-    _visitorLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 10 + _chartLabel.frame.origin.y + _chartLabel.frame.size.height, outlineViewWidth/2, 30)];
+    _visitorLabel = [[UILabel alloc] initWithFrame:CGRectMake(_marginX + 10.0 , 10 + _chartLabel.frame.origin.y + _chartLabel.frame.size.height, outlineViewWidth/2, 30)];
     _visitorLabel.text = @"VISIT:";
     _visitorLabel.textColor = PNDeepGrey;
     _visitorLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:18.0];
@@ -81,8 +91,8 @@
                        [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[5]).floatValue color:_groupColorArray[5]],
                        ];
     
-    float pieWidth = outlineViewHeight - ( _visitorLabel.frame.origin.y +_visitorLabel.frame.size.height) + 35;
-    _pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(5.0,5 + _visitorLabel.frame.origin.y +_visitorLabel.frame.size.height + 15.0,80, 80) items:items];
+//    float pieWidth = outlineViewHeight - ( _visitorLabel.frame.origin.y +_visitorLabel.frame.size.height) + 35;
+    _pieChart = [[PNPieChart alloc] initWithFrame:CGRectMake(_marginX - 10.0,_visitorLabel.frame.origin.y +_visitorLabel.frame.size.height + 10.0,100, 100) items:items];
     _pieChart.descriptionTextColor = [UIColor whiteColor];
     _pieChart.descriptionTextFont  = [UIFont fontWithName:@"Avenir-Medium" size:10.0];
     _pieChart.descriptionTextShadowColor = [UIColor clearColor];
@@ -97,7 +107,7 @@
 
 - (void)addValidUVBarChart
 {
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(50 + _visitorLabel.frame.size.width + 10, 10 + _chartLabel.frame.origin.y + _chartLabel.frame.size.height, outlineViewWidth, 30)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(70 + _visitorLabel.frame.size.width + 10, 10 + _chartLabel.frame.origin.y + _chartLabel.frame.size.height, outlineViewWidth, 30)];
     label.text = @"有效UV:";
     label.textColor = PNDeepGrey;
     label.font = [UIFont fontWithName:@"Avenir-Medium" size:18.0];
@@ -108,7 +118,8 @@
     r.size.width = size.width;
     label.frame = r;
     
-    _vaildSourceBarChart = [[PNBarChart alloc] initWithFrame:CGRectMake(80,label.frame.origin.y + label.frame.size.height, 210, 150)];
+    float originX = _pieChart.frame.origin.x + _pieChart.frame.size.width;
+    _vaildSourceBarChart = [[PNBarChart alloc] initWithFrame:CGRectMake(originX,label.frame.origin.y + label.frame.size.height - 5.0, outlineViewWidth - originX + 5.0, 150)];
     _vaildSourceBarChart.backgroundColor = [UIColor clearColor];
     _vaildSourceBarChart.yLabelFormatter = ^(CGFloat yValue) {
         CGFloat yValueParsed = yValue;
@@ -143,13 +154,13 @@
 - (void)addTipsView
 {
     float originY = _vaildSourceBarChart.frame.origin.y + _vaildSourceBarChart.frame.size.height - 20;
-    __block float lastOriginX = 5;
+    __block float lastOriginX = 7;
     
     [_sourcesStringArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(lastOriginX + 8, originY, 40, 30)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(lastOriginX + 9, originY, 50, 30)];
         label.text = _sourcesStringArray[idx];
         label.textColor = PNDeepGrey;
-        label.font = [UIFont fontWithName:@"OpenSans-Light" size:9.0];
+        label.font = [UIFont fontWithName:@"OpenSans-Light" size:11.0];
         label.textAlignment = NSTextAlignmentLeft;
         CGSize size = [label.text sizeWithFont:label.font];
         CGRect r = label.frame;

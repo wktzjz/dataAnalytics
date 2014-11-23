@@ -213,7 +213,7 @@
 
 - (void)presentRealTimeViewController
 {
-    _detailsViewController = [[dataDetailsViewController alloc] initWithFrame:wkScreen type:outlineRealTime title:@"实时"];
+    _detailsViewController = [[dataDetailsViewController alloc] initWithFrame:wkScreen type:outlineRealTime data:[realTimeModel sharedInstance].initializeData  title:@"实时"];
     _detailsViewController.delegate  = self;
     _detailsViewController.modalPresentationStyle = UIModalPresentationCustom;
     

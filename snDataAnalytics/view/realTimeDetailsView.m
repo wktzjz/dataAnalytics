@@ -41,7 +41,7 @@
 {
     float marginX = 0.0;
     float marginY = 10.0 ;
-    float width   = wkScreenWidth - 20 * 2;
+    float width   = wkScreenWidth - marginX * 2;
     float height  = wkScreenHeight/4 + 10;
 
     _UVView = [[labelLineChartView alloc] initWithFrame:CGRectMake(marginX, 0, width, height)];

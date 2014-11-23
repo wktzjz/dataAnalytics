@@ -14,11 +14,14 @@
 @property (nonatomic) PNPieChart *pieChart;
 @property (nonatomic) NSInteger  UVNumber;
 @property (nonatomic) NSInteger  validUVNumber;
-@property (nonatomic) NSInteger  visitorNumber;
+@property (nonatomic) NSInteger  visitNumber;
+@property (nonatomic) float newVISITRatio;
+@property (nonatomic) float newUVRatio;
+@property (nonatomic) float newVaildUVRatio;
 @property (nonatomic) NSArray    *groupColorArray;
 @property (nonatomic) NSArray    *groupPercentArray;
 
-- (instancetype)initWithFrame:(CGRect)frame;
-- (void)modifyGroupView;
+- (instancetype)initWithFrame:(CGRect)frame withData:(NSDictionary *)data;
+- (void)modifyGroupViewWithData:(NSDictionary *)data;
 
 @end

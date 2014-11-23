@@ -93,20 +93,22 @@ const static CGFloat itemsViewHeight = 145.0f;
     DismissingAnimator *_dismissTransitionController;
     timeView *_timeView;
     
+    id _outlineViewData;
+    
 //    test *testInstance;
 }
 
 - (instancetype)init
 {
-    return [self initWithFrame:CGRectZero type:outlineRealTime title:nil];
+    return [self initWithFrame:CGRectZero type:outlineRealTime data:nil title:nil];
 }
 
 - (instancetype)initWithFrame:(CGRect)frame type:(viewType)viewType
 {
-    return [self initWithFrame:CGRectZero type:viewType title:nil];
+    return [self initWithFrame:CGRectZero type:viewType data:nil title:nil];
 }
 
-- (instancetype)initWithFrame:(CGRect)frame type:(viewType)viewType title:(NSString *)title
+- (instancetype)initWithFrame:(CGRect)frame type:(viewType)viewType data:(id)data title:(NSString *)title
 {
     if ( (self = [super init]) ) {
         
@@ -117,11 +119,12 @@ const static CGFloat itemsViewHeight = 145.0f;
         _initializedDataReady = NO;
         
         _timeViewHeight = 50.0;
-        _marginX = 20.0;
-        _marginY = 10.0 + titleViewHeight + _timeViewHeight;
+        _marginX = 0.0;
+        _marginY = 1.0 + titleViewHeight + _timeViewHeight;
         _width   = frame.size.width - _marginX * 2;
         _height  = frame.size.height/2 + 10;
         
+        _outlineViewData = data;
         self.view.frame = frame;
 //        self.view.backgroundColor = [UIColor clearColor];
     }
@@ -147,7 +150,7 @@ const static CGFloat itemsViewHeight = 145.0f;
     [self addSettingButton];
     [self addDatePickerButton];
     [self addScrollView];
-    [self addOutlineDataView];
+    [self addOutlineDataViewWithData:_outlineViewData];
     [self addTimeSwithButton];
     [self addTimeView];
     
@@ -457,43 +460,43 @@ const static CGFloat itemsViewHeight = 145.0f;
 //    self.shyNavBarManager.scrollView = _scrollView;
 //}
 
-- (void)addOutlineDataView
+- (void)addOutlineDataViewWithData:(id)data
 {
-    const float marginX = 20.0;
-    const float marginY = 10.0 + titleViewHeight;
+    const float marginX = 0.0;
+    const float marginY = 1.0 + titleViewHeight + _timeViewHeight;
     const float width   = wkScreenWidth - marginX * 2;
     const float height  = wkScreenHeight/2 + 10;
 
     if (_dataVisualizedType == outlineRealTime) {
         
-        [self addRealTimeDetailsViewWithFrame:CGRectMake(marginX, marginY, width, height)];
+        [self addRealTimeDetailsViewWithFrame:CGRectMake(marginX, marginY, width, height) withData:data];
     
     }else if (_dataVisualizedType == outlinePageAnalytics) {
         
-        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlinePageAnalytics inControllerType:detailView];
+        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlinePageAnalytics data:nil inControllerType:detailView];
         _dataContentView.backgroundColor = [UIColor whiteColor];
         [_scrollView addSubview:_dataContentView];
         self.viewTitleString = @"页面分析";
         
     }else if (_dataVisualizedType == outlineHotCity) {
         //Add BarChart
-        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineHotCity inControllerType:detailView];
+        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineHotCity data:nil inControllerType:detailView];
         [_scrollView addSubview:_dataContentView];
         self.viewTitleString = @"城市分析";
         
     }else if (_dataVisualizedType == outlineSource) {
         
         //Add CircleChart
-        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineSource inControllerType:detailView];
+        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineSource data:nil inControllerType:detailView];
         [_scrollView addSubview:_dataContentView];
         self.viewTitleString = @"来源分析";
         
     }else if (_dataVisualizedType == outlineVisitorGroup) {
         
-        [self addVisitorGroupDetailsViewWithFrame:CGRectMake(marginX, marginY, width, height)];
+        [self addVisitorGroupDetailsViewWithFrame:CGRectMake(marginX, marginY, width, height - 85.0) withData:data];
         
     }else if (_dataVisualizedType == outlineHotPage) {
-        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineHotPage inControllerType:detailView];
+        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineHotPage data:nil inControllerType:detailView];
         [_scrollView addSubview:_dataContentView];
         
     }
@@ -521,9 +524,9 @@ const static CGFloat itemsViewHeight = 145.0f;
 }
 
 #pragma mark addViewsWithData
-- (void)addRealTimeDetailsViewWithFrame:(CGRect)frame
+- (void)addRealTimeDetailsViewWithFrame:(CGRect)frame withData:(id)data
 {
-    _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(_marginX, _marginY, _width, _height*2.5) dataType:outlineRealTime inControllerType:detailView];
+    _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(_marginX, _marginY, _width, _height*2.8) dataType:outlineRealTime data:data inControllerType:detailView];
     _dataContentView.backgroundColor = [UIColor whiteColor];
     [_scrollView addSubview:_dataContentView];
     
@@ -555,9 +558,9 @@ const static CGFloat itemsViewHeight = 145.0f;
     }
 }
 
-- (void)addVisitorGroupDetailsViewWithFrame:(CGRect)frame
+- (void)addVisitorGroupDetailsViewWithFrame:(CGRect)frame withData:(id)data
 {
-    _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(_marginX, _marginY, _width, _height) dataType:outlineVisitorGroup inControllerType:detailView];
+    _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(_marginX, _marginY, _width, _height) dataType:outlineVisitorGroup data:data inControllerType:detailView];
     [_scrollView addSubview:_dataContentView];
     
     double delayInSeconds = 0.5;

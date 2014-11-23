@@ -15,6 +15,7 @@
 @property (nonatomic) int visitor;
 
 @property (nonatomic) NSMutableArray *arrayOfDates;
+@property (nonatomic) NSDictionary *outlineData;
 @property (nonatomic) NSDictionary *initializeData;
 @property (nonatomic) NSDictionary *detailsData;
 @property (nonatomic) NSDictionary *sendDict;
@@ -25,8 +26,7 @@
 @property (nonatomic,readonly) BOOL detailsDataReady;
 
 + (instancetype)sharedInstance;
-
-- (void)getDetailOutlineData;
+- (void)getOutlineData;
 
 - (NSDictionary *)getInitializeData;
 - (void)createInitializeData;

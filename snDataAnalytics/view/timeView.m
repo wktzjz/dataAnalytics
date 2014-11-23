@@ -105,7 +105,7 @@
     _fromDay = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 50, self.frame.size.height/2)];
     _fromDay.text = [NSString stringWithFormat:@"%i",((NSNumber *)_fromTimeArray[2]).intValue];
     _fromDay.textColor = [UIColor whiteColor];
-    _fromDay.font = [UIFont fontWithName:@"OpenSans-Light" size:25.0];
+    _fromDay.font = [UIFont fontWithName:@"Avenir-Medium" size:25.0];
     _fromDay.textAlignment = NSTextAlignmentCenter;
 //    _fromDay.backgroundColor = [UIColor blueColor];
     
@@ -117,10 +117,10 @@
     p.y = self.frame.size.height/2;
     _fromDay.center = p;
     
-    _fromMonth = [[UILabel alloc] initWithFrame:CGRectMake(40, 10, 80, 80)];
+    _fromMonth = [[UILabel alloc] initWithFrame:CGRectMake(40, 10, 80, 45)];
     _fromMonth.text = [NSString stringWithFormat:@"%i月\n%i", ((NSNumber *)_fromTimeArray[1]).intValue, ((NSNumber *)_fromTimeArray[0]).intValue];
     _fromMonth.textColor = [UIColor whiteColor];
-    _fromMonth.font = [UIFont fontWithName:@"OpenSans-Light" size:18.0];
+    _fromMonth.font = [UIFont fontWithName:@"Avenir-Medium" size:15.0];
     _fromMonth.textAlignment = NSTextAlignmentCenter;
     _fromMonth.numberOfLines =2;
 //    size = [_fromMonth.text sizeWithFont:_fromMonth.font];
@@ -138,7 +138,7 @@
     _toDay = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, 50, 40)];
     _toDay.text = @"";
     _toDay.textColor = [UIColor whiteColor];
-    _toDay.font = [UIFont fontWithName:@"OpenSans-Light" size:25.0];
+    _toDay.font = [UIFont fontWithName:@"Avenir-Medium" size:25.0];
     _toDay.textAlignment = NSTextAlignmentCenter;
     size = [_toDay.text sizeWithFont:_toDay.font];
     r = _toDay.frame;
@@ -148,10 +148,10 @@
     p.y = self.frame.size.height/2;
     _toDay.center = p;
 
-    _toMonth = [[UILabel alloc] initWithFrame:CGRectMake(40, 10, 80, 80)];
+    _toMonth = [[UILabel alloc] initWithFrame:CGRectMake(40, 10, 80, 45)];
     _toMonth.text = @"";
     _toMonth.textColor = [UIColor whiteColor];
-    _toMonth.font = [UIFont fontWithName:@"OpenSans-Light" size:18.0];
+    _toMonth.font = [UIFont fontWithName:@"Avenir-Medium" size:15.0];
     _toMonth.textAlignment = NSTextAlignmentCenter;
     _toMonth.numberOfLines =2;
     p = _toMonth.center;
@@ -218,13 +218,13 @@
     CGRect r = _toDay.frame;
     r.size = size;
     _toDay.frame = r;
-    CGPoint p = _toDay.center;
-    p.y = self.frame.size.height/2;
-    _toDay.center = p;
+//    CGPoint p = _toDay.center;
+//    p.y = self.frame.size.height/2;
+//    _toDay.center = p;
 
-    p = _toMonth.center;
-    p.y = self.frame.size.height/2;
-    _toMonth.center = p;
+//    CGPoint p = _toMonth.center;
+//    p.y = self.frame.size.height/2;
+//    _toMonth.center = p;
     
     if(!_showToTime){
         [self showToTimeView];
@@ -254,7 +254,7 @@
     UIBezierPath *progressline = [UIBezierPath bezierPath];
     
     [progressline moveToPoint:CGPointMake(self.frame.size.width/2,0)];
-    [progressline addLineToPoint:CGPointMake(self.frame.size.width/2 + 20,  self.frame.size.height/2)];
+    [progressline addLineToPoint:CGPointMake(self.frame.size.width/2 + 15,  self.frame.size.height/2)];
     [progressline addLineToPoint:CGPointMake(self.frame.size.width/2,  self.frame.size.height)];
 
     [progressline setLineWidth:1.0];

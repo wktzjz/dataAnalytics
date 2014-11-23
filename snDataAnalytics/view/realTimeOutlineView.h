@@ -14,32 +14,42 @@
 @interface realTimeOutlineView : UIView <JBBarChartViewDelegate, JBBarChartViewDataSource>
 
 
-@property (nonatomic) BEMSimpleLineGraphView *lineGraph;
-@property (nonatomic) PNPieChart *visitorPieChart;
-@property (nonatomic) PNPieChart *vaildSourcePieChart;
-@property (nonatomic) PNBarChart *vaildSourceBarChart;
-@property (nonatomic) PNBarChart *vaildSourceRatioBarChart;
-@property (nonatomic) JBBarChartView *barChartView;
-@property (nonatomic) JBBarChartView *barChartView1;
-@property (nonatomic) JBBarChartView *barChartView2;
+@property (nonatomic,strong) BEMSimpleLineGraphView *lineGraph;
+@property (nonatomic,strong) PNPieChart *visitorPieChart;
+//@property (nonatomic,strong) PNPieChart *vaildSourcePieChart;
+@property (nonatomic,strong) PNBarChart *vaildSourceBarChart;
+@property (nonatomic,strong) PNBarChart *vaildSourceRatioBarChart;
+@property (nonatomic,strong) JBBarChartView *barChartView;
+@property (nonatomic,strong) JBBarChartView *barChartView1;
+@property (nonatomic,strong) JBBarChartView *barChartView2;
 
-@property (nonatomic) PNBarChart *citiesBarChart;
-@property (nonatomic) PNBarChart *pagesBarChart;
+@property (nonatomic,strong) PNBarChart *citiesBarChart;
+@property (nonatomic,strong) PNBarChart *pagesBarChart;
 
 @property (nonatomic) NSInteger dealMoney;
 @property (nonatomic) NSInteger validDealNumber;
-@property (nonatomic) NSInteger validDealTransformRatio;
+@property (nonatomic) float validDealTransformRatio;
 @property (nonatomic) int   groupUV;
 @property (nonatomic) int   validGroupUV;
 @property (nonatomic) float validUVRatio;
+@property (nonatomic) int   VISITNumber;
 
-@property (nonatomic) NSArray *groupColorArray;
-@property (nonatomic) NSArray *groupPercentArray;
-@property (nonatomic) NSArray *validSourceUVColorArray;
-@property (nonatomic) NSArray *validSourceUVPercentArray;
+//@property (nonatomic,strong) NSArray *groupColorArray;
+//@property (nonatomic,strong) NSArray *groupPercentArray;
+@property (nonatomic,strong) NSArray *validSourceUVColorArray;
+@property (nonatomic,strong) NSArray *validSourceUVPercentArray;
 
-@property (nonatomic) NSMutableArray *arrayOfValues;
-@property (nonatomic) NSMutableArray *arrayOfDates;
+@property (nonatomic,strong) NSMutableArray *arrayOfValues;
+@property (nonatomic,strong) NSMutableArray *arrayOfDates;
+
+@property (nonatomic,strong) NSMutableArray *groupColorArray;
+@property (nonatomic,strong) NSMutableArray *groupPercentArray;
+@property (nonatomic,strong) NSMutableArray *groupValidPercentArray;
+@property (nonatomic,strong) NSMutableArray *cityNameArray;
+@property (nonatomic,strong) NSMutableArray *cityValueArray;
+@property (nonatomic,strong) NSMutableArray *pagesNameArray;
+@property (nonatomic,strong) NSMutableArray *pagesValueArray;
+
 
 //jb chart
 @property (nonatomic, strong) NSArray *chartData;
@@ -47,7 +57,7 @@
 @property (nonatomic, strong) NSArray *monthlySymbols;
 @property (nonatomic, strong) NSArray *sourcesStringArray;
 
-- (instancetype)initWithFrame:(CGRect)frame;
+- (instancetype)initWithFrame:(CGRect)frame withData:(NSDictionary *)data;
 - (void)relodData:(NSDictionary *)info;
 
 @end

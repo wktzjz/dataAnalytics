@@ -12,17 +12,13 @@
 #import "menuController.h"
 #import "outlineViewTransitionAnimator.h"
 #import "loginViewController.h"
-
 #import "FBShimmeringView.h"
 #import "UIViewController+clickedViewIndex.h"
 #import "TSMessage.h"
-
 #import "POP.h"
 #import "Colours.h"
 #import "changefulButton.h"
-
 #import "wkContextMenuView.h"
-
 #import "realTimeModel.h"
 #import "visitorGroupModel.h"
 #import "notificationDefine.h"
@@ -84,6 +80,8 @@ const static CGFloat titleViewHeight = 44.0f;
     NSUserDefaults *_userDefaults;
     
     realTimeModel *_realTimeData;
+    id _realTimeInitData;
+    id _visitorInitData;
     
     BOOL _ifUseFlexibleBar;
     BOOL _statusBarShouldHide;
@@ -146,6 +144,9 @@ const static CGFloat titleViewHeight = 44.0f;
         [[NSNotificationCenter defaultCenter] addObserver:strongSelf
                                                  selector:@selector(handleRealTimeDataDidChange:)
                                                      name:dataDidChange object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:strongSelf
+                                                 selector:@selector(handleVisitorGroupDataDidInitialize:)
+                                                     name:@"visitorGruopOutlineDataInited" object:nil];
         
 //        NSMutableArray *test1 = [[NSMutableArray alloc] initWithArray:@[@1,@2]];
 //        NSMutableArray *test2 = [[NSMutableArray alloc] initWithArray:test1];
@@ -186,7 +187,7 @@ const static CGFloat titleViewHeight = 44.0f;
 - (void)addModel
 {
     _realTimeData =  [realTimeModel sharedInstance];
-//    [[visitorGroupModel sharedInstance] initDefineDetails];
+    [[visitorGroupModel sharedInstance] getOutlineData];
 //    [[visitorGroupModel sharedInstance] initDetailsData];
 
 }
@@ -407,10 +408,10 @@ const static CGFloat titleViewHeight = 44.0f;
 //    NSLog(@"!!!!!width:%f",width);
     CGFloat originX = 0;
     
-    _realTimeView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, 0, width, height + 410.0) ifLoading:YES];
+    _realTimeView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, 0, width, height + 490.0) ifLoading:YES];
     [_scrollView1 addSubview:_realTimeView];
     
-    _visitorGruopView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _realTimeView.frame.origin.y + _realTimeView.frame.size.height + 20, width, height) ifLoading:YES];
+    _visitorGruopView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _realTimeView.frame.origin.y + _realTimeView.frame.size.height + 20, width, height - 85.0) ifLoading:YES];
     [_scrollView1 addSubview:_visitorGruopView];
     
     _sourceView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _visitorGruopView.frame.origin.y + _visitorGruopView.frame.size.height + 20, width, height - 50.0) ifLoading:YES];
@@ -432,14 +433,15 @@ const static CGFloat titleViewHeight = 44.0f;
     _outLineViewArray = [[NSMutableArray alloc] initWithArray:@[_realTimeView,_visitorGruopView,_sourceView,_pageView,_hotCityView,_hotPageView,_transformView]];
 }
 
-#pragma mark - hdndle RealTimeData didChange
+#pragma mark - hdndle RealTimeData notification
 
 - (void)handleRealTimeDataDidInitialize:(NSNotification *)notification
 {
 //    NSLog(@"handleRealTimeDataDidInitialize");
     if (notification.userInfo != nil && notification.object == _realTimeData) {
+        _realTimeInitData = notification.userInfo;
         dispatch_main_async_safe(^{
-            [_realTimeView addDataViewType:outlineRealTime inControllerType:outlineView data:nil];
+            [_realTimeView addDataViewType:outlineRealTime inControllerType:outlineView data:notification.userInfo];
             [_realTimeView.loadingView stopAnimation];
         })
     }
@@ -453,7 +455,21 @@ const static CGFloat titleViewHeight = 44.0f;
             [_realTimeView reloadRealTimeData:notification.userInfo];
         })
     }
-} 
+}
+
+#pragma mark - hdndle RealTimeData notification
+
+- (void)handleVisitorGroupDataDidInitialize:(NSNotification *)notification
+{
+    //    NSLog(@"handleRealTimeDataDidInitialize");
+    if (notification.userInfo != nil && notification.object == [visitorGroupModel sharedInstance]) {
+        _visitorInitData = notification.userInfo;
+        dispatch_main_async_safe(^{
+            [_visitorGruopView addDataViewType:outlineVisitorGroup inControllerType:outlineView data:notification.userInfo];
+            [_visitorGruopView.loadingView stopAnimation];
+        })
+    }
+}
 
 #pragma mark - viewWillAppear
 - (void)viewWillAppear:(BOOL)animated
@@ -512,9 +528,9 @@ const static CGFloat titleViewHeight = 44.0f;
         NSArray *visitorGroupData = @[@"实时",@"访客群体分析",@"来源分析",@"页面分析",@"热门城市",@"热门页面",@"转化分析"];
         dispatch_main_async_safe(^{
             [_outLineViewArray enumerateObjectsUsingBlock:^(dataOutlineViewContainer *view, NSUInteger idx, BOOL *stop) {
-                if (idx != 0) {
+                if (idx != 0 && idx != 1) {
                     [view addDataViewType:(viewType)idx inControllerType:outlineView data:visitorGroupData];
-                    if (idx != 1) {
+                    if (idx != 1 ) {
                         [view.loadingView stopAnimation];
                     }
 
@@ -588,14 +604,17 @@ const static CGFloat titleViewHeight = 44.0f;
 - (void)handleTappingOutlineView:(int)index
 {
     dataOutlineViewContainer *targetView;
+    id data = nil;
     
     switch (index) {
         case 0:{
             targetView = _realTimeView;
+            data = _realTimeInitData;
             }
             break;
         case 1:{
             targetView = _visitorGruopView;
+            data = _visitorInitData;
             }
             break;
         case 2:{
@@ -633,7 +652,7 @@ const static CGFloat titleViewHeight = 44.0f;
 //    }
    
     
-    [self transitOutlineView:targetView type:(viewType)(index)];
+    [self transitOutlineView:targetView type:(viewType)(index) data:data];
 }
 
 
@@ -657,9 +676,9 @@ const static CGFloat titleViewHeight = 44.0f;
 }
 
 #pragma mark outlineView transite to detailsView
-- (void)transitOutlineView:(dataOutlineViewContainer *)view type:(viewType)type
+- (void)transitOutlineView:(dataOutlineViewContainer *)view type:(viewType)type data:(id)data
 {
-    _detailsViewController = [[dataDetailsViewController alloc] initWithFrame:wkScreen type:type title:@"Details"];
+    _detailsViewController = [[dataDetailsViewController alloc] initWithFrame:wkScreen type:type data:data title:@"Details"];
     _detailsViewController.delegate = self;
     _detailsViewController.modalPresentationStyle = UIModalPresentationCustom;
     
@@ -679,13 +698,8 @@ const static CGFloat titleViewHeight = 44.0f;
     _animator.delegate = self;
     
 //    [_animator setContentScrollView:_detailsViewController.scrollView];
-//    if (type == outlineRealTime) {
-//        _animator.direction = transitonDirectionBottom;
-//        [_animator setContentScrollView:_detailsViewController.scrollView];
-//    }else{
-        _animator.direction = transitonDirectionRight/*(transitonDirection)fmodf(type, 3)*/;
-//    }
-    
+    _animator.direction = transitonDirectionRight;
+
     _detailsViewController.transitioningDelegate = _animator;
     _detailsViewController.modalPresentationCapturesStatusBarAppearance = YES;
     
@@ -744,6 +758,8 @@ const static CGFloat titleViewHeight = 44.0f;
 - (void)mainViewPullUpFromBottom
 {
     [_button animateToMenu];
+    [self.shyNavBarManager setExtensionView:_timeView];
+
     [UIView animateWithDuration:0.35
                            delay:0
          usingSpringWithDamping:0.8
@@ -764,6 +780,8 @@ const static CGFloat titleViewHeight = 44.0f;
 - (void)mainViewPullDownFromBottom
 {
     [_button animateToClose];
+    [self.shyNavBarManager setExtensionView:nil];
+
     [UIView animateWithDuration:0.5
                           delay:0.0
          usingSpringWithDamping:0.5
@@ -801,6 +819,8 @@ const static CGFloat titleViewHeight = 44.0f;
 - (void)mainViewPullDownFromTop
 {
     [_button animateToClose];
+    [self.shyNavBarManager setExtensionView:nil];
+
     [UIView animateWithDuration:0.5
                           delay:0.0
          usingSpringWithDamping:0.8

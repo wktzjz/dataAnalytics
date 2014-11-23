@@ -233,7 +233,7 @@
 
 - (void)presentVistorGroupOverview
 {
-    _detailsViewController = [[dataDetailsViewController alloc] initWithFrame:wkScreen type:outlineVisitorGroup title:@"访客群体分析"];
+    _detailsViewController = [[dataDetailsViewController alloc] initWithFrame:wkScreen type:outlineVisitorGroup data:[visitorGroupModel sharedInstance].outlineData title:@"访客群体分析"];
     _detailsViewController.delegate = self;
     _detailsViewController.modalPresentationStyle = UIModalPresentationCustom;
     

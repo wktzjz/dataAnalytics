@@ -173,7 +173,7 @@
                          animations:^{
                              if (_snapView) {
                                  CGRect frameRect = _snapView.frame;
-                                 frameRect.origin = CGPointMake(20,10+44.0 + 50.0);
+                                 frameRect.origin = CGPointMake(0.0,1 + 44.0 + 50.0);
                                  _snapView.frame = frameRect;
 
                              }

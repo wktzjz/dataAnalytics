@@ -46,10 +46,10 @@ dispatch_async(dispatch_get_main_queue(), block);\
 #define frontViewRemainHeight       100
 #define backgroundInitialScale      0.93
 #define blackViewMaximumAlpha       0.7
-#define mainDataScrollViewMargin    20.0
+#define mainDataScrollViewMargin    0.0
 #define mainViewPullSuccessedRatio  0.2
 
-#define outlineViewWidth  (wkScreenWidth - 20*2)
+#define outlineViewWidth  (wkScreenWidth - mainDataScrollViewMargin * 2)
 #define outlineViewHeight 240
 #define outleineContainerViewWidth  (wkScreenWidth - mainDataScrollViewMargin * 2);
 #define dataViewHeightWidthRatio (240/280)

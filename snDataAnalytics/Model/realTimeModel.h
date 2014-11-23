@@ -16,19 +16,24 @@
 @property (nonatomic) int   groupUV;
 @property (nonatomic) int   validGroupUV;
 @property (nonatomic) float validUVRatio;
+@property (nonatomic) int   visit;
 
-@property (nonatomic) NSArray *groupColorArray;
-@property (nonatomic) NSArray *groupPercentArray;
-@property (nonatomic) NSArray *validSourceUVColorArray;
-@property (nonatomic) NSArray *validSourceUVPercentArray;
+@property (nonatomic,strong) NSArray *groupColorArray;
+@property (nonatomic,strong) NSMutableArray *groupPercentArray;
+@property (nonatomic,strong) NSArray *validSourceUVColorArray;
+@property (nonatomic,strong) NSMutableArray *groupValidPercentArray;
+@property (nonatomic,strong) NSMutableArray *cityNameArray;
+@property (nonatomic,strong) NSMutableArray *cityValueArray;
+@property (nonatomic,strong) NSMutableArray *pagesNameArray;
+@property (nonatomic,strong) NSMutableArray *pagesValueArray;
 
-@property (nonatomic) NSMutableArray *arrayOfValues;
-@property (nonatomic) NSMutableArray *arrayOfDates;
+@property (nonatomic,strong) NSMutableArray *arrayOfValues;
+@property (nonatomic,strong) NSMutableArray *arrayOfDates;
 
 
 //use the folling methods
-@property (nonatomic) NSDictionary *initializeData;
-@property (nonatomic) NSDictionary *sendDict;
+@property (nonatomic,strong) NSDictionary *initializeData;
+@property (nonatomic,strong) NSDictionary *sendDict;
 @property (nonatomic,readonly) BOOL initializeDataReady;
 
 + (instancetype)sharedInstance;

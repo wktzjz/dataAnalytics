@@ -55,13 +55,21 @@ static NSString *const dataDidInitialize = @"visitorGroupDataDidInitialize";
     }
 }
 
-- (void)getDetailOutlineData
+- (void)getOutlineData
 {
     void (^successefullyBlock)(NSDictionary *data) = ^(NSDictionary *data) {
         visitorGroupModel *strongSelf = _wself;
-        _sendDict = @{};
+//        _sendDict = @{};
         
-        NSNotification *notification = [[NSNotification alloc] initWithName:dataDidChange object:strongSelf userInfo:_sendDict];
+        _outlineData = @{@"visitNumber":@(arc4random() % 100000),
+                         @"UVNumber":@(arc4random() % 20000),
+                         @"validUVNumber":@(arc4random() % 10000),
+                         @"newVISITRatio":@((arc4random() % 1000) / 1000.0),
+                         @"newUVRatio":@((arc4random() % 1000) / 1000.0),
+                         @"newVaildUVRatio":@((arc4random() % 1000) / 1000.0),
+                         };
+        
+        NSNotification *notification = [[NSNotification alloc] initWithName:@"visitorGruopOutlineDataInited" object:strongSelf userInfo:_outlineData];
 
         // 异步处理通知
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -128,8 +136,29 @@ static NSString *const dataDidInitialize = @"visitorGroupDataDidInitialize";
             [strongSelf addNumberToArray:parallelArray[index]];
         });
         
-        _initializeData = @{@"groupUV":@(_groupUV),@"visitor":@(_visitor),@"validGroupUV":@(_validGroupUV),@"groupPercentArray":_groupPercentArray,@"groupColorArray":_groupColorArray,@"arrayOfDates":_arrayOfDates,@"UV_arrayOfValues":array1,@"PV_arrayOfValues":array2,@"Visitor_arrayOfValues":array3,@"新UV_arrayOfValues":array4,@"有效UV_arrayOfValues":array5,@"平均页面停留时间_arrayOfValues":array6,@"提交订单转化率_arrayOfValues":array7,@"有效订单转化率_arrayOfValues":array8,
-                            @"UV_number":@(arc4random() % 20000),@"PV_number":@(arc4random() % 20000),@"Visitor_number":@(arc4random() % 20000),@"新UV_number":@(arc4random() % 10000),@"有效UV_number":@(arc4random() % 2000),@"平均页面停留时间_number":@(arc4random() % 200),@"提交订单转化率_number":@(arc4random() % 100),@"有效订单转化率_number":@(arc4random() % 100)};
+        _initializeData = @{@"groupUV":@(_groupUV),
+                            @"visitor":@(_visitor),
+                            @"validGroupUV":@(_validGroupUV),
+                            @"groupPercentArray":_groupPercentArray,
+                            @"groupColorArray":_groupColorArray,
+                            @"arrayOfDates":_arrayOfDates,
+                            @"UV_arrayOfValues":array1,
+                            @"PV_arrayOfValues":array2,
+                            @"Visitor_arrayOfValues":array3,
+                            @"新UV_arrayOfValues":array4,
+                            @"有效UV_arrayOfValues":array5,
+                            @"平均页面停留时间_arrayOfValues":array6,
+                            @"提交订单转化率_arrayOfValues":array7,
+                            @"有效订单转化率_arrayOfValues":array8,
+                            @"UV_number":@(arc4random() % 20000),
+                            @"PV_number":@(arc4random() % 20000),
+                            @"Visitor_number":@(arc4random() % 20000),
+                            @"新UV_number":@(arc4random() % 10000),
+                            @"有效UV_number":@(arc4random() % 2000),
+                            @"平均页面停留时间_number":@(arc4random() % 200),
+                            @"提交订单转化率_number":@(arc4random() % 100),
+                            @"有效订单转化率_number":@(arc4random() % 100)
+                            };
         
         _initializeDataReady = YES;
         

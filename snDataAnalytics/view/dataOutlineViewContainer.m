@@ -81,7 +81,7 @@ const static CGFloat loadingAnimationDuration = 1.0f;
             text.textAlignment = NSTextAlignmentCenter;
             _loadingLogo = [[FBShimmeringView alloc] initWithFrame:CGRectMake(20, 100, frame.size.width - 20, 50)];
             _loadingLogo.contentView = text;
-            _loadingLogo.shimmeringSpeed = 180;
+            _loadingLogo.shimmeringSpeed = 220;
             _loadingLogo.center = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
             _loadingLogo.shimmering = YES;
             
@@ -97,7 +97,7 @@ const static CGFloat loadingAnimationDuration = 1.0f;
 }
 
 #pragma mark - init dataView
-- (instancetype)initWithFrame:(CGRect)frame dataType:(viewType)dataType inControllerType:(inViewType)inViewType
+- (instancetype)initWithFrame:(CGRect)frame dataType:(viewType)dataType data:(id)data inControllerType:(inViewType)inViewType
 {
     self = [super initWithFrame:frame];
     
@@ -106,7 +106,7 @@ const static CGFloat loadingAnimationDuration = 1.0f;
         self.layer.cornerRadius = 10;
         self.backgroundColor = [UIColor whiteColor];
         self.dataType = dataType;
-        [self addDataViewType:dataType inControllerType:inViewType data:nil];
+        [self addDataViewType:dataType inControllerType:inViewType data:data];
         
 //        UIView *_contentView = [[UIView alloc] initWithFrame:self.frame];
 //        _contentView.backgroundColor = [UIColor whiteColor];
@@ -154,7 +154,7 @@ const static CGFloat loadingAnimationDuration = 1.0f;
     if (dataType == outlineTypeRealTime) {
         
            _contentView = nil;
-           _contentView = [[realTimeOutlineView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+           _contentView = [[realTimeOutlineView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height) withData:data];
                       
            //[self addRealtimeView:data];
            
@@ -236,7 +236,7 @@ const static CGFloat loadingAnimationDuration = 1.0f;
     }else if (dataType == outlineVisitorGroup)
     {
 //        _contentView = nil;
-        _visitorGroupView = [[visitorGroupOutlineView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+        _visitorGroupView = [[visitorGroupOutlineView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height) withData:data];
         [_contentView addSubview:_visitorGroupView];
         
         _pieChart = _visitorGroupView.pieChart;
@@ -640,7 +640,7 @@ const static CGFloat loadingAnimationDuration = 1.0f;
         if (type == outlineVisitorGroup) {
             _visitorGroupView.groupColorArray = colorArray;
             _visitorGroupView.groupPercentArray = percentArray;
-            [_visitorGroupView modifyGroupView];
+            [_visitorGroupView modifyGroupViewWithData:nil];
             
         }else if (type == outlinePageAnalytics) {
             _pageView.groupColorArray = colorArray;

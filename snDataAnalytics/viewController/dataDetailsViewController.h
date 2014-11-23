@@ -33,6 +33,6 @@
 //- (instancetype)init;
 //- (instancetype)initWithFrame:(CGRect)frame;
 //- (instancetype)initWithFrame:(CGRect)frame type:(dataVisualizedType)type;
-- (instancetype)initWithFrame:(CGRect)frame type:(viewType)type title:(NSString *)title;
+- (instancetype)initWithFrame:(CGRect)frame type:(viewType)type data:(id)data title:(NSString *)title;
 - (void)removeObservers;
 @end

@@ -14,7 +14,7 @@
 
 #import "visitorGroupOutlineView.h"
 #import "pageAnalyticsOutlineView.h"
-#import "sourceAnalyticsView.h"
+#import "sourceAnalyticsOutlineView.h"
 #import "loadingView.h"
 
 
@@ -59,7 +59,7 @@ typedef NS_ENUM(NSUInteger, inViewType) {
 @property (nonatomic,strong) BEMSimpleLineGraphView *myGraph;
 @property (nonatomic,strong) visitorGroupOutlineView *visitorGroupView;
 @property (nonatomic,strong) pageAnalyticsOutlineView *pageView;
-@property (nonatomic,strong) sourceAnalyticsView *sourceView;
+@property (nonatomic,strong) sourceAnalyticsOutlineView *sourceView;
 
 @property (nonatomic,strong) LoadingView *loadingView;
 

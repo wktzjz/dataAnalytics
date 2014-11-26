@@ -479,6 +479,8 @@ const CGFloat MAX_DELAY = 0.15;
                 [transitionContext completeTransition:YES];
             }];
         } else {
+//            [self.navigationController popViewControllerAnimated:YES];
+
 //            toVC.view.alpha = 0.0;
             [fromVC.view setTransform:CGAffineTransformMakeTranslation(1, 0)];
             [toVC.view setTransform:CGAffineTransformIdentity];
@@ -510,7 +512,11 @@ const CGFloat MAX_DELAY = 0.15;
         } else {
             [self presentView:toVC.view withDelay:0 andDelta:delta];
         }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"menuBack" object:self userInfo:nil];
+
     }];
+    
 }
 
 - (void)hideView:(UIView *)view withDelay:(NSTimeInterval)delay andDelta:(float)delta

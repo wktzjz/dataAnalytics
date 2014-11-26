@@ -83,16 +83,20 @@
     _tableView.backgroundColor = [UIColor colorWithRed:135/255.0 green:206.0/255.0 blue:238.0/255.0 alpha:1];
 //    _tableView.backgroundColor = [UIColor denimColor];
 
-    self.navigationController.interactivePopGestureRecognizer.delegate = self;
-     self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+//    self.navigationController.interactivePopGestureRecognizer.delegate = self;
+//    self.navigationController.interactivePopGestureRecognizer.enabled = YES;
 
+//    if([self isIOS8]){
+//        [self.navigationItem setHidesBackButton:YES];
+//    }
+    
     [self setNeedsStatusBarAppearanceUpdate];
     
 }
 
 - (BOOL)prefersStatusBarHidden
 {
-    return YES;
+    return NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -238,7 +242,7 @@
     _detailsViewController.modalPresentationStyle = UIModalPresentationCustom;
     
     _detailsViewController.initializedDataReady = [visitorGroupModel sharedInstance].initializeDataReady;
-    _detailsViewController.initializedData = [visitorGroupModel sharedInstance].initializeData;
+    _detailsViewController.initializedData = [visitorGroupModel sharedInstance].detailInitializeData;
     
     _animator = [[outlineViewTransitionAnimator alloc] initWithModalViewController:_detailsViewController];
     _animator.behindViewAlpha = 0.5f;
@@ -302,6 +306,17 @@
 - (void)dealloc
 {
     [self.navigationController setDelegate:nil];
+}
+
+#pragma mark isIOS8
+- (BOOL)isIOS8
+{
+    NSComparisonResult order = [[UIDevice currentDevice].systemVersion compare: @"8.0" options: NSNumericSearch];
+    if (order == NSOrderedSame || order == NSOrderedDescending) {
+        // OS version >= 8.0
+        return YES;
+    }
+    return NO;
 }
 
 @end

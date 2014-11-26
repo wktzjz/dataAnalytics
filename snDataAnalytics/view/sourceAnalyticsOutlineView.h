@@ -1,5 +1,5 @@
 //
-//  sourceAnalyticsView.h
+//  sourceAnalyticsOutlineView.h
 //  snDataAnalytics
 //
 //  Created by wktzjz on 14-11-17.
@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "PNChart.h"
 
-@interface sourceAnalyticsView : UIView
+@interface sourceAnalyticsOutlineView : UIView
 
 @property (nonatomic,strong) UILabel * chartLabel;
 
@@ -23,7 +23,7 @@
 
 @property (nonatomic, strong) NSMutableArray *sourcesStringArray;
 
-- (instancetype)initWithFrame:(CGRect)frame;
+- (id)initWithFrame:(CGRect)frame withData:(NSDictionary *)data;
 - (void)modifyPageViewWithData:(NSDictionary *)data;
 
 

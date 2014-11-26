@@ -229,7 +229,7 @@ const static CGFloat loadingAnimationDuration = 1.0f;
 //        [_contentView addSubview:_chartLabel];
 //        [_contentView addSubview:_circleChart];
         
-        _sourceView= [[sourceAnalyticsView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+        _sourceView= [[sourceAnalyticsOutlineView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height) withData:data];
         [_contentView addSubview:_sourceView];
         _circleChart = _sourceView.circleChart;
         

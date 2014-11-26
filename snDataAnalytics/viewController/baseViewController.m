@@ -25,6 +25,7 @@
 #import "TLYShyNavBarManager.h"
 #import "timeView.h"
 #import "THDatePickerViewController.h"
+#import "sourcesAnalyticsModel.h"
 
 
 typedef enum {
@@ -81,12 +82,16 @@ const static CGFloat titleViewHeight = 44.0f;
     
     realTimeModel *_realTimeData;
     id _realTimeInitData;
-    id _visitorInitData;
+    id _visitorGroupInitData;
+    id _sourceAnalyticsInitData;
+
     
     BOOL _ifUseFlexibleBar;
     BOOL _statusBarShouldHide;
     
-    BOOL _visitorGroupDataLoaded;
+    BOOL _visitorGroupDetailsDataLoaded;
+    BOOL _sourceAnalyticsDetailsDataLoaded;
+    
     LoadingView *_loadingView;
     
     THDatePickerViewController *_datePicker;
@@ -99,11 +104,12 @@ const static CGFloat titleViewHeight = 44.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor clearColor];
     
      _ifUseFlexibleBar   = YES;
     _statusBarShouldHide = NO;
-    _visitorGroupDataLoaded = NO;
+    _visitorGroupDetailsDataLoaded    = NO;
+    _sourceAnalyticsDetailsDataLoaded = NO;
     
     [self setNeedsStatusBarAppearanceUpdate];
 
@@ -145,8 +151,12 @@ const static CGFloat titleViewHeight = 44.0f;
                                                  selector:@selector(handleRealTimeDataDidChange:)
                                                      name:dataDidChange object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:strongSelf
-                                                 selector:@selector(handleVisitorGroupDataDidInitialize:)
+                                                 selector:@selector(handleVisitorGroupOutlineDataDidInitialize:)
                                                      name:@"visitorGruopOutlineDataInited" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:strongSelf
+                                                 selector:@selector(handleSourceAnalyticsOutlineDataDidInitialize:)
+                                                     name:@"analyticsViewOutlineDataInited" object:nil];
+        
         
 //        NSMutableArray *test1 = [[NSMutableArray alloc] initWithArray:@[@1,@2]];
 //        NSMutableArray *test2 = [[NSMutableArray alloc] initWithArray:test1];
@@ -188,6 +198,8 @@ const static CGFloat titleViewHeight = 44.0f;
 {
     _realTimeData =  [realTimeModel sharedInstance];
     [[visitorGroupModel sharedInstance] getOutlineData];
+    [[sourcesAnalyticsModel sharedInstance] getOutlineData];
+
 //    [[visitorGroupModel sharedInstance] initDetailsData];
 
 }
@@ -274,6 +286,7 @@ const static CGFloat titleViewHeight = 44.0f;
     _menuController = [[menuController alloc] init];
     //    _menuController.view.frame = wkScreen;
     _settingView = _menuController.view;
+   // _settingView.frame = CGRectMake(0, 150, 500, 500);
     [_backgroundView addSubview:_settingView];
     [self addChildViewController:_menuController];
 }
@@ -433,7 +446,7 @@ const static CGFloat titleViewHeight = 44.0f;
     _outLineViewArray = [[NSMutableArray alloc] initWithArray:@[_realTimeView,_visitorGruopView,_sourceView,_pageView,_hotCityView,_hotPageView,_transformView]];
 }
 
-#pragma mark - hdndle RealTimeData notification
+#pragma mark - handle RealTimeData notification
 
 - (void)handleRealTimeDataDidInitialize:(NSNotification *)notification
 {
@@ -457,16 +470,28 @@ const static CGFloat titleViewHeight = 44.0f;
     }
 }
 
-#pragma mark - hdndle RealTimeData notification
+#pragma mark - handle VisitorGroupOutline notification
 
-- (void)handleVisitorGroupDataDidInitialize:(NSNotification *)notification
+- (void)handleVisitorGroupOutlineDataDidInitialize:(NSNotification *)notification
 {
-    //    NSLog(@"handleRealTimeDataDidInitialize");
     if (notification.userInfo != nil && notification.object == [visitorGroupModel sharedInstance]) {
-        _visitorInitData = notification.userInfo;
+        _visitorGroupInitData = notification.userInfo;
         dispatch_main_async_safe(^{
             [_visitorGruopView addDataViewType:outlineVisitorGroup inControllerType:outlineView data:notification.userInfo];
             [_visitorGruopView.loadingView stopAnimation];
+        })
+    }
+}
+
+#pragma mark - handle analyticsViewOutline notification
+
+- (void)handleSourceAnalyticsOutlineDataDidInitialize:(NSNotification *)notification
+{
+    if (notification.userInfo != nil && notification.object == [sourcesAnalyticsModel sharedInstance]) {
+        _sourceAnalyticsInitData = notification.userInfo;
+        dispatch_main_async_safe(^{
+            [_sourceView addDataViewType:outlineSource inControllerType:outlineView data:notification.userInfo];
+            [_sourceView.loadingView stopAnimation];
         })
     }
 }
@@ -525,13 +550,13 @@ const static CGFloat titleViewHeight = 44.0f;
 - (BOOL)handleInfoFromNetwork:(NSDictionary *)info
 {
     if (!info) {
-        NSArray *visitorGroupData = @[@"实时",@"访客群体分析",@"来源分析",@"页面分析",@"热门城市",@"热门页面",@"转化分析"];
+        NSArray *stringArray = @[@"实时",@"访客群体分析",@"来源分析",@"页面分析",@"热门城市",@"热门页面",@"转化分析"];
         dispatch_main_async_safe(^{
             [_outLineViewArray enumerateObjectsUsingBlock:^(dataOutlineViewContainer *view, NSUInteger idx, BOOL *stop) {
-                if (idx != 0 && idx != 1) {
-                    [view addDataViewType:(viewType)idx inControllerType:outlineView data:visitorGroupData];
+                if (idx != 0 && idx != 1 && idx != 2) {
+                    [view addDataViewType:(viewType)idx inControllerType:outlineView data:stringArray];
                     if (idx != 1 ) {
-                        [view.loadingView stopAnimation];
+//                        [view.loadingView stopAnimation];
                     }
 
                 }
@@ -539,24 +564,40 @@ const static CGFloat titleViewHeight = 44.0f;
         });
         
         //加载完概览页面后 预加载第二屏数据
-        [self getVisitorGroupDetailsData];
+        [self getDetailsData];
+
     }
     
     return YES;
 }
 
 
+#pragma mark getDetailsData
+
+- (void)getDetailsData
+{
+    [self getVisitorGroupDetailsData];
+    [self getSourceAnalyticsDetailsData];
+}
+
 #pragma mark getVisitorGroupData
 
 - (void)getVisitorGroupDetailsData
 {
-    [[visitorGroupModel sharedInstance] createInitializeData];
-//    [[visitorGroupModel sharedInstance] initDefineDetails];
-//    [[visitorGroupModel sharedInstance] initDetailsData];
+    [[visitorGroupModel sharedInstance] createDetailInitializeData];
     
-    _visitorGroupDataLoaded = YES;
+    _visitorGroupDetailsDataLoaded = YES;
     [_visitorGruopView.loadingView stopAnimation];
-//    [_loadingView stopAnimation];
+}
+
+#pragma mark getVisitorGroupData
+
+- (void)getSourceAnalyticsDetailsData
+{
+    [[sourcesAnalyticsModel sharedInstance] createDetailInitializeData];
+    
+    _sourceAnalyticsDetailsDataLoaded = YES;
+    [_sourceView.loadingView stopAnimation];
 }
 
 
@@ -577,12 +618,14 @@ const static CGFloat titleViewHeight = 44.0f;
                       [self handleTappingOutlineView:outlineRealTime];
                     
                 }else if (CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[1]).frame, location)) {
-                    if (_visitorGroupDataLoaded) {
+                    if (_visitorGroupDetailsDataLoaded) {
                         [self handleTappingOutlineView:outlineVisitorGroup];
                     }
                 
                 }else if (CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[2]).frame, location)) {
-                    [self handleTappingOutlineView:outlineSource];
+                    if (_sourceAnalyticsDetailsDataLoaded) {
+                        [self handleTappingOutlineView:outlineSource];
+                    }
                     
                 }else if (CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[3]).frame, location)) {
                     [self handleTappingOutlineView:outlinePageAnalytics];
@@ -614,11 +657,12 @@ const static CGFloat titleViewHeight = 44.0f;
             break;
         case 1:{
             targetView = _visitorGruopView;
-            data = _visitorInitData;
+            data = _visitorGroupInitData;
             }
             break;
         case 2:{
             targetView = _sourceView;
+            data = _sourceAnalyticsInitData;
             }
             break;
         case 3:{
@@ -645,6 +689,7 @@ const static CGFloat titleViewHeight = 44.0f;
     
 //    if (!_ifUseFlexibleBar) {
         [self.navigationController setClickedView:targetView];
+
         [self.navigationController setClickedViewFrame:@[@(frame.origin.x),@(frame.origin.y - navigationBarHeight),@(frame.size.width),@(frame.size.height)]];
 //    }else{
 //        [self setClickedView:targetView];
@@ -687,7 +732,11 @@ const static CGFloat titleViewHeight = 44.0f;
         _detailsViewController.initializedData = _realTimeData.initializeData;
     }else if (type == outlineVisitorGroup) {
         _detailsViewController.initializedDataReady = [visitorGroupModel sharedInstance].initializeDataReady;
-        _detailsViewController.initializedData = [visitorGroupModel sharedInstance].initializeData;
+        _detailsViewController.initializedData = [visitorGroupModel sharedInstance].detailInitializeData;
+    }else if (type == outlineSource){
+        _detailsViewController.initializedDataReady = [sourcesAnalyticsModel sharedInstance].initializeDataReady;
+        _detailsViewController.initializedData = [sourcesAnalyticsModel sharedInstance].detailInitializeData;
+
     }
 
     _animator = [[outlineViewTransitionAnimator alloc] initWithModalViewController:_detailsViewController];
@@ -758,7 +807,9 @@ const static CGFloat titleViewHeight = 44.0f;
 - (void)mainViewPullUpFromBottom
 {
     [_button animateToMenu];
+    if([self isIOS8]){
     [self.shyNavBarManager setExtensionView:_timeView];
+    }
 
     [UIView animateWithDuration:0.35
                            delay:0
@@ -774,6 +825,11 @@ const static CGFloat titleViewHeight = 44.0f;
                          _frontViewIsDraggedDown = NO;
                          _initalFrontCenterY = _frontView.center.y;
                          _initalBackgroundCenterY = _backgroundView.center.y;
+                         
+                         if(![self isIOS8]){
+                             [self.shyNavBarManager setExtensionView:_timeView];
+                         }
+
                      }];
 }
 
@@ -793,6 +849,7 @@ const static CGFloat titleViewHeight = 44.0f;
                          _blackView.alpha =0.0;
                          
                      } completion:^(BOOL finished) {
+                         [self setTitle:@"设置"];
 //                         _frontViewIsDraggedDown = YES;
                      }];
     
@@ -801,6 +858,8 @@ const static CGFloat titleViewHeight = 44.0f;
 - (void)mainViewPullUpFromTop
 {
     [_button animateToMenu];
+    [self.shyNavBarManager setExtensionView:_timeView];
+
     [UIView animateWithDuration:0.8
                           delay:0.0
          usingSpringWithDamping:0.5
@@ -812,6 +871,7 @@ const static CGFloat titleViewHeight = 44.0f;
                          _blackView.alpha = blackViewMaximumAlpha;
                          
                      } completion:^(BOOL finished) {
+                         [self setTitle:@"概览"];
                          _frontViewIsDraggedDown = NO;
                      }];
 }

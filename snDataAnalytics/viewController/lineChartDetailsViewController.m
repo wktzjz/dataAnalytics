@@ -280,7 +280,11 @@ const static CGFloat titleViewHeight = 44.0f;
             button.titleLabel.font = [UIFont fontWithName:@"OpenSans-Light"
                                                 size:15];
             [button setTitleColor:PNTwitterColor forState:UIControlStateNormal];
+            
             CGRect frame = CGRectMake(25, 355 + idx * 30 , 150, 30);
+            if(idx > 6){
+                frame = CGRectMake(25 + 30, 145 + idx * 30 , 150, 30);
+            }
             button.frame = frame;
             button.backgroundColor = [UIColor clearColor];
             button.alpha = 0.0f;
@@ -352,6 +356,9 @@ const static CGFloat titleViewHeight = 44.0f;
         [views enumerateObjectsUsingBlock:^(UIButton *view, NSUInteger idx, BOOL *stop) {
             view.alpha = 0;
             CGFloat x = self.view.center.x;
+            if(idx > 6){
+                x += 90;
+            }
             view.center =CGPointMake(centerX, view.center.y);
             
             [self showWithView:view idx:idx initDelay:0.1 + delay centerX:x];

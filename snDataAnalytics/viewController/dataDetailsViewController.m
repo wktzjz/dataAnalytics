@@ -40,10 +40,14 @@
 #import "DismissingAnimator.h"
 
 #import "visitorGroupModel.h"
+#import "sourcesAnalyticsModel.h"
 #import "lineChartDetailsViewController.h"
 
 #import "lineChartDetailsViewFactory.h"
 #import "timeView.h"
+
+#import "sourceAnalyticsDetailOutlineView.h"
+
 
 const static CGFloat titleViewHeight = 44.0f;
 const static CGFloat itemsViewWidth  = 300.0f;
@@ -59,8 +63,9 @@ const static CGFloat itemsViewHeight = 145.0f;
 
 @implementation dataDetailsViewController
 {
-    realTimeDetailsView           *_realTimeView;
-    visitorGroupDetailOutlineView *_visitorGroupView;
+    realTimeDetailsView              *_realTimeView;
+    visitorGroupDetailOutlineView    *_visitorGroupView;
+    sourceAnalyticsDetailOutlineView *_sourceAnalyticsView;
     
     int previousStepperValue;
     int totalNumber;
@@ -436,6 +441,8 @@ const static CGFloat itemsViewHeight = 145.0f;
     
     if (_dataVisualizedType == outlineRealTime) {
         [_scrollView setContentSize:CGSizeMake(0, 2100)];
+    }else if(_dataVisualizedType == outlineSource){
+         [_scrollView setContentSize:CGSizeMake(0, 2030)];
     }else{
         [_scrollView setContentSize:CGSizeMake(0, 1650)];
     }
@@ -487,9 +494,11 @@ const static CGFloat itemsViewHeight = 145.0f;
     }else if (_dataVisualizedType == outlineSource) {
         
         //Add CircleChart
-        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineSource data:nil inControllerType:detailView];
-        [_scrollView addSubview:_dataContentView];
-        self.viewTitleString = @"来源分析";
+        [self addSourceAnalyticsDetailsViewWithFrame:CGRectMake(marginX, marginY, width, height) withData:data];
+
+//        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineSource data:data inControllerType:detailView];
+//        [_scrollView addSubview:_dataContentView];
+//        self.viewTitleString = @"来源分析";
         
     }else if (_dataVisualizedType == outlineVisitorGroup) {
         
@@ -577,13 +586,12 @@ const static CGFloat itemsViewHeight = 145.0f;
         }
         
         _visitorGroupView.viewClickedBlock = ^(NSInteger markers) {
-            [strongSelf handleVisitorGroupLineViewClicked:markers];
+            [strongSelf handleLineViewClicked:markers fromView:outlineVisitorGroup];
         };
         
         [_scrollView addSubview:_visitorGroupView];
     });
     
-    [_scrollView addSubview:_visitorGroupView];
     _ifHasDetailsView = YES;
     
     if ([_viewTitleString isEqual: @"Details"]) {
@@ -596,10 +604,50 @@ const static CGFloat itemsViewHeight = 145.0f;
     });
 }
 
-#pragma mark handleVisitorGroupLineViewClicked
-- (void)handleVisitorGroupLineViewClicked:(NSInteger)markers
+- (void)addSourceAnalyticsDetailsViewWithFrame:(CGRect)frame withData:(id)data
 {
-    lineChartDetailsViewController *vc = [[lineChartDetailsViewFactory sharedInstance] getVisitorGroupControllerByType:(visitorGroupControllerType)markers];
+    _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(_marginX, _marginY, _width, _height) dataType:outlineSource data:data inControllerType:detailView];
+    [_scrollView addSubview:_dataContentView];
+    
+    double delayInSeconds = 0.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    
+    __weak typeof(self) weakself = self;
+    dispatch_after(popTime, dispatch_get_main_queue(), ^{
+        typeof(weakself) strongSelf = weakself;
+        
+        _sourceAnalyticsView = [[sourceAnalyticsDetailOutlineView alloc] initWithFrame:CGRectMake(_marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, _width, _height * 7)];
+        
+        if (_initializedDataReady) {
+            [_sourceAnalyticsView initViewsWithData:_initializedData];
+        }
+        
+        _sourceAnalyticsView.viewClickedBlock = ^(NSInteger markers) {
+            [strongSelf handleLineViewClicked:markers fromView:outlineSource];
+        };
+        
+        [_scrollView addSubview:_sourceAnalyticsView];
+    });
+    
+    _ifHasDetailsView = YES;
+    
+    if ([_viewTitleString isEqual: @"Details"]) {
+        self.viewTitleString = @"来源分析";
+    }
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        [[sourcesAnalyticsModel sharedInstance] initDefineDetails];
+        [[sourcesAnalyticsModel sharedInstance] initDetailsData];
+    });
+}
+
+#pragma mark handleVisitorGroupLineViewClicked
+- (void)handleLineViewClicked:(NSInteger)markers fromView:(viewType)type
+{
+//    lineChartDetailsViewController *vc = [[lineChartDetailsViewFactory sharedInstance] getVisitorGroupControllerByType:(visitorGroupControllerType)markers];
+    
+    lineChartDetailsViewController *vc = [[lineChartDetailsViewFactory sharedInstance] getControllerFromView:type detailsType:markers];
+
     
     __weak typeof(self) weakSelf = self;
     vc.dismissBlock = ^{

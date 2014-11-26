@@ -43,10 +43,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+//    LoadingView *_loadingView;
+//    _loadingView = [[LoadingView alloc]initWithFrame:CGRectMake(0, 0, 25, 25)];
+//    UIBarButtonItem *loadingItem = [[UIBarButtonItem alloc]initWithCustomView:_loadingView];
+//    _loadingView.lineColor = PNTwitterColor;
+//    self.navigationItem.rightBarButtonItem = loadingItem;
+
     [self.view setBackgroundColor:[UIColor clearColor]];
     
-    [self setTitle:@"Demo"];
     self.data =
     @[
       @{@"text": @"Setting1", @"icon": @"heart"},
@@ -55,8 +59,8 @@
       @{@"text": @"访客群体分析", @"icon": @"puzzle"},
       @{@"text": @"来源分析", @"icon": @"puzzle"},
       @{@"text": @"页面分析", @"icon": @"puzzle"},
-      @{@"text": @"热门城市", @"icon": @"puzzle"},
-      @{@"text": @"热门页面", @"icon": @"puzzle"},
+//      @{@"text": @"热门城市", @"icon": @"puzzle"},
+//      @{@"text": @"热门页面", @"icon": @"puzzle"},
       @{@"text": @"转化分析", @"icon": @"puzzle"}
       ];
 /*    访客群体分析
@@ -67,20 +71,28 @@
     转化分析 */
     
     //heart camera pencil beaker puzzle glass
-//    self.view.BackgroundColor =[UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
     self.view.backgroundColor = [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
 
     CGRect frame = self.view.frame;
     _tableView = [[UITableView alloc] initWithFrame:frame];
-//    _tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
-//    _tableView.backgroundColor = [UIColor colorWithRed:135/255.0 green:206.0/255.0 blue:238.0/255.0 alpha:1];
     _tableView.backgroundColor = [UIColor colorWithRed:135/255.0 green:206.0/255.0 blue:238.0/255.0 alpha:1];
 
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
     [self.view addSubview:_tableView];
-     [self setTitle:@"Setting View"];
+}
+
+- (void)handleBack
+{
+    double delayInSeconds = 1.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    
+    __weak typeof(self) weakself = self;
+    dispatch_after(popTime, dispatch_get_main_queue(), ^{
+        typeof(weakself) strongSelf = weakself;
+        [strongSelf.navigationController setTitle:@"shezhi1"];
+    });
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -201,6 +213,7 @@
         case visitorGroup:{
             _menuViewController = [[menuViewController alloc] initWithType:visitorGroup];
             _menuViewController.view.frame = CGRectMake(0, 0, wkScreenWidth, wkScreenHeight-frontViewRemainHeight);
+
             [self.navigationController pushViewController:_menuViewController animated:YES ];
         }
             

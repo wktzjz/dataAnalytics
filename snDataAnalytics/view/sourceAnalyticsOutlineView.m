@@ -1,29 +1,35 @@
 //
-//  sourceAnalyticsView.m
+//  sourceAnalyticsOutlineView.m
 //  snDataAnalytics
 //
 //  Created by wktzjz on 14-11-17.
 //  Copyright (c) 2014年 wktzjz. All rights reserved.
 //
 
-#import "sourceAnalyticsView.h"
+#import "sourceAnalyticsOutlineView.h"
 #import "defines.h"
 #import "UIColor+BFPaperColors.h"
 #import "Colours.h"
 
-@implementation sourceAnalyticsView
+@implementation sourceAnalyticsOutlineView
 {
     UILabel *_visitorLabel;
     float _marginX;
 }
 
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithFrame:(CGRect)frame withData:(NSDictionary *)data
 {
     self = [super initWithFrame:frame];
     
     if (self) {
-        _groupPercentArray = [[NSMutableArray alloc] initWithArray:@[@30,@20,@20,@15,@10,@5]];
-        _groupValidPercentArray = [[NSMutableArray alloc] initWithArray:@[@10,@7,@13,@6,@6,@9]];
+        _groupPercentArray      = (NSMutableArray *)data[@"groupPercentArray"];
+        _groupValidPercentArray = (NSMutableArray *)data[@"groupValidPercentArray"];
+        [_groupValidPercentArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            _groupValidPercentArray[idx] = @(((NSNumber *)_groupPercentArray[idx]).floatValue * ((NSNumber *)_groupValidPercentArray[idx]).floatValue / 100.00);
+        }];
+        
+//        _groupPercentArray = [[NSMutableArray alloc] initWithArray:@[@30,@20,@20,@15,@10,@5]];
+//        _groupValidPercentArray = [[NSMutableArray alloc] initWithArray:@[@10,@7,@13,@6,@6,@9]];
 
         _groupColorArray   = [[NSMutableArray alloc] initWithArray:@[PNLightGreen,
                                                                      PNFreshGreen,

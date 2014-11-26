@@ -7,6 +7,7 @@
 //
 
 #import "lineChartDetailsViewController.h"
+#import "dataOutlineViewContainer.h"
 
 typedef NS_ENUM(NSUInteger, visitorGroupControllerType) {
     UV      = 0,
@@ -20,9 +21,12 @@ typedef NS_ENUM(NSUInteger, visitorGroupControllerType) {
 };
 
 
+
 @interface lineChartDetailsViewFactory : NSObject
 
 + (instancetype)sharedInstance;
+
+- (lineChartDetailsViewController *)getControllerFromView:(viewType)viewType detailsType:(int)detailsType;
 
 - (lineChartDetailsViewController *)getVisitorGroupControllerByType:(visitorGroupControllerType)type;
 

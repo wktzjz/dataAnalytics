@@ -57,35 +57,6 @@
 
 - (void)addButtons
 {
-//    _dimensionButton = [flatButton button];
-//    _dimensionButton.titleLabel.font = [UIFont fontWithName:@"OpenSans-Light"size:20];
-//    
-//    _dimensionButton.backgroundColor = [UIColor clearColor];
-//    _dimensionButton.translatesAutoresizingMaskIntoConstraints = NO;
-//    _dimensionButton.textColor = PNTwitterColor;
-//    [_dimensionButton setTitle:_dimensionName forState:UIControlStateNormal];
-//    [_dimensionButton addTarget:self action:@selector(dimensionButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-//    
-//    
-//    [self addSubview:_dimensionButton];
-//    
-//    [self addConstraint:[NSLayoutConstraint constraintWithItem:_dimensionButton
-//                                                         attribute:NSLayoutAttributeLeft
-//                                                         relatedBy:NSLayoutRelationEqual
-//                                                            toItem:self
-//                                                         attribute:NSLayoutAttributeLeft
-//                                                        multiplier:1.f
-//                                                          constant:15.0f]];
-//    
-//    
-//    [self addConstraint:[NSLayoutConstraint constraintWithItem:_dimensionButton
-//                                                         attribute:NSLayoutAttributeTop
-//                                                         relatedBy:NSLayoutRelationEqual
-//                                                            toItem:self
-//                                                         attribute:NSLayoutAttributeTop
-//                                                        multiplier:1.0f
-//                                                          constant:-10.f]];
-    
     _dimensionButton = [[BFPaperButton alloc] initWithFrame:CGRectMake(0.0, -10.0, self.frame.size.width/2 - 10.0, 40) raised:NO];
     [_dimensionButton setTitle:_dimensionName forState:UIControlStateNormal];
 //    [_dimensionButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];

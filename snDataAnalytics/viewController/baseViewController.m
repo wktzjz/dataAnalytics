@@ -118,9 +118,7 @@ const static CGFloat titleViewHeight = 44.0f;
     
     self.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed:173/255.0 green:216.0/255.0 blue:230.0/255.0 alpha:1];
     
-//72 209 204 [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1]
 //    [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
-//    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
 
     [self setTitle:@"概览"];
     
@@ -243,24 +241,25 @@ const static CGFloat titleViewHeight = 44.0f;
     
     CGRect frontViewRect = CGRectMake(0, 0, wkScreenWidth, wkScreenHeight);
     _frontView = [[UIView alloc] initWithFrame:frontViewRect];
-    _frontView.layer.shadowOpacity = 0.5;
-    _frontView.layer.shadowRadius = 10;
-    _frontView.layer.shadowColor = [UIColor blackColor].CGColor;
-    _frontView.layer.shadowOffset = CGSizeMake(-3, 3);
     
-    if (!_ifUseFlexibleBar) {
-        _text = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, 300, 50)];
-        [_text setText:@"Data Outline View"];
-        [_text setTextColor:[UIColor blackColor]];
-        _text.font = [UIFont boldSystemFontOfSize:33];
-        _text.textAlignment = NSTextAlignmentCenter;
-    }
-    FBShimmeringView *shimmeringLogo = [[FBShimmeringView alloc] initWithFrame:CGRectMake(20, 0, 300, 50)];
-    shimmeringLogo.contentView = _text;
-    shimmeringLogo.shimmeringSpeed = 140;
-    shimmeringLogo.shimmering = YES;
-    [_frontView addSubview:shimmeringLogo];
-    [_frontView addSubview:_text];
+//    _frontView.   = 0.5;
+//    _frontView.layer.shadowRadius = 10;
+//    _frontView.layer.shadowColor = [UIColor blackColor].CGColor;
+//    _frontView.layer.shadowOffset = CGSizeMake(-3, 3);
+//
+//    if (!_ifUseFlexibleBar) {
+//        _text = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, 300, 50)];
+//        [_text setText:@"Data Outline View"];
+//        [_text setTextColor:[UIColor blackColor]];
+//        _text.font = [UIFont boldSystemFontOfSize:33];
+//        _text.textAlignment = NSTextAlignmentCenter;
+//    }
+//    FBShimmeringView *shimmeringLogo = [[FBShimmeringView alloc] initWithFrame:CGRectMake(20, 0, 300, 50)];
+//    shimmeringLogo.contentView = _text;
+//    shimmeringLogo.shimmeringSpeed = 140;
+//    shimmeringLogo.shimmering = YES;
+//    [_frontView addSubview:shimmeringLogo];
+//    [_frontView addSubview:_text];
     _frontView.backgroundColor = [UIColor colorWithRed:236.0/255.0 green:236.0/255.0 blue:236.0/255.0 alpha:1];
     //   _frontView.BackgroundColor =[UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
     

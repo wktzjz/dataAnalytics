@@ -26,7 +26,6 @@
 #import "wkContextMenuView.h"
 
 //#import "test.h"
-#import "visitorGroupDetailOutlineView.h"
 #import "notificationDefine.h"
 #import "FRDLivelyButton.h"
 #import "calloutItemView.h"
@@ -34,7 +33,6 @@
 //#import "TLYShyNavBarManager.h"
 #import "FXBlurView.h"
 
-#import "realTimeDetailsView.h"
 #import "lineChartDetailsView.h"
 #import "PresentingAnimator.h"
 #import "DismissingAnimator.h"
@@ -46,7 +44,7 @@
 #import "lineChartDetailsViewFactory.h"
 #import "timeView.h"
 
-#import "sourceAnalyticsDetailOutlineView.h"
+#import "detailOutlineView.h"
 
 
 const static CGFloat titleViewHeight = 44.0f;
@@ -63,9 +61,9 @@ const static CGFloat itemsViewHeight = 145.0f;
 
 @implementation dataDetailsViewController
 {
-    realTimeDetailsView              *_realTimeView;
-    visitorGroupDetailOutlineView    *_visitorGroupView;
-    sourceAnalyticsDetailOutlineView *_sourceAnalyticsView;
+    detailOutlineView *_realTimeView;
+    detailOutlineView *_visitorGroupView;
+    detailOutlineView *_sourceAnalyticsView;
     
     int previousStepperValue;
     int totalNumber;
@@ -546,7 +544,7 @@ const static CGFloat itemsViewHeight = 145.0f;
     dispatch_after(popTime, dispatch_get_main_queue(), ^{
         typeof(weakself) strongSelf = weakself;
         
-        _realTimeView = [[realTimeDetailsView alloc] initWithFrame:CGRectMake(_marginX, _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, _width, _height * 6)];
+        _realTimeView = [[detailOutlineView alloc] initWithFrame:CGRectMake(_marginX, _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, _width, _height * 6) viewType:outlineRealTime];
         
         if (_initializedDataReady) {
             [_realTimeView initViewsWithData:_initializedData];
@@ -579,7 +577,7 @@ const static CGFloat itemsViewHeight = 145.0f;
     dispatch_after(popTime, dispatch_get_main_queue(), ^{
         typeof(weakself) strongSelf = weakself;
         
-         _visitorGroupView = [[visitorGroupDetailOutlineView alloc] initWithFrame:CGRectMake(_marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, _width, _height * 5)];
+         _visitorGroupView = [[detailOutlineView alloc] initWithFrame:CGRectMake(_marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, _width, _height * 5) viewType:outlineVisitorGroup];
         
         if (_initializedDataReady) {
             [_visitorGroupView initViewsWithData:_initializedData];
@@ -616,7 +614,7 @@ const static CGFloat itemsViewHeight = 145.0f;
     dispatch_after(popTime, dispatch_get_main_queue(), ^{
         typeof(weakself) strongSelf = weakself;
         
-        _sourceAnalyticsView = [[sourceAnalyticsDetailOutlineView alloc] initWithFrame:CGRectMake(_marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, _width, _height * 7)];
+        _sourceAnalyticsView = [[detailOutlineView alloc] initWithFrame:CGRectMake(_marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, _width, _height * 7) viewType:outlineSource];
         
         if (_initializedDataReady) {
             [_sourceAnalyticsView initViewsWithData:_initializedData];

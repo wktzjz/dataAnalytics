@@ -12,7 +12,6 @@
 #import "FBShimmeringView.h"
 #import "UIColor+CustomColors.h"
 
-#import "realTimeOutlineView.h"
 #import "loadingView.h"
 
 const static CGFloat loadingAnimationDuration = 1.0f;
@@ -153,11 +152,9 @@ const static CGFloat loadingAnimationDuration = 1.0f;
 
     if (dataType == outlineTypeRealTime) {
         
-           _contentView = nil;
-           _contentView = [[realTimeOutlineView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height) withData:data];
-                      
-           //[self addRealtimeView:data];
-           
+           _realTimeView = [[realTimeOutlineView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height) withData:data];
+          [_contentView addSubview:_realTimeView];  
+        
     }else if (dataType == outlinePageAnalytics) {
            
            _pageView = [[pageAnalyticsOutlineView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
@@ -201,33 +198,6 @@ const static CGFloat loadingAnimationDuration = 1.0f;
         [_contentView addSubview:self.barChart];
 
     }else if (dataType == outlineSource) {
-//        
-//        _chartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
-////        _chartLabel.text = (NSString *)data[dataType]?(NSString *)data[dataType]: @"Circle Chart";
-//        _chartLabel.text = @"来源分析";
-//        _chartLabel.textColor = PNFreshGreen;
-//        _chartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:23.0];
-//        _chartLabel.textAlignment = NSTextAlignmentCenter;
-//        
-//        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 10 + _chartLabel.frame.origin.y + _chartLabel.frame.size.height, outlineViewWidth, 30)];
-//        label.text = @"visitor占比:";
-//        label.textColor = PNDeepGrey;
-//        label.font = [UIFont fontWithName:@"Avenir-Medium" size:18.0];
-//        label.textAlignment = NSTextAlignmentLeft;
-//        
-//        _circleChart = [[PNCircleChart alloc] initWithFrame:CGRectMake(0,label.frame.origin.y + label.frame.size.height - 30.0, outlineViewWidth, 100.0) andTotal:@100 andCurrent:@60 andClockwise:YES andShadow:YES];
-//        _circleChart.backgroundColor = [UIColor clearColor];
-//
-//        [_circleChart setStrokeColor:[UIColor colorWithRed:77.0 / 255.0 green:106.0 / 255.0 blue:122.0 / 255.0 alpha:1.0f]];
-//        [_circleChart setStrokeColorGradientStart:[UIColor colorWithRed:77.0 / 255.0 green:236.0 / 255.0 blue:122.0 / 255.0 alpha:1.0f]];
-//        _circleChart.isRestroke = NO;
-//        [_circleChart strokeChart];
-//        
-////        [self addSubview:circleChartLabel];
-////        [self addSubview:circleChart];
-//        [_contentView addSubview:label];
-//        [_contentView addSubview:_chartLabel];
-//        [_contentView addSubview:_circleChart];
         
         _sourceView= [[sourceAnalyticsOutlineView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height) withData:data];
         [_contentView addSubview:_sourceView];
@@ -429,128 +399,23 @@ const static CGFloat loadingAnimationDuration = 1.0f;
           initialSpringVelocity:0.5
                         options:(UIViewAnimationOptionCurveEaseInOut)
                      animations:^{
-//                         if (_ifLoadingLogoShowing) {
-//                             _loadingLogo.center = CGPointMake(-_loadingLogo.center.x, _loadingLogo.center.y);
-                             _loadingLogo.alpha = 0.0;
-//                         }
+                         _loadingLogo.alpha = 0.0;
                          _contentView.transform = CGAffineTransformIdentity;
                          _contentView.alpha = 1.0;
-//                         _contentView.center = centerPoint;
                      } completion:^(BOOL finished) {
                          _ifLoadingLogoShowing = NO;
                          _loadingLogo.hidden = YES;
-                         //                         [self addSubview:_contentView];
-                         //                         NSLog(@"_contentView.center.x :%f, y:%f",_contentView.center.x,_contentView.center.y);
                          
                      }];
 }
 
 
-//- (void)addRealtimeView:(id)data
-//{
-//    _chartLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, outlineViewWidth, 30)];
-//    _chartLabel.text = (NSString *)data[_dataType]?(NSString *)data[_dataType]: @"Line Chart";
-//    _chartLabel.textColor = [UIColor blackColor];
-//    _chartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:24.0];
-//    _chartLabel.textAlignment = NSTextAlignmentLeft;
-//    
-//    [_contentView addSubview:_chartLabel];
-////    访客群体分析
-////    成交
-////    来源渠道
-////    城市分布
-////    TOP5页面
-//    _realtimevisitorGroupLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 3 + _chartLabel.frame.origin.y +_chartLabel.frame.size.height, outlineViewWidth, 30)];
-//    _realtimevisitorGroupLabel.text =@"访客群体分析";
-//    _realtimevisitorGroupLabel.textColor = PNDeepGrey;
-//    _realtimevisitorGroupLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:18.0];
-//    _realtimevisitorGroupLabel.textAlignment = NSTextAlignmentLeft;
-//
-//    _realtimeDealLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 3 + _realtimevisitorGroupLabel.frame.origin.y +_realtimevisitorGroupLabel.frame.size.height, outlineViewWidth, 30)];
-//    _realtimeDealLabel.text =@"成交";
-//    _realtimeDealLabel.textColor = PNDeepGrey;
-//    _realtimeDealLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:18.0];
-//    _realtimeDealLabel.textAlignment = NSTextAlignmentLeft;
-//    
-//    _realtimeSourceLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 3 + _realtimeDealLabel.frame.origin.y +_realtimeDealLabel.frame.size.height, outlineViewWidth, 30)];
-//    _realtimeSourceLabel.text =@"来源渠道";
-//    _realtimeSourceLabel.textColor = PNDeepGrey;
-//    _realtimeSourceLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:18.0];
-//    _realtimeSourceLabel.textAlignment = NSTextAlignmentLeft;
-//    
-//    _realtimeCityLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 3 + _realtimeSourceLabel.frame.origin.y +_realtimeSourceLabel.frame.size.height, outlineViewWidth, 30)];
-//    _realtimeCityLabel.text =@"城市分布";
-//    _realtimeCityLabel.textColor = PNDeepGrey;
-//    _realtimeCityLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:18.0];
-//    _realtimeCityLabel.textAlignment = NSTextAlignmentLeft;
-//    
-//    _realtimeTop5Label = [[UILabel alloc] initWithFrame:CGRectMake(20, 3 + _realtimeCityLabel.frame.origin.y +_realtimeCityLabel.frame.size.height, outlineViewWidth, 30)];
-//    _realtimeTop5Label.text =@"TOP5页面";
-//    _realtimeTop5Label.textColor = PNDeepGrey;
-//    _realtimeTop5Label.font = [UIFont fontWithName:@"Avenir-Medium" size:18.0];
-//    _realtimeTop5Label.textAlignment = NSTextAlignmentLeft;
-//    
-//    [_contentView addSubview:_realtimevisitorGroupLabel];
-//    [_contentView addSubview:_realtimeDealLabel];
-//    [_contentView addSubview:_realtimeSourceLabel];
-//    [_contentView addSubview:_realtimeCityLabel];
-//    [_contentView addSubview:_realtimeTop5Label];
-//
-//   NSMutableArray *ArrayOfValues = [[NSMutableArray alloc] init];
-//   NSMutableArray *ArrayOfDates = [[NSMutableArray alloc] init];
-//    
-//    totalNumber = 0;
-//    
-//    for (int i = 0; i < 9; i++) {
-//        [ArrayOfValues addObject:[NSNumber numberWithInteger:(arc4random() % 10000)]]; // Random values for the graph
-//        [ArrayOfDates addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:2000 + i]]]; // Dates for the X-Axis of the graph
-//        
-//        totalNumber = totalNumber + [[ArrayOfValues objectAtIndex:i] intValue]; // All of the values added together
-//    }
-//    
-//    //            self.ArrayOfValues = [[NSMutableArray alloc] initWithArray:@[@24444,@10000,@64213,@52341,@34445,@423,@81114,@22342,@33333]];
-//    
-//    /* This is commented out because the graph is created in the interface with this sample app. However, the code remains as an example for creating the graph using code. */
-//    
-//   BEMSimpleLineGraphView *lineGraph = [[BEMSimpleLineGraphView alloc] initWithFrame:CGRectMake(0, 3.0+_realtimeTop5Label.frame.origin.y +_realtimeTop5Label.frame.size.height, outlineViewWidth, 30.0)];
-//    lineGraph.delegate = self;
-//    lineGraph.dataSource = self;
-//    
-//    lineGraph.backgroundColor = [UIColor clearColor];
-//    
-//    // Customization of the graph
-//    
-//    lineGraph.colorLine = [UIColor colorWithRed:31.0/255.0 green:187.0/255.0 blue:166.0/255.0 alpha:1.0];
-//    
-//    lineGraph.colorXaxisLabel = [UIColor clearColor];
-//    lineGraph.colorYaxisLabel = [UIColor clearColor];
-//    lineGraph.widthLine = 1.5;
-//    lineGraph.enableTouchReport = YES;
-//    lineGraph.enablePopUpReport = YES;
-//    lineGraph.enableBezierCurve = YES;
-//    
-//    lineGraph.enableYAxisLabel = NO;
-//    lineGraph.enableReferenceAxisLines = NO;
-//    
-//    lineGraph.autoScaleYAxis = YES;
-//    lineGraph.alwaysDisplayDots = NO;
-//    lineGraph.enableReferenceAxisLines = NO;
-//    lineGraph.enableReferenceAxisFrame = YES;
-//    lineGraph.animationGraphStyle = BEMLineAnimationDraw;
-//    
-//    lineGraph.colorTop = [UIColor whiteColor];
-//    lineGraph.colorBottom = [UIColor whiteColor];
-//    //            self.myGraph.backgroundColor = [UIColor whiteColor];
-//    self.tintColor = [UIColor whiteColor];
-//    
-//    [_contentView addSubview:lineGraph];
-//    
-//}
+
 #pragma mark - reloadRealTimeData
 - (void)reloadRealTimeData:(NSDictionary *)info
 {
-    if ((realTimeOutlineView *)_contentView) {
-    [((realTimeOutlineView *)_contentView) relodData:info];
+    if (_realTimeView) {
+        [_realTimeView relodData:info];
     }
 }
 

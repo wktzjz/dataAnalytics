@@ -12,6 +12,7 @@
 #import "PNLineChartDataItem.h"
 #import "BEMSimpleLineGraphView.h"
 
+#import "realTimeOutlineView.h"
 #import "visitorGroupOutlineView.h"
 #import "pageAnalyticsOutlineView.h"
 #import "sourceAnalyticsOutlineView.h"
@@ -57,6 +58,7 @@ typedef NS_ENUM(NSUInteger, inViewType) {
 @property (nonatomic,strong) PNCircleChart *circleChart;
 @property (nonatomic,strong) PNPieChart *pieChart;
 @property (nonatomic,strong) BEMSimpleLineGraphView *myGraph;
+@property (nonatomic,strong) realTimeOutlineView *realTimeView;
 @property (nonatomic,strong) visitorGroupOutlineView *visitorGroupView;
 @property (nonatomic,strong) pageAnalyticsOutlineView *pageView;
 @property (nonatomic,strong) sourceAnalyticsOutlineView *sourceView;

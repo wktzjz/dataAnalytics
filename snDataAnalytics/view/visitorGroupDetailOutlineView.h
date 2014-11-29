@@ -8,16 +8,6 @@
 
 #import "labelLineChartView.h"
 
-//typedef NS_ENUM(NSUInteger, vistorGroupIndexType) {
-//    outlineTypeRealTime = 0,
-//    outlineTypePie,
-//    outlineTypeCircle,
-//    outlineTypeLine,
-//    outlineTypeBar,
-//    //    outlineTypeCircle,
-//    //    outlineTypePie,
-//    outlineTypeLine1,
-//};
 
 typedef void(^viewClicked)(NSInteger markers);
 

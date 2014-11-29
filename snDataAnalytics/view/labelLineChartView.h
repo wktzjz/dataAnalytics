@@ -13,16 +13,16 @@ typedef void(^viewClicked)(NSInteger markers);
 
 @interface labelLineChartView : UIView <BEMSimpleLineGraphDataSource,BEMSimpleLineGraphDelegate>
 
-@property (nonatomic) BEMSimpleLineGraphView *lineGraph;
-@property (nonatomic) CGFloat                lineGraphHeight;
-@property (nonatomic) NSMutableArray         *arrayOfValues;
-@property (nonatomic) NSMutableArray         *arrayOfDates;
-@property (nonatomic) NSString               *labelString;
-@property (nonatomic) NSNumber               *labelNumber;
-@property (nonatomic) UILabel                *label;
-@property (nonatomic) UILabel                *numberLabel;
-@property (nonatomic) BOOL                   shouldReferencedLinesShow;
-@property (nonatomic) NSInteger              viewMarker;
+@property (nonatomic, strong) BEMSimpleLineGraphView *lineGraph;
+@property (nonatomic) CGFloat                        lineGraphHeight;
+@property (nonatomic, strong) NSMutableArray         *arrayOfValues;
+@property (nonatomic, strong) NSMutableArray         *arrayOfDates;
+@property (nonatomic, strong) NSString               *labelString;
+@property (nonatomic, strong) NSNumber               *labelNumber;
+@property (nonatomic, strong) UILabel                *label;
+@property (nonatomic, strong) UILabel                *numberLabel;
+@property (nonatomic) BOOL                           shouldReferencedLinesShow;
+@property (nonatomic) NSInteger                      viewMarker;
 
 @property (nonatomic, copy) viewClicked viewClickedBlock;
 

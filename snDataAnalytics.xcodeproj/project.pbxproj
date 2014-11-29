@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		350BCFF11A284FFD000EA574 /* detailOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 350BCFF01A284FFD000EA574 /* detailOutlineView.m */; };
 		3522246519C2C73D0048F57C /* pop-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3522243419C2C73D0048F57C /* pop-Info.plist */; };
 		3522246619C2C73D0048F57C /* POPAnimatableProperty.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3522243919C2C73D0048F57C /* POPAnimatableProperty.mm */; };
 		3522246719C2C73D0048F57C /* POPAnimation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3522243B19C2C73D0048F57C /* POPAnimation.mm */; };
@@ -203,6 +204,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		350BCFEF1A284FFD000EA574 /* detailOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = detailOutlineView.h; path = view/detailOutlineView.h; sourceTree = "<group>"; };
+		350BCFF01A284FFD000EA574 /* detailOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = detailOutlineView.m; path = view/detailOutlineView.m; sourceTree = "<group>"; };
 		3522243419C2C73D0048F57C /* pop-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "pop-Info.plist"; path = "pop/pop-Info.plist"; sourceTree = "<group>"; };
 		3522243519C2C73D0048F57C /* pop-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "pop-Prefix.pch"; path = "pop/pop-Prefix.pch"; sourceTree = "<group>"; };
 		3522243619C2C73D0048F57C /* POP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = POP.h; path = pop/POP.h; sourceTree = "<group>"; };
@@ -541,6 +544,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		350BCFEE1A284FE5000EA574 /* DetailOutlineView */ = {
+			isa = PBXGroup;
+			children = (
+				350BCFEF1A284FFD000EA574 /* detailOutlineView.h */,
+				350BCFF01A284FFD000EA574 /* detailOutlineView.m */,
+			);
+			name = DetailOutlineView;
+			sourceTree = "<group>";
+		};
 		3522243219C2C6570048F57C /* Pop */ = {
 			isa = PBXGroup;
 			children = (
@@ -966,6 +978,7 @@
 				35945CDE19E667EE00BF5EC3 /* visitorGroupViews */,
 				3550C3B51A19C89B00402F33 /* sourceAnalyticsOutlineView */,
 				35945CE819E8C16900BF5EC3 /* pageAnalyticsViews */,
+				350BCFEE1A284FE5000EA574 /* DetailOutlineView */,
 				357E45E019FD4F6500719A2A /* otherViews */,
 				353FCE6919D951BC00072431 /* buttons */,
 			);
@@ -1690,6 +1703,7 @@
 				35D397E719FF2F910014B377 /* NSObject+TLYSwizzlingHelpers.m in Sources */,
 				35AE1AC41A10B3A800167096 /* UIColor+BFPaperColors.m in Sources */,
 				3522247319C2C73D0048F57C /* POPMath.mm in Sources */,
+				350BCFF11A284FFD000EA574 /* detailOutlineView.m in Sources */,
 				3522246819C2C73D0048F57C /* POPAnimationEvent.mm in Sources */,
 				35D397F31A0084EF0014B377 /* labelLineChartView.m in Sources */,
 				35945D3B19E8C45600BF5EC3 /* wkBlurPopoverTransitionController.m in Sources */,

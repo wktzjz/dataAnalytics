@@ -54,13 +54,13 @@ static NSString *const dataDidInitialize = @"realTimeDataDidInitialize";
 - (void)getInitializedRealTimeDeatilsData
 {
     void (^successefullyBlock)(NSDictionary *) = ^(NSDictionary *data) {
-        _groupUV = arc4random() % 20000;
+        _groupUV      = arc4random() % 20000;
         _validUVRatio = ((arc4random() % 500) + 500) / 1000.0;
         _validGroupUV = _groupUV * _validUVRatio;
-        _visit = arc4random() % 100000;
+        _visit        = arc4random() % 100000;
 
-        _dealMoney = arc4random() % 20000;
-        _validDealNumber = (arc4random() % 1000);
+        _dealMoney               = arc4random() % 20000;
+        _validDealNumber         = (arc4random() % 1000);
         _validDealTransformRatio = ((arc4random() % 1000)/1000.0) * 100;
         
         _groupPercentArray      = [[NSMutableArray alloc] initWithArray:@[@(arc4random() % 100),
@@ -97,38 +97,23 @@ static NSString *const dataDidInitialize = @"realTimeDataDidInitialize";
         _validSourceUVColorArray = @[[UIColor robinEggColor],[UIColor pastelBlueColor],[UIColor turquoiseColor],[UIColor steelBlueColor],[UIColor denimColor],[UIColor emeraldColor],[UIColor cardTableColor]];
         
         _arrayOfValues = [[NSMutableArray alloc] init];
-        _arrayOfDates = [[NSMutableArray alloc] init];
-        _sendDict = [[NSDictionary alloc] init];
+        _arrayOfDates  = [[NSMutableArray alloc] init];
+        _sendDict      = [[NSDictionary alloc] init];
         
         realTimeModel *strongSelf = _wself;
-        
-        NSMutableArray *array1 = [[NSMutableArray alloc] init];
-        NSMutableArray *array2 = [[NSMutableArray alloc] init];
-        NSMutableArray *array3 = [[NSMutableArray alloc] init];
-        NSMutableArray *array4 = [[NSMutableArray alloc] init];
-        NSMutableArray *array5 = [[NSMutableArray alloc] init];
-        NSMutableArray *array6 = [[NSMutableArray alloc] init];
-        NSMutableArray *array7 = [[NSMutableArray alloc] init];
-        NSMutableArray *array8 = [[NSMutableArray alloc] init];
 
         [_arrayOfValues removeAllObjects];
         for (int i = 0; i < 20; i++) {
             [_arrayOfDates addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:i]]];
             
             [_arrayOfValues addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-//            [array1 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-//            [array2 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-//            [array3 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-//            [array4 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-//            [array5 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-//            [array6 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-//            [array7 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-//            [array8 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-            
-            // Random values for the graph
         }
-        NSArray *parallelArray = @[array1,array2,array3,array4,array5,array6,array7,array8];
         
+        NSMutableArray *parallelArray = [[NSMutableArray alloc] initWithCapacity:8];
+        for(int i = 0; i < 8; i++){
+            [parallelArray addObject:[[NSMutableArray alloc] init]];
+        }
+    
         dispatch_apply(8, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t index) {
             [strongSelf addNumberToArray:parallelArray[index]];
         });
@@ -150,17 +135,17 @@ static NSString *const dataDidInitialize = @"realTimeDataDidInitialize";
                             @"pagesNameArray":_pagesNameArray,
                             @"pagesValueArray":_pagesValueArray,
                             @"arrayOfDates":_arrayOfDates,
-                            @"UV_arrayOfValues":array1,
-                            @"PV_arrayOfValues":array2,
-                            @"Visitor_arrayOfValues":array3,
-                            @"新UV_arrayOfValues":array4,
-                            @"有效UV_arrayOfValues":array5,
-                            @"付款金额_arrayOfValues":array6,
-                            @"有效订单数_arrayOfValues":array7,
-                            @"有效订单转化率_arrayOfValues":array8,
+                            @"UV_arrayOfValues":parallelArray[0],
+                            @"PV_arrayOfValues":parallelArray[1],
+                            @"VISIT_arrayOfValues":parallelArray[2],
+                            @"新UV_arrayOfValues":parallelArray[3],
+                            @"有效UV_arrayOfValues":parallelArray[4],
+                            @"付款金额_arrayOfValues":parallelArray[5],
+                            @"有效订单数_arrayOfValues":parallelArray[6],
+                            @"有效订单转化率_arrayOfValues":parallelArray[7],
                             @"UV_number":@(arc4random() % 20000),
                             @"PV_number":@(arc4random() % 20000),
-                            @"Visitor_number":@(arc4random() % 20000),
+                            @"VISIT_number":@(arc4random() % 20000),
                             @"新UV_number":@(arc4random() % 10000),
                             @"有效UV_number":@(arc4random() % 2000),
                             @"付款金额_number":@(arc4random() % 20000),
@@ -189,6 +174,7 @@ static NSString *const dataDidInitialize = @"realTimeDataDidInitialize";
         //            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         _timer = [NSTimer scheduledTimerWithTimeInterval:6.0f target:strongSelf selector:@selector(getNewData) userInfo:nil repeats:YES];
         [[NSRunLoop currentRunLoop] run];
+        
         //            });
         //             [NSThread detachNewThreadSelector:@selector(startTimer) toTarget:self withObject:nil];
         
@@ -199,12 +185,6 @@ static NSString *const dataDidInitialize = @"realTimeDataDidInitialize";
     }successedBlock:^(NSDictionary *data) {
         successefullyBlock(data);
     }];
-}
-
-- (void)startTimer
-{
-    _timer = [NSTimer scheduledTimerWithTimeInterval:6.0f target:self selector:@selector(getNewData) userInfo:nil repeats:YES];
-    [[NSRunLoop currentRunLoop] run];
 }
 
 - (void)getNewData
@@ -246,29 +226,15 @@ static NSString *const dataDidInitialize = @"realTimeDataDidInitialize";
                                                                            @(arc4random() % 100),
                                                                            @(arc4random() % 100)]];
 
-         NSMutableArray *array1 = [[NSMutableArray alloc] init];
-         NSMutableArray *array2 = [[NSMutableArray alloc] init];
-         NSMutableArray *array3 = [[NSMutableArray alloc] init];
-         NSMutableArray *array4 = [[NSMutableArray alloc] init];
-         NSMutableArray *array5 = [[NSMutableArray alloc] init];
-         NSMutableArray *array6 = [[NSMutableArray alloc] init];
-         NSMutableArray *array7 = [[NSMutableArray alloc] init];
-         NSMutableArray *array8 = [[NSMutableArray alloc] init];
-         NSArray *parallelArray = @[array1,array2,array3,array4,array5,array6,array7,array8];
+         
+         NSMutableArray *parallelArray = [[NSMutableArray alloc] initWithCapacity:8];
+         for(int i = 0; i < 8; i++){
+             [parallelArray addObject:[[NSMutableArray alloc] init]];
+         }
          
          [_arrayOfValues removeAllObjects];
          for (int i = 0; i < 20; i++) {
              [_arrayOfValues addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-//             [array1 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-//             [array2 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-//             [array3 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-//             [array4 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-//             [array5 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-//             [array6 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-//             [array7 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-//             [array8 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-
-             // Random values for the graph
          }
          
          //同步的并行处理
@@ -282,7 +248,7 @@ static NSString *const dataDidInitialize = @"realTimeDataDidInitialize";
                        @"validGroupUV":@(_validGroupUV),
                        @"groupPercentArray":_groupPercentArray,
                        @"groupValidPercentArray":_groupValidPercentArray,
-                       @"cityNameArray":_cityNameArray,
+                       @"cityNameArray" :_cityNameArray,
                        @"cityValueArray":_cityValueArray,
                        @"pagesNameArray":_pagesNameArray,
                        @"pagesValueArray":_pagesValueArray,
@@ -291,17 +257,17 @@ static NSString *const dataDidInitialize = @"realTimeDataDidInitialize";
                        @"dealMoney":@(_dealMoney),
                        @"validDealNumber":@(_validDealNumber),
                        @"validDealTransformRatio":@(_validDealTransformRatio),
-                       @"UV_arrayOfValues":array1,
-                       @"PV_arrayOfValues":array2,
-                       @"Visitor_arrayOfValues":array3,
-                       @"新UV_arrayOfValues":array4,
-                       @"有效UV_arrayOfValues":array5,
-                       @"付款金额_arrayOfValues":array6,
-                       @"有效订单数_arrayOfValues":array7,
-                       @"有效订单转化率_arrayOfValues":array8,
+                       @"UV_arrayOfValues":parallelArray[0],
+                       @"PV_arrayOfValues":parallelArray[1],
+                       @"VISIT_arrayOfValues":parallelArray[2],
+                       @"新UV_arrayOfValues":parallelArray[3],
+                       @"有效UV_arrayOfValues":parallelArray[4],
+                       @"付款金额_arrayOfValues":parallelArray[5],
+                       @"有效订单数_arrayOfValues":parallelArray[6],
+                       @"有效订单转化率_arrayOfValues":parallelArray[7],
                        @"UV_number":@(arc4random() % 20000),
                        @"PV_number":@(arc4random() % 20000),
-                       @"Visitor_number":@(arc4random() % 20000),
+                       @"VISIT_number":@(arc4random() % 20000),
                        @"新UV_number":@(arc4random() % 10000),
                        @"有效UV_number":@(arc4random() % 2000),
                        @"付款金额_number":@(arc4random() % 20000),

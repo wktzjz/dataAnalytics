@@ -115,20 +115,14 @@ static NSString *const dataDidInitialize = @"visitorGroupDataDidInitialize";
         NSMutableArray *array7 = [[NSMutableArray alloc] init];
         NSMutableArray *array8 = [[NSMutableArray alloc] init];
         
-        NSArray *parallelArray = @[array1,array2,array3,array4,array5,array6,array7,array8];
+        NSMutableArray *parallelArray = [[NSMutableArray alloc] initWithCapacity:8];
+        for(int i = 0; i < 8; i++){
+            [parallelArray addObject:[[NSMutableArray alloc] init]];
+        }
+
         for (int i = 0; i < 20; i++) {
             [_arrayOfDates addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:i]]];
             
-            //                [array1 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-            //                [array2 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-            //                [array3 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-            //                [array4 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-            //                [array5 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-            //                [array6 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-            //                [array7 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-            //                [array8 addObject:[NSNumber numberWithInteger:(arc4random() % 100)]];
-            
-            // Random values for the graph
         }
         
         //同步并行处理数据
@@ -143,14 +137,14 @@ static NSString *const dataDidInitialize = @"visitorGroupDataDidInitialize";
 //                            @"groupPercentArray":_groupPercentArray,
 //                            @"groupColorArray":_groupColorArray,
                             @"arrayOfDates":_arrayOfDates,
-                            @"UV_arrayOfValues":array1,
-                            @"PV_arrayOfValues":array2,
-                            @"VISIT_arrayOfValues":array3,
-                            @"新UV_arrayOfValues":array4,
-                            @"有效UV_arrayOfValues":array5,
-                            @"平均页面停留时间_arrayOfValues":array6,
-                            @"提交订单转化率_arrayOfValues":array7,
-                            @"有效订单转化率_arrayOfValues":array8,
+                            @"UV_arrayOfValues":parallelArray[0],
+                            @"PV_arrayOfValues":parallelArray[1],
+                            @"VISIT_arrayOfValues":parallelArray[2],
+                            @"新UV_arrayOfValues":parallelArray[3],
+                            @"有效UV_arrayOfValues":parallelArray[4],
+                            @"平均页面停留时间_arrayOfValues":parallelArray[5],
+                            @"提交订单转化率_arrayOfValues":parallelArray[6],
+                            @"有效订单转化率_arrayOfValues":parallelArray[7],
                             @"UV_number":@(arc4random() % 20000),
                             @"PV_number":@(arc4random() % 20000),
                             @"VISIT_number":@(arc4random() % 20000),

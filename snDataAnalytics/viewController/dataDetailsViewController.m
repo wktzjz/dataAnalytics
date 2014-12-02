@@ -39,12 +39,13 @@
 
 #import "visitorGroupModel.h"
 #import "sourcesAnalyticsModel.h"
+#import "pageAnalyticsModel.h"
 #import "lineChartDetailsViewController.h"
-
 #import "lineChartDetailsViewFactory.h"
 #import "timeView.h"
 
 #import "detailOutlineView.h"
+#import "notificationDefine.h"
 
 
 const static CGFloat titleViewHeight = 44.0f;
@@ -61,10 +62,6 @@ const static CGFloat itemsViewHeight = 145.0f;
 
 @implementation dataDetailsViewController
 {
-    detailOutlineView *_realTimeView;
-    detailOutlineView *_visitorGroupView;
-    detailOutlineView *_sourceAnalyticsView;
-    
     int previousStepperValue;
     int totalNumber;
     
@@ -97,6 +94,11 @@ const static CGFloat itemsViewHeight = 145.0f;
     timeView *_timeView;
     
     id _outlineViewData;
+    detailOutlineView *_realTimeView;
+    detailOutlineView *_visitorGroupView;
+    detailOutlineView *_sourceAnalyticsView;
+    detailOutlineView *_pageAnalyticsView;
+    NSMutableArray    *_detailOutlineViewArray;
     
 //    test *testInstance;
 }
@@ -129,6 +131,7 @@ const static CGFloat itemsViewHeight = 145.0f;
         
         _outlineViewData = data;
         self.view.frame = frame;
+        _detailOutlineViewArray = [[NSMutableArray alloc] initWithCapacity:5];
 //        self.view.backgroundColor = [UIColor clearColor];
     }
     return self;
@@ -163,7 +166,7 @@ const static CGFloat itemsViewHeight = 145.0f;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleRealTimeDataDidChange:)
-                                                 name:dataDidChange object:nil];
+                                                 name:realTimeDataDidChange object:nil];
     
     UILongPressGestureRecognizer* _longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:overlay action:@selector(longPressDetected:)];
     [self.scrollView setUserInteractionEnabled:YES];
@@ -235,7 +238,7 @@ const static CGFloat itemsViewHeight = 145.0f;
 - (void)removeObservers
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:dataDidChange
+                                                    name:realTimeDataDidChange
                                                   object:nil];
 }
 
@@ -441,6 +444,8 @@ const static CGFloat itemsViewHeight = 145.0f;
         [_scrollView setContentSize:CGSizeMake(0, 2100)];
     }else if(_dataVisualizedType == outlineSource){
          [_scrollView setContentSize:CGSizeMake(0, 2030)];
+    }else if(_dataVisualizedType == outlinePageAnalytics){
+        [_scrollView setContentSize:CGSizeMake(0, 1230)];
     }else{
         [_scrollView setContentSize:CGSizeMake(0, 1650)];
     }
@@ -478,10 +483,12 @@ const static CGFloat itemsViewHeight = 145.0f;
     
     }else if (_dataVisualizedType == outlinePageAnalytics) {
         
-        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlinePageAnalytics data:nil inControllerType:detailView];
-        _dataContentView.backgroundColor = [UIColor whiteColor];
-        [_scrollView addSubview:_dataContentView];
-        self.viewTitleString = @"页面分析";
+//        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlinePageAnalytics data:nil inControllerType:detailView];
+//        _dataContentView.backgroundColor = [UIColor whiteColor];
+//        [_scrollView addSubview:_dataContentView];
+//        self.viewTitleString = @"页面分析";
+        
+        [self addPageAnalyticsDetailsViewWithFrame:CGRectMake(marginX, marginY, width, height) withData:data];
         
     }else if (_dataVisualizedType == outlineHotCity) {
         //Add BarChart
@@ -515,6 +522,7 @@ const static CGFloat itemsViewHeight = 145.0f;
         [_scrollView addSubview:dataContentView1];
         [_scrollView addSubview:dataContentView2];
     }
+    
 }
 
 - (void)addTimeView
@@ -597,14 +605,14 @@ const static CGFloat itemsViewHeight = 145.0f;
     }
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        [[visitorGroupModel sharedInstance] initDefineDetails];
-        [[visitorGroupModel sharedInstance] initDetailsData];
+        [[visitorGroupModel sharedInstance] createDefineDetails];
+        [[visitorGroupModel sharedInstance] createDetailsData];
     });
 }
 
 - (void)addSourceAnalyticsDetailsViewWithFrame:(CGRect)frame withData:(id)data
 {
-    _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(_marginX, _marginY, _width, _height) dataType:outlineSource data:data inControllerType:detailView];
+    _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(_marginX, _marginY, _width, _height - 70.0) dataType:outlineSource data:data inControllerType:detailView];
     [_scrollView addSubview:_dataContentView];
     
     double delayInSeconds = 0.5;
@@ -634,10 +642,82 @@ const static CGFloat itemsViewHeight = 145.0f;
     }
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        [[sourcesAnalyticsModel sharedInstance] initDefineDetails];
-        [[sourcesAnalyticsModel sharedInstance] initDetailsData];
+        [[sourcesAnalyticsModel sharedInstance] createDefineDetails];
+        [[sourcesAnalyticsModel sharedInstance] createDetailsData];
     });
 }
+
+- (void)addPageAnalyticsDetailsViewWithFrame:(CGRect)frame withData:(id)data
+{
+    _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(_marginX, _marginY, _width, _height - 140.0) dataType:outlinePageAnalytics data:data inControllerType:detailView];
+    [_scrollView addSubview:_dataContentView];
+    
+    double delayInSeconds = 0.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    
+    __weak typeof(self) weakself = self;
+    dispatch_after(popTime, dispatch_get_main_queue(), ^{
+        typeof(weakself) strongSelf = weakself;
+        
+        _pageAnalyticsView = [[detailOutlineView alloc] initWithFrame:CGRectMake(_marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, _width, _height * 3.5) viewType:outlinePageAnalytics];
+        
+        if (_initializedDataReady) {
+            [_pageAnalyticsView initViewsWithData:_initializedData];
+        }
+        
+        _pageAnalyticsView.viewClickedBlock = ^(NSInteger markers) {
+            [strongSelf handleLineViewClicked:markers fromView:outlinePageAnalytics];
+        };
+        
+        [_scrollView addSubview:_pageAnalyticsView];
+    });
+    
+    _ifHasDetailsView = YES;
+    
+    if ([_viewTitleString isEqual: @"Details"]) {
+        self.viewTitleString = @"页面分析";
+    }
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        [[pageAnalyticsModel sharedInstance] createDefineDetails];
+        [[pageAnalyticsModel sharedInstance] createDetailsData];
+    });
+}
+
+//- (void)addDetailOutlineViewWithType:(viewType)type
+//{
+//    double delayInSeconds = 0.5;
+//    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+//    
+//    __weak typeof(self) weakself = self;
+//    dispatch_after(popTime, dispatch_get_main_queue(), ^{
+//        typeof(weakself) strongSelf = weakself;
+//        
+//        _pageAnalyticsView = [[detailOutlineView alloc] initWithFrame:CGRectMake(_marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, _width, _height * 2) viewType:outlinePageAnalytics];
+//        
+//        if (_initializedDataReady) {
+//            [_pageAnalyticsView initViewsWithData:_initializedData];
+//        }
+//        
+//        _pageAnalyticsView.viewClickedBlock = ^(NSInteger markers) {
+//            [strongSelf handleLineViewClicked:markers fromView:outlinePageAnalytics];
+//        };
+//        
+//        [_scrollView addSubview:_pageAnalyticsView];
+//    });
+//    
+//    _ifHasDetailsView = YES;
+//    
+//    if ([_viewTitleString isEqual: @"Details"]) {
+//        self.viewTitleString = @"页面分析";
+//    }
+//    
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+//        [[pageAnalyticsModel sharedInstance] createDefineDetails];
+//        [[pageAnalyticsModel sharedInstance] createDetailsData];
+//    });
+//
+//}
 
 #pragma mark handleVisitorGroupLineViewClicked
 - (void)handleLineViewClicked:(NSInteger)markers fromView:(viewType)type
@@ -646,7 +726,7 @@ const static CGFloat itemsViewHeight = 145.0f;
     
     lineChartDetailsViewController *vc = [[lineChartDetailsViewFactory sharedInstance] getControllerFromView:type detailsType:markers];
 
-    
+                  
     __weak typeof(self) weakSelf = self;
     vc.dismissBlock = ^{
         typeof(weakSelf) strongSelf = weakSelf;

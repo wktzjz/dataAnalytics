@@ -70,7 +70,7 @@
 
 - (void)addVisitorPieChart
 {
-    _visitorLabel = [[UILabel alloc] initWithFrame:CGRectMake(_marginX + 10.0 , 10 + _chartLabel.frame.origin.y + _chartLabel.frame.size.height, outlineViewWidth/2, 30)];
+    _visitorLabel = [[UILabel alloc] initWithFrame:CGRectMake(_marginX, 10 + _chartLabel.frame.origin.y + _chartLabel.frame.size.height, outlineViewWidth/2, 30)];
     _visitorLabel.text = @"VISIT:";
     _visitorLabel.textColor = PNDeepGrey;
     _visitorLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:18.0];
@@ -113,7 +113,7 @@
 
 - (void)addValidUVBarChart
 {
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(70 + _visitorLabel.frame.size.width + 10, 10 + _chartLabel.frame.origin.y + _chartLabel.frame.size.height, outlineViewWidth, 30)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(80 + _visitorLabel.frame.size.width + 10, 10 + _chartLabel.frame.origin.y + _chartLabel.frame.size.height, outlineViewWidth, 30)];
     label.text = @"有效UV:";
     label.textColor = PNDeepGrey;
     label.font = [UIFont fontWithName:@"Avenir-Medium" size:18.0];

@@ -23,7 +23,7 @@
 
 @property (nonatomic, strong) NSMutableArray *sourcesStringArray;
 
-- (id)initWithFrame:(CGRect)frame withData:(NSDictionary *)data;
+- (instancetype)initWithFrame:(CGRect)frame withData:(NSDictionary *)data;
 - (void)modifyPageViewWithData:(NSDictionary *)data;
 
 

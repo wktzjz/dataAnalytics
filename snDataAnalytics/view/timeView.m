@@ -187,11 +187,11 @@
     _fromTimeArray[1] = @(month);
     _fromTimeArray[0] = @(year);
     
-    _fromString = [NSString stringWithFormat:@"%i年%i月%i日",((NSNumber *)_fromTimeArray[0]).intValue,((NSNumber *)_fromTimeArray[1]).intValue,((NSNumber *)_fromTimeArray[2]).intValue];
+    _fromString = [NSString stringWithFormat:@"%li年%li月%li日",year,month,day];
     NSLog(@"fromDate:%@",_fromString);
 
-    _fromDay.text = [NSString stringWithFormat:@"%i",((NSNumber *)_fromTimeArray[2]).intValue];
-    _fromMonth.text = [NSString stringWithFormat:@"%i月\n%i", ((NSNumber *)_fromTimeArray[1]).intValue, ((NSNumber *)_fromTimeArray[0]).intValue];
+    _fromDay.text = [NSString stringWithFormat:@"%li",day];
+    _fromMonth.text = [NSString stringWithFormat:@"%li月\n%li", month, year];
 
 }
 
@@ -208,12 +208,12 @@
     _toTimeArray[1] = @(month);
     _toTimeArray[0] = @(year);
     
-    _toString = [NSString stringWithFormat:@"%i年%i月%i日",((NSNumber *)_toTimeArray[0]).intValue,((NSNumber *)_toTimeArray[1]).intValue,((NSNumber *)_toTimeArray[2]).intValue];
+    _toString = [NSString stringWithFormat:@"%li年%li月%li日",year,month,day];
     
     NSLog(@"toDate:%@",_toString);
 
-    _toDay.text = [NSString stringWithFormat:@"%i",((NSNumber *)_toTimeArray[2]).intValue];
-    _toMonth.text = [NSString stringWithFormat:@"%i月\n%i", ((NSNumber *)_toTimeArray[1]).intValue, ((NSNumber *)_toTimeArray[0]).intValue];
+    _toDay.text = [NSString stringWithFormat:@"%li",day];
+    _toMonth.text = [NSString stringWithFormat:@"%li月\n%li", month, year];
     CGSize size = [_toDay.text sizeWithFont:_toDay.font];
     CGRect r = _toDay.frame;
     r.size = size;

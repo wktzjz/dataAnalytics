@@ -10,8 +10,10 @@
 #import "networkManager.h"
 #import "PNColor.h"
 
-static NSString *const dataDidChange     = @"visitorGroupDataDidChanged";
-static NSString *const dataDidInitialize = @"visitorGroupDataDidInitialize";
+static NSString *const visitorGroupDataDidChange                  = @"visitorGroupDataDidChanged";
+static NSString *const visitorGroupDetailOutlineDataDidInitialize = @"visitorGroupDetailOutlineDataDidInitialize";
+static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGroupOutlineDataDidInitialize";
+
 
 @implementation visitorGroupModel
 {
@@ -69,7 +71,7 @@ static NSString *const dataDidInitialize = @"visitorGroupDataDidInitialize";
                          @"newVaildUVRatio":@((arc4random() % 1000) / 1000.0),
                          };
         
-        NSNotification *notification = [[NSNotification alloc] initWithName:@"visitorGruopOutlineDataInited" object:strongSelf userInfo:_outlineData];
+        NSNotification *notification = [[NSNotification alloc] initWithName:visitorGroupOutlineDataDidInitialize object:strongSelf userInfo:_outlineData];
 
         // 异步处理通知
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -82,17 +84,17 @@ static NSString *const dataDidInitialize = @"visitorGroupDataDidInitialize";
     [[networkManager sharedInstance] sendAsynchronousRequestWithURL:nil failureBlock:successefullyBlock successedBlock:successefullyBlock];
 }
 
-- (NSDictionary *)getDetailInitializeData
+- (NSDictionary *)getDetailOutlineData
 {
     if (!_detailInitializeData) {
-        [self createDetailInitializeData];
+        [self createDetailOutlineData];
         return _detailInitializeData;
     }else{
         return _detailInitializeData;
     }
 }
 
-- (void)createDetailInitializeData
+- (void)createDetailOutlineData
 {
     void (^successefullyBlock)(NSDictionary *) = ^(NSDictionary *data) {
         
@@ -157,7 +159,7 @@ static NSString *const dataDidInitialize = @"visitorGroupDataDidInitialize";
         
         _initializeDataReady = YES;
         
-        NSNotification *notification = [[NSNotification alloc] initWithName:dataDidInitialize object:strongSelf userInfo:_detailInitializeData];
+        NSNotification *notification = [[NSNotification alloc] initWithName:visitorGroupDetailOutlineDataDidInitialize object:strongSelf userInfo:_detailInitializeData];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [[NSNotificationQueue defaultQueue] enqueueNotification:notification
@@ -174,14 +176,14 @@ static NSString *const dataDidInitialize = @"visitorGroupDataDidInitialize";
 - (NSDictionary *)getDefineDetails
 {
     if (!_defineDetails) {
-        [self initDefineDetails];
+        [self createDefineDetails];
         return _defineDetails;
     }else{
         return _defineDetails;
     }
 }
 
-- (void)initDefineDetails
+- (void)createDefineDetails
 {
     NSArray *dimensionOptionsArray = @[@"访客类型",@"终端类型",@"整体会员",@"新会员",@"老会员",@"会员等级",@"城市分布"];
     NSArray *indexOptionsArray1 = @[@"UV",@"PV",@"VISIT",@"新UV",@"有效UV",@"平均页面停留时间",@"提交订单转化率",@"有效订单转化率"];
@@ -212,14 +214,14 @@ static NSString *const dataDidInitialize = @"visitorGroupDataDidInitialize";
 - (NSDictionary *)getDetailsData
 {
     if (!_detailsData) {
-        [self initDetailsData];
+        [self createDetailsData];
         return _detailsData;
     }else{
         return _detailsData;
     }
 }
 
-- (void)initDetailsData
+- (void)createDetailsData
 {
     NSMutableArray *array1 = [[NSMutableArray alloc] init];
     NSMutableArray *array2 = [[NSMutableArray alloc] init];
@@ -293,6 +295,42 @@ static NSString *const dataDidInitialize = @"visitorGroupDataDidInitialize";
                                 },
                         };
     
+}
+
+- (void)getDataFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate
+{
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:fromDate];
+    NSInteger day = [components day];
+    NSInteger month= [components month];
+    NSInteger year= [components year];
+    
+    NSString *fromDateString = [NSString stringWithFormat:@"%li-%li-%li",day,month,year];
+    NSLog(@"fromDate:%@",fromDateString);
+    
+    components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:fromDate];
+    day = [components day];
+    month= [components month];
+    year= [components year];
+    
+    NSString *toDateString = [NSString stringWithFormat:@"%li-%li-%li",day,month,year];
+    NSLog(@"toDate:%@",toDateString);
+    
+    void (^successefullyBlock)(NSDictionary *) = ^(NSDictionary *json){
+        visitorGroupModel *strongSelf = _wself;
+        
+        NSNotification *notification = [[NSNotification alloc] initWithName:visitorGroupDataDidChange object:strongSelf userInfo:_detailInitializeData];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationQueue defaultQueue] enqueueNotification:notification
+                                                       postingStyle:NSPostASAP
+                                                       coalesceMask:NSNotificationCoalescingOnName forModes:@[NSDefaultRunLoopMode]];
+        });
+    };
+    void (^failureBlock)(NSDictionary *) = ^(NSDictionary *json){
+        
+    };
+    
+    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:nil failureBlock:failureBlock successedBlock:successefullyBlock];
 }
 
 @end

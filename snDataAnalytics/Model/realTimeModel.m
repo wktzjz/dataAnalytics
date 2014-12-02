@@ -12,8 +12,8 @@
 #import "networkManager.h"
 #import "defines.h"
 
-static NSString *const dataDidChange     = @"realTimeDataDidChanged";
-static NSString *const dataDidInitialize = @"realTimeDataDidInitialize";
+static NSString *const realTimeDataDidChange            = @"realTimeDataDidChanged";
+static NSString *const realTimeOutlineDataDidInitialize = @"realTimeOutlineDataDidInitialize";
 
 
 @implementation realTimeModel
@@ -43,7 +43,7 @@ static NSString *const dataDidInitialize = @"realTimeDataDidInitialize";
         _wself = self;
         _initializeDataReady = NO;
         
-        [self getInitializedRealTimeDeatilsData];
+        [self getOutlineData];
     }
     return self;
 }
@@ -51,7 +51,7 @@ static NSString *const dataDidInitialize = @"realTimeDataDidInitialize";
 
 #pragma mark - getInitializedRealTimeDeatilsData
 
-- (void)getInitializedRealTimeDeatilsData
+- (void)getOutlineData
 {
     void (^successefullyBlock)(NSDictionary *) = ^(NSDictionary *data) {
         _groupUV      = arc4random() % 20000;
@@ -159,7 +159,7 @@ static NSString *const dataDidInitialize = @"realTimeDataDidInitialize";
 //            [[NSNotificationCenter defaultCenter] postNotificationName:dataDidInitialize object:strongSelf userInfo:_initializeData];
 //        });
         
-        NSNotification *notification = [[NSNotification alloc] initWithName:dataDidInitialize object:strongSelf userInfo:_initializeData];
+        NSNotification *notification = [[NSNotification alloc] initWithName:realTimeOutlineDataDidInitialize object:strongSelf userInfo:_initializeData];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [[NSNotificationQueue defaultQueue] enqueueNotification:notification
@@ -275,7 +275,7 @@ static NSString *const dataDidInitialize = @"realTimeDataDidInitialize";
                        @"有效订单转化率_number":@(arc4random() % 100)
                        };
          
-         NSNotification *notification = [[NSNotification alloc] initWithName:dataDidChange object:strongSelf userInfo:_sendDict];
+         NSNotification *notification = [[NSNotification alloc] initWithName:realTimeDataDidChange object:strongSelf userInfo:_sendDict];
          
          //这是同步处理通知
          //        [[NSNotificationQueue defaultQueue]

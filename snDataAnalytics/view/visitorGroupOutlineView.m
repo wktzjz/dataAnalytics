@@ -297,7 +297,7 @@
 
 }
 
-- (void)modifyGroupViewWithData:(NSDictionary *)data
+- (void)reloadViewWithData:(NSDictionary *)data
 {
     if (nil == data){
         return;

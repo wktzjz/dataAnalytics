@@ -157,7 +157,7 @@ const static CGFloat loadingAnimationDuration = 1.0f;
         
     }else if (dataType == outlinePageAnalytics) {
            
-           _pageView = [[pageAnalyticsOutlineView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+           _pageView = [[pageAnalyticsOutlineView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height) withData:data];
            [_contentView addSubview:_pageView];
            
            _pieChart = _pageView.pieChart;
@@ -505,7 +505,7 @@ const static CGFloat loadingAnimationDuration = 1.0f;
         if (type == outlineVisitorGroup) {
             _visitorGroupView.groupColorArray = colorArray;
             _visitorGroupView.groupPercentArray = percentArray;
-            [_visitorGroupView modifyGroupViewWithData:nil];
+            [_visitorGroupView reloadViewWithData:nil];
             
         }else if (type == outlinePageAnalytics) {
             _pageView.groupColorArray = colorArray;

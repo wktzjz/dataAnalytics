@@ -22,6 +22,6 @@
 @property (nonatomic) NSArray    *groupPercentArray;
 
 - (instancetype)initWithFrame:(CGRect)frame withData:(NSDictionary *)data;
-- (void)modifyGroupViewWithData:(NSDictionary *)data;
+- (void)reloadViewWithData:(NSDictionary *)data;
 
 @end

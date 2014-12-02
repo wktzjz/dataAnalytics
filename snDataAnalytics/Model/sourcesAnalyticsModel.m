@@ -9,6 +9,10 @@
 #import "sourcesAnalyticsModel.h"
 #import "networkManager.h"
 
+static NSString *const sourceAnalyticsDataDidChange                  = @"sourceAnalyticsDataDidChanged";
+static NSString *const sourceAnalyticsDetailOutlineDataDidInitialize = @"sourceAnalyticsDetailOutlineDataDidInitialize";
+static NSString *const sourceAnalyticsOutlineDataDidInitialize       = @"sourceAnalyticsOutlineDataDidInitialize";
+
 @implementation sourcesAnalyticsModel
 {
     __weak id      _wself;
@@ -48,14 +52,14 @@
 - (NSDictionary *)getDefineDetails
 {
     if (!_defineDetails) {
-        [self initDefineDetails];
+        [self createDefineDetails];
         return _defineDetails;
     }else{
         return _defineDetails;
     }
 }
 
-- (void)initDefineDetails
+- (void)createDefineDetails
 {
     NSArray *dimensionOptionsArray = @[@"硬广",@"导航",@"搜索",@"广告联盟",@"直接流量",@"EDM"];
     NSArray *indexOptionsArray = @[@"UV",@"PV",@"VISIT",@"新UV",@"有效UV",@"平均页面停留时间",@"提交订单转化率",@"有效订单转化率",@"间接订单数",@"间接订单转化率"];
@@ -91,7 +95,7 @@
                          @"groupValidPercentArray":_groupValidPercentArray,
                          };
         
-        NSNotification *notification = [[NSNotification alloc] initWithName:@"analyticsViewOutlineDataInited" object:strongSelf userInfo:_outlineData];
+        NSNotification *notification = [[NSNotification alloc] initWithName:sourceAnalyticsOutlineDataDidInitialize object:strongSelf userInfo:_outlineData];
         
         // 异步处理通知
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -104,17 +108,17 @@
     [[networkManager sharedInstance] sendAsynchronousRequestWithURL:nil failureBlock:successefullyBlock successedBlock:successefullyBlock];
 }
 
-- (NSDictionary *)getDetailInitializeData
+- (NSDictionary *)getDetailOutlineData
 {
     if (!_detailInitializeData) {
-        [self createDetailInitializeData];
+        [self createDetailOutlineData];
         return _detailInitializeData;
     }else{
         return _detailInitializeData;
     }
 }
 
-- (void)createDetailInitializeData
+- (void)createDetailOutlineData
 {
     void (^successefullyBlock)(NSDictionary *) = ^(NSDictionary *data) {
         
@@ -185,14 +189,14 @@
 - (NSDictionary *)getDetailsData
 {
     if (!_detailsData) {
-        [self initDetailsData];
+        [self createDetailsData];
         return _detailsData;
     }else{
         return _detailsData;
     }
 }
 
-- (void)initDetailsData
+- (void)createDetailsData
 {
     NSMutableArray *array1 = [[NSMutableArray alloc] init];
     NSMutableArray *array2 = [[NSMutableArray alloc] init];

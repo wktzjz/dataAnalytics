@@ -56,4 +56,10 @@ dispatch_async(dispatch_get_main_queue(), block);\
 #define detailViewHeight (wkScreenWidth * 240/280)
 #define detailViewUpMargin 50.0
 
+
+
+#define onExit\
+__strong void(^block)(void) __attribute__((cleanup(blockCleanUp), unused)) = ^
+
+
 #endif

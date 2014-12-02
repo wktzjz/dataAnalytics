@@ -26,8 +26,8 @@ typedef NS_ENUM(NSUInteger, visitorGroupControllerType) {
 
 + (instancetype)sharedInstance;
 
-- (lineChartDetailsViewController *)getControllerFromView:(viewType)viewType detailsType:(int)detailsType;
+- (lineChartDetailsViewController *)getControllerFromView:(viewType)viewType detailsType:(NSInteger)detailsType;
 
-- (lineChartDetailsViewController *)getVisitorGroupControllerByType:(visitorGroupControllerType)type;
+- (lineChartDetailsViewController *)getVisitorGroupControllerByType:(NSInteger)type;
 
 @end

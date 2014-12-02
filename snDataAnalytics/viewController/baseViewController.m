@@ -26,6 +26,8 @@
 #import "timeView.h"
 #import "THDatePickerViewController.h"
 #import "sourcesAnalyticsModel.h"
+#import "notificationDefine.h"
+#import "pageAnalyticsModel.h"
 
 
 typedef enum {
@@ -84,13 +86,15 @@ const static CGFloat titleViewHeight = 44.0f;
     id _realTimeInitData;
     id _visitorGroupInitData;
     id _sourceAnalyticsInitData;
-
+    id _pageAnalyticsInitData;
     
     BOOL _ifUseFlexibleBar;
     BOOL _statusBarShouldHide;
     
     BOOL _visitorGroupDetailsDataLoaded;
     BOOL _sourceAnalyticsDetailsDataLoaded;
+    BOOL _pageAnalyticsDetailsDataLoaded;
+
     
     LoadingView *_loadingView;
     
@@ -144,16 +148,19 @@ const static CGFloat titleViewHeight = 44.0f;
 //        [strongSelf addObservers];
         [[NSNotificationCenter defaultCenter] addObserver:strongSelf
                                                  selector:@selector(handleRealTimeDataDidInitialize:)
-                                                     name:dataDidInitialize object:nil];
+                                                     name:realTimeDataOutlineDidInitialize object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:strongSelf
                                                  selector:@selector(handleRealTimeDataDidChange:)
-                                                     name:dataDidChange object:nil];
+                                                     name:realTimeDataDidChange object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:strongSelf
                                                  selector:@selector(handleVisitorGroupOutlineDataDidInitialize:)
-                                                     name:@"visitorGruopOutlineDataInited" object:nil];
+                                                     name:visitorGroupOutlineDataDidInitialize object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:strongSelf
                                                  selector:@selector(handleSourceAnalyticsOutlineDataDidInitialize:)
-                                                     name:@"analyticsViewOutlineDataInited" object:nil];
+                                                     name:sourceAnalyticsOutlineDataDidInitialize object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:strongSelf
+                                                 selector:@selector(handlePageAnalyticsOutlineDataDidInitialize:)
+                                                     name:pageAnalyticsOutlineDataDidInitialize object:nil];
         
         
 //        NSMutableArray *test1 = [[NSMutableArray alloc] initWithArray:@[@1,@2]];
@@ -197,6 +204,7 @@ const static CGFloat titleViewHeight = 44.0f;
     _realTimeData =  [realTimeModel sharedInstance];
     [[visitorGroupModel sharedInstance] getOutlineData];
     [[sourcesAnalyticsModel sharedInstance] getOutlineData];
+    [[pageAnalyticsModel sharedInstance] getOutlineData];
 
 //    [[visitorGroupModel sharedInstance] initDetailsData];
 
@@ -347,7 +355,7 @@ const static CGFloat titleViewHeight = 44.0f;
 - (void)datePickerButtonClicked
 {
     __weak typeof(self) weakself = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         typeof(weakself) strongSelf = weakself;
         
         if (!_datePicker) {
@@ -390,7 +398,8 @@ const static CGFloat titleViewHeight = 44.0f;
         _timeView.fromTime = ((THDateDay *)selectedDays[(NSNumber *)arr[0]]).date;
         _timeView.toTime = ((THDateDay *)selectedDays[[arr lastObject]]).date;
         
-    }}
+    }
+}
 
 -(void)datePickerCancelPressed:(THDatePickerViewController *)datePicker
 {
@@ -404,7 +413,7 @@ const static CGFloat titleViewHeight = 44.0f;
     _scrollView1 = [[UIScrollView alloc] initWithFrame:CGRectMake(mainDataScrollViewMargin, 0 , wkScreenWidth - mainDataScrollViewMargin * 2, self.view.frame.size.height)];
     [_scrollView1 setDelegate:self];
     [_scrollView1 setShowsVerticalScrollIndicator:NO];
-    [_scrollView1 setContentSize:CGSizeMake(0, self.view.bounds.size.height * 5)];
+    [_scrollView1 setContentSize:CGSizeMake(0, self.view.bounds.size.height * 4.23)];
     [_frontView addSubview:_scrollView1];
 //    [_scrollView1 setContentOffset:CGPointMake(0, -100) animated:YES];
     
@@ -429,7 +438,7 @@ const static CGFloat titleViewHeight = 44.0f;
     _sourceView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _visitorGruopView.frame.origin.y + _visitorGruopView.frame.size.height + 20, width, height - 50.0) ifLoading:YES];
     [_scrollView1 addSubview:_sourceView];
     
-    _pageView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _sourceView.frame.origin.y + _sourceView.frame.size.height + 20, width, height) ifLoading:YES];
+    _pageView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _sourceView.frame.origin.y + _sourceView.frame.size.height + 20, width, height/2) ifLoading:YES];
     [_scrollView1 addSubview:_pageView];
     
     _hotCityView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _pageView.frame.origin.y + _pageView.frame.size.height + 20, width, height) ifLoading:YES];
@@ -495,6 +504,20 @@ const static CGFloat titleViewHeight = 44.0f;
     }
 }
 
+
+#pragma mark - handle analyticsViewOutline notification
+
+- (void)handlePageAnalyticsOutlineDataDidInitialize:(NSNotification *)notification
+{
+    if (notification.userInfo != nil && notification.object == [pageAnalyticsModel sharedInstance]) {
+        _pageAnalyticsInitData = notification.userInfo;
+        dispatch_main_async_safe(^{
+            [_pageView addDataViewType:outlinePageAnalytics inControllerType:outlineView data:notification.userInfo];
+            [_pageView.loadingView stopAnimation];
+        })
+    }
+}
+
 #pragma mark - viewWillAppear
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -552,7 +575,7 @@ const static CGFloat titleViewHeight = 44.0f;
         NSArray *stringArray = @[@"实时",@"访客群体分析",@"来源分析",@"页面分析",@"热门城市",@"热门页面",@"转化分析"];
         dispatch_main_async_safe(^{
             [_outLineViewArray enumerateObjectsUsingBlock:^(dataOutlineViewContainer *view, NSUInteger idx, BOOL *stop) {
-                if (idx != 0 && idx != 1 && idx != 2) {
+                if (idx != 0 && idx != 1 && idx != 2 && idx != 3) {
                     [view addDataViewType:(viewType)idx inControllerType:outlineView data:stringArray];
                     if (idx != 1 ) {
 //                        [view.loadingView stopAnimation];
@@ -577,13 +600,14 @@ const static CGFloat titleViewHeight = 44.0f;
 {
     [self getVisitorGroupDetailsData];
     [self getSourceAnalyticsDetailsData];
+    [self getPageAnalyticsDetailsData];
 }
 
 #pragma mark getVisitorGroupData
 
 - (void)getVisitorGroupDetailsData
 {
-    [[visitorGroupModel sharedInstance] createDetailInitializeData];
+    [[visitorGroupModel sharedInstance] createDetailOutlineData];
     
     _visitorGroupDetailsDataLoaded = YES;
     [_visitorGruopView.loadingView stopAnimation];
@@ -593,10 +617,20 @@ const static CGFloat titleViewHeight = 44.0f;
 
 - (void)getSourceAnalyticsDetailsData
 {
-    [[sourcesAnalyticsModel sharedInstance] createDetailInitializeData];
+    [[sourcesAnalyticsModel sharedInstance] createDetailOutlineData];
     
     _sourceAnalyticsDetailsDataLoaded = YES;
     [_sourceView.loadingView stopAnimation];
+}
+
+#pragma mark getVisitorGroupData
+
+- (void)getPageAnalyticsDetailsData
+{
+    [[pageAnalyticsModel sharedInstance] createDetailOutlineData];
+    
+    _pageAnalyticsDetailsDataLoaded = YES;
+    [_pageView.loadingView stopAnimation];
 }
 
 
@@ -666,6 +700,7 @@ const static CGFloat titleViewHeight = 44.0f;
             break;
         case 3:{
             targetView = _pageView;
+            data = _pageAnalyticsInitData;
             }
             break;
         case 4:{
@@ -728,14 +763,16 @@ const static CGFloat titleViewHeight = 44.0f;
     
     if (type == outlineRealTime) {
         _detailsViewController.initializedDataReady = _realTimeData.initializeDataReady;
-        _detailsViewController.initializedData = _realTimeData.initializeData;
+        _detailsViewController.initializedData      = _realTimeData.initializeData;
     }else if (type == outlineVisitorGroup) {
         _detailsViewController.initializedDataReady = [visitorGroupModel sharedInstance].initializeDataReady;
-        _detailsViewController.initializedData = [visitorGroupModel sharedInstance].detailInitializeData;
+        _detailsViewController.initializedData      = [visitorGroupModel sharedInstance].detailInitializeData;
     }else if (type == outlineSource){
         _detailsViewController.initializedDataReady = [sourcesAnalyticsModel sharedInstance].initializeDataReady;
-        _detailsViewController.initializedData = [sourcesAnalyticsModel sharedInstance].detailInitializeData;
-
+        _detailsViewController.initializedData      = [sourcesAnalyticsModel sharedInstance].detailInitializeData;
+    }else if (type == outlinePageAnalytics){
+        _detailsViewController.initializedDataReady = [pageAnalyticsModel sharedInstance].initializeDataReady;
+        _detailsViewController.initializedData      = [pageAnalyticsModel sharedInstance].detailInitializeData;
     }
 
     _animator = [[outlineViewTransitionAnimator alloc] initWithModalViewController:_detailsViewController];

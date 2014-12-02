@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		350BCFF11A284FFD000EA574 /* detailOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 350BCFF01A284FFD000EA574 /* detailOutlineView.m */; };
+		350BCFF41A2D691A000EA574 /* pageAnalyticsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 350BCFF31A2D691A000EA574 /* pageAnalyticsModel.m */; };
 		3522246519C2C73D0048F57C /* pop-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3522243419C2C73D0048F57C /* pop-Info.plist */; };
 		3522246619C2C73D0048F57C /* POPAnimatableProperty.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3522243919C2C73D0048F57C /* POPAnimatableProperty.mm */; };
 		3522246719C2C73D0048F57C /* POPAnimation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3522243B19C2C73D0048F57C /* POPAnimation.mm */; };
@@ -206,6 +207,8 @@
 /* Begin PBXFileReference section */
 		350BCFEF1A284FFD000EA574 /* detailOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = detailOutlineView.h; path = view/detailOutlineView.h; sourceTree = "<group>"; };
 		350BCFF01A284FFD000EA574 /* detailOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = detailOutlineView.m; path = view/detailOutlineView.m; sourceTree = "<group>"; };
+		350BCFF21A2D691A000EA574 /* pageAnalyticsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pageAnalyticsModel.h; path = Model/pageAnalyticsModel.h; sourceTree = "<group>"; };
+		350BCFF31A2D691A000EA574 /* pageAnalyticsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = pageAnalyticsModel.m; path = Model/pageAnalyticsModel.m; sourceTree = "<group>"; };
 		3522243419C2C73D0048F57C /* pop-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "pop-Info.plist"; path = "pop/pop-Info.plist"; sourceTree = "<group>"; };
 		3522243519C2C73D0048F57C /* pop-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "pop-Prefix.pch"; path = "pop/pop-Prefix.pch"; sourceTree = "<group>"; };
 		3522243619C2C73D0048F57C /* POP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = POP.h; path = pop/POP.h; sourceTree = "<group>"; };
@@ -796,6 +799,8 @@
 		3550C3AB1A199FE800402F33 /* pageAnalytics */ = {
 			isa = PBXGroup;
 			children = (
+				350BCFF21A2D691A000EA574 /* pageAnalyticsModel.h */,
+				350BCFF31A2D691A000EA574 /* pageAnalyticsModel.m */,
 			);
 			name = pageAnalytics;
 			sourceTree = "<group>";
@@ -953,13 +958,13 @@
 		3562982E19B4508C004A8054 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				35945DF019F0F39C00BF5EC3 /* realTime */,
+				35D397FF1A07590F0014B377 /* visitorGroup */,
+				3550C3AA1A199FDF00402F33 /* sourcesAnalytics */,
+				3550C3AB1A199FE800402F33 /* pageAnalytics */,
 				3550C3AE1A19A00F00402F33 /* transform */,
 				3550C3AD1A19A00500402F33 /* hotPage */,
 				3550C3AC1A199FF700402F33 /* hotCity */,
-				3550C3AB1A199FE800402F33 /* pageAnalytics */,
-				3550C3AA1A199FDF00402F33 /* sourcesAnalytics */,
-				35D397FF1A07590F0014B377 /* visitorGroup */,
-				35945DF019F0F39C00BF5EC3 /* realTime */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1682,6 +1687,7 @@
 				35945CFE19E8C29900BF5EC3 /* menuViewController.m in Sources */,
 				35AE1ABA1A0A247A00167096 /* lineChartDetailsViewFactory.m in Sources */,
 				3562987C19B46294004A8054 /* baseViewController.m in Sources */,
+				350BCFF41A2D691A000EA574 /* pageAnalyticsModel.m in Sources */,
 				35945D2219E8C37300BF5EC3 /* PNBar.m in Sources */,
 				35945D2819E8C37300BF5EC3 /* PNLineChartData.m in Sources */,
 				35945DD719E8D1F500BF5EC3 /* UICountingLabel.m in Sources */,

@@ -54,6 +54,10 @@
             _indexStringArray = @[@"UV",@"PV",@"VISIT", @"新UV",@"有效UV",@"平均页面停留时间",@"提交订单转化率",@"有效订单转化率",@"间接订单数",@"间接订单转化率"];
             break;
             
+        case outlinePageAnalytics:
+            _indexStringArray = @[@"PV",@"UV",@"平均页面停留时间",@"一跳",@"四级页面PV",@"购物车PV"];
+            break;
+            
         default:
             _indexStringArray = nil;
             break;

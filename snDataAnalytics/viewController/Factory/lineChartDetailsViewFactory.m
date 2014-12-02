@@ -9,6 +9,7 @@
 #import "lineChartDetailsViewFactory.h"
 #import "visitorGroupModel.h"
 #import "sourcesAnalyticsModel.h"
+#import "pageAnalyticsModel.h"
 #import "defines.h"
 
 @implementation lineChartDetailsViewFactory
@@ -17,12 +18,17 @@
     NSArray *_visitorGroupIndexArray;
     NSArray *_sourceAnalyticsDimensionArray;
     NSArray *_sourceAnalyticsIndexArray;
+    NSArray *_pageAnalyticsDimensionArray;
+    NSArray *_pageAnalyticsIndexArray;
     
     NSInteger _visitorGroupChosenDimension;
     NSInteger _visitorGroupChosenIndex;
     
     NSInteger _sourceAnalyticsChosenDimension;
     NSInteger _sourceAnalyticsChosenIndex;
+    
+    NSInteger _pageAnalyticsChosenDimension;
+    NSInteger _pageAnalyticsChosenIndex;
 
 }
 
@@ -48,18 +54,22 @@
         
         _sourceAnalyticsDimensionArray = @[@"硬广",@"导航",@"搜索",@"广告联盟",@"直接流量",@"EDM"];
         _sourceAnalyticsIndexArray     = @[@"UV",@"PV",@"VISIT",@"新UV",@"有效UV",@"平均页面停留时间",@"提交订单转化率",@"有效订单转化率",@"间接订单数",@"间接订单转化率"];
+        
+        _pageAnalyticsDimensionArray = @[@"页面类型",@"着陆页",@"退出页"];
+        _pageAnalyticsIndexArray     = @[@"PV",@"UV",@"平均页面停留时间",@"一跳",@"四级页面PV",@"购物车PV"];
 
         _visitorGroupChosenDimension = 0;
         _visitorGroupChosenIndex     = 0;
         _sourceAnalyticsChosenDimension = 0;
         _sourceAnalyticsChosenIndex     = 0;
-        /*@[@"UV",@"UV",@"访问会员数",@"注册数",@"回访数",@"访问会员数",@"UV"]*/
+        _pageAnalyticsChosenDimension = 0;
+        _pageAnalyticsChosenIndex     = 0;
         
     }
     return self;
 }
 
-- (lineChartDetailsViewController *)getControllerFromView:(viewType)viewType detailsType:(int)detailsType
+- (lineChartDetailsViewController *)getControllerFromView:(viewType)viewType detailsType:(NSInteger)detailsType
 {
     switch (viewType) {
             
@@ -71,6 +81,10 @@
             return [self getSourceAnalyticsControllerByType:detailsType];
             break;
         }
+        case outlinePageAnalytics:{
+            return [self getPageAnalyticsControllerByType:detailsType];
+            break;
+        }
 
         default:
             return nil;
@@ -78,7 +92,7 @@
     }
 }
 
-- (lineChartDetailsViewController *)getVisitorGroupControllerByType:(visitorGroupControllerType)type
+- (lineChartDetailsViewController *)getVisitorGroupControllerByType:(NSInteger)type
 {
 /*
     _defineDetails =  @{@"dimensionOptionsArray":dimensionOptionsArray,
@@ -179,7 +193,7 @@
     return vc;
 }
 
-- (lineChartDetailsViewController *)getSourceAnalyticsControllerByType:(int)type
+- (lineChartDetailsViewController *)getSourceAnalyticsControllerByType:(NSInteger)type
 {
     _sourceAnalyticsChosenDimension = 0;
     
@@ -247,6 +261,93 @@
             strongVC.chartDetailsView.lineView.labelString = (NSString *)indexNameArray[0];
             
             detailsData = (NSDictionary *)((NSDictionary *)[[sourcesAnalyticsModel sharedInstance] getDetailsData])[(NSString *)_sourceAnalyticsDimensionArray[i]];
+            
+            //detailsview的labels
+            [strongVC.chartDetailsView.detailsView reloadLabelsWithData:labelData];
+            
+            //图表
+            [strongVC.chartDetailsView.lineView relodData:detailsData];
+            
+            //detailsview的数值
+            [strongVC.chartDetailsView.detailsView reloadValuesWithData:detailsData];
+            
+            //添加detailsview的index array选项
+            strongVC.indexArray = [[NSMutableArray alloc] initWithArray:indexNameArray];
+            
+        }
+    };
+    
+    return vc;
+}
+
+- (lineChartDetailsViewController *)getPageAnalyticsControllerByType:(NSInteger)type
+{
+    _pageAnalyticsChosenDimension = 0;
+    
+    lineChartDetailsViewController *vc = [[lineChartDetailsViewController alloc] initWithFrame:wkScreen data:nil];
+    __block NSDictionary *detailsData;
+    __block NSDictionary *labelData = (NSDictionary *)[[pageAnalyticsModel sharedInstance] getDefineDetails];
+    
+    ///details views的 title 和 当前维度 名称
+    vc.titleString = vc.chartDetailsView.dimensionName = _pageAnalyticsDimensionArray[0];
+    
+    //details views的 当前指标 名称
+    vc.chartDetailsView.indexName = _pageAnalyticsIndexArray[type];
+    vc.chartDetailsView.lineView.labelString = _pageAnalyticsIndexArray[type];
+    
+    detailsData = (NSDictionary *)((NSDictionary *)[[pageAnalyticsModel sharedInstance] getDetailsData])[(NSString *)_pageAnalyticsDimensionArray[0]];
+    
+    //detailsview的数值标题
+    [vc addDetailsViewButtonWithData:labelData];
+    
+    //图表
+    [vc addLineViewWithData:detailsData];
+    
+    //detailsview的数值
+    [vc addDetailsViewWithData:detailsData];
+    
+    vc.dimensionArray = [[NSMutableArray alloc] initWithArray:_pageAnalyticsDimensionArray];
+    vc.indexArray = [[NSMutableArray alloc] initWithArray:_pageAnalyticsIndexArray];
+    
+    __weak typeof(vc) weakVC = vc;
+    
+    vc.indexChoosedBlock = ^(NSInteger i) {
+        if (_pageAnalyticsChosenIndex != i) {
+            _pageAnalyticsChosenIndex = i;
+            
+            typeof(weakVC) strongVC = weakVC;
+            NSString *chosenDimensionName = (NSString *)_pageAnalyticsDimensionArray[_pageAnalyticsChosenDimension];
+            
+            NSArray *indexNameArray = (NSArray *)(NSDictionary *)(labelData[chosenDimensionName])[@"indexOptionsArray"];
+            
+            strongVC.chartDetailsView.indexName = (NSString *)indexNameArray[i];
+            strongVC.chartDetailsView.lineView.labelString = (NSString *)indexNameArray[i];
+            
+            detailsData = (NSDictionary *)((NSDictionary *)[[pageAnalyticsModel sharedInstance] getDetailsData])[chosenDimensionName];
+            
+            //图表自动根据labelString 筛选detailsData中得数据 用以绘图
+            [strongVC.chartDetailsView.lineView relodData:detailsData];
+        }
+    };
+    
+    
+    vc.dimensionChoosedBlock = ^(NSInteger i) {
+        if (_pageAnalyticsChosenDimension != i) {
+            typeof (weakVC) strongVC = weakVC;
+            
+            _pageAnalyticsChosenDimension = i;
+            
+            //details views的 指标数组
+            NSArray *indexNameArray = (NSArray *)(NSDictionary *)(labelData[_pageAnalyticsDimensionArray[i]])[@"indexOptionsArray"];
+            
+            //details views的 title 和 当前维度 名称
+            strongVC.titleString = strongVC.chartDetailsView.dimensionName = _pageAnalyticsDimensionArray[i];
+            
+            //details views的 当前指标 名称
+            strongVC.chartDetailsView.indexName = (NSString *)indexNameArray[0];
+            strongVC.chartDetailsView.lineView.labelString = (NSString *)indexNameArray[0];
+            
+            detailsData = (NSDictionary *)((NSDictionary *)[[pageAnalyticsModel sharedInstance] getDetailsData])[(NSString *)_pageAnalyticsDimensionArray[i]];
             
             //detailsview的labels
             [strongVC.chartDetailsView.detailsView reloadLabelsWithData:labelData];

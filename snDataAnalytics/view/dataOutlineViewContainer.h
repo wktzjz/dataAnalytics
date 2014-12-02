@@ -16,6 +16,7 @@
 #import "visitorGroupOutlineView.h"
 #import "pageAnalyticsOutlineView.h"
 #import "sourceAnalyticsOutlineView.h"
+#import "pageAnalyticsOutlineView.h"
 #import "loadingView.h"
 
 

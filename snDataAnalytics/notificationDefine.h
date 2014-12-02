@@ -9,7 +9,18 @@
 #ifndef snDataAnalytics_notificationDefine_h
 #define snDataAnalytics_notificationDefine_h
 
-static NSString *const dataDidChange     = @"realTimeDataDidChanged";
-static NSString *const dataDidInitialize = @"realTimeDataDidInitialize";
+static NSString *const realTimeDataOutlineDidInitialize  = @"realTimeOutlineDataDidInitialize";
+static NSString *const realTimeDataDidChange             = @"realTimeDataDidChanged";
+
+static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGroupOutlineDataDidInitialize";
+static NSString *const visitorGroupDetailOutlineDataDidInitialize = @"visitorGroupDetailOutlineDataDidInitialize";
+static NSString *const visitorGroupDataDidChange                  = @"visitorGroupDataDidChanged";
+
+static NSString *const sourceAnalyticsOutlineDataDidInitialize       = @"sourceAnalyticsOutlineDataDidInitialize";
+static NSString *const sourceAnalyticsDetailOutlineDataDidInitialize = @"sourceAnalyticsDetailOutlineDataDidInitialize";
+static NSString *const sourceAnalyticsDataDidChange                  = @"sourceAnalyticsDataDidChanged";
+
+static NSString *const pageAnalyticsOutlineDataDidInitialize  = @"pageAnalyticsOutlineDataDidInitialize";
+static NSString *const pageAnalyticsDataDidChange             = @"pageAnalyticsDataDidChanged";
 
 #endif

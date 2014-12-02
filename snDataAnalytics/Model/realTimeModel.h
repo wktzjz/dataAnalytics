@@ -38,7 +38,7 @@
 
 + (instancetype)sharedInstance;
 
-- (void)getInitializedRealTimeDeatilsData;
+- (void)getOutlineData;
 
 //the Timer will automaticlly getNewData every 10s,and send async notifications to update;
 - (void)getNewData;

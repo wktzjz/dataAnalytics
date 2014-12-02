@@ -18,15 +18,16 @@
 @property (nonatomic,readonly) BOOL detailsDataReady;
 
 + (instancetype)sharedInstance;
+
 - (void)getOutlineData;
 
-- (NSDictionary *)getDetailInitializeData;
-- (void)createDetailInitializeData;
+- (void)createDetailOutlineData;
+- (NSDictionary *)getDetailOutlineData;
 
-- (void)initDefineDetails;
+- (void)createDefineDetails;
 -(NSDictionary *)getDefineDetails;
 
-- (void)initDetailsData;
+- (void)createDetailsData;
 - (NSDictionary *)getDetailsData;
 
 @end

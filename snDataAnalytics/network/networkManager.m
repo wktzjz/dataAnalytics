@@ -77,7 +77,11 @@
     [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         
         NSDictionary *json;
-//        networkManager *strongSelf = _wself;
+        if (connectionError || !data || !data.length){
+            failBlock(nil);
+            return;
+        }
+        
         
         if (data) {
             json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&connectionError];
@@ -87,15 +91,12 @@
         
         if (nil == json) {
             if (failBlock) {
-                failBlock(json);
+                failBlock(nil);
             }
             return ;
         }
         
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json options:NSJSONWritingPrettyPrinted error:nil];
-//        NSLog(@"jsonData %@",[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]);
-
-//        [strongSelf handleData];
         
         if (succeedBlock) {
             succeedBlock(json);

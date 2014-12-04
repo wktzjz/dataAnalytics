@@ -34,5 +34,6 @@
 //- (instancetype)initWithFrame:(CGRect)frame;
 //- (instancetype)initWithFrame:(CGRect)frame type:(dataVisualizedType)type;
 - (instancetype)initWithFrame:(CGRect)frame type:(viewType)type data:(id)data title:(NSString *)title;
+- (void)addDetailOutlineViewWithData:(NSDictionary *)data Type:(viewType)type;
 - (void)removeObservers;
 @end

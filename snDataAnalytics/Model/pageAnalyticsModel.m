@@ -7,7 +7,6 @@
 //
 
 #import "pageAnalyticsModel.h"
-
 #import "networkManager.h"
 
 static NSString *const pageAnalyticsDataDidChange                  = @"pageAnalyticsDataDidChanged";

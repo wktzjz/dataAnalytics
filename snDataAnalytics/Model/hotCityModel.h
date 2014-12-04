@@ -1,12 +1,14 @@
 //
-//  pageAnalyticsModel.h
+//  hotCityModel.h
 //  snDataAnalytics
 //
-//  Created by wktzjz on 14-12-2.
+//  Created by wktzjz on 14-12-4.
 //  Copyright (c) 2014年 wktzjz. All rights reserved.
 //
 
-@interface pageAnalyticsModel : NSObject
+#import <Foundation/Foundation.h>
+
+@interface hotCityModel : NSObject
 
 @property (nonatomic) NSDictionary *defineDetails;
 @property (nonatomic) NSDictionary *outlineData;
@@ -19,14 +21,5 @@
 + (instancetype)sharedInstance;
 
 - (void)getOutlineData;
-
-- (void)createDetailOutlineData;
-- (NSDictionary *)getDetailOutlineData;
-
-- (void)createDefineDetails;
--(NSDictionary *)getDefineDetails;
-
-- (void)createDetailsData;
-- (NSDictionary *)getDetailsData;
 
 @end

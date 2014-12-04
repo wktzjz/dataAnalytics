@@ -330,9 +330,9 @@
         
         //wk add a switch to improve the performance
         // Add gradient
-        if (_ifUseGradientColor) {
-            bar.barColorGradientStart = _barColorGradientStart;
-        }
+//        if (_ifUseGradientColor) {
+//            bar.barColorGradientStart = _barColorGradientStart;
+//        }
         
         //For Click Index
         bar.tag = index;

@@ -92,6 +92,8 @@
         _validGroupUV = ((NSNumber *)data[@"validGroupUV"]).intValue;
         _VISITNumber  = ((NSNumber *)data[@"VISIT"]).intValue;
         _dealMoney    = ((NSNumber *)data[@"dealMoney"]).intValue;
+        _arrayOfValues = (NSMutableArray *)data[@"arrayOfValues"];
+        _arrayOfDates  = (NSMutableArray *)data[@"arrayOfDates"];
         _validDealNumber         = ((NSNumber *)data[@"validDealNumber"]).intValue;
         _validDealTransformRatio = ((NSNumber *)data[@"validDealTransformRatio"]).floatValue;
         
@@ -300,17 +302,14 @@
     _dealMoneyLabel.textAlignment = NSTextAlignmentLeft;
 //    _dealMoneyLabel.morphingDuration = 0.07f;
     
-    _arrayOfValues = [[NSMutableArray alloc] init];
-    _arrayOfDates = [[NSMutableArray alloc] init];
-    
-    float totalNumber = 0;
-    
-    for (int i = 0; i < 20; i++) {
-        [_arrayOfValues addObject:[NSNumber numberWithInteger:(arc4random() % 100)]]; // Random values for the graph
-        [_arrayOfDates addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:i]]]; // Dates for the X-Axis of the graph
-        
-        totalNumber = totalNumber + [[_arrayOfValues objectAtIndex:i] intValue]; // All of the values added together
-    }
+//    _arrayOfValues = [[NSMutableArray alloc] init];
+//    _arrayOfDates = [[NSMutableArray alloc] init];
+//    
+//    for (int i = 0; i < 20; i++) {
+//        [_arrayOfValues addObject:[NSNumber numberWithInteger:(arc4random() % 100)]]; // Random values for the graph
+//        [_arrayOfDates addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:i]]]; // Dates for the X-Axis of the graph
+//        
+//    }
     
     _lineGraph = [[BEMSimpleLineGraphView alloc] initWithFrame:CGRectMake(0, 5.0+_dealMoneyLabel.frame.origin.y +_dealMoneyLabel.frame.size.height, outlineViewWidth, 45.0)];
     _lineGraph.delegate = self;
@@ -413,6 +412,13 @@
     _visitorPieChart.descriptionTextShadowColor = [UIColor clearColor];
     [_visitorPieChart strokeChart];
     
+    //iPhone6P
+    if(outlineViewWidth > 400){
+        CGPoint center = _visitorPieChart.center;
+        center.x += 50;
+        _visitorPieChart.center = center;
+    }
+    
     float originDotViewX = 35.0/*5 + _visitorPieChart.frame.origin.x + pieWidth*/;
     
     _visitorColorDotView1 = [[UIView alloc] init];
@@ -467,7 +473,6 @@
         
     }];
     
-    
     _validUVSourceRatioLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, -20.0 + _visitorPieChart.frame.origin.y +_visitorPieChart.frame.size.height, outlineViewWidth, 20)];
     _validUVSourceRatioLabel.text =@"有效UV占比:";
     _validUVSourceRatioLabel.textColor = PNDeepGrey;
@@ -488,15 +493,18 @@
     [_vaildSourceBarChart setYValues:_groupPercentArray];
     [_vaildSourceBarChart setYValues1:_groupValidPercentArray];
     _vaildSourceBarChart.labelFont = [UIFont fontWithName:@"OpenSans-Light" size:10.0];
-    [_vaildSourceBarChart setStrokeColor:[UIColor colorWithRed:0x6a/255.0 green:0xb9/255.0 blue:0xff/255.0 alpha:1.0]/*[UIColor colorWithRed:0x45/255.0 green:0xa7/255.0 blue:0xff/255.0 alpha:1]*/];
+//    [_vaildSourceBarChart setStrokeColor:[UIColor colorWithRed:0x6a/255.0 green:0xb9/255.0 blue:0xff/255.0 alpha:1.0]/*[UIColor colorWithRed:0x45/255.0 green:0xa7/255.0 blue:0xff/255.0 alpha:1]*/];
+    [_vaildSourceBarChart setStrokeColor: [UIColor paperColorLightBlue]];
+    // Adding gradient
+    _vaildSourceBarChart.barColorGradientStart = PNDeepGreen;
+
     [_vaildSourceBarChart setStrokeColor1:[UIColor indigoColor]];
 
-    _vaildSourceBarChart.ifUseGradientColor = NO;
+    _vaildSourceBarChart.ifUseGradientColor = YES;
     _vaildSourceBarChart.showChartBorder    = NO;
     _vaildSourceBarChart.showReferenceLines = NO;
     
     // Adding gradient
-    _vaildSourceBarChart.barColorGradientStart = PNDeepGreen;
     _vaildSourceBarChart.barWidth = 20.0;
     
     [_vaildSourceBarChart strokeChart];

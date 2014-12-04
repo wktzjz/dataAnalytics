@@ -85,37 +85,37 @@
     _chartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:23.0];
     _chartLabel.textAlignment = NSTextAlignmentCenter;
     
-    _visitLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 10 + _chartLabel.frame.origin.y +_chartLabel.frame.size.height, outlineViewWidth/2 - 20, 30)];
+    _visitLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 10 + _chartLabel.frame.origin.y +_chartLabel.frame.size.height, outlineViewWidth/2 - 20, 30)];
     _visitLabel.text = [NSString stringWithFormat:@"VISIT: %li",_visitNumber];
     _visitLabel.textColor = PNDeepGrey;
     _visitLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
     _visitLabel.textAlignment = NSTextAlignmentLeft;
     
-    _newVISITLine = [[UIView alloc] initWithFrame:CGRectMake(_lineWidth - 70.0,10 + _chartLabel.frame.origin.y +_chartLabel.frame.size.height,(_lineWidth - 1)*_newVISITRatio,30)];
+    _newVISITLine = [[UIView alloc] initWithFrame:CGRectMake(_lineWidth - 70.0,12.5 + _chartLabel.frame.origin.y +_chartLabel.frame.size.height,(_lineWidth - 1)*_newVISITRatio,25)];
     _newVISITLine.backgroundColor = _newColor;
-    _backVISITLine = [[UIView alloc] initWithFrame:CGRectMake(1 + _newVISITLine.frame.origin.x+_newVISITLine.frame.size.width,_newVISITLine.frame.origin.y,(_lineWidth - 1)*(1 - _newVISITRatio),30)];
+    _backVISITLine = [[UIView alloc] initWithFrame:CGRectMake(1 + _newVISITLine.frame.origin.x+_newVISITLine.frame.size.width,_newVISITLine.frame.origin.y,(_lineWidth - 1)*(1 - _newVISITRatio),25)];
     _backVISITLine.backgroundColor = _backColor;
     
-    _uvLabel = [[UILabel alloc] initWithFrame:CGRectMake(20,10 + _visitLabel.frame.origin.y +_visitLabel.frame.size.height, outlineViewWidth/2 - 20, 30)];
+    _uvLabel = [[UILabel alloc] initWithFrame:CGRectMake(15,10 + _visitLabel.frame.origin.y +_visitLabel.frame.size.height, outlineViewWidth/2 - 20, 30)];
     _uvLabel.text =[NSString stringWithFormat:@"UV: %li",_UVNumber];
     _uvLabel.textColor = PNDeepGrey;
     _uvLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
     _uvLabel.textAlignment = NSTextAlignmentLeft;
     
-    _newUVLine = [[UIView alloc] initWithFrame:CGRectMake(_lineWidth - 70.0,10 + _visitLabel.frame.origin.y +_visitLabel.frame.size.height,(_lineWidth - 1) * _newUVRatio,30)];
+    _newUVLine = [[UIView alloc] initWithFrame:CGRectMake(_lineWidth - 70.0,12.5 + _visitLabel.frame.origin.y +_visitLabel.frame.size.height,(_lineWidth - 1) * _newUVRatio,25)];
     _newUVLine.backgroundColor = _newColor;
-    _backUVLine = [[UIView alloc] initWithFrame:CGRectMake(1 + _newUVLine.frame.origin.x+_newUVLine.frame.size.width,_newUVLine.frame.origin.y,(_lineWidth - 1)*(1 - _newUVRatio),30)];
+    _backUVLine = [[UIView alloc] initWithFrame:CGRectMake(1 + _newUVLine.frame.origin.x+_newUVLine.frame.size.width,_newUVLine.frame.origin.y,(_lineWidth - 1)*(1 - _newUVRatio),25)];
     _backUVLine.backgroundColor = _backColor;
     
-    _validUVLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 10.0 + _uvLabel.frame.origin.y +_uvLabel.frame.size.height, outlineViewWidth/2 - 20, 30)];
+    _validUVLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 10.0 + _uvLabel.frame.origin.y +_uvLabel.frame.size.height, outlineViewWidth/2 - 20, 30)];
     _validUVLabel.text =[NSString stringWithFormat:@"有效UV: %li",_validUVNumber];
     _validUVLabel.textColor = PNDeepGrey;
     _validUVLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
     _validUVLabel.textAlignment = NSTextAlignmentLeft;
     
-    _newValidUVLine = [[UIView alloc] initWithFrame:CGRectMake(_lineWidth - 70.0,10 + _uvLabel.frame.origin.y +_uvLabel.frame.size.height,(_lineWidth - 1) * _newVaildUVRatio,30)];
+    _newValidUVLine = [[UIView alloc] initWithFrame:CGRectMake(_lineWidth - 70.0,12.5 + _uvLabel.frame.origin.y +_uvLabel.frame.size.height,(_lineWidth - 1) * _newVaildUVRatio,25)];
     _newValidUVLine.backgroundColor = _newColor;
-    _backValidUVLine = [[UIView alloc] initWithFrame:CGRectMake(1 + _newValidUVLine.frame.origin.x + _newValidUVLine.frame.size.width,_newValidUVLine.frame.origin.y,(_lineWidth - 1)*(1 - _newVaildUVRatio),30)];
+    _backValidUVLine = [[UIView alloc] initWithFrame:CGRectMake(1 + _newValidUVLine.frame.origin.x + _newValidUVLine.frame.size.width,_newValidUVLine.frame.origin.y,(_lineWidth - 1)*(1 - _newVaildUVRatio),25)];
     _backValidUVLine.backgroundColor = _backColor;
     
     UILabel *tipNewLabel  = [[UILabel alloc] initWithFrame:CGRectMake(outlineViewWidth/7,10 + _validUVLabel.frame.origin.y +_validUVLabel.frame.size.height, outlineViewWidth/5, 30)];
@@ -138,7 +138,7 @@
     tipBackView.backgroundColor = _backColor;
     tipBackView.layer.cornerRadius = 7.5;
 
-    _visitRatioLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,_visitLabel.frame.origin.y, outlineViewWidth/4, 30)];
+    _visitRatioLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,_newVISITLine.frame.origin.y, outlineViewWidth/4, 25)];
     _visitRatioLabel.text =[NSString stringWithFormat:@"%.1f%%",_newVISITRatio * 100.0];
     _visitRatioLabel.textColor = PNDeepGrey;
     _visitRatioLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:20.0];
@@ -155,7 +155,7 @@
         _visitRatioLabel.frame = r;
     }
     
-    _UVRatioLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,_uvLabel.frame.origin.y, outlineViewWidth/4, 30)];
+    _UVRatioLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,_newUVLine.frame.origin.y, outlineViewWidth/4, 25)];
     _UVRatioLabel.text =[NSString stringWithFormat:@"%.1f%%",_newUVRatio * 100.0];
     _UVRatioLabel.textColor = PNDeepGrey;
     _UVRatioLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:20.0];
@@ -171,7 +171,7 @@
         _UVRatioLabel.frame = r;
     }
     
-    _validUVRatioLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,_validUVLabel.frame.origin.y, outlineViewWidth/4, 30)];
+    _validUVRatioLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,_newValidUVLine.frame.origin.y, outlineViewWidth/4, 25)];
     _validUVRatioLabel.text =[NSString stringWithFormat:@"%.1f%%",_newVaildUVRatio * 100.0];
     _validUVRatioLabel.textColor = PNDeepGrey;
     _validUVRatioLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:20.0];

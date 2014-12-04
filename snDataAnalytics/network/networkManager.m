@@ -137,6 +137,7 @@
  ]
  },
  */
+
 - (BOOL)getNetworkInfo:(NSString *)URLString
 {
     networkManager *strongSelf = _wself;

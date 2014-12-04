@@ -40,6 +40,7 @@
 #import "visitorGroupModel.h"
 #import "sourcesAnalyticsModel.h"
 #import "pageAnalyticsModel.h"
+#import "transformAnalyticsModel.h"
 #import "lineChartDetailsViewController.h"
 #import "lineChartDetailsViewFactory.h"
 #import "timeView.h"
@@ -94,11 +95,15 @@ const static CGFloat itemsViewHeight = 145.0f;
     timeView *_timeView;
     
     id _outlineViewData;
+    detailOutlineView *_detailOutlineView;
     detailOutlineView *_realTimeView;
-    detailOutlineView *_visitorGroupView;
-    detailOutlineView *_sourceAnalyticsView;
-    detailOutlineView *_pageAnalyticsView;
-    NSMutableArray    *_detailOutlineViewArray;
+//    detailOutlineView *_visitorGroupView;
+//    detailOutlineView *_sourceAnalyticsView;
+//    detailOutlineView *_pageAnalyticsView;
+//    detailOutlineView *_transformAnalyticsView;
+//    NSMutableArray    *_detailOutlineViewArray;
+    
+    NSArray *_viewTitleStringArray;
     
 //    test *testInstance;
 }
@@ -130,8 +135,11 @@ const static CGFloat itemsViewHeight = 145.0f;
         _height  = frame.size.height/2 + 10;
         
         _outlineViewData = data;
+//        _detailOutlineViewArray = [[NSMutableArray alloc] initWithCapacity:5];
+        _viewTitleStringArray = @[@"实时",@"访客群体分析",@"来源分析",@"页面分析",@"热门城市",@"热门页面",@"转化分析"];
+        
         self.view.frame = frame;
-        _detailOutlineViewArray = [[NSMutableArray alloc] initWithCapacity:5];
+
 //        self.view.backgroundColor = [UIColor clearColor];
     }
     return self;
@@ -441,11 +449,15 @@ const static CGFloat itemsViewHeight = 145.0f;
     [_scrollView setShowsVerticalScrollIndicator:NO];
     
     if (_dataVisualizedType == outlineRealTime) {
-        [_scrollView setContentSize:CGSizeMake(0, 2100)];
+        [_scrollView setContentSize:CGSizeMake(0, 2230)];
+    }else if(_dataVisualizedType == outlineVisitorGroup){
+        [_scrollView setContentSize:CGSizeMake(0, 1610)];
     }else if(_dataVisualizedType == outlineSource){
-         [_scrollView setContentSize:CGSizeMake(0, 2030)];
+         [_scrollView setContentSize:CGSizeMake(0, 1970)];
     }else if(_dataVisualizedType == outlinePageAnalytics){
         [_scrollView setContentSize:CGSizeMake(0, 1230)];
+    }else if(_dataVisualizedType == outlineTransform){
+        [_scrollView setContentSize:CGSizeMake(0, 2370)];
     }else{
         [_scrollView setContentSize:CGSizeMake(0, 1650)];
     }
@@ -513,15 +525,20 @@ const static CGFloat itemsViewHeight = 145.0f;
         _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineHotPage data:nil inControllerType:detailView];
         [_scrollView addSubview:_dataContentView];
         
+    }else if (_dataVisualizedType == outlineTransform) {
+//        _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX, marginY, width, height) dataType:outlineTransform data:nil inControllerType:detailView];
+//        [_scrollView addSubview:_dataContentView];
+        [self addTransformAnalyticsDetailsViewWithFrame:CGRectMake(marginX, marginY, width, height - 85.0) withData:data];
+
     }
 
-    if (!_ifHasDetailsView) {
-        dataOutlineViewContainer *dataContentView1 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 20, width, height) ifLoading:YES];
-        dataOutlineViewContainer *dataContentView2 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX , dataContentView1.frame.origin.y + dataContentView1.frame.size.height + 20, width, height) ifLoading:YES];
-        
-        [_scrollView addSubview:dataContentView1];
-        [_scrollView addSubview:dataContentView2];
-    }
+//    if (!_ifHasDetailsView) {
+//        dataOutlineViewContainer *dataContentView1 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 20, width, height) ifLoading:YES];
+//        dataOutlineViewContainer *dataContentView2 = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(marginX , dataContentView1.frame.origin.y + dataContentView1.frame.size.height + 20, width, height) ifLoading:YES];
+//        
+//        [_scrollView addSubview:dataContentView1];
+//        [_scrollView addSubview:dataContentView2];
+//    }
     
 }
 
@@ -541,7 +558,7 @@ const static CGFloat itemsViewHeight = 145.0f;
 #pragma mark addViewsWithData
 - (void)addRealTimeDetailsViewWithFrame:(CGRect)frame withData:(id)data
 {
-    _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(_marginX, _marginY, _width, _height*2.8) dataType:outlineRealTime data:data inControllerType:detailView];
+    _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(_marginX, _marginY, _width, _height * 2.8) dataType:outlineRealTime data:data inControllerType:detailView];
     _dataContentView.backgroundColor = [UIColor whiteColor];
     [_scrollView addSubview:_dataContentView];
     
@@ -575,117 +592,13 @@ const static CGFloat itemsViewHeight = 145.0f;
 
 - (void)addVisitorGroupDetailsViewWithFrame:(CGRect)frame withData:(id)data
 {
-    _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(_marginX, _marginY, _width, _height) dataType:outlineVisitorGroup data:data inControllerType:detailView];
+    _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(_marginX, _marginY, _width, _height - 85.0) dataType:outlineVisitorGroup data:data inControllerType:detailView];
     [_scrollView addSubview:_dataContentView];
     
-    double delayInSeconds = 0.5;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    _detailOutlineView = [[detailOutlineView alloc] initWithFrame:CGRectMake(_marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, _width, _height * 5) viewType:outlineVisitorGroup];
     
-    __weak typeof(self) weakself = self;
-    dispatch_after(popTime, dispatch_get_main_queue(), ^{
-        typeof(weakself) strongSelf = weakself;
-        
-         _visitorGroupView = [[detailOutlineView alloc] initWithFrame:CGRectMake(_marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, _width, _height * 5) viewType:outlineVisitorGroup];
-        
-        if (_initializedDataReady) {
-            [_visitorGroupView initViewsWithData:_initializedData];
-        }
-        
-        _visitorGroupView.viewClickedBlock = ^(NSInteger markers) {
-            [strongSelf handleLineViewClicked:markers fromView:outlineVisitorGroup];
-        };
-        
-        [_scrollView addSubview:_visitorGroupView];
-    });
+//    [self addDetailOutlineViewWithType:outlineVisitorGroup];
     
-    _ifHasDetailsView = YES;
-    
-    if ([_viewTitleString isEqual: @"Details"]) {
-        self.viewTitleString = @"访客群体分析";
-    }
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        [[visitorGroupModel sharedInstance] createDefineDetails];
-        [[visitorGroupModel sharedInstance] createDetailsData];
-    });
-}
-
-- (void)addSourceAnalyticsDetailsViewWithFrame:(CGRect)frame withData:(id)data
-{
-    _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(_marginX, _marginY, _width, _height - 70.0) dataType:outlineSource data:data inControllerType:detailView];
-    [_scrollView addSubview:_dataContentView];
-    
-    double delayInSeconds = 0.5;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    
-    __weak typeof(self) weakself = self;
-    dispatch_after(popTime, dispatch_get_main_queue(), ^{
-        typeof(weakself) strongSelf = weakself;
-        
-        _sourceAnalyticsView = [[detailOutlineView alloc] initWithFrame:CGRectMake(_marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, _width, _height * 7) viewType:outlineSource];
-        
-        if (_initializedDataReady) {
-            [_sourceAnalyticsView initViewsWithData:_initializedData];
-        }
-        
-        _sourceAnalyticsView.viewClickedBlock = ^(NSInteger markers) {
-            [strongSelf handleLineViewClicked:markers fromView:outlineSource];
-        };
-        
-        [_scrollView addSubview:_sourceAnalyticsView];
-    });
-    
-    _ifHasDetailsView = YES;
-    
-    if ([_viewTitleString isEqual: @"Details"]) {
-        self.viewTitleString = @"来源分析";
-    }
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        [[sourcesAnalyticsModel sharedInstance] createDefineDetails];
-        [[sourcesAnalyticsModel sharedInstance] createDetailsData];
-    });
-}
-
-- (void)addPageAnalyticsDetailsViewWithFrame:(CGRect)frame withData:(id)data
-{
-    _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(_marginX, _marginY, _width, _height - 140.0) dataType:outlinePageAnalytics data:data inControllerType:detailView];
-    [_scrollView addSubview:_dataContentView];
-    
-    double delayInSeconds = 0.5;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    
-    __weak typeof(self) weakself = self;
-    dispatch_after(popTime, dispatch_get_main_queue(), ^{
-        typeof(weakself) strongSelf = weakself;
-        
-        _pageAnalyticsView = [[detailOutlineView alloc] initWithFrame:CGRectMake(_marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, _width, _height * 3.5) viewType:outlinePageAnalytics];
-        
-        if (_initializedDataReady) {
-            [_pageAnalyticsView initViewsWithData:_initializedData];
-        }
-        
-        _pageAnalyticsView.viewClickedBlock = ^(NSInteger markers) {
-            [strongSelf handleLineViewClicked:markers fromView:outlinePageAnalytics];
-        };
-        
-        [_scrollView addSubview:_pageAnalyticsView];
-    });
-    
-    _ifHasDetailsView = YES;
-    
-    if ([_viewTitleString isEqual: @"Details"]) {
-        self.viewTitleString = @"页面分析";
-    }
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        [[pageAnalyticsModel sharedInstance] createDefineDetails];
-        [[pageAnalyticsModel sharedInstance] createDetailsData];
-    });
-}
-
-//- (void)addDetailOutlineViewWithType:(viewType)type
-//{
 //    double delayInSeconds = 0.5;
 //    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 //    
@@ -693,31 +606,169 @@ const static CGFloat itemsViewHeight = 145.0f;
 //    dispatch_after(popTime, dispatch_get_main_queue(), ^{
 //        typeof(weakself) strongSelf = weakself;
 //        
-//        _pageAnalyticsView = [[detailOutlineView alloc] initWithFrame:CGRectMake(_marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, _width, _height * 2) viewType:outlinePageAnalytics];
+////         _visitorGroupView = [[detailOutlineView alloc] initWithFrame:CGRectMake(_marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, _width, _height * 5) viewType:outlineVisitorGroup];
 //        
 //        if (_initializedDataReady) {
-//            [_pageAnalyticsView initViewsWithData:_initializedData];
+//            [_visitorGroupView initViewsWithData:_initializedData];
 //        }
 //        
-//        _pageAnalyticsView.viewClickedBlock = ^(NSInteger markers) {
-//            [strongSelf handleLineViewClicked:markers fromView:outlinePageAnalytics];
+//        _visitorGroupView.viewClickedBlock = ^(NSInteger markers) {
+//            [strongSelf handleLineViewClicked:markers fromView:outlineVisitorGroup];
 //        };
 //        
-//        [_scrollView addSubview:_pageAnalyticsView];
+//        [_scrollView addSubview:_visitorGroupView];
 //    });
 //    
 //    _ifHasDetailsView = YES;
 //    
 //    if ([_viewTitleString isEqual: @"Details"]) {
-//        self.viewTitleString = @"页面分析";
+//        self.viewTitleString = @"访客群体分析";
 //    }
 //    
 //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-//        [[pageAnalyticsModel sharedInstance] createDefineDetails];
-//        [[pageAnalyticsModel sharedInstance] createDetailsData];
+//        [[visitorGroupModel sharedInstance] createDefineDetails];
+//        [[visitorGroupModel sharedInstance] createDetailsData];
 //    });
-//
+}
+
+- (void)addSourceAnalyticsDetailsViewWithFrame:(CGRect)frame withData:(id)data
+{
+    _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(_marginX, _marginY, _width, _height - 50.0) dataType:outlineSource data:data inControllerType:detailView];
+    [_scrollView addSubview:_dataContentView];
+    
+    _detailOutlineView = [[detailOutlineView alloc] initWithFrame:CGRectMake(_marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, _width, _height * 7) viewType:outlineSource];
+    
+//    [self addDetailOutlineViewWithType:outlineSource];
+
+}
+
+- (void)addPageAnalyticsDetailsViewWithFrame:(CGRect)frame withData:(id)data
+{
+    _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(_marginX, _marginY, _width, _height - 140.0) dataType:outlinePageAnalytics data:data inControllerType:detailView];
+    [_scrollView addSubview:_dataContentView];
+    
+    _detailOutlineView = [[detailOutlineView alloc] initWithFrame:CGRectMake(_marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, _width, _height * 3.5) viewType:outlinePageAnalytics];
+    
+//    [self addDetailOutlineViewWithType:outlinePageAnalytics];
+
+}
+
+- (void)addTransformAnalyticsDetailsViewWithFrame:(CGRect)frame withData:(id)data
+{
+    _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(_marginX, _marginY, _width, _height - 140.0) dataType:outlineTransform data:data inControllerType:detailView];
+    [_scrollView addSubview:_dataContentView];
+    
+     _detailOutlineView = [[detailOutlineView alloc] initWithFrame:CGRectMake(_marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, _width, _height * 7.0) viewType:outlineTransform];
+    
+//    [self addDetailOutlineViewWithType:outlineTransform];
+    
+}
+
+//- (void)viewWillAppear:(BOOL)animated
+//{
+//    
 //}
+
+- (void)addDetailOutlineViewWithData:(NSDictionary *)data Type:(viewType)type
+{
+    double delayInSeconds = 0.2;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    
+    __weak typeof(self) weakself = self;
+    dispatch_after(popTime, dispatch_get_main_queue(), ^{
+        typeof(weakself) strongSelf = weakself;
+        
+        [_detailOutlineView initViewsWithData:data];
+        
+        _detailOutlineView.viewClickedBlock = ^(NSInteger markers) {
+            [strongSelf handleLineViewClicked:markers fromView:type];
+        };
+        
+        [_scrollView addSubview:_detailOutlineView];
+    });
+    
+    _ifHasDetailsView = YES;
+    
+    if ([_viewTitleString isEqual: @"Details"]) {
+        self.viewTitleString = _viewTitleStringArray[type];
+    }
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        switch (type) {
+            case outlineVisitorGroup:
+                [[visitorGroupModel sharedInstance] createDefineDetails];
+                [[visitorGroupModel sharedInstance] createDetailsData];
+                break;
+            case outlineSource:
+                [[sourcesAnalyticsModel sharedInstance] createDefineDetails];
+                [[sourcesAnalyticsModel sharedInstance] createDetailsData];
+                break;
+            case outlinePageAnalytics:
+                [[pageAnalyticsModel sharedInstance] createDefineDetails];
+                [[pageAnalyticsModel sharedInstance] createDetailsData];
+                break;
+            case outlineTransform:
+                [[transformAnalyticsModel sharedInstance] createDefineDetails];
+                [[transformAnalyticsModel sharedInstance] createDetailsData];
+                break;
+                
+            default:
+                break;
+        }
+    });
+
+}
+
+- (void)addDetailOutlineViewWithType:(viewType)type
+{
+    double delayInSeconds = 0.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    
+    __weak typeof(self) weakself = self;
+    dispatch_after(popTime, dispatch_get_main_queue(), ^{
+        typeof(weakself) strongSelf = weakself;
+        
+        if (_initializedDataReady) {
+            [_detailOutlineView initViewsWithData:_initializedData];
+        }
+        
+        _detailOutlineView.viewClickedBlock = ^(NSInteger markers) {
+            [strongSelf handleLineViewClicked:markers fromView:type];
+        };
+        
+        [_scrollView addSubview:_detailOutlineView];
+    });
+    
+    _ifHasDetailsView = YES;
+    
+    if ([_viewTitleString isEqual: @"Details"]) {
+        self.viewTitleString = _viewTitleStringArray[type];
+    }
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        switch (type) {
+            case outlineVisitorGroup:
+                [[visitorGroupModel sharedInstance] createDefineDetails];
+                [[visitorGroupModel sharedInstance] createDetailsData];
+                break;
+            case outlineSource:
+                [[sourcesAnalyticsModel sharedInstance] createDefineDetails];
+                [[sourcesAnalyticsModel sharedInstance] createDetailsData];
+                break;
+            case outlinePageAnalytics:
+                [[pageAnalyticsModel sharedInstance] createDefineDetails];
+                [[pageAnalyticsModel sharedInstance] createDetailsData];
+                break;
+            case outlineTransform:
+                [[transformAnalyticsModel sharedInstance] createDefineDetails];
+                [[transformAnalyticsModel sharedInstance] createDetailsData];
+                break;
+                
+            default:
+                break;
+        }
+    });
+}
 
 #pragma mark handleVisitorGroupLineViewClicked
 - (void)handleLineViewClicked:(NSInteger)markers fromView:(viewType)type
@@ -893,8 +944,8 @@ const static CGFloat itemsViewHeight = 145.0f;
 {
     if (_dataVisualizedType == outlineRealTime) {
         [_realTimeView shouldShowReferencedLines:should];
-    }else if (_dataVisualizedType == outlineVisitorGroup) {
-        [_visitorGroupView shouldShowReferencedLines:should];
+    }else {
+        [_detailOutlineView shouldShowReferencedLines:should];
     }
 }
 

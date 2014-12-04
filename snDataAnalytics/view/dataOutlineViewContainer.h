@@ -12,12 +12,14 @@
 #import "PNLineChartDataItem.h"
 #import "BEMSimpleLineGraphView.h"
 
+#import "loadingView.h"
 #import "realTimeOutlineView.h"
 #import "visitorGroupOutlineView.h"
-#import "pageAnalyticsOutlineView.h"
 #import "sourceAnalyticsOutlineView.h"
 #import "pageAnalyticsOutlineView.h"
-#import "loadingView.h"
+#import "hotCityOutlineView.h"
+#import "hotPageOutlineView.h"
+#import "transformAnalyticsOutlineView.h"
 
 
 typedef NS_ENUM(NSUInteger, dataVisualizedType) {
@@ -53,16 +55,19 @@ typedef NS_ENUM(NSUInteger, inViewType) {
 
 @property (nonatomic,strong) UIImageView *snapView;
 @property (nonatomic) viewType dataType;
-@property (nonatomic,strong) UILabel * chartLabel;
-@property (nonatomic,strong) PNLineChart * lineChart;
+@property (nonatomic,strong) UILabel *chartLabel;
+@property (nonatomic,strong) PNLineChart *lineChart;
 @property (nonatomic,strong) PNBarChart *barChart;
 @property (nonatomic,strong) PNCircleChart *circleChart;
 @property (nonatomic,strong) PNPieChart *pieChart;
 @property (nonatomic,strong) BEMSimpleLineGraphView *myGraph;
 @property (nonatomic,strong) realTimeOutlineView *realTimeView;
 @property (nonatomic,strong) visitorGroupOutlineView *visitorGroupView;
-@property (nonatomic,strong) pageAnalyticsOutlineView *pageView;
 @property (nonatomic,strong) sourceAnalyticsOutlineView *sourceView;
+@property (nonatomic,strong) pageAnalyticsOutlineView *pageView;
+@property (nonatomic,strong) hotCityOutlineView *hotCityView;
+@property (nonatomic,strong) hotPageOutlineView *hotPageView;
+@property (nonatomic,strong) transformAnalyticsOutlineView *transformView;
 
 @property (nonatomic,strong) LoadingView *loadingView;
 

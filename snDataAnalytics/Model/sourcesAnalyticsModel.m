@@ -16,7 +16,6 @@ static NSString *const sourceAnalyticsOutlineDataDidInitialize       = @"sourceA
 @implementation sourcesAnalyticsModel
 {
     __weak id      _wself;
-   NSMutableArray *_arrayOfDates;
    NSMutableArray *_groupPercentArray;
    NSMutableArray *_groupValidPercentArray;
 
@@ -168,7 +167,6 @@ static NSString *const sourceAnalyticsOutlineDataDidInitialize       = @"sourceA
                             @"有效订单转化率_number":@(arc4random() % 100),
                             @"间接订单数_number":@(arc4random() % 1000),
                             @"间接订单转化率_number":@(arc4random() % 100),
-
                             };
         
         _initializeDataReady = YES;

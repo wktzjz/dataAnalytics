@@ -19,15 +19,20 @@
 #import "Colours.h"
 #import "changefulButton.h"
 #import "wkContextMenuView.h"
-#import "realTimeModel.h"
 #import "visitorGroupModel.h"
 #import "notificationDefine.h"
 #import "TLYShyNavBarManager.h"
 #import "timeView.h"
 #import "THDatePickerViewController.h"
-#import "sourcesAnalyticsModel.h"
 #import "notificationDefine.h"
+
+#import "realTimeModel.h"
+#import "visitorGroupModel.h"
+#import "sourcesAnalyticsModel.h"
 #import "pageAnalyticsModel.h"
+#import "hotCityModel.h"
+#import "hotPageModel.h"
+#import "transformAnalyticsModel.h"
 
 
 typedef enum {
@@ -87,15 +92,16 @@ const static CGFloat titleViewHeight = 44.0f;
     id _visitorGroupInitData;
     id _sourceAnalyticsInitData;
     id _pageAnalyticsInitData;
-    
+    id _transformAnalyticsInitData;
+
     BOOL _ifUseFlexibleBar;
     BOOL _statusBarShouldHide;
     
     BOOL _visitorGroupDetailsDataLoaded;
     BOOL _sourceAnalyticsDetailsDataLoaded;
     BOOL _pageAnalyticsDetailsDataLoaded;
+    BOOL _transformAnalyticsDetailsDataLoaded;
 
-    
     LoadingView *_loadingView;
     
     THDatePickerViewController *_datePicker;
@@ -161,6 +167,15 @@ const static CGFloat titleViewHeight = 44.0f;
         [[NSNotificationCenter defaultCenter] addObserver:strongSelf
                                                  selector:@selector(handlePageAnalyticsOutlineDataDidInitialize:)
                                                      name:pageAnalyticsOutlineDataDidInitialize object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:strongSelf
+                                                 selector:@selector(handleHotCityOutlineDataDidInitialize:)
+                                                     name:hotCityOutlineDataDidInitialize object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:strongSelf
+                                                 selector:@selector(handleHotPageOutlineDataDidInitialize:)
+                                                     name:hotPageOutlineDataDidInitialize object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:strongSelf
+                                                 selector:@selector(handleTransformAnalyticsOutlineDataDidInitialize:)
+                                                     name:transformAnalyticsOutlineDataDidInitialize object:nil];
         
         
 //        NSMutableArray *test1 = [[NSMutableArray alloc] initWithArray:@[@1,@2]];
@@ -181,6 +196,11 @@ const static CGFloat titleViewHeight = 44.0f;
 //    UILongPressGestureRecognizer* _longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:overlay action:@selector(longPressDetected:)];
 //    [self.view setUserInteractionEnabled:YES];
 //    [self.view addGestureRecognizer:_longPressRecognizer];
+    
+}
+
+- (void)addObservers
+{
     
 }
 
@@ -205,6 +225,9 @@ const static CGFloat titleViewHeight = 44.0f;
     [[visitorGroupModel sharedInstance] getOutlineData];
     [[sourcesAnalyticsModel sharedInstance] getOutlineData];
     [[pageAnalyticsModel sharedInstance] getOutlineData];
+    [[hotCityModel sharedInstance] getOutlineData];
+    [[hotPageModel sharedInstance] getOutlineData];
+    [[transformAnalyticsModel sharedInstance] getOutlineData];
 
 //    [[visitorGroupModel sharedInstance] initDetailsData];
 
@@ -250,10 +273,10 @@ const static CGFloat titleViewHeight = 44.0f;
     CGRect frontViewRect = CGRectMake(0, 0, wkScreenWidth, wkScreenHeight);
     _frontView = [[UIView alloc] initWithFrame:frontViewRect];
     
-//    _frontView.   = 0.5;
-//    _frontView.layer.shadowRadius = 10;
-//    _frontView.layer.shadowColor = [UIColor blackColor].CGColor;
-//    _frontView.layer.shadowOffset = CGSizeMake(-3, 3);
+//    _frontView.layer.shadowOpacity = 0.5;
+//    _frontView.layer.shadowRadius  = 10;
+//    _frontView.layer.shadowColor   = [UIColor blackColor].CGColor;
+//    _frontView.layer.shadowOffset  = CGSizeMake(-3, 3);
 //
 //    if (!_ifUseFlexibleBar) {
 //        _text = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, 300, 50)];
@@ -268,6 +291,7 @@ const static CGFloat titleViewHeight = 44.0f;
 //    shimmeringLogo.shimmering = YES;
 //    [_frontView addSubview:shimmeringLogo];
 //    [_frontView addSubview:_text];
+    
     _frontView.backgroundColor = [UIColor colorWithRed:236.0/255.0 green:236.0/255.0 blue:236.0/255.0 alpha:1];
     //   _frontView.BackgroundColor =[UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
     
@@ -413,7 +437,7 @@ const static CGFloat titleViewHeight = 44.0f;
     _scrollView1 = [[UIScrollView alloc] initWithFrame:CGRectMake(mainDataScrollViewMargin, 0 , wkScreenWidth - mainDataScrollViewMargin * 2, self.view.frame.size.height)];
     [_scrollView1 setDelegate:self];
     [_scrollView1 setShowsVerticalScrollIndicator:NO];
-    [_scrollView1 setContentSize:CGSizeMake(0, self.view.bounds.size.height * 4.23)];
+    [_scrollView1 setContentSize:CGSizeMake(0, self.view.bounds.size.height * 3.8)];
     [_frontView addSubview:_scrollView1];
 //    [_scrollView1 setContentOffset:CGPointMake(0, -100) animated:YES];
     
@@ -441,13 +465,13 @@ const static CGFloat titleViewHeight = 44.0f;
     _pageView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _sourceView.frame.origin.y + _sourceView.frame.size.height + 20, width, height/2) ifLoading:YES];
     [_scrollView1 addSubview:_pageView];
     
-    _hotCityView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _pageView.frame.origin.y + _pageView.frame.size.height + 20, width, height) ifLoading:YES];
+    _hotCityView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _pageView.frame.origin.y + _pageView.frame.size.height + 20, width, 240) ifLoading:YES];
     [_scrollView1 addSubview:_hotCityView];
     
-    _hotPageView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _hotCityView.frame.origin.y + _hotCityView.frame.size.height + 20, width, height) ifLoading:YES];
+    _hotPageView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _hotCityView.frame.origin.y + _hotCityView.frame.size.height + 20, width, 240) ifLoading:YES];
     [_scrollView1 addSubview:_hotPageView];
 
-    _transformView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _hotPageView.frame.origin.y + _hotPageView.frame.size.height + 20, width, height) ifLoading:YES];
+    _transformView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _hotPageView.frame.origin.y + _hotPageView.frame.size.height + 20, width, height - 140.0) ifLoading:YES];
     [_scrollView1 addSubview:_transformView];
     
     
@@ -518,6 +542,38 @@ const static CGFloat titleViewHeight = 44.0f;
     }
 }
 
+- (void)handleHotCityOutlineDataDidInitialize:(NSNotification *)notification
+{
+    if (notification.userInfo != nil && notification.object == [hotCityModel sharedInstance]) {
+        dispatch_main_async_safe(^{
+            [_hotCityView addDataViewType:outlineHotCity inControllerType:outlineView data:notification.userInfo];
+            [_hotCityView.loadingView stopAnimation];
+        })
+    }
+}
+
+- (void)handleHotPageOutlineDataDidInitialize:(NSNotification *)notification
+{
+    if (notification.userInfo != nil && notification.object == [hotPageModel sharedInstance]) {
+        dispatch_main_async_safe(^{
+            [_hotPageView addDataViewType:outlineHotPage inControllerType:outlineView data:notification.userInfo];
+            [_hotPageView.loadingView stopAnimation];
+        })
+    }
+}
+
+- (void)handleTransformAnalyticsOutlineDataDidInitialize:(NSNotification *)notification
+{
+    if (notification.userInfo != nil && notification.object == [transformAnalyticsModel sharedInstance]) {
+        _transformAnalyticsInitData = notification.userInfo;
+        dispatch_main_async_safe(^{
+            [_transformView addDataViewType:outlineTransform inControllerType:outlineView data:notification.userInfo];
+            [_transformView.loadingView stopAnimation];
+        })
+    }
+}
+
+
 #pragma mark - viewWillAppear
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -571,24 +627,25 @@ const static CGFloat titleViewHeight = 44.0f;
 #pragma mark - handleInfoFromNetwork
 - (BOOL)handleInfoFromNetwork:(NSDictionary *)info
 {
-    if (!info) {
-        NSArray *stringArray = @[@"实时",@"访客群体分析",@"来源分析",@"页面分析",@"热门城市",@"热门页面",@"转化分析"];
-        dispatch_main_async_safe(^{
-            [_outLineViewArray enumerateObjectsUsingBlock:^(dataOutlineViewContainer *view, NSUInteger idx, BOOL *stop) {
-                if (idx != 0 && idx != 1 && idx != 2 && idx != 3) {
-                    [view addDataViewType:(viewType)idx inControllerType:outlineView data:stringArray];
-                    if (idx != 1 ) {
-//                        [view.loadingView stopAnimation];
-                    }
+//    if (!info) {
+//        NSArray *stringArray = @[@"实时",@"访客群体分析",@"来源分析",@"页面分析",@"热门城市",@"热门页面",@"转化分析"];
+//        dispatch_main_async_safe(^{
+//            [_outLineViewArray enumerateObjectsUsingBlock:^(dataOutlineViewContainer *view, NSUInteger idx, BOOL *stop) {
+//                if (idx == 4 || idx == 5) {
+//                    [view addDataViewType:(viewType)idx inControllerType:outlineView data:stringArray];
+//                    if (idx != 1 ) {
+////                        [view.loadingView stopAnimation];
+//                    }
+//
+//                }
+//            }];
+//        });
+//        
+//    }
+    
+    //加载完概览页面后 预加载第二屏数据
+    [self getDetailsData];
 
-                }
-            }];
-        });
-        
-        //加载完概览页面后 预加载第二屏数据
-        [self getDetailsData];
-
-    }
     
     return YES;
 }
@@ -601,6 +658,7 @@ const static CGFloat titleViewHeight = 44.0f;
     [self getVisitorGroupDetailsData];
     [self getSourceAnalyticsDetailsData];
     [self getPageAnalyticsDetailsData];
+    [self getTransformDetailData];
 }
 
 #pragma mark getVisitorGroupData
@@ -631,6 +689,14 @@ const static CGFloat titleViewHeight = 44.0f;
     
     _pageAnalyticsDetailsDataLoaded = YES;
     [_pageView.loadingView stopAnimation];
+}
+
+- (void)getTransformDetailData
+{
+    [[transformAnalyticsModel sharedInstance] createDetailOutlineData];
+    
+    _transformAnalyticsDetailsDataLoaded = YES;
+    [_transformView.loadingView stopAnimation];
 }
 
 
@@ -668,7 +734,7 @@ const static CGFloat titleViewHeight = 44.0f;
 //                    
 //                }else if (CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[5]).frame, location)) {
 //                    [self handleTappingOutlineView:5];
-                }else if (CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[6]).frame, location)) {
+                }else if (CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[outlineTransform]).frame, location)) {
                     [self handleTappingOutlineView:outlineTransform];
                 }else{
                     
@@ -712,6 +778,7 @@ const static CGFloat titleViewHeight = 44.0f;
         }
         case 6:{
             targetView = _transformView;
+            data = _transformAnalyticsInitData;
         }
             break;
         default:
@@ -765,14 +832,21 @@ const static CGFloat titleViewHeight = 44.0f;
         _detailsViewController.initializedDataReady = _realTimeData.initializeDataReady;
         _detailsViewController.initializedData      = _realTimeData.initializeData;
     }else if (type == outlineVisitorGroup) {
-        _detailsViewController.initializedDataReady = [visitorGroupModel sharedInstance].initializeDataReady;
-        _detailsViewController.initializedData      = [visitorGroupModel sharedInstance].detailInitializeData;
+        [_detailsViewController addDetailOutlineViewWithData:[visitorGroupModel sharedInstance].detailInitializeData Type:type];
+//        _detailsViewController.initializedDataReady = [visitorGroupModel sharedInstance].initializeDataReady;
+//        _detailsViewController.initializedData      = [visitorGroupModel sharedInstance].detailInitializeData;
     }else if (type == outlineSource){
-        _detailsViewController.initializedDataReady = [sourcesAnalyticsModel sharedInstance].initializeDataReady;
-        _detailsViewController.initializedData      = [sourcesAnalyticsModel sharedInstance].detailInitializeData;
+        [_detailsViewController addDetailOutlineViewWithData:[sourcesAnalyticsModel sharedInstance].detailInitializeData Type:type];
+//        _detailsViewController.initializedDataReady = [sourcesAnalyticsModel sharedInstance].initializeDataReady;
+//        _detailsViewController.initializedData      = [sourcesAnalyticsModel sharedInstance].detailInitializeData;
     }else if (type == outlinePageAnalytics){
-        _detailsViewController.initializedDataReady = [pageAnalyticsModel sharedInstance].initializeDataReady;
-        _detailsViewController.initializedData      = [pageAnalyticsModel sharedInstance].detailInitializeData;
+         [_detailsViewController addDetailOutlineViewWithData:[pageAnalyticsModel sharedInstance].detailInitializeData Type:type];
+//        _detailsViewController.initializedDataReady = [pageAnalyticsModel sharedInstance].initializeDataReady;
+//        _detailsViewController.initializedData      = [pageAnalyticsModel sharedInstance].detailInitializeData;
+    }else if (type == outlineTransform){
+        [_detailsViewController addDetailOutlineViewWithData:[transformAnalyticsModel sharedInstance].detailInitializeData Type:type];
+//        _detailsViewController.initializedDataReady = [transformAnalyticsModel sharedInstance].initializeDataReady;
+//        _detailsViewController.initializedData      = [transformAnalyticsModel sharedInstance].detailInitializeData;
     }
 
     _animator = [[outlineViewTransitionAnimator alloc] initWithModalViewController:_detailsViewController];

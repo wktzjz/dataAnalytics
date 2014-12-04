@@ -10,6 +10,7 @@
 #import "visitorGroupModel.h"
 #import "sourcesAnalyticsModel.h"
 #import "pageAnalyticsModel.h"
+#import "transformAnalyticsModel.h"
 #import "defines.h"
 
 @implementation lineChartDetailsViewFactory
@@ -20,15 +21,17 @@
     NSArray *_sourceAnalyticsIndexArray;
     NSArray *_pageAnalyticsDimensionArray;
     NSArray *_pageAnalyticsIndexArray;
+    NSArray *_transformAnalyticsDimensionArray;
+    NSArray *_transformAnalyticsIndexArray;
     
     NSInteger _visitorGroupChosenDimension;
     NSInteger _visitorGroupChosenIndex;
-    
     NSInteger _sourceAnalyticsChosenDimension;
     NSInteger _sourceAnalyticsChosenIndex;
-    
     NSInteger _pageAnalyticsChosenDimension;
     NSInteger _pageAnalyticsChosenIndex;
+    NSInteger _transformAnalyticsChosenDimension;
+    NSInteger _transformAnalyticsChosenIndex;
 
 }
 
@@ -57,6 +60,9 @@
         
         _pageAnalyticsDimensionArray = @[@"页面类型",@"着陆页",@"退出页"];
         _pageAnalyticsIndexArray     = @[@"PV",@"UV",@"平均页面停留时间",@"一跳",@"四级页面PV",@"购物车PV"];
+        
+        _transformAnalyticsDimensionArray = @[@"来源",@"城市分布",@"访客类型",@"商品分析"];
+        _transformAnalyticsIndexArray     = @[@"UV",@"PV",@"VISIT",@"新UV",@"有效UV",@"平均页面停留时间",@"注册数",@"注册转化率",@"提交订单数",@"提交订单转化率",@"有效订单数",@"有效订单转化率",@"付款金额"];
 
         _visitorGroupChosenDimension = 0;
         _visitorGroupChosenIndex     = 0;
@@ -64,6 +70,8 @@
         _sourceAnalyticsChosenIndex     = 0;
         _pageAnalyticsChosenDimension = 0;
         _pageAnalyticsChosenIndex     = 0;
+        _transformAnalyticsChosenDimension = 0;
+        _transformAnalyticsChosenIndex     = 0;
         
     }
     return self;
@@ -83,6 +91,10 @@
         }
         case outlinePageAnalytics:{
             return [self getPageAnalyticsControllerByType:detailsType];
+            break;
+        }
+        case outlineTransform:{
+            return [self getTransformAnalyticsControllerByType:detailsType];
             break;
         }
 
@@ -348,6 +360,93 @@
             strongVC.chartDetailsView.lineView.labelString = (NSString *)indexNameArray[0];
             
             detailsData = (NSDictionary *)((NSDictionary *)[[pageAnalyticsModel sharedInstance] getDetailsData])[(NSString *)_pageAnalyticsDimensionArray[i]];
+            
+            //detailsview的labels
+            [strongVC.chartDetailsView.detailsView reloadLabelsWithData:labelData];
+            
+            //图表
+            [strongVC.chartDetailsView.lineView relodData:detailsData];
+            
+            //detailsview的数值
+            [strongVC.chartDetailsView.detailsView reloadValuesWithData:detailsData];
+            
+            //添加detailsview的index array选项
+            strongVC.indexArray = [[NSMutableArray alloc] initWithArray:indexNameArray];
+            
+        }
+    };
+    
+    return vc;
+}
+
+- (lineChartDetailsViewController *)getTransformAnalyticsControllerByType:(NSInteger)type
+{
+    _transformAnalyticsChosenDimension = 0;
+    
+    lineChartDetailsViewController *vc = [[lineChartDetailsViewController alloc] initWithFrame:wkScreen data:nil];
+    __block NSDictionary *detailsData;
+    __block NSDictionary *labelData = (NSDictionary *)[[transformAnalyticsModel sharedInstance] getDefineDetails];
+    
+    ///details views的 title 和 当前维度 名称
+    vc.titleString = vc.chartDetailsView.dimensionName = _transformAnalyticsDimensionArray[0];
+    
+    //details views的 当前指标 名称
+    vc.chartDetailsView.indexName = _transformAnalyticsIndexArray[type];
+    vc.chartDetailsView.lineView.labelString = _transformAnalyticsIndexArray[type];
+    
+    detailsData = (NSDictionary *)((NSDictionary *)[[transformAnalyticsModel sharedInstance] getDetailsData])[(NSString *)_transformAnalyticsDimensionArray[0]];
+    
+    //detailsview的数值标题
+    [vc addDetailsViewButtonWithData:labelData];
+    
+    //图表
+    [vc addLineViewWithData:detailsData];
+    
+    //detailsview的数值
+    [vc addDetailsViewWithData:detailsData];
+    
+    vc.dimensionArray = [[NSMutableArray alloc] initWithArray:_transformAnalyticsDimensionArray];
+    vc.indexArray = [[NSMutableArray alloc] initWithArray:_transformAnalyticsIndexArray];
+    
+    __weak typeof(vc) weakVC = vc;
+    
+    vc.indexChoosedBlock = ^(NSInteger i) {
+        if (_transformAnalyticsChosenIndex != i) {
+            _transformAnalyticsChosenIndex = i;
+            
+            typeof(weakVC) strongVC = weakVC;
+            NSString *chosenDimensionName = (NSString *)_transformAnalyticsDimensionArray[_transformAnalyticsChosenDimension];
+            
+            NSArray *indexNameArray = (NSArray *)(NSDictionary *)(labelData[chosenDimensionName])[@"indexOptionsArray"];
+            
+            strongVC.chartDetailsView.indexName = (NSString *)indexNameArray[i];
+            strongVC.chartDetailsView.lineView.labelString = (NSString *)indexNameArray[i];
+            
+            detailsData = (NSDictionary *)((NSDictionary *)[[transformAnalyticsModel sharedInstance] getDetailsData])[chosenDimensionName];
+            
+            //图表自动根据labelString 筛选detailsData中得数据 用以绘图
+            [strongVC.chartDetailsView.lineView relodData:detailsData];
+        }
+    };
+    
+    
+    vc.dimensionChoosedBlock = ^(NSInteger i) {
+        if (_transformAnalyticsChosenDimension != i) {
+            typeof (weakVC) strongVC = weakVC;
+            
+            _transformAnalyticsChosenDimension = i;
+            
+            //details views的 指标数组
+            NSArray *indexNameArray = (NSArray *)(NSDictionary *)(labelData[_transformAnalyticsDimensionArray[i]])[@"indexOptionsArray"];
+            
+            //details views的 title 和 当前维度 名称
+            strongVC.titleString = strongVC.chartDetailsView.dimensionName = _transformAnalyticsDimensionArray[i];
+            
+            //details views的 当前指标 名称
+            strongVC.chartDetailsView.indexName = (NSString *)indexNameArray[0];
+            strongVC.chartDetailsView.lineView.labelString = (NSString *)indexNameArray[0];
+            
+            detailsData = (NSDictionary *)((NSDictionary *)[[transformAnalyticsModel sharedInstance] getDetailsData])[(NSString *)_transformAnalyticsDimensionArray[i]];
             
             //detailsview的labels
             [strongVC.chartDetailsView.detailsView reloadLabelsWithData:labelData];

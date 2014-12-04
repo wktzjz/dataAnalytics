@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		350BCFF11A284FFD000EA574 /* detailOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 350BCFF01A284FFD000EA574 /* detailOutlineView.m */; };
 		350BCFF41A2D691A000EA574 /* pageAnalyticsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 350BCFF31A2D691A000EA574 /* pageAnalyticsModel.m */; };
+		350BCFF81A2EB2E0000EA574 /* transformAnalyticsOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 350BCFF71A2EB2E0000EA574 /* transformAnalyticsOutlineView.m */; };
+		350BCFFB1A2EB5AF000EA574 /* transformAnalyticsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 350BCFFA1A2EB5AF000EA574 /* transformAnalyticsModel.m */; };
 		3522246519C2C73D0048F57C /* pop-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3522243419C2C73D0048F57C /* pop-Info.plist */; };
 		3522246619C2C73D0048F57C /* POPAnimatableProperty.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3522243919C2C73D0048F57C /* POPAnimatableProperty.mm */; };
 		3522246719C2C73D0048F57C /* POPAnimation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3522243B19C2C73D0048F57C /* POPAnimation.mm */; };
@@ -64,6 +66,10 @@
 		357E443319FA047700719A2A /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 357E443219FA047700719A2A /* OpenSans-Light.ttf */; };
 		357E45DF19FD4ECD00719A2A /* icon_account@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 357E45DE19FD4ECD00719A2A /* icon_account@2x.png */; };
 		357E45E319FD4F9200719A2A /* calloutItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 357E45E219FD4F9200719A2A /* calloutItemView.m */; };
+		358F8E371A303B6F008BF6A7 /* hotCityOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 358F8E361A303B6F008BF6A7 /* hotCityOutlineView.m */; };
+		358F8E3B1A303B90008BF6A7 /* hotPageOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 358F8E3A1A303B90008BF6A7 /* hotPageOutlineView.m */; };
+		358F8E3E1A3045B2008BF6A7 /* hotPageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 358F8E3D1A3045B2008BF6A7 /* hotPageModel.m */; };
+		358F8E411A3045C8008BF6A7 /* hotCityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 358F8E401A3045C8008BF6A7 /* hotCityModel.m */; };
 		35945CEB19E8C1D200BF5EC3 /* pageAnalyticsOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35945CEA19E8C1D200BF5EC3 /* pageAnalyticsOutlineView.m */; };
 		35945CF219E8C20A00BF5EC3 /* visitorGroupDetailOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35945CED19E8C20A00BF5EC3 /* visitorGroupDetailOutlineView.m */; };
 		35945CF319E8C20A00BF5EC3 /* visitorGroupOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35945CEF19E8C20A00BF5EC3 /* visitorGroupOutlineView.m */; };
@@ -209,6 +215,10 @@
 		350BCFF01A284FFD000EA574 /* detailOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = detailOutlineView.m; path = view/detailOutlineView.m; sourceTree = "<group>"; };
 		350BCFF21A2D691A000EA574 /* pageAnalyticsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pageAnalyticsModel.h; path = Model/pageAnalyticsModel.h; sourceTree = "<group>"; };
 		350BCFF31A2D691A000EA574 /* pageAnalyticsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = pageAnalyticsModel.m; path = Model/pageAnalyticsModel.m; sourceTree = "<group>"; };
+		350BCFF61A2EB2E0000EA574 /* transformAnalyticsOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = transformAnalyticsOutlineView.h; path = view/transformAnalyticsOutlineView.h; sourceTree = "<group>"; };
+		350BCFF71A2EB2E0000EA574 /* transformAnalyticsOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = transformAnalyticsOutlineView.m; path = view/transformAnalyticsOutlineView.m; sourceTree = "<group>"; };
+		350BCFF91A2EB5AF000EA574 /* transformAnalyticsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = transformAnalyticsModel.h; path = Model/transformAnalyticsModel.h; sourceTree = "<group>"; };
+		350BCFFA1A2EB5AF000EA574 /* transformAnalyticsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = transformAnalyticsModel.m; path = Model/transformAnalyticsModel.m; sourceTree = "<group>"; };
 		3522243419C2C73D0048F57C /* pop-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "pop-Info.plist"; path = "pop/pop-Info.plist"; sourceTree = "<group>"; };
 		3522243519C2C73D0048F57C /* pop-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "pop-Prefix.pch"; path = "pop/pop-Prefix.pch"; sourceTree = "<group>"; };
 		3522243619C2C73D0048F57C /* POP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = POP.h; path = pop/POP.h; sourceTree = "<group>"; };
@@ -314,6 +324,14 @@
 		357E45DE19FD4ECD00719A2A /* icon_account@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon_account@2x.png"; path = "snDataAnalytics/Resourcs/Images/icon_account@2x.png"; sourceTree = "<group>"; };
 		357E45E119FD4F9200719A2A /* calloutItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = calloutItemView.h; path = view/calloutItemView.h; sourceTree = "<group>"; };
 		357E45E219FD4F9200719A2A /* calloutItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = calloutItemView.m; path = view/calloutItemView.m; sourceTree = "<group>"; };
+		358F8E351A303B6F008BF6A7 /* hotCityOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = hotCityOutlineView.h; path = view/hotCityOutlineView.h; sourceTree = "<group>"; };
+		358F8E361A303B6F008BF6A7 /* hotCityOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = hotCityOutlineView.m; path = view/hotCityOutlineView.m; sourceTree = "<group>"; };
+		358F8E391A303B90008BF6A7 /* hotPageOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = hotPageOutlineView.h; path = view/hotPageOutlineView.h; sourceTree = "<group>"; };
+		358F8E3A1A303B90008BF6A7 /* hotPageOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = hotPageOutlineView.m; path = view/hotPageOutlineView.m; sourceTree = "<group>"; };
+		358F8E3C1A3045B2008BF6A7 /* hotPageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = hotPageModel.h; path = Model/hotPageModel.h; sourceTree = "<group>"; };
+		358F8E3D1A3045B2008BF6A7 /* hotPageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = hotPageModel.m; path = Model/hotPageModel.m; sourceTree = "<group>"; };
+		358F8E3F1A3045C8008BF6A7 /* hotCityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = hotCityModel.h; path = Model/hotCityModel.h; sourceTree = "<group>"; };
+		358F8E401A3045C8008BF6A7 /* hotCityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = hotCityModel.m; path = Model/hotCityModel.m; sourceTree = "<group>"; };
 		35945CE919E8C1D200BF5EC3 /* pageAnalyticsOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pageAnalyticsOutlineView.h; path = view/pageAnalyticsOutlineView.h; sourceTree = "<group>"; };
 		35945CEA19E8C1D200BF5EC3 /* pageAnalyticsOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = pageAnalyticsOutlineView.m; path = view/pageAnalyticsOutlineView.m; sourceTree = "<group>"; };
 		35945CEC19E8C20A00BF5EC3 /* visitorGroupDetailOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = visitorGroupDetailOutlineView.h; path = view/visitorGroupDetailOutlineView.h; sourceTree = "<group>"; };
@@ -554,6 +572,15 @@
 				350BCFF01A284FFD000EA574 /* detailOutlineView.m */,
 			);
 			name = DetailOutlineView;
+			sourceTree = "<group>";
+		};
+		350BCFF51A2EB2C2000EA574 /* transformAnalyticsView */ = {
+			isa = PBXGroup;
+			children = (
+				350BCFF61A2EB2E0000EA574 /* transformAnalyticsOutlineView.h */,
+				350BCFF71A2EB2E0000EA574 /* transformAnalyticsOutlineView.m */,
+			);
+			name = transformAnalyticsView;
 			sourceTree = "<group>";
 		};
 		3522243219C2C6570048F57C /* Pop */ = {
@@ -808,6 +835,8 @@
 		3550C3AC1A199FF700402F33 /* hotCity */ = {
 			isa = PBXGroup;
 			children = (
+				358F8E3F1A3045C8008BF6A7 /* hotCityModel.h */,
+				358F8E401A3045C8008BF6A7 /* hotCityModel.m */,
 			);
 			name = hotCity;
 			sourceTree = "<group>";
@@ -815,15 +844,19 @@
 		3550C3AD1A19A00500402F33 /* hotPage */ = {
 			isa = PBXGroup;
 			children = (
+				358F8E3C1A3045B2008BF6A7 /* hotPageModel.h */,
+				358F8E3D1A3045B2008BF6A7 /* hotPageModel.m */,
 			);
 			name = hotPage;
 			sourceTree = "<group>";
 		};
-		3550C3AE1A19A00F00402F33 /* transform */ = {
+		3550C3AE1A19A00F00402F33 /* transformAnalytics */ = {
 			isa = PBXGroup;
 			children = (
+				350BCFF91A2EB5AF000EA574 /* transformAnalyticsModel.h */,
+				350BCFFA1A2EB5AF000EA574 /* transformAnalyticsModel.m */,
 			);
-			name = transform;
+			name = transformAnalytics;
 			sourceTree = "<group>";
 		};
 		3550C3B51A19C89B00402F33 /* sourceAnalyticsOutlineView */ = {
@@ -962,9 +995,9 @@
 				35D397FF1A07590F0014B377 /* visitorGroup */,
 				3550C3AA1A199FDF00402F33 /* sourcesAnalytics */,
 				3550C3AB1A199FE800402F33 /* pageAnalytics */,
-				3550C3AE1A19A00F00402F33 /* transform */,
-				3550C3AD1A19A00500402F33 /* hotPage */,
+				3550C3AE1A19A00F00402F33 /* transformAnalytics */,
 				3550C3AC1A199FF700402F33 /* hotCity */,
+				3550C3AD1A19A00500402F33 /* hotPage */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -978,12 +1011,15 @@
 				35D397F01A0084BA0014B377 /* labelLineChartView */,
 				35D397FB1A033AAE0014B377 /* detailsSwitchView */,
 				35D397B919FE4FF30014B377 /* lineChartDetailsView */,
-				35945D3C19E8C46300BF5EC3 /* contextMenuView */,
+				350BCFEE1A284FE5000EA574 /* DetailOutlineView */,
 				35945CF519E8C22800BF5EC3 /* realTimeViews */,
 				35945CDE19E667EE00BF5EC3 /* visitorGroupViews */,
 				3550C3B51A19C89B00402F33 /* sourceAnalyticsOutlineView */,
 				35945CE819E8C16900BF5EC3 /* pageAnalyticsViews */,
-				350BCFEE1A284FE5000EA574 /* DetailOutlineView */,
+				350BCFF51A2EB2C2000EA574 /* transformAnalyticsView */,
+				358F8E341A303B27008BF6A7 /* hotCityView */,
+				358F8E381A303B75008BF6A7 /* hotPageView */,
+				35945D3C19E8C46300BF5EC3 /* contextMenuView */,
 				357E45E019FD4F6500719A2A /* otherViews */,
 				353FCE6919D951BC00072431 /* buttons */,
 			);
@@ -1264,13 +1300,31 @@
 			name = otherViews;
 			sourceTree = "<group>";
 		};
+		358F8E341A303B27008BF6A7 /* hotCityView */ = {
+			isa = PBXGroup;
+			children = (
+				358F8E351A303B6F008BF6A7 /* hotCityOutlineView.h */,
+				358F8E361A303B6F008BF6A7 /* hotCityOutlineView.m */,
+			);
+			name = hotCityView;
+			sourceTree = "<group>";
+		};
+		358F8E381A303B75008BF6A7 /* hotPageView */ = {
+			isa = PBXGroup;
+			children = (
+				358F8E391A303B90008BF6A7 /* hotPageOutlineView.h */,
+				358F8E3A1A303B90008BF6A7 /* hotPageOutlineView.m */,
+			);
+			name = hotPageView;
+			sourceTree = "<group>";
+		};
 		35945CDE19E667EE00BF5EC3 /* visitorGroupViews */ = {
 			isa = PBXGroup;
 			children = (
-				35945CEC19E8C20A00BF5EC3 /* visitorGroupDetailOutlineView.h */,
-				35945CED19E8C20A00BF5EC3 /* visitorGroupDetailOutlineView.m */,
 				35945CEE19E8C20A00BF5EC3 /* visitorGroupOutlineView.h */,
 				35945CEF19E8C20A00BF5EC3 /* visitorGroupOutlineView.m */,
+				35945CEC19E8C20A00BF5EC3 /* visitorGroupDetailOutlineView.h */,
+				35945CED19E8C20A00BF5EC3 /* visitorGroupDetailOutlineView.m */,
 				35945CF019E8C20A00BF5EC3 /* visitorGroupSwitchView.h */,
 				35945CF119E8C20A00BF5EC3 /* visitorGroupSwitchView.m */,
 			);
@@ -1671,8 +1725,10 @@
 				35945DE419E8D41600BF5EC3 /* TSMessage.m in Sources */,
 				35945D4719E8C8B900BF5EC3 /* BEMLine.m in Sources */,
 				354AE1791A14923300564F9F /* loadingView.m in Sources */,
+				358F8E411A3045C8008BF6A7 /* hotCityModel.m in Sources */,
 				35945CF419E8C20A00BF5EC3 /* visitorGroupSwitchView.m in Sources */,
 				3524828419DA9B3800DA7FA5 /* test.m in Sources */,
+				358F8E3B1A303B90008BF6A7 /* hotPageOutlineView.m in Sources */,
 				35D397D919FF2F2B0014B377 /* LTMorphingLabel+Pixelate.swift in Sources */,
 				3522246A19C2C73D0048F57C /* POPAnimationRuntime.mm in Sources */,
 				35945D2419E8C37300BF5EC3 /* PNChartLabel.m in Sources */,
@@ -1708,16 +1764,19 @@
 				35945DB219E8CE6900BF5EC3 /* UIViewController+KNSemiModal.m in Sources */,
 				35D397E719FF2F910014B377 /* NSObject+TLYSwizzlingHelpers.m in Sources */,
 				35AE1AC41A10B3A800167096 /* UIColor+BFPaperColors.m in Sources */,
+				350BCFFB1A2EB5AF000EA574 /* transformAnalyticsModel.m in Sources */,
 				3522247319C2C73D0048F57C /* POPMath.mm in Sources */,
 				350BCFF11A284FFD000EA574 /* detailOutlineView.m in Sources */,
 				3522246819C2C73D0048F57C /* POPAnimationEvent.mm in Sources */,
 				35D397F31A0084EF0014B377 /* labelLineChartView.m in Sources */,
 				35945D3B19E8C45600BF5EC3 /* wkBlurPopoverTransitionController.m in Sources */,
+				358F8E371A303B6F008BF6A7 /* hotCityOutlineView.m in Sources */,
 				35945DAC19E8CD2100BF5EC3 /* UIView+snapShot.m in Sources */,
 				3522247219C2C73D0048F57C /* POPLayerExtras.mm in Sources */,
 				35945D2B19E8C37300BF5EC3 /* PNPieChartDataItem.m in Sources */,
 				357E45E319FD4F9200719A2A /* calloutItemView.m in Sources */,
 				35D397DA19FF2F2B0014B377 /* LTMorphingLabel+Sparkle.swift in Sources */,
+				350BCFF81A2EB2E0000EA574 /* transformAnalyticsOutlineView.m in Sources */,
 				35945CEB19E8C1D200BF5EC3 /* pageAnalyticsOutlineView.m in Sources */,
 				35945D4E19E8C9D400BF5EC3 /* flatButton.m in Sources */,
 				35945D4819E8C8B900BF5EC3 /* BEMSimpleLineGraphView.m in Sources */,
@@ -1760,6 +1819,7 @@
 				3522246719C2C73D0048F57C /* POPAnimation.mm in Sources */,
 				3522246919C2C73D0048F57C /* POPAnimationExtras.mm in Sources */,
 				35945D3419E8C3AC00BF5EC3 /* THDatePickerViewController.m in Sources */,
+				358F8E3E1A3045B2008BF6A7 /* hotPageModel.m in Sources */,
 				35945DA619E8CC3300BF5EC3 /* NSString+TextDirectionality.m in Sources */,
 				35D397E819FF2F910014B377 /* UIViewController+BetterLayoutGuides.m in Sources */,
 				35D397DB19FF2F2B0014B377 /* NSString+LTMorphingLabel.swift in Sources */,

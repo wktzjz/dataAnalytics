@@ -108,15 +108,6 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
         
         visitorGroupModel *strongSelf = _wself;
         
-        NSMutableArray *array1 = [[NSMutableArray alloc] init];
-        NSMutableArray *array2 = [[NSMutableArray alloc] init];
-        NSMutableArray *array3 = [[NSMutableArray alloc] init];
-        NSMutableArray *array4 = [[NSMutableArray alloc] init];
-        NSMutableArray *array5 = [[NSMutableArray alloc] init];
-        NSMutableArray *array6 = [[NSMutableArray alloc] init];
-        NSMutableArray *array7 = [[NSMutableArray alloc] init];
-        NSMutableArray *array8 = [[NSMutableArray alloc] init];
-        
         NSMutableArray *parallelArray = [[NSMutableArray alloc] initWithCapacity:8];
         for(int i = 0; i < 8; i++){
             [parallelArray addObject:[[NSMutableArray alloc] init]];

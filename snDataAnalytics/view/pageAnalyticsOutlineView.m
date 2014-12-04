@@ -78,6 +78,7 @@
     _PVNumberLabel.textColor = PNDeepGrey;
     _PVNumberLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
     _PVNumberLabel.textAlignment = NSTextAlignmentRight;
+    _PVNumberLabel.textColor = [UIColor fadedBlueColor];
     [self addSubview:_PVNumberLabel];
     
     _fourthPagePVLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 10 + _PVLabel.frame.origin.y +_PVLabel.frame.size.height, outlineViewWidth/3, 20)];
@@ -92,6 +93,7 @@
     _fourthPagePVNumberLabel.textColor = PNDeepGrey;
     _fourthPagePVNumberLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
     _fourthPagePVNumberLabel.textAlignment = NSTextAlignmentRight;
+    _fourthPagePVNumberLabel.textColor = [UIColor fadedBlueColor];
     [self addSubview:_fourthPagePVNumberLabel];
     
     _shoppingCartPVLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 10 + _fourthPagePVLabel.frame.origin.y +_fourthPagePVLabel.frame.size.height, outlineViewWidth/3, 20)];
@@ -106,6 +108,8 @@
     _shoppingCartPVNumberLabel.textColor = PNDeepGrey;
     _shoppingCartPVNumberLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
     _shoppingCartPVNumberLabel.textAlignment = NSTextAlignmentRight;
+    _shoppingCartPVNumberLabel.textColor = [UIColor fadedBlueColor];
+
     [self addSubview:_shoppingCartPVNumberLabel];
 }
 

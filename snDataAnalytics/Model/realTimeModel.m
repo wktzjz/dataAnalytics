@@ -102,7 +102,6 @@ static NSString *const realTimeOutlineDataDidInitialize = @"realTimeOutlineDataD
         
         realTimeModel *strongSelf = _wself;
 
-        [_arrayOfValues removeAllObjects];
         for (int i = 0; i < 20; i++) {
             [_arrayOfDates addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:i]]];
             
@@ -134,6 +133,7 @@ static NSString *const realTimeOutlineDataDidInitialize = @"realTimeOutlineDataD
                             @"cityValueArray":_cityValueArray,
                             @"pagesNameArray":_pagesNameArray,
                             @"pagesValueArray":_pagesValueArray,
+                            @"arrayOfValues":_arrayOfValues,
                             @"arrayOfDates":_arrayOfDates,
                             @"UV_arrayOfValues":parallelArray[0],
                             @"PV_arrayOfValues":parallelArray[1],

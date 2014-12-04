@@ -20,7 +20,20 @@ static NSString *const sourceAnalyticsOutlineDataDidInitialize       = @"sourceA
 static NSString *const sourceAnalyticsDetailOutlineDataDidInitialize = @"sourceAnalyticsDetailOutlineDataDidInitialize";
 static NSString *const sourceAnalyticsDataDidChange                  = @"sourceAnalyticsDataDidChanged";
 
-static NSString *const pageAnalyticsOutlineDataDidInitialize  = @"pageAnalyticsOutlineDataDidInitialize";
-static NSString *const pageAnalyticsDataDidChange             = @"pageAnalyticsDataDidChanged";
+static NSString *const pageAnalyticsDataDidChange                  = @"pageAnalyticsDataDidChanged";
+static NSString *const pageAnalyticsDetailOutlineDataDidInitialize = @"pageAnalyticsDetailOutlineDataDidInitialize";
+static NSString *const pageAnalyticsOutlineDataDidInitialize       = @"pageAnalyticsOutlineDataDidInitialize";
+
+static NSString *const hotCityDataDidChange                  = @"hotCityDataDidChange";
+static NSString *const hotCityDetailOutlineDataDidInitialize = @"hotCityDetailOutlineDataDidInitialize";
+static NSString *const hotCityOutlineDataDidInitialize       = @"hotCityOutlineDataDidInitialize";
+
+static NSString *const hotPageDataDidChange                  = @"hotPageDataDidChange";
+static NSString *const hotPageDetailOutlineDataDidInitialize = @"hotPageDetailOutlineDataDidInitialize";
+static NSString *const hotPageOutlineDataDidInitialize       = @"hotPageOutlineDataDidInitialize";
+
+static NSString *const transformAnalyticsDataDidChange                  = @"transformAnalyticsDataDidChanged";
+static NSString *const transformAnalyticsDetailOutlineDataDidInitialize = @"transformAnalyticsDetailOutlineDataDidInitialize";
+static NSString *const transformAnalyticsOutlineDataDidInitialize       = @"transformAnalyticsOutlineDataDidInitialize";
 
 #endif

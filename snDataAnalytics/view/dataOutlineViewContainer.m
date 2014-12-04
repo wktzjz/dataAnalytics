@@ -8,10 +8,8 @@
 
 #import "dataOutlineViewContainer.h"
 #import "defines.h"
-
 #import "FBShimmeringView.h"
 #import "UIColor+CustomColors.h"
-
 #import "loadingView.h"
 
 const static CGFloat loadingAnimationDuration = 1.0f;
@@ -166,36 +164,96 @@ const static CGFloat loadingAnimationDuration = 1.0f;
     }else if (dataType == outlineHotCity) {
         //Add BarChart
         
-        _chartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
-//        _chartLabel.text =(NSString *)data[dataType]?(NSString *)data[dataType]: @"Bar Chart";
-        _chartLabel.text = @"热门城市";
-        _chartLabel.textColor = PNFreshGreen;
-        _chartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:23.0];
-        _chartLabel.textAlignment = NSTextAlignmentCenter;
+        _hotCityView = [[hotCityOutlineView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height) withData:data];
+        [_contentView addSubview:_hotCityView];
         
-        _barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 55.0, outlineViewWidth, outlineViewHeight)];
-        _barChart.backgroundColor = [UIColor clearColor];
-        _barChart.yLabelFormatter = ^(CGFloat yValue) {
-            CGFloat yValueParsed = yValue;
-            NSString * labelText = [NSString stringWithFormat:@"%1.f",yValueParsed];
-            return labelText;
-        };
-        _barChart.labelMarginTop = 5.0;
-        [_barChart setXLabels:@[@"北京",@"上海",@"广州",@"深圳",@"南京"]];
-        [_barChart setYValues:@[@24,@12,@18,@10,@21]];
-        [_barChart setStrokeColors:@[PNGreen,PNRed,PNTwitterColor,PNYellow,PNGreen]];
-        // Adding gradient
-        _barChart.barColorGradientStart = [UIColor customYellowColor];
-        
-        _barChart.showReferenceLines = YES;
-        [_barChart strokeChart];
-        
-//        _barChart.delegate = self;
-        
-//        [self addSubview:barChartLabel];
-//        [self addSubview:self.barChart];
-        [_contentView addSubview:_chartLabel];
-        [_contentView addSubview:self.barChart];
+//        _chartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
+////        _chartLabel.text =(NSString *)data[dataType]?(NSString *)data[dataType]: @"Bar Chart";
+//        _chartLabel.text = @"热门城市";
+//        _chartLabel.textColor = PNFreshGreen;
+//        _chartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:23.0];
+//        _chartLabel.textAlignment = NSTextAlignmentCenter;
+//        
+//        _barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 55.0, outlineViewWidth, outlineViewHeight)];
+//        _barChart.backgroundColor = [UIColor clearColor];
+//        _barChart.yLabelFormatter = ^(CGFloat yValue) {
+//            CGFloat yValueParsed = yValue;
+//            NSString * labelText = [NSString stringWithFormat:@"%1.f",yValueParsed];
+//            return labelText;
+//        };
+//        _barChart.labelMarginTop = 5.0;
+//        [_barChart setXLabels:@[@"北京",@"上海",@"广州",@"深圳",@"南京"]];
+//        [_barChart setYValues:@[@24,@12,@18,@10,@21]];
+//        [_barChart setStrokeColors:@[PNGreen,PNRed,PNTwitterColor,PNYellow,PNGreen]];
+//        // Adding gradient
+//        _barChart.barColorGradientStart = [UIColor customYellowColor];
+//        
+//        _barChart.showReferenceLines = YES;
+//        [_barChart strokeChart];
+//        
+////        _barChart.delegate = self;
+//        
+////        [self addSubview:barChartLabel];
+////        [self addSubview:self.barChart];
+//        [_contentView addSubview:_chartLabel];
+//        [_contentView addSubview:self.barChart];
+//        self.ArrayOfValues = [[NSMutableArray alloc] init];
+//        self.ArrayOfDates = [[NSMutableArray alloc] init];
+//        //        self.ArrayOfValues = @[@5,@10,@30,@23,@15];
+//        totalNumber = 0;
+//        
+//        for (int i = 0; i < 5; i++) {
+//            [self.ArrayOfValues addObject:[NSNumber numberWithInteger:(arc4random() % 10000)]]; // Random values for the graph
+//            [self.ArrayOfDates addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:2000 + i]]]; // Dates for the X-Axis of the graph
+//            
+//            totalNumber = totalNumber + [[self.ArrayOfValues objectAtIndex:i] intValue]; // All of the values added together
+//        }
+//        
+//        //            self.ArrayOfValues = [[NSMutableArray alloc] initWithArray:@[@24444,@10000,@64213,@52341,@34445,@423,@81114,@22342,@33333]];
+//        
+//        /* This is commented out because the graph is created in the interface with this sample app. However, the code remains as an example for creating the graph using code. */
+//        
+//        float width  = (inViewType == outlineView) ? outlineViewWidth:SCREEN_WIDTH;
+//        
+//        self.myGraph = [[BEMSimpleLineGraphView alloc] initWithFrame:CGRectMake(40, 45.0, outlineViewWidth-80, 250.0)];
+//        _myGraph.delegate = self;
+//        _myGraph.dataSource = self;
+//        
+//        self.myGraph.backgroundColor = [UIColor clearColor];
+//        
+//        // Customization of the graph
+//        
+//        self.myGraph.colorLine = [UIColor colorWithRed:31.0/255.0 green:187.0/255.0 blue:166.0/255.0 alpha:1.0];
+//        
+//        self.myGraph.colorXaxisLabel = [UIColor clearColor];
+//        self.myGraph.colorYaxisLabel = [UIColor clearColor];
+//        self.myGraph.widthLine = 1.5;
+//        self.myGraph.enableTouchReport = YES;
+//        self.myGraph.enablePopUpReport = YES;
+//        self.myGraph.enableBezierCurve = NO;
+//        
+//        self.myGraph.enableYAxisLabel = NO;
+//        self.myGraph.enableReferenceAxisLines = NO;
+//        
+//        self.myGraph.autoScaleYAxis = YES;
+//        self.myGraph.alwaysDisplayDots = NO;
+//        self.myGraph.enableReferenceAxisLines = NO;
+//        self.myGraph.enableReferenceAxisFrame = YES;
+//        self.myGraph.animationGraphStyle = BEMLineAnimationDraw;
+//        
+//        self.myGraph.colorTop = [UIColor clearColor];
+//        self.myGraph.colorBottom = [UIColor clearColor];
+//        //            self.myGraph.backgroundColor = [UIColor whiteColor];
+//        self.tintColor = [UIColor whiteColor];
+//        
+//        [_contentView addSubview:_myGraph];
+//        
+//        if (inViewType == detailView) {
+//            _myGraph.alpha = 0.0;
+//            [UIView animateWithDuration:0.8 animations:^{
+//                _myGraph.alpha = 1.0;
+//            }];
+//        }
 
     }else if (dataType == outlineSource) {
         
@@ -213,159 +271,166 @@ const static CGFloat loadingAnimationDuration = 1.0f;
         
         
     }else if (dataType == outlineHotPage) {
-        _chartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
-        //        _chartLabel.text =(NSString *)data[dataType]?(NSString *)data[dataType]: @"Bar Chart";
-        _chartLabel.text = @"热门页面";
-        _chartLabel.textColor = PNFreshGreen;
-        _chartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:23.0];
-        _chartLabel.textAlignment = NSTextAlignmentCenter;
-        
-        _barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 55.0, outlineViewWidth, outlineViewHeight)];
-        _barChart.backgroundColor = [UIColor clearColor];
-        _barChart.yLabelFormatter = ^(CGFloat yValue) {
-            CGFloat yValueParsed = yValue;
-            NSString * labelText = [NSString stringWithFormat:@"%1.f",yValueParsed];
-            return labelText;
-        };
-        _barChart.labelMarginTop = 5.0;
-        [_barChart setXLabels:@[@"页面1\n50%",@"页面2",@"页面3",@"页面4",@"页面5"]];
-        [_barChart setYValues:@[@15,@10,@20,@30,@11]];
-        [_barChart setStrokeColors:@[PNGreen,PNRed,PNTwitterColor,PNYellow,PNGreen]];
-        // Adding gradient
-        _barChart.barColorGradientStart = [UIColor customYellowColor];
-        
-        [_barChart strokeChart];
-        
-        //        _barChart.delegate = self;
-        
-        //        [self addSubview:barChartLabel];
-        //        [self addSubview:self.barChart];
-        [_contentView addSubview:_chartLabel];
-        [_contentView addSubview:self.barChart];
-        self.ArrayOfValues = [[NSMutableArray alloc] init];
-        self.ArrayOfDates = [[NSMutableArray alloc] init];
-//        self.ArrayOfValues = @[@5,@10,@30,@23,@15];
-        totalNumber = 0;
-        
-        for (int i = 0; i < 5; i++) {
-            [self.ArrayOfValues addObject:[NSNumber numberWithInteger:(arc4random() % 10000)]]; // Random values for the graph
-            [self.ArrayOfDates addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:2000 + i]]]; // Dates for the X-Axis of the graph
-            
-            totalNumber = totalNumber + [[self.ArrayOfValues objectAtIndex:i] intValue]; // All of the values added together
-        }
-        
-        //            self.ArrayOfValues = [[NSMutableArray alloc] initWithArray:@[@24444,@10000,@64213,@52341,@34445,@423,@81114,@22342,@33333]];
-        
-        /* This is commented out because the graph is created in the interface with this sample app. However, the code remains as an example for creating the graph using code. */
-        
-        float width  = (inViewType == outlineView) ? outlineViewWidth:SCREEN_WIDTH;
-        
-        self.myGraph = [[BEMSimpleLineGraphView alloc] initWithFrame:CGRectMake(40, 45.0, outlineViewWidth-80, 250.0)];
-        _myGraph.delegate = self;
-        _myGraph.dataSource = self;
-        
-        self.myGraph.backgroundColor = [UIColor clearColor];
-        
-        // Customization of the graph
-        
-        self.myGraph.colorLine = [UIColor colorWithRed:31.0/255.0 green:187.0/255.0 blue:166.0/255.0 alpha:1.0];
-        
-        self.myGraph.colorXaxisLabel = [UIColor clearColor];
-        self.myGraph.colorYaxisLabel = [UIColor clearColor];
-        self.myGraph.widthLine = 1.5;
-        self.myGraph.enableTouchReport = YES;
-        self.myGraph.enablePopUpReport = YES;
-        self.myGraph.enableBezierCurve = NO;
-        
-        self.myGraph.enableYAxisLabel = NO;
-        self.myGraph.enableReferenceAxisLines = NO;
-        
-        self.myGraph.autoScaleYAxis = YES;
-        self.myGraph.alwaysDisplayDots = NO;
-        self.myGraph.enableReferenceAxisLines = NO;
-        self.myGraph.enableReferenceAxisFrame = YES;
-        self.myGraph.animationGraphStyle = BEMLineAnimationDraw;
-        
-        self.myGraph.colorTop = [UIColor clearColor];
-        self.myGraph.colorBottom = [UIColor clearColor];
-        //            self.myGraph.backgroundColor = [UIColor whiteColor];
-        self.tintColor = [UIColor whiteColor];
-        
-        [_contentView addSubview:_myGraph];
-        
-        if (inViewType == detailView) {
-            _myGraph.alpha = 0.0;
-            [UIView animateWithDuration:0.8 animations:^{
-                _myGraph.alpha = 1.0;
-            }];
-        }
+        _hotPageView = [[hotPageOutlineView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height) withData:data];
+        [_contentView addSubview:_hotPageView];
+
+//        _chartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
+//        //        _chartLabel.text =(NSString *)data[dataType]?(NSString *)data[dataType]: @"Bar Chart";
+//        _chartLabel.text = @"热门页面";
+//        _chartLabel.textColor = PNFreshGreen;
+//        _chartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:23.0];
+//        _chartLabel.textAlignment = NSTextAlignmentCenter;
+//        
+//        _barChart = [[PNBarChart alloc] initWithFrame:CGRectMake(0, 55.0, outlineViewWidth, outlineViewHeight)];
+//        _barChart.backgroundColor = [UIColor clearColor];
+//        _barChart.yLabelFormatter = ^(CGFloat yValue) {
+//            CGFloat yValueParsed = yValue;
+//            NSString * labelText = [NSString stringWithFormat:@"%1.f",yValueParsed];
+//            return labelText;
+//        };
+//        _barChart.labelMarginTop = 5.0;
+//        [_barChart setXLabels:@[@"页面1\n50%",@"页面2",@"页面3",@"页面4",@"页面5"]];
+//        [_barChart setYValues:@[@15,@10,@20,@30,@11]];
+//        [_barChart setStrokeColors:@[PNGreen,PNRed,PNTwitterColor,PNYellow,PNGreen]];
+//        // Adding gradient
+//        _barChart.barColorGradientStart = [UIColor customYellowColor];
+//        
+//        [_barChart strokeChart];
+//        
+//        //        _barChart.delegate = self;
+//        
+//        //        [self addSubview:barChartLabel];
+//        //        [self addSubview:self.barChart];
+//        [_contentView addSubview:_chartLabel];
+//        [_contentView addSubview:self.barChart];
+//        self.ArrayOfValues = [[NSMutableArray alloc] init];
+//        self.ArrayOfDates = [[NSMutableArray alloc] init];
+////        self.ArrayOfValues = @[@5,@10,@30,@23,@15];
+//        totalNumber = 0;
+//        
+//        for (int i = 0; i < 5; i++) {
+//            [self.ArrayOfValues addObject:[NSNumber numberWithInteger:(arc4random() % 10000)]]; // Random values for the graph
+//            [self.ArrayOfDates addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:2000 + i]]]; // Dates for the X-Axis of the graph
+//            
+//            totalNumber = totalNumber + [[self.ArrayOfValues objectAtIndex:i] intValue]; // All of the values added together
+//        }
+//        
+//        //            self.ArrayOfValues = [[NSMutableArray alloc] initWithArray:@[@24444,@10000,@64213,@52341,@34445,@423,@81114,@22342,@33333]];
+//        
+//        /* This is commented out because the graph is created in the interface with this sample app. However, the code remains as an example for creating the graph using code. */
+//        
+//        float width  = (inViewType == outlineView) ? outlineViewWidth:SCREEN_WIDTH;
+//        
+//        self.myGraph = [[BEMSimpleLineGraphView alloc] initWithFrame:CGRectMake(40, 45.0, outlineViewWidth-80, 250.0)];
+//        _myGraph.delegate = self;
+//        _myGraph.dataSource = self;
+//        
+//        self.myGraph.backgroundColor = [UIColor clearColor];
+//        
+//        // Customization of the graph
+//        
+//        self.myGraph.colorLine = [UIColor colorWithRed:31.0/255.0 green:187.0/255.0 blue:166.0/255.0 alpha:1.0];
+//        
+//        self.myGraph.colorXaxisLabel = [UIColor clearColor];
+//        self.myGraph.colorYaxisLabel = [UIColor clearColor];
+//        self.myGraph.widthLine = 1.5;
+//        self.myGraph.enableTouchReport = YES;
+//        self.myGraph.enablePopUpReport = YES;
+//        self.myGraph.enableBezierCurve = NO;
+//        
+//        self.myGraph.enableYAxisLabel = NO;
+//        self.myGraph.enableReferenceAxisLines = NO;
+//        
+//        self.myGraph.autoScaleYAxis = YES;
+//        self.myGraph.alwaysDisplayDots = NO;
+//        self.myGraph.enableReferenceAxisLines = NO;
+//        self.myGraph.enableReferenceAxisFrame = YES;
+//        self.myGraph.animationGraphStyle = BEMLineAnimationDraw;
+//        
+//        self.myGraph.colorTop = [UIColor clearColor];
+//        self.myGraph.colorBottom = [UIColor clearColor];
+//        //            self.myGraph.backgroundColor = [UIColor whiteColor];
+//        self.tintColor = [UIColor whiteColor];
+//        
+//        [_contentView addSubview:_myGraph];
+//        
+//        if (inViewType == detailView) {
+//            _myGraph.alpha = 0.0;
+//            [UIView animateWithDuration:0.8 animations:^{
+//                _myGraph.alpha = 1.0;
+//            }];
+//        }
     }
     else if (dataType == outlineTransform) {
         
-        _chartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
-        _chartLabel.text = (NSString *)data[dataType]?(NSString *)data[dataType]: @"Line Chart";
-        _chartLabel.textColor = PNFreshGreen;
-        _chartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:23.0];
-        _chartLabel.textAlignment = NSTextAlignmentCenter;
-
-        [_contentView addSubview:_chartLabel];
-        self.ArrayOfValues = [[NSMutableArray alloc] init];
-        self.ArrayOfDates = [[NSMutableArray alloc] init];
+        _transformView = [[transformAnalyticsOutlineView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height) withData:data];
+        [_contentView addSubview:_transformView];
         
-        totalNumber = 0;
         
-        for (int i = 0; i < 9; i++) {
-            [self.ArrayOfValues addObject:[NSNumber numberWithInteger:(arc4random() % 10000)]]; // Random values for the graph
-            [self.ArrayOfDates addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:2000 + i]]]; // Dates for the X-Axis of the graph
-            
-            totalNumber = totalNumber + [[self.ArrayOfValues objectAtIndex:i] intValue]; // All of the values added together
-        }
-        
-        //            self.ArrayOfValues = [[NSMutableArray alloc] initWithArray:@[@24444,@10000,@64213,@52341,@34445,@423,@81114,@22342,@33333]];
-        
-        /* This is commented out because the graph is created in the interface with this sample app. However, the code remains as an example for creating the graph using code. */
-        
-        float width  = (inViewType == outlineView) ? outlineViewWidth:SCREEN_WIDTH;
-        
-        self.myGraph = [[BEMSimpleLineGraphView alloc] initWithFrame:CGRectMake(0, 45.0, outlineViewWidth, 250.0)];
-        _myGraph.delegate = self;
-        _myGraph.dataSource = self;
-        
-        self.myGraph.backgroundColor = [UIColor clearColor];
-        
-        // Customization of the graph
-        
-        self.myGraph.colorLine = [UIColor colorWithRed:31.0/255.0 green:187.0/255.0 blue:166.0/255.0 alpha:1.0];
-        
-        self.myGraph.colorXaxisLabel = [UIColor clearColor];
-        self.myGraph.colorYaxisLabel = [UIColor clearColor];
-        self.myGraph.widthLine = 1.5;
-        self.myGraph.enableTouchReport = YES;
-        self.myGraph.enablePopUpReport = YES;
-        self.myGraph.enableBezierCurve = YES;
-        
-        self.myGraph.enableYAxisLabel = NO;
-        self.myGraph.enableReferenceAxisLines = NO;
-        
-        self.myGraph.autoScaleYAxis = YES;
-        self.myGraph.alwaysDisplayDots = NO;
-        self.myGraph.enableReferenceAxisLines = NO;
-        self.myGraph.enableReferenceAxisFrame = YES;
-        self.myGraph.animationGraphStyle = BEMLineAnimationDraw;
-        
-        self.myGraph.colorTop = [UIColor whiteColor];
-        self.myGraph.colorBottom = [UIColor colorWithRed:0.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.2];
-        //            self.myGraph.backgroundColor = [UIColor whiteColor];
-        self.tintColor = [UIColor whiteColor];
-        
-        [_contentView addSubview:_myGraph];
-
-        if (inViewType == detailView) {
-            _myGraph.alpha = 0.0;
-            [UIView animateWithDuration:0.8 animations:^{
-                _myGraph.alpha = 1.0;
-            }];
-        }
+//        _chartLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, outlineViewWidth, 30)];
+//        _chartLabel.text = (NSString *)data[dataType]?(NSString *)data[dataType]: @"Line Chart";
+//        _chartLabel.textColor = PNFreshGreen;
+//        _chartLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:23.0];
+//        _chartLabel.textAlignment = NSTextAlignmentCenter;
+//
+//        [_contentView addSubview:_chartLabel];
+//        self.ArrayOfValues = [[NSMutableArray alloc] init];
+//        self.ArrayOfDates = [[NSMutableArray alloc] init];
+//        
+//        totalNumber = 0;
+//        
+//        for (int i = 0; i < 9; i++) {
+//            [self.ArrayOfValues addObject:[NSNumber numberWithInteger:(arc4random() % 10000)]]; // Random values for the graph
+//            [self.ArrayOfDates addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:2000 + i]]]; // Dates for the X-Axis of the graph
+//            
+//            totalNumber = totalNumber + [[self.ArrayOfValues objectAtIndex:i] intValue]; // All of the values added together
+//        }
+//        
+//        //            self.ArrayOfValues = [[NSMutableArray alloc] initWithArray:@[@24444,@10000,@64213,@52341,@34445,@423,@81114,@22342,@33333]];
+//        
+//        /* This is commented out because the graph is created in the interface with this sample app. However, the code remains as an example for creating the graph using code. */
+//        
+//        float width  = (inViewType == outlineView) ? outlineViewWidth:SCREEN_WIDTH;
+//        
+//        self.myGraph = [[BEMSimpleLineGraphView alloc] initWithFrame:CGRectMake(0, 45.0, outlineViewWidth, 250.0)];
+//        _myGraph.delegate = self;
+//        _myGraph.dataSource = self;
+//        
+//        self.myGraph.backgroundColor = [UIColor clearColor];
+//        
+//        // Customization of the graph
+//        
+//        self.myGraph.colorLine = [UIColor colorWithRed:31.0/255.0 green:187.0/255.0 blue:166.0/255.0 alpha:1.0];
+//        
+//        self.myGraph.colorXaxisLabel = [UIColor clearColor];
+//        self.myGraph.colorYaxisLabel = [UIColor clearColor];
+//        self.myGraph.widthLine = 1.5;
+//        self.myGraph.enableTouchReport = YES;
+//        self.myGraph.enablePopUpReport = YES;
+//        self.myGraph.enableBezierCurve = YES;
+//        
+//        self.myGraph.enableYAxisLabel = NO;
+//        self.myGraph.enableReferenceAxisLines = NO;
+//        
+//        self.myGraph.autoScaleYAxis = YES;
+//        self.myGraph.alwaysDisplayDots = NO;
+//        self.myGraph.enableReferenceAxisLines = NO;
+//        self.myGraph.enableReferenceAxisFrame = YES;
+//        self.myGraph.animationGraphStyle = BEMLineAnimationDraw;
+//        
+//        self.myGraph.colorTop = [UIColor whiteColor];
+//        self.myGraph.colorBottom = [UIColor colorWithRed:0.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.2];
+//        //            self.myGraph.backgroundColor = [UIColor whiteColor];
+//        self.tintColor = [UIColor whiteColor];
+//        
+//        [_contentView addSubview:_myGraph];
+//
+//        if (inViewType == detailView) {
+//            _myGraph.alpha = 0.0;
+//            [UIView animateWithDuration:0.8 animations:^{
+//                _myGraph.alpha = 1.0;
+//            }];
+//        }
     }
     
     [self addSubview:_contentView];

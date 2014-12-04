@@ -1,12 +1,12 @@
 //
-//  pageAnalyticsModel.h
+//  transformAnalyticsModel.h
 //  snDataAnalytics
 //
-//  Created by wktzjz on 14-12-2.
+//  Created by wktzjz on 14-12-3.
 //  Copyright (c) 2014年 wktzjz. All rights reserved.
 //
 
-@interface pageAnalyticsModel : NSObject
+@interface transformAnalyticsModel : NSObject
 
 @property (nonatomic) NSDictionary *defineDetails;
 @property (nonatomic) NSDictionary *outlineData;

@@ -28,6 +28,6 @@ typedef NS_ENUM(NSUInteger, visitorGroupControllerType) {
 
 - (lineChartDetailsViewController *)getControllerFromView:(viewType)viewType detailsType:(NSInteger)detailsType;
 
-- (lineChartDetailsViewController *)getVisitorGroupControllerByType:(NSInteger)type;
+//- (lineChartDetailsViewController *)getVisitorGroupControllerByType:(NSInteger)type;
 
 @end

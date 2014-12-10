@@ -110,7 +110,9 @@
 - (void)addLabelsWithData:(NSDictionary *)data
 {
     assert(_dimensionName);
-    _labelStringArray = (NSArray *)(((NSDictionary *)data[_dimensionName])[@"labelStringArray"]);
+//    _labelStringArray = (NSArray *)(((NSDictionary *)data[_dimensionName])[@"labelStringArray"]);
+    _labelStringArray = (NSArray *)((NSDictionary *)data[@"tagType"]);
+
     [self addLabels];
 }
 
@@ -125,7 +127,7 @@
         }];
     }
     
-    _valueArray = (NSArray *)((NSDictionary *)data[@"labelValues"]);
+    _valueArray = (NSArray *)((NSDictionary *)data[@"tagValue"]);
     [self addValues];
 }
 
@@ -182,7 +184,9 @@
     }];
     [_labelArray removeAllObjects];
     
-    _labelStringArray = (NSArray *)(((NSDictionary *)data[_dimensionName])[@"labelStringArray"]);
+//    _labelStringArray = (NSArray *)(((NSDictionary *)data[_dimensionName])[@"labelStringArray"]);
+    _labelStringArray = (NSArray *)((NSDictionary *)data[@"tagType"]);
+
     [self addLabels];
 }
 
@@ -193,7 +197,7 @@
     }];
     [_valueLabelArray removeAllObjects];
     
-    _valueArray = (NSArray *)((NSDictionary *)data[@"labelValues"]);
+    _valueArray = (NSArray *)((NSDictionary *)data[@"tagValue"]);
     [self addValues];
 }
 

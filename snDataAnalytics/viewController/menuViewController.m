@@ -13,6 +13,9 @@
 #import "outlineViewTransitionAnimator.h"
 #import "dataDetailsViewController.h"
 #import "visitorGroupModel.h"
+#import "sourcesAnalyticsModel.h"
+#import "pageAnalyticsModel.h"
+#import "transformAnalyticsModel.h"
 #import "PresentingAnimator.h"
 #import "DismissingAnimator.h"
 #import "lineChartDetailsViewFactory.h"
@@ -32,7 +35,8 @@
     NSArray *_dataArray;
     NSArray *_titleArray;
     
-    int _type;
+    cellType _type;
+    viewType _viewControllerType;
     DismissingAnimator *_dismissTransitionController;
 
 }
@@ -49,15 +53,43 @@
 {
     if (self = [super init]) {
         _type = type;
+        switch (type) {
+            case visitorGroup:
+            {
+                _viewControllerType = outlineVisitorGroup;
+                _dataArray = @[@"概览",@"UV",@"PV",@"VISIT",@"新UV",@"有效UV",@"平均页面停留时间",@"提交订单转化率",@"有效订单转化率"];
+                break;
+            }
+            case source:
+            {
+                _viewControllerType = outlineSource;
+                _dataArray = @[@"概览",@"UV",@"PV",@"VISIT",@"新UV",@"有效UV",@"平均页面停留时间",@"提交订单转化率",@"有效订单转化率",@"间接订单数",@"间接订单转化率"];
+                break;
+            }
+            case pageAnalytics:
+            {
+                _viewControllerType = outlinePageAnalytics;
+                _dataArray = @[@"概览",@"PV",@"UV",@"平均页面停留时间",@"一跳",@"四级页面PV",@"购物车PV"];
+                break;
+            }
+            case transform:
+            {
+                _viewControllerType = outlineTransform;
+                _dataArray = @[@"概览",@"UV",@"PV",@"VISIT",@"新UV",@"有效UV",@"平均页面停留时间",@"注册数",@"注册转化率",@"提交订单数",@"提交订单转化率",@"有效订单数",@"有效订单转化率",@"付款金额"];
+                break;
+            }
+            
+            default:
+                break;
+        }
         _titleArray = @[@"账户",@"选择数据来源",@"实时",@"访客群体分析",@"来源分析",@"页面分析",@"转化分析"];
-        _dataArray = @[@"概览",@"访客类型",@"终端类型",@"会员分析-整体",@"会员分析-新会员",@"会员分析-老会员",@"会员等级",@"城市分布"];
+//        _dataArray = @[@"概览",@"访客类型",@"终端类型",@"会员分析-整体",@"会员分析-新会员",@"会员分析-老会员",@"会员等级",@"城市分布"];
         _dismissTransitionController = [DismissingAnimator new];
 
     }
     return self;
     
 }
-
 
 - (void)viewDidLoad
 {
@@ -117,7 +149,16 @@
     int returnValue;
     switch (_type) {
         case visitorGroup:
-            returnValue = 8;
+            returnValue = 9;
+            break;
+        case source:
+            returnValue = 11;
+            break;
+        case pageAnalytics:
+            returnValue = 7;
+            break;
+        case transform:
+            returnValue = 14;
             break;
             
         default:
@@ -192,10 +233,34 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (_type == visitorGroup) {
-        
-        if (indexPath.row == 0) {
-            [self presentVistorGroupOverview];
+           if (indexPath.row == 0) {
+            
+            id data = nil;
+            
+            switch (_type) {
+                case visitorGroup:{
+                    data = [[visitorGroupModel sharedInstance] outlineData];
+                }
+                    break;
+                case source:{
+                    data = [[sourcesAnalyticsModel sharedInstance] outlineData];
+                }
+                    break;
+                case pageAnalytics:{
+                    data = [[pageAnalyticsModel sharedInstance] outlineData];
+                }
+                    break;
+
+                case transform:{
+                    data = [[transformAnalyticsModel sharedInstance] outlineData];
+                }
+                    break;
+                default:
+                    break;
+            }
+            
+            [self transitOutlineView:nil type:_viewControllerType data:data];
+            
             
         }else{
 //            _detailsViewController = [[dataDetailsViewController alloc] initWithFrame:wkScreen type:(viewType)indexPath.row title:@"Details"];
@@ -213,7 +278,8 @@
 //            
 //            [self presentViewController:_detailsViewController animated:YES completion:nil];
             
-            lineChartDetailsViewController *vc = [[lineChartDetailsViewFactory sharedInstance] getVisitorGroupControllerByType:(visitorGroupControllerType)(indexPath.row - 1)];
+            lineChartDetailsViewController *vc = [[lineChartDetailsViewFactory sharedInstance]
+                    getControllerFromView:_viewControllerType detailsType:(indexPath.row - 1)];
             
             __weak typeof(self) weakSelf = self;
             vc.dismissBlock = ^{
@@ -230,9 +296,10 @@
                 [strongSelf dismissViewControllerAnimated:YES completion:nil];
             };
             
+            vc.modalPresentationCapturesStatusBarAppearance = YES;
+
             [self presentViewController:vc animated:YES completion:nil];
         }
-    }
 }
 
 - (void)presentVistorGroupOverview
@@ -255,6 +322,39 @@
     _detailsViewController.modalPresentationCapturesStatusBarAppearance = YES;
     
     [self presentViewController:_detailsViewController animated:YES completion:nil];
+}
+
+#pragma mark outlineView transite to detailsView
+- (void)transitOutlineView:(dataOutlineViewContainer *)view type:(viewType)viewControllerType data:(id)data
+{
+    _detailsViewController = [[dataDetailsViewController alloc] initWithFrame:wkScreen type:viewControllerType data:data title:@"Details"];
+    _detailsViewController.delegate = self;
+    _detailsViewController.modalPresentationStyle = UIModalPresentationCustom;
+    
+  if (viewControllerType == outlineVisitorGroup) {
+        [_detailsViewController addDetailOutlineViewWithData:[visitorGroupModel sharedInstance].detailInitializeData Type:viewControllerType];
+    }else if (viewControllerType == outlineSource){
+        [_detailsViewController addDetailOutlineViewWithData:[sourcesAnalyticsModel sharedInstance].detailInitializeData Type:viewControllerType];
+    }else if (viewControllerType == outlinePageAnalytics){
+        [_detailsViewController addDetailOutlineViewWithData:[pageAnalyticsModel sharedInstance].detailInitializeData Type:viewControllerType];
+    }else if (viewControllerType == outlineTransform){
+        [_detailsViewController addDetailOutlineViewWithData:[transformAnalyticsModel sharedInstance].detailInitializeData Type:viewControllerType];
+    }
+    
+    _animator = [[outlineViewTransitionAnimator alloc] initWithModalViewController:_detailsViewController];
+    _animator.behindViewAlpha = 0.5f;
+    _animator.behindViewScale = 0.5f;
+    _animator.bounces  = YES;
+    _animator.dragable = YES;
+    _animator.showSnapView = NO;
+    
+    _animator.direction = transitonDirectionRight;
+    
+    _detailsViewController.transitioningDelegate = _animator;
+    _detailsViewController.modalPresentationCapturesStatusBarAppearance = YES;
+    
+    [self presentViewController:_detailsViewController animated:YES completion:nil];
+    
 }
 
 - (void)detailViewControllerWillDismiss

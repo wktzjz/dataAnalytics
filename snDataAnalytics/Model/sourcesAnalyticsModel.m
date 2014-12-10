@@ -64,17 +64,17 @@ static NSString *const sourceAnalyticsOutlineDataDidInitialize       = @"sourceA
     NSArray *indexOptionsArray = @[@"UV",@"PV",@"VISIT",@"新UV",@"有效UV",@"平均页面停留时间",@"提交订单转化率",@"有效订单转化率",@"间接订单数",@"间接订单转化率"];
     
     _defineDetails =  @{@"dimensionOptionsArray":dimensionOptionsArray,
-                        @"硬广":@{@"labelStringArray":@[@"运营商",@"垂直",@"DSP"],
+                        @"硬广":@{@"tagType":@[@"运营商",@"垂直",@"DSP"],
                                   @"indexOptionsArray":indexOptionsArray},
-                        @"导航":@{@"labelStringArray":@[@"付费导航",@"免费导航"],
+                        @"导航":@{@"tagType":@[@"付费导航",@"免费导航"],
                                   @"indexOptionsArray":indexOptionsArray},
-                        @"搜索":@{@"labelStringArray":@[@"SEO",@"SEM"],
+                        @"搜索":@{@"tagType":@[@"SEO",@"SEM"],
                                   @"indexOptionsArray":indexOptionsArray},
-                        @"广告联盟":@{@"labelStringArray":@[@"广告联盟"],
+                        @"广告联盟":@{@"tagType":@[@"广告联盟"],
                                  @"indexOptionsArray":indexOptionsArray},
-                        @"直接流量":@{@"labelStringArray":@[@"直接流量"],
+                        @"直接流量":@{@"tagType":@[@"直接流量"],
                                  @"indexOptionsArray":indexOptionsArray},
-                        @"EDM":@{@"labelStringArray":@[@"会员EDM"],
+                        @"EDM":@{@"tagType":@[@"会员EDM"],
                                   @"indexOptionsArray":indexOptionsArray},
                       };
     
@@ -92,6 +92,7 @@ static NSString *const sourceAnalyticsOutlineDataDidInitialize       = @"sourceA
         
         _outlineData = @{@"groupPercentArray":_groupPercentArray,
                          @"groupValidPercentArray":_groupValidPercentArray,
+                         @"sourceArray":@"",
                          };
         
         NSNotification *notification = [[NSNotification alloc] initWithName:sourceAnalyticsOutlineDataDidInitialize object:strongSelf userInfo:_outlineData];
@@ -104,7 +105,7 @@ static NSString *const sourceAnalyticsOutlineDataDidInitialize       = @"sourceA
         });
     };
     
-    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:nil failureBlock:successefullyBlock successedBlock:successefullyBlock];
+    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:@"http://10.22.18.102:8080/snf-mbbi-web/mbbi/getSourceAnalyse.htm" failureBlock:successefullyBlock successedBlock:successefullyBlock];
 }
 
 - (NSDictionary *)getDetailOutlineData
@@ -223,53 +224,59 @@ static NSString *const sourceAnalyticsOutlineDataDidInitialize       = @"sourceA
 //    NSArray *indexOptionsArray = @[@"UV",@"PV",@"VISIT",@"新UV",@"有效UV",@"平均页面停留时间",@"提交订单转化率",@"有效订单转化率",@"间接订单数",@"间接订单转化率"];
 //    
 //    _defineDetails =  @{@"dimensionOptionsArray":dimensionOptionsArray,
-//                        @"硬广":@{@"labelStringArray":@[@"运营商",@"垂直",@"DSP"],
+//                        @"硬广":@{@"tagType":@[@"运营商",@"垂直",@"DSP"],
 //                                @"indexOptionsArray":indexOptionsArray},
-//                        @"导航":@{@"labelStringArray":@[@"付费导航",@"免费导航"],
+//                        @"导航":@{@"tagType":@[@"付费导航",@"免费导航"],
 //                                @"indexOptionsArray":indexOptionsArray},
-//                        @"搜索":@{@"labelStringArray":@[@"SEO",@"SEM"],
+//                        @"搜索":@{@"tagType":@[@"SEO",@"SEM"],
 //                                @"indexOptionsArray":indexOptionsArray},
-//                        @"广告联盟":@{@"labelStringArray":@[@"广告联盟"],
+//                        @"广告联盟":@{@"tagType":@[@"广告联盟"],
 //                                  @"indexOptionsArray":indexOptionsArray},
-//                        @"直接流量":@{@"labelStringArray":@[@"直接流量"],
+//                        @"直接流量":@{@"tagType":@[@"直接流量"],
 //                                  @"indexOptionsArray":indexOptionsArray},
-//                        @"EDM":@{@"labelStringArray":@[@"会员EDM"],
+//                        @"EDM":@{@"tagType":@[@"会员EDM"],
 //                                 @"indexOptionsArray":indexOptionsArray},
 //                        };
 
     
     _detailsData =  @{ @"硬广":@{
-                               @"labelValues":@[@(arc4random() % 2000),@(arc4random() % 2000),@(arc4random() % 2000)],
+                               @"tagType":@[@"运营商",@"垂直",@"DSP"],
+                               @"tagType":@[@(arc4random() % 2000),@(arc4random() % 2000),@(arc4random() % 2000)],
                                @"arrayOfDates":arrayofDate,
                                @"UV_arrayOfValues":array1,@"PV_arrayOfValues":array2,@"VISIT_arrayOfValues":array3,@"新UV_arrayOfValues":array4,@"有效UV_arrayOfValues":array5,@"平均页面停留时间_arrayOfValues":array6,@"提交订单转化率_arrayOfValues":array7,@"有效订单转化率_arrayOfValues":array8,@"间接订单数_arrayOfValues":array9,@"间接订单转化率_arrayOfValues":array10,
                                @"UV_number":@(arc4random() % 20000),@"PV_number":@(arc4random() % 20000),@"VISIT_number":@(arc4random() % 20000),@"新UV_number":@(arc4random() % 10000),@"有效UV_number":@(arc4random() % 2000),@"平均页面停留时间_number":@(arc4random() % 200),@"提交订单转化率_number":@(arc4random() % 100),@"有效订单转化率_number":@(arc4random() % 100),@"间接订单数_number":@(arc4random() % 10000),@"间接订单转化率_number":@(arc4random() % 100),
                                },
                        @"导航":@{
-                               @"labelValues":@[@(arc4random() % 2000),@(arc4random() % 2000)],
+                               @"tagType":@[@"付费导航",@"免费导航"],
+                               @"tagType":@[@(arc4random() % 2000),@(arc4random() % 2000)],
                                @"arrayOfDates":arrayofDate,
                                @"UV_arrayOfValues":array1,@"PV_arrayOfValues":array2,@"VISIT_arrayOfValues":array3,@"新UV_arrayOfValues":array4,@"有效UV_arrayOfValues":array5,@"平均页面停留时间_arrayOfValues":array6,@"提交订单转化率_arrayOfValues":array7,@"有效订单转化率_arrayOfValues":array8,@"间接订单数_arrayOfValues":array9,@"间接订单转化率_arrayOfValues":array10,
                                @"UV_number":@(arc4random() % 20000),@"PV_number":@(arc4random() % 20000),@"VISIT_number":@(arc4random() % 20000),@"新UV_number":@(arc4random() % 10000),@"有效UV_number":@(arc4random() % 2000),@"平均页面停留时间_number":@(arc4random() % 200),@"提交订单转化率_number":@(arc4random() % 100),@"有效订单转化率_number":@(arc4random() % 100),@"间接订单数_number":@(arc4random() % 10000),@"间接订单转化率_number":@(arc4random() % 100),
                                },
                        @"搜索":@{
-                               @"labelValues":@[@(arc4random() % 20000),@(arc4random() % 20000)],
+                               @"tagType":@[@"SEO",@"SEM"],
+                               @"tagType":@[@(arc4random() % 20000),@(arc4random() % 20000)],
                                @"arrayOfDates":arrayofDate,
                                @"UV_arrayOfValues":array1,@"PV_arrayOfValues":array2,@"VISIT_arrayOfValues":array3,@"新UV_arrayOfValues":array4,@"有效UV_arrayOfValues":array5,@"平均页面停留时间_arrayOfValues":array6,@"提交订单转化率_arrayOfValues":array7,@"有效订单转化率_arrayOfValues":array8,@"间接订单数_arrayOfValues":array9,@"间接订单转化率_arrayOfValues":array10,
                                @"UV_number":@(arc4random() % 20000),@"PV_number":@(arc4random() % 20000),@"VISIT_number":@(arc4random() % 20000),@"新UV_number":@(arc4random() % 10000),@"有效UV_number":@(arc4random() % 2000),@"平均页面停留时间_number":@(arc4random() % 200),@"提交订单转化率_number":@(arc4random() % 100),@"有效订单转化率_number":@(arc4random() % 100),@"间接订单数_number":@(arc4random() % 10000),@"间接订单转化率_number":@(arc4random() % 100),
                                },
                        @"广告联盟":@{
-                               @"labelValues":@[@(arc4random() % 10000)],
+                               @"tagType":@[@"广告联盟"],
+                               @"tagType":@[@(arc4random() % 10000)],
                                @"arrayOfDates":arrayofDate,
                                @"UV_arrayOfValues":array1,@"PV_arrayOfValues":array2,@"VISIT_arrayOfValues":array3,@"新UV_arrayOfValues":array4,@"有效UV_arrayOfValues":array5,@"平均页面停留时间_arrayOfValues":array6,@"提交订单转化率_arrayOfValues":array7,@"有效订单转化率_arrayOfValues":array8,@"间接订单数_arrayOfValues":array9,@"间接订单转化率_arrayOfValues":array10,
                                @"UV_number":@(arc4random() % 20000),@"PV_number":@(arc4random() % 20000),@"VISIT_number":@(arc4random() % 20000),@"新UV_number":@(arc4random() % 10000),@"有效UV_number":@(arc4random() % 2000),@"平均页面停留时间_number":@(arc4random() % 200),@"提交订单转化率_number":@(arc4random() % 100),@"有效订单转化率_number":@(arc4random() % 100),@"间接订单数_number":@(arc4random() % 10000),@"间接订单转化率_number":@(arc4random() % 100),
                                },
                        @"直接流量":@{
-                               @"labelValues":@[@(arc4random() % 20000)],
+                               @"tagType":@[@"直接流量"],
+                               @"tagValue":@[@(arc4random() % 20000)],
                                @"arrayOfDates":arrayofDate,
                                @"UV_arrayOfValues":array1,@"PV_arrayOfValues":array2,@"VISIT_arrayOfValues":array3,@"新UV_arrayOfValues":array4,@"有效UV_arrayOfValues":array5,@"平均页面停留时间_arrayOfValues":array6,@"提交订单转化率_arrayOfValues":array7,@"有效订单转化率_arrayOfValues":array8,@"间接订单数_arrayOfValues":array9,@"间接订单转化率_arrayOfValues":array10,
                                @"UV_number":@(arc4random() % 20000),@"PV_number":@(arc4random() % 20000),@"VISIT_number":@(arc4random() % 20000),@"新UV_number":@(arc4random() % 10000),@"有效UV_number":@(arc4random() % 2000),@"平均页面停留时间_number":@(arc4random() % 200),@"提交订单转化率_number":@(arc4random() % 100),@"有效订单转化率_number":@(arc4random() % 100),@"间接订单数_number":@(arc4random() % 10000),@"间接订单转化率_number":@(arc4random() % 100),
                                },
                        @"EDM":@{
-                               @"labelValues":@[@(arc4random() % 20000)],
+                               @"tagType":@[@"会员EDM"],
+                               @"tagType":@[@(arc4random() % 20000)],
                                @"arrayOfDates":arrayofDate,
                                @"UV_arrayOfValues":array1,@"PV_arrayOfValues":array2,@"VISIT_arrayOfValues":array3,@"新UV_arrayOfValues":array4,@"有效UV_arrayOfValues":array5,@"平均页面停留时间_arrayOfValues":array6,@"提交订单转化率_arrayOfValues":array7,@"有效订单转化率_arrayOfValues":array8,@"间接订单数_arrayOfValues":array9,@"间接订单转化率_arrayOfValues":array10,
                                @"UV_number":@(arc4random() % 20000),@"PV_number":@(arc4random() % 20000),@"VISIT_number":@(arc4random() % 20000),@"新UV_number":@(arc4random() % 10000),@"有效UV_number":@(arc4random() % 2000),@"平均页面停留时间_number":@(arc4random() % 200),@"提交订单转化率_number":@(arc4random() % 100),@"有效订单转化率_number":@(arc4random() % 100),@"间接订单数_number":@(arc4random() % 10000),@"间接订单转化率_number":@(arc4random() % 100),

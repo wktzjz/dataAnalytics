@@ -59,13 +59,13 @@ static NSString *const transformAnalyticsOutlineDataDidInitialize       = @"tran
     NSArray *indexOptionsArray     = @[@"UV",@"PV",@"VISIT",@"新UV",@"有效UV",@"平均页面停留时间",@"注册数",@"注册转化率",@"提交订单数",@"提交订单转化率",@"有效订单数",@"有效订单转化率",@"付款金额"];
     
     _defineDetails =  @{@"dimensionOptionsArray":dimensionOptionsArray,
-                        @"来源":@{@"labelStringArray":@[@"硬广",@"导航"],
+                        @"来源":@{@"tagType":@[@"硬广",@"导航"],
                                   @"indexOptionsArray":indexOptionsArray},
-                        @"城市分布":@{@"labelStringArray":@[@"南京市",@"上海市"],
+                        @"城市分布":@{@"tagType":@[@"南京市",@"上海市"],
                                  @"indexOptionsArray":indexOptionsArray},
-                        @"访客类型":@{@"labelStringArray":@[@"新访客",@"回访客"],
+                        @"访客类型":@{@"tagType":@[@"新访客",@"回访客"],
                                  @"indexOptionsArray":indexOptionsArray},
-                        @"商品分析":@{@"labelStringArray":@[@"通讯",@"黑电"],
+                        @"商品分析":@{@"tagType":@[@"通讯",@"黑电"],
                                   @"indexOptionsArray":indexOptionsArray},
                         };
     
@@ -202,19 +202,20 @@ static NSString *const transformAnalyticsOutlineDataDidInitialize       = @"tran
 //    NSArray *indexOptionsArray     = @[@"UV",@"PV",@"VISIT",@"新UV",@"有效UV",@"平均页面停留时间",@"注册数",@"注册转化率",@"提交订单数",@"提交订单转化率",@"有效订单数",@"有效订单转化率",@"付款金额"];
 //    
 //    _defineDetails =  @{@"dimensionOptionsArray":dimensionOptionsArray,
-//                        @"来源":@{@"labelStringArray":@[@"硬广",@"导航"],
+//                        @"来源":@{@"tagType":@[@"硬广",@"导航"],
 //                                @"indexOptionsArray":indexOptionsArray},
-//                        @"城市分布":@{@"labelStringArray":@[@"南京市",@"上海市"],
+//                        @"城市分布":@{@"tagType":@[@"南京市",@"上海市"],
 //                                  @"indexOptionsArray":indexOptionsArray},
-//                        @"访客类型":@{@"labelStringArray":@[@"新访客",@"回访客"],
+//                        @"访客类型":@{@"tagType":@[@"新访客",@"回访客"],
 //                                  @"indexOptionsArray":indexOptionsArray},
-//                        @"商品分析":@{@"labelStringArray":@[@"通讯",@"黑电"],
+//                        @"商品分析":@{@"tagType":@[@"通讯",@"黑电"],
 //                                  @"indexOptionsArray":indexOptionsArray},
 //                        };
     
     
     _detailsData =  @{ @"来源":@{
-                               @"labelValues":@[@(arc4random() % 20000),@(arc4random() % 20000)],
+                               @"tagType":@[@"硬广",@"导航"],
+                               @"tagValue":@[@(arc4random() % 20000),@(arc4random() % 20000)],
                                @"arrayOfDates":arrayofDate,
                                @"UV_arrayOfValues":parallelArray[0],
                                @"PV_arrayOfValues":parallelArray[1],
@@ -245,7 +246,8 @@ static NSString *const transformAnalyticsOutlineDataDidInitialize       = @"tran
 
                                },
                        @"城市分布":@{
-                               @"labelValues":@[@(arc4random() % 20000),@(arc4random() % 20000)],
+                               @"tagType":@[@"南京市",@"上海市"],
+                               @"tagValue":@[@(arc4random() % 20000),@(arc4random() % 20000)],
                                @"UV_arrayOfValues":parallelArray[0],
                                @"PV_arrayOfValues":parallelArray[1],
                                @"VISIT_arrayOfValues":parallelArray[2],
@@ -275,7 +277,8 @@ static NSString *const transformAnalyticsOutlineDataDidInitialize       = @"tran
 
                                },
                        @"访客类型":@{
-                               @"labelValues":@[@(arc4random() % 20000),@(arc4random() % 20000)],
+                               @"tagType":@[@"新访客",@"回访客"],
+                               @"tagValue":@[@(arc4random() % 20000),@(arc4random() % 20000)],
                                @"UV_arrayOfValues":parallelArray[0],
                                @"PV_arrayOfValues":parallelArray[1],
                                @"VISIT_arrayOfValues":parallelArray[2],
@@ -305,7 +308,8 @@ static NSString *const transformAnalyticsOutlineDataDidInitialize       = @"tran
 
                                },
                        @"商品分析":@{
-                               @"labelValues":@[@(arc4random() % 20000),@(arc4random() % 20000)],
+                               @"tagType":@[@"通讯",@"黑电"],
+                               @"tagValue":@[@(arc4random() % 20000),@(arc4random() % 20000)],
                                @"UV_arrayOfValues":parallelArray[0],
                                @"PV_arrayOfValues":parallelArray[1],
                                @"VISIT_arrayOfValues":parallelArray[2],

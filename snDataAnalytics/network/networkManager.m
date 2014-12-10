@@ -143,10 +143,10 @@
     networkManager *strongSelf = _wself;
     
     if (![CheckNetwork isExistenceNetwork]) {
-        NSDictionary *sendDick = @{@"title":[_userDefaults objectForKey:WKLastTitle],@"url":[_userDefaults objectForKey:WKLastUrl],@"imageUrl":[_userDefaults objectForKey:WKLastImgUrl]};
-        if (strongSelf.delegate && [strongSelf.delegate respondsToSelector:@selector(handleInfoFromNetwork:)]) {
-            _sendWeatherInfoCompleted = [strongSelf.delegate handleInfoFromNetwork:sendDick];
-        }
+//        NSDictionary *sendDick = @{@"title":[_userDefaults objectForKey:WKLastTitle],@"url":[_userDefaults objectForKey:WKLastUrl],@"imageUrl":[_userDefaults objectForKey:WKLastImgUrl]};
+//        if (strongSelf.delegate && [strongSelf.delegate respondsToSelector:@selector(handleInfoFromNetwork:)]) {
+//            _sendWeatherInfoCompleted = [strongSelf.delegate handleInfoFromNetwork:sendDick];
+//        }
         
         return NO;
     }else{

@@ -14,6 +14,7 @@
 #import "flatButton.h"
 #import "PNColor.h"
 #import "Colours.h"
+#import "timeView.h"
 
 typedef NS_ENUM(NSUInteger, operationType) {
     Dimension = 0,
@@ -39,6 +40,9 @@ const static CGFloat titleViewHeight = 44.0f;
     UIView *_popupBackgroundView;
     NSMutableArray *_popupDimensionViews;
     NSMutableArray *_popupIndexViews;
+    
+    timeView *_timeView;
+
 
 }
 
@@ -68,6 +72,8 @@ const static CGFloat titleViewHeight = 44.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+//    [self prefersStatusBarHidden];
+
     self.view.backgroundColor = [UIColor whiteColor];
     
     [self addTitleView];
@@ -75,6 +81,7 @@ const static CGFloat titleViewHeight = 44.0f;
     [self addDatePickerButton];
     
     [self addLineDetailsView];
+    [self addTimeView];
 
     wkContextMenuView* overlay = [[wkContextMenuView alloc] init];
     overlay.dataSource = self;
@@ -90,7 +97,6 @@ const static CGFloat titleViewHeight = 44.0f;
 {
     _barView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, titleViewHeight)];
     _barView.backgroundColor = [UIColor colorWithRed:0xbf/255.0 green:0xef/255.0 blue:0xff/255.0 alpha:0.3];
-    
     [self.view addSubview:_barView];
     
     _barView.frame = CGRectMake(0, 0, self.view.frame.size.width, titleViewHeight);
@@ -176,11 +182,28 @@ const static CGFloat titleViewHeight = 44.0f;
                                                           constant:0.f]];
 }
 
+- (void)addTimeView
+{
+    _curDate = [NSDate date];
+    _formatter = [[NSDateFormatter alloc] init];
+    [_formatter setDateFormat:@"dd/MM/yyyy --- HH:mm"];
+    
+    _timeView = [[timeView alloc] initWithFrame:CGRectMake(0, titleViewHeight ,self.view.frame.size.width, 50.0)];
+    __weak typeof(self) weakSelf = self;
+    _timeView.timeViewChoosedBlock = ^{
+        typeof(weakSelf) strongSelf = weakSelf;
+        
+        [strongSelf datePickerButtonClicked];
+    };
+    
+    [self.view addSubview:_timeView];
+}
+
 - (void)addLineDetailsView
 {
     CGRect r = self.view.frame;
-    r.origin.y = titleViewHeight;
-    r.size.height -= titleViewHeight;
+    r.origin.y = titleViewHeight + 50.0;
+    r.size.height -= titleViewHeight + 50.0;
     _chartDetailsView = [[lineChartDetailsView alloc] initWithFrame:r];
     
     __weak typeof(self) weakSelf = self;
@@ -298,7 +321,6 @@ const static CGFloat titleViewHeight = 44.0f;
             [self.view addSubview:button];
             
             [views addObject:button];
-            
         }];
     }
 }
@@ -307,7 +329,7 @@ const static CGFloat titleViewHeight = 44.0f;
 {
     [self dismissItemsType:Dimension];
     if (_dimensionChoosedBlock) {
-        _dimensionChoosedBlock((int)button.tag);
+        _dimensionChoosedBlock(button.tag);
     }
 }
 
@@ -315,7 +337,7 @@ const static CGFloat titleViewHeight = 44.0f;
 {
     [self dismissItemsType:Index];
     if (_indexChoosedBlock) {
-        _indexChoosedBlock((int)button.tag);
+        _indexChoosedBlock(button.tag);
     }
 }
 
@@ -531,37 +553,31 @@ const static CGFloat titleViewHeight = 44.0f;
 
 
 #pragma mark THDatePickerDelegate
-
 -(void)datePickerDonePressed:(THDatePickerViewController *)datePicker selectedDays:(NSMutableDictionary *)selectedDays
 {
-    _selectedDays = selectedDays;
+    [self dismissSemiModalView];
     
     NSArray* arr = [selectedDays allKeys];
     arr = [arr sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         NSComparisonResult result = [obj1 compare:obj2];
         return result==NSOrderedDescending;
     }];
-    [arr enumerateObjectsUsingBlock:^(NSNumber *key, NSUInteger idx, BOOL *stop) {
-        NSLog(@"selected Day:%@",[_formatter stringFromDate:((THDateDay *)selectedDays[key]).date]);
-    }];
     
-    _curDate = datePicker.date;
-    [self dismissSemiModalView];
+    if (arr.count > 0) {
+        _timeView.fromTime = ((THDateDay *)selectedDays[(NSNumber *)arr[0]]).date;
+        _timeView.toTime = ((THDateDay *)selectedDays[[arr lastObject]]).date;
+        
+    }
 }
 
 -(void)datePickerCancelPressed:(THDatePickerViewController *)datePicker
 {
-    _selectedDays = datePicker.selectedDaysArray;
-    
-    NSArray* arr = [_selectedDays allKeys];
-    arr = [arr sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        NSComparisonResult result = [obj1 compare:obj2];
-        return result==NSOrderedDescending;
-    }];
-    [arr enumerateObjectsUsingBlock:^(NSNumber *key, NSUInteger idx, BOOL *stop) {
-        NSLog(@"selected Day:%@",[_formatter stringFromDate:((THDateDay *)_selectedDays[key]).date]);
-    }];
     [self dismissSemiModalView];
 }
+
+//- (BOOL)prefersStatusBarHidden
+//{
+//    return YES;
+//}
 
 @end

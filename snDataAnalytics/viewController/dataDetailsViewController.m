@@ -67,7 +67,9 @@ const static CGFloat itemsViewHeight = 145.0f;
     int totalNumber;
     
     UIView *_contentView;
-    FXBlurView *_barView;
+//    FXBlurView *_barView;
+    UIView *_barView;
+
     FRDLivelyButton *_timeSwithButton;
     UIView *_itemsView;
     NSMutableArray     *_items;
@@ -324,18 +326,28 @@ const static CGFloat itemsViewHeight = 145.0f;
 #pragma mark add views
 - (void)addTitleView
 {
-    _barView = [[FXBlurView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, titleViewHeight)];
-//    _barView.backgroundColor = [UIColor colorWithRed:0xbf/255.0 green:0xef/255.0 blue:0xff/255.0 alpha:1];
-//    _barView.backgroundColor = [UIColor grayColor];
-//    _barView.tintColor = [UIColor blackColor];
-    _barView.blurEnabled = YES;
-    _barView.dynamic  = YES;
-    _barView.blurRadius = 40;
-    [_contentView addSubview:_barView];
+//    _barView = [[FXBlurView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, titleViewHeight)];
+//    _barView.blurEnabled = YES;
+//    _barView.dynamic  = YES;
+//    _barView.blurRadius = 40;
+//    [_contentView addSubview:_barView];
+//    
+//    _barView.frame = CGRectMake(0, 0, self.view.frame.size.width, titleViewHeight);
+//    [_contentView addSubview:_barView];
     
+    if ([self isIOS8]) {
+        UIVisualEffect *effect;
+        effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+        _barView = [[UIVisualEffectView alloc] initWithEffect:effect];
+    }else{
+        _barView = [[UIToolbar alloc] initWithFrame:CGRectZero];
+        _barView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        ((UIToolbar *)_barView).barStyle = UIBarStyleBlack;
+        ((UIToolbar *)_barView).translucent = YES;
+    }
     _barView.frame = CGRectMake(0, 0, self.view.frame.size.width, titleViewHeight);
     [_contentView addSubview:_barView];
-
+    
     _viewTitle = [[UILabel alloc] init];
     [_viewTitle setTextColor:[UIColor blackColor]];
     [_viewTitle setText:_viewTitleString];
@@ -464,6 +476,8 @@ const static CGFloat itemsViewHeight = 145.0f;
     
     [_contentView addSubview:_scrollView];
     [_contentView insertSubview:_barView aboveSubview:_scrollView];
+    
+//    [_scrollView setContentOffset:CGPointMake(0, 40) animated:NO];
     
 //    NSLog(@"in detailViewController, self.navigationController:%@",self.navigationController);
 //    self.shyNavBarManager.scrollView = _scrollView;

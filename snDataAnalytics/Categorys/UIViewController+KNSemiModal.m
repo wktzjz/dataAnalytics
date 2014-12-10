@@ -36,6 +36,7 @@ static NSString * const modelBluredViewKey = @"modelBluredView";
 @interface UIViewController (KNSemiModalInternal)
 -(UIView*)parentTarget;
 -(CAAnimationGroup*)animationGroupForward:(BOOL)_forward;
+- (void)dismissSemiModalView;
 @end
 
 @implementation UIViewController (KNSemiModalInternal)
@@ -254,6 +255,11 @@ static NSString * const modelBluredViewKey = @"modelBluredView";
         blurView.translucent = YES;
         blurView.frame = ss.bounds;
         [ss addSubview:blurView];
+        UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc]
+                                                        initWithTarget:self
+                                                        action:@selector(dismissSemiModalView)];
+        [view addGestureRecognizer:tapGestureRecognizer];
+ 
         objc_setAssociatedObject(view, &modelBluredViewKey, blurView,OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         
         // Dismiss button (if allow)

@@ -32,6 +32,16 @@
     NSInteger _pageAnalyticsChosenIndex;
     NSInteger _transformAnalyticsChosenDimension;
     NSInteger _transformAnalyticsChosenIndex;
+    
+
+    NSNumber *_visitorGroupChosenDimensionNumber;
+    NSNumber *_visitorGroupChosenIndexNumber;
+    NSNumber *_sourceAnalyticsChosenDimensionNumber;
+    NSNumber *_sourceAnalyticsChosenIndexNumber;
+    NSNumber *_pageAnalyticsChosenDimensionNumber;
+    NSNumber *_pageAnalyticsChosenIndexNumber;
+    NSNumber *_transformAnalyticsChosenDimensionNumber;
+    NSNumber *_transformAnalyticsChosenIndexNumber;
 
 }
 
@@ -73,35 +83,179 @@
         _transformAnalyticsChosenDimension = 0;
         _transformAnalyticsChosenIndex     = 0;
         
+       
+        _visitorGroupChosenDimensionNumber = @(0);
+        _visitorGroupChosenIndexNumber = @(0);
+        _sourceAnalyticsChosenDimensionNumber = @(0);
+        _sourceAnalyticsChosenIndexNumber = @(0);
+        _pageAnalyticsChosenDimensionNumber = @(0);
+        _pageAnalyticsChosenIndexNumber = @(0);
+        _transformAnalyticsChosenDimensionNumber = @(0);
+        _transformAnalyticsChosenIndexNumber = @(0);
     }
     return self;
 }
 
 - (lineChartDetailsViewController *)getControllerFromView:(viewType)viewType detailsType:(NSInteger)detailsType
 {
+    return [self getControllerFromView:viewType ByType:detailsType];
+
+//    switch (viewType) {
+//            
+//        case outlineVisitorGroup:{
+//            return [self getVisitorGroupControllerByType:detailsType];
+//            break;
+//        }
+//        case outlineSource:{
+//            return [self getSourceAnalyticsControllerByType:detailsType];
+//            break;
+//        }
+//        case outlinePageAnalytics:{
+//            return [self getPageAnalyticsControllerByType:detailsType];
+//            break;
+//        }
+//        case outlineTransform:{
+//            return [self getTransformAnalyticsControllerByType:detailsType];
+//            break;
+//        }
+//
+//        default:
+//            return nil;
+//            break;
+//    }
+}
+
+
+
+- (lineChartDetailsViewController *)getControllerFromView:(viewType)viewType ByType:(NSInteger)type
+{
+    __block NSNumber *chosenDimension;
+    __block NSNumber *chosenIndex;
+    NSArray  *dimensionArray;
+    NSArray  *indexArray;
+    id model;
+    
     switch (viewType) {
-            
         case outlineVisitorGroup:{
-            return [self getVisitorGroupControllerByType:detailsType];
+            chosenDimension = _visitorGroupChosenDimensionNumber;
+            chosenIndex     = _visitorGroupChosenIndexNumber;
+            dimensionArray  = _visitorGroupDimensionArray;
+            indexArray      = _visitorGroupIndexArray;
+            model = [visitorGroupModel sharedInstance];
             break;
         }
         case outlineSource:{
-            return [self getSourceAnalyticsControllerByType:detailsType];
+            chosenDimension = _sourceAnalyticsChosenDimensionNumber;
+            chosenIndex     = _sourceAnalyticsChosenIndexNumber;
+            dimensionArray  = _sourceAnalyticsDimensionArray;
+            indexArray      = _sourceAnalyticsIndexArray;
+            model = [sourcesAnalyticsModel sharedInstance];
             break;
         }
         case outlinePageAnalytics:{
-            return [self getPageAnalyticsControllerByType:detailsType];
+            chosenDimension = _pageAnalyticsChosenDimensionNumber;
+            chosenIndex     = _pageAnalyticsChosenIndexNumber;
+            dimensionArray  = _pageAnalyticsDimensionArray;
+            indexArray      = _pageAnalyticsIndexArray;
+            model = [pageAnalyticsModel sharedInstance];
             break;
         }
         case outlineTransform:{
-            return [self getTransformAnalyticsControllerByType:detailsType];
+            chosenDimension = _transformAnalyticsChosenDimensionNumber;
+            chosenIndex     = _transformAnalyticsChosenIndexNumber;
+            dimensionArray  = _transformAnalyticsDimensionArray;
+            indexArray      = _transformAnalyticsIndexArray;
+            model = [transformAnalyticsModel sharedInstance];
             break;
         }
-
+            
         default:
             return nil;
             break;
     }
+    
+    lineChartDetailsViewController *vc = [[lineChartDetailsViewController alloc] initWithFrame:wkScreen data:nil];
+    __block NSDictionary *detailsData;
+    __block NSDictionary *labelData = (NSDictionary *)[model getDefineDetails];
+    
+    detailsData = (NSDictionary *)((NSDictionary *)[model getDetailsData])[(NSString *)dimensionArray[0]];
+    
+    ///details views的 title 和 当前维度 名称
+    vc.titleString = vc.chartDetailsView.dimensionName = dimensionArray[0];
+    
+    //details views的 当前指标 名称
+    vc.chartDetailsView.indexName = indexArray[type];
+    vc.chartDetailsView.lineView.labelString = indexArray[type];
+    
+    //detailsview的数值标题
+    [vc addDetailsViewButtonWithData:detailsData];
+    
+    //图表 根据label找到数据 绘制
+    [vc addLineViewWithData:detailsData];
+    
+    //detailsview的数值
+    [vc addDetailsViewWithData:detailsData];
+    
+    vc.dimensionArray = [[NSMutableArray alloc] initWithArray:dimensionArray];
+    vc.indexArray = [[NSMutableArray alloc] initWithArray:indexArray];
+    
+    
+    __weak typeof(vc) weakVC = vc;
+    
+    vc.indexChoosedBlock = ^(NSInteger i) {
+        if (chosenIndex.integerValue != i) {
+            chosenIndex = @(i);
+            
+            typeof(weakVC) strongVC = weakVC;
+            
+            NSString *chosenDimensionName = (NSString *)dimensionArray[chosenDimension.integerValue];
+            
+            NSArray *indexNameArray = (NSArray *)(NSDictionary *)(labelData[chosenDimensionName])[@"indexOptionsArray"];
+            
+            strongVC.chartDetailsView.indexName = (NSString *)indexNameArray[i];
+            strongVC.chartDetailsView.lineView.labelString = (NSString *)indexNameArray[i];
+            
+            detailsData = (NSDictionary *)((NSDictionary *)[model getDetailsData])[chosenDimensionName];
+            
+            //图表自动根据labelString 筛选detailsData中得数据 用以绘图
+            [strongVC.chartDetailsView.lineView relodData:detailsData];
+        }
+    };
+    
+    vc.dimensionChoosedBlock = ^(NSInteger i) {
+        if (chosenDimension.integerValue != i) {
+            chosenDimension = @(i);
+            
+            typeof (weakVC) strongVC = weakVC;
+            
+            //details views的 指标数组
+            NSArray *indexNameArray = (NSArray *)(NSDictionary *)(labelData[dimensionArray[i]])[@"indexOptionsArray"];
+            
+            detailsData = (NSDictionary *)((NSDictionary *)[model getDetailsData])[(NSString *)dimensionArray[i]];
+            
+            //details views的 title 和 当前维度 名称
+            strongVC.titleString = strongVC.chartDetailsView.dimensionName = dimensionArray[i];
+            
+            //details views的 当前指标 名称
+            strongVC.chartDetailsView.indexName = (NSString *)indexNameArray[0];
+            strongVC.chartDetailsView.lineView.labelString = (NSString *)indexNameArray[0];
+            
+            //detailsview的labels
+            [strongVC.chartDetailsView.detailsView reloadLabelsWithData:detailsData];
+            
+            //图表
+            [strongVC.chartDetailsView.lineView relodData:detailsData];
+            
+            //detailsview的数值
+            [strongVC.chartDetailsView.detailsView reloadValuesWithData:detailsData];
+            
+            //添加detailsview的index array选项
+            strongVC.indexArray = [[NSMutableArray alloc] initWithArray:indexNameArray];
+            
+        }
+    };
+    
+    return vc;
 }
 
 - (lineChartDetailsViewController *)getVisitorGroupControllerByType:(NSInteger)type
@@ -465,7 +619,6 @@
     
     return vc;
 }
-
 
 //            lineChartDetailsViewController *vc = [[lineChartDetailsViewController alloc] initWithFrame:self.view.frame data:nil];
 //            //details views的 维度 指标 名称

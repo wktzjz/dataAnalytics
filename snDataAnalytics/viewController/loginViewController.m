@@ -96,7 +96,7 @@ const static CGFloat fieldFloatingLabelFontSize = 11.0f;
 - (void)addTextField
 {
     CGFloat topOffsetRatio = 230.0/568.0;
-    NSLog(@"(110/568)*self.view.frame.size.height:%f",(110.0/568.0)*self.view.frame.size.height);
+//    NSLog(@"(110/568)*self.view.frame.size.height:%f",(110.0/568.0)*self.view.frame.size.height);
     _logo = [[UILabel alloc] init];
     [_logo setTextColor:[UIColor lightCreamColor]];
     [_logo setText:@"Analytics"];

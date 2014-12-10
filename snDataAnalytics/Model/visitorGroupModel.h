@@ -17,7 +17,7 @@
 @property (nonatomic) NSMutableArray *arrayOfDates;
 @property (nonatomic) NSDictionary *outlineData;
 @property (nonatomic) NSDictionary *detailInitializeData;
-@property (nonatomic) NSDictionary *detailsData;
+@property (nonatomic) NSMutableDictionary *detailsData;
 @property (nonatomic) NSDictionary *sendDict;
 
 @property (nonatomic) NSDictionary *defineDetails;

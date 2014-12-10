@@ -70,6 +70,11 @@
 		358F8E3B1A303B90008BF6A7 /* hotPageOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 358F8E3A1A303B90008BF6A7 /* hotPageOutlineView.m */; };
 		358F8E3E1A3045B2008BF6A7 /* hotPageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 358F8E3D1A3045B2008BF6A7 /* hotPageModel.m */; };
 		358F8E411A3045C8008BF6A7 /* hotCityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 358F8E401A3045C8008BF6A7 /* hotCityModel.m */; };
+		358F8E471A357A79008BF6A7 /* ic_后续@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 358F8E421A357A79008BF6A7 /* ic_后续@2x.png */; };
+		358F8E481A357A79008BF6A7 /* ic_设置@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 358F8E431A357A79008BF6A7 /* ic_设置@2x.png */; };
+		358F8E491A357A79008BF6A7 /* ic_实时@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 358F8E441A357A79008BF6A7 /* ic_实时@2x.png */; };
+		358F8E4A1A357A79008BF6A7 /* ic_下拉@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 358F8E451A357A79008BF6A7 /* ic_下拉@2x.png */; };
+		358F8E4B1A357A79008BF6A7 /* ic_账户@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 358F8E461A357A79008BF6A7 /* ic_账户@2x.png */; };
 		35945CEB19E8C1D200BF5EC3 /* pageAnalyticsOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35945CEA19E8C1D200BF5EC3 /* pageAnalyticsOutlineView.m */; };
 		35945CF219E8C20A00BF5EC3 /* visitorGroupDetailOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35945CED19E8C20A00BF5EC3 /* visitorGroupDetailOutlineView.m */; };
 		35945CF319E8C20A00BF5EC3 /* visitorGroupOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35945CEF19E8C20A00BF5EC3 /* visitorGroupOutlineView.m */; };
@@ -198,6 +203,10 @@
 		35D397F61A0090C20014B377 /* realTimeDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35D397F51A0090C20014B377 /* realTimeDetailsView.m */; };
 		35D397F91A0336700014B377 /* lineChartDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 35D397F81A0336700014B377 /* lineChartDetailsViewController.m */; };
 		35D397FE1A033AC10014B377 /* detailsSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 35D397FD1A033AC10014B377 /* detailsSwitchView.m */; };
+		35EB871A1A35A9DE00D45E37 /* authenticationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB87191A35A9DE00D45E37 /* authenticationViewController.m */; };
+		35EB871C1A35AABD00D45E37 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35EB871B1A35AABD00D45E37 /* Security.framework */; };
+		35EB871E1A35AAC400D45E37 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35EB871D1A35AAC400D45E37 /* LocalAuthentication.framework */; };
+		35EB87261A36DE6500D45E37 /* authenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB87251A36DE6500D45E37 /* authenticationManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -332,6 +341,11 @@
 		358F8E3D1A3045B2008BF6A7 /* hotPageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = hotPageModel.m; path = Model/hotPageModel.m; sourceTree = "<group>"; };
 		358F8E3F1A3045C8008BF6A7 /* hotCityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = hotCityModel.h; path = Model/hotCityModel.h; sourceTree = "<group>"; };
 		358F8E401A3045C8008BF6A7 /* hotCityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = hotCityModel.m; path = Model/hotCityModel.m; sourceTree = "<group>"; };
+		358F8E421A357A79008BF6A7 /* ic_后续@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ic_后续@2x.png"; path = "snDataAnalytics/Resourcs/Images/ic_后续@2x.png"; sourceTree = "<group>"; };
+		358F8E431A357A79008BF6A7 /* ic_设置@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ic_设置@2x.png"; path = "snDataAnalytics/Resourcs/Images/ic_设置@2x.png"; sourceTree = "<group>"; };
+		358F8E441A357A79008BF6A7 /* ic_实时@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ic_实时@2x.png"; path = "snDataAnalytics/Resourcs/Images/ic_实时@2x.png"; sourceTree = "<group>"; };
+		358F8E451A357A79008BF6A7 /* ic_下拉@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ic_下拉@2x.png"; path = "snDataAnalytics/Resourcs/Images/ic_下拉@2x.png"; sourceTree = "<group>"; };
+		358F8E461A357A79008BF6A7 /* ic_账户@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ic_账户@2x.png"; path = "snDataAnalytics/Resourcs/Images/ic_账户@2x.png"; sourceTree = "<group>"; };
 		35945CE919E8C1D200BF5EC3 /* pageAnalyticsOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pageAnalyticsOutlineView.h; path = view/pageAnalyticsOutlineView.h; sourceTree = "<group>"; };
 		35945CEA19E8C1D200BF5EC3 /* pageAnalyticsOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = pageAnalyticsOutlineView.m; path = view/pageAnalyticsOutlineView.m; sourceTree = "<group>"; };
 		35945CEC19E8C20A00BF5EC3 /* visitorGroupDetailOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = visitorGroupDetailOutlineView.h; path = view/visitorGroupDetailOutlineView.h; sourceTree = "<group>"; };
@@ -542,6 +556,12 @@
 		35D397F81A0336700014B377 /* lineChartDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = lineChartDetailsViewController.m; path = viewController/lineChartDetailsViewController.m; sourceTree = "<group>"; };
 		35D397FC1A033AC10014B377 /* detailsSwitchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = detailsSwitchView.h; path = view/detailsSwitchView.h; sourceTree = "<group>"; };
 		35D397FD1A033AC10014B377 /* detailsSwitchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = detailsSwitchView.m; path = view/detailsSwitchView.m; sourceTree = "<group>"; };
+		35EB87181A35A9DE00D45E37 /* authenticationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = authenticationViewController.h; path = viewController/authenticationViewController.h; sourceTree = "<group>"; };
+		35EB87191A35A9DE00D45E37 /* authenticationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = authenticationViewController.m; path = viewController/authenticationViewController.m; sourceTree = "<group>"; };
+		35EB871B1A35AABD00D45E37 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		35EB871D1A35AAC400D45E37 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
+		35EB87241A36DE6500D45E37 /* authenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = authenticationManager.h; path = viewController/authenticationManager.h; sourceTree = "<group>"; };
+		35EB87251A36DE6500D45E37 /* authenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = authenticationManager.m; path = viewController/authenticationManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -549,6 +569,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35EB871E1A35AAC400D45E37 /* LocalAuthentication.framework in Frameworks */,
+				35EB871C1A35AABD00D45E37 /* Security.framework in Frameworks */,
 				355900A219B8690C001AD1FF /* Foundation.framework in Frameworks */,
 				356298E919B86713004A8054 /* QuartzCore.framework in Frameworks */,
 				356298E719B86703004A8054 /* CoreGraphics.framework in Frameworks */,
@@ -738,6 +760,11 @@
 		353FCE6B19DA4CE400072431 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				358F8E421A357A79008BF6A7 /* ic_后续@2x.png */,
+				358F8E431A357A79008BF6A7 /* ic_设置@2x.png */,
+				358F8E441A357A79008BF6A7 /* ic_实时@2x.png */,
+				358F8E451A357A79008BF6A7 /* ic_下拉@2x.png */,
+				358F8E461A357A79008BF6A7 /* ic_账户@2x.png */,
 				35D3979319FE24350014B377 /* icon_graySettingButton@2x.png */,
 				357E45DE19FD4ECD00719A2A /* icon_account@2x.png */,
 				357E441219FA046000719A2A /* facebook-white.png */,
@@ -944,9 +971,9 @@
 		3562980319B44564004A8054 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				35EB871D1A35AAC400D45E37 /* LocalAuthentication.framework */,
+				35EB871B1A35AABD00D45E37 /* Security.framework */,
 				35945DE019E8D3D800BF5EC3 /* Info.plist */,
-				35945DD819E8D36F00BF5EC3 /* AppDelegate.h */,
-				35945DD919E8D36F00BF5EC3 /* AppDelegate.m */,
 				35945DDB19E8D36F00BF5EC3 /* main.m */,
 				3562988619B4685E004A8054 /* snDataAnalytics-Prefix.pch */,
 			);
@@ -995,9 +1022,9 @@
 				35D397FF1A07590F0014B377 /* visitorGroup */,
 				3550C3AA1A199FDF00402F33 /* sourcesAnalytics */,
 				3550C3AB1A199FE800402F33 /* pageAnalytics */,
-				3550C3AE1A19A00F00402F33 /* transformAnalytics */,
 				3550C3AC1A199FF700402F33 /* hotCity */,
 				3550C3AD1A19A00500402F33 /* hotPage */,
+				3550C3AE1A19A00F00402F33 /* transformAnalytics */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1029,9 +1056,11 @@
 		3562983019B45099004A8054 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				35EB871F1A36981700D45E37 /* AppDelegate */,
+				354AE1721A144B3200564F9F /* Login */,
+				35EB87171A35A9A700D45E37 /* AuthenticationController */,
 				354AE1741A144B5E00564F9F /* dataDetailsViewController */,
 				354AE1731A144B4B00564F9F /* mainViewController */,
-				354AE1721A144B3200564F9F /* Login */,
 				35AE1ABB1A0B6F6D00167096 /* lineChartDetailsViewFactory */,
 				35D397FA1A0336E00014B377 /* lineChartDetailsViewController */,
 				354AE1751A144B9200564F9F /* indexSwitchController */,
@@ -1550,6 +1579,26 @@
 			name = OutlineViewContainer;
 			sourceTree = "<group>";
 		};
+		35EB87171A35A9A700D45E37 /* AuthenticationController */ = {
+			isa = PBXGroup;
+			children = (
+				35EB87181A35A9DE00D45E37 /* authenticationViewController.h */,
+				35EB87191A35A9DE00D45E37 /* authenticationViewController.m */,
+				35EB87241A36DE6500D45E37 /* authenticationManager.h */,
+				35EB87251A36DE6500D45E37 /* authenticationManager.m */,
+			);
+			name = AuthenticationController;
+			sourceTree = "<group>";
+		};
+		35EB871F1A36981700D45E37 /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				35945DD819E8D36F00BF5EC3 /* AppDelegate.h */,
+				35945DD919E8D36F00BF5EC3 /* AppDelegate.m */,
+			);
+			name = AppDelegate;
+			sourceTree = "<group>";
+		};
 		35F3999019CFC1D30077BA75 /* popupViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1655,11 +1704,13 @@
 				35945D7219E8CA7E00BF5EC3 /* dialog_cancel@2x.png in Resources */,
 				357E443319FA047700719A2A /* OpenSans-Light.ttf in Resources */,
 				35945D7919E8CA7E00BF5EC3 /* dialog_ok.png in Resources */,
+				358F8E471A357A79008BF6A7 /* ic_后续@2x.png in Resources */,
 				35945D6719E8CA7E00BF5EC3 /* arrow_right.png in Resources */,
 				35D3979419FE24350014B377 /* icon_graySettingButton@2x.png in Resources */,
 				35945D7019E8CA7E00BF5EC3 /* calendar_ok-disabled@2x.png in Resources */,
 				357E442C19FA046000719A2A /* linkedin-white@2x.png in Resources */,
 				35945D9719E8CBE100BF5EC3 /* NotificationBackgroundSuccessIcon@2x.png in Resources */,
+				358F8E481A357A79008BF6A7 /* ic_设置@2x.png in Resources */,
 				35945D7319E8CA7E00BF5EC3 /* dialog_clear-disabled.png in Resources */,
 				35945D9B19E8CBE100BF5EC3 /* NotificationBackgroundWarningIcon@2x.png in Resources */,
 				35945D8F19E8CBE100BF5EC3 /* NotificationBackgroundError@2x.png in Resources */,
@@ -1675,6 +1726,7 @@
 				35945D6819E8CA7E00BF5EC3 /* arrow_right@2x.png in Resources */,
 				35945D9D19E8CBE100BF5EC3 /* NotificationButtonBackground@2x.png in Resources */,
 				35945D9019E8CBE100BF5EC3 /* NotificationBackgroundErrorIcon.png in Resources */,
+				358F8E4A1A357A79008BF6A7 /* ic_下拉@2x.png in Resources */,
 				357E442A19FA046000719A2A /* icon_rightArrow@2x.png in Resources */,
 				35945D7419E8CA7E00BF5EC3 /* dialog_clear-disabled@2x.png in Resources */,
 				357E442619FA046000719A2A /* icon_dataBar@2x.png in Resources */,
@@ -1690,11 +1742,13 @@
 				35945D9219E8CBE100BF5EC3 /* NotificationBackgroundMessage.png in Resources */,
 				35945D9319E8CBE100BF5EC3 /* NotificationBackgroundMessage@2x.png in Resources */,
 				35945D7619E8CA7E00BF5EC3 /* dialog_clear@2x.png in Resources */,
+				358F8E491A357A79008BF6A7 /* ic_实时@2x.png in Resources */,
 				35945D3319E8C3AC00BF5EC3 /* THDateDay.xib in Resources */,
 				35945D6E19E8CA7E00BF5EC3 /* calendar_littledot@2x.png in Resources */,
 				35945D9A19E8CBE100BF5EC3 /* NotificationBackgroundWarningIcon.png in Resources */,
 				35945D6A19E8CA7E00BF5EC3 /* calendar_clear-disabled@2x.png in Resources */,
 				35945D9519E8CBE100BF5EC3 /* NotificationBackgroundSuccess@2x.png in Resources */,
+				358F8E4B1A357A79008BF6A7 /* ic_账户@2x.png in Resources */,
 				357E443119FA046000719A2A /* twitter.png in Resources */,
 				35945DE119E8D3D800BF5EC3 /* Info.plist in Resources */,
 				35945D6919E8CA7E00BF5EC3 /* calendar_clear-disabled.png in Resources */,
@@ -1723,6 +1777,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				35945DE419E8D41600BF5EC3 /* TSMessage.m in Sources */,
+				35EB87261A36DE6500D45E37 /* authenticationManager.m in Sources */,
 				35945D4719E8C8B900BF5EC3 /* BEMLine.m in Sources */,
 				354AE1791A14923300564F9F /* loadingView.m in Sources */,
 				358F8E411A3045C8008BF6A7 /* hotCityModel.m in Sources */,
@@ -1822,6 +1877,7 @@
 				358F8E3E1A3045B2008BF6A7 /* hotPageModel.m in Sources */,
 				35945DA619E8CC3300BF5EC3 /* NSString+TextDirectionality.m in Sources */,
 				35D397E819FF2F910014B377 /* UIViewController+BetterLayoutGuides.m in Sources */,
+				35EB871A1A35A9DE00D45E37 /* authenticationViewController.m in Sources */,
 				35D397DB19FF2F2B0014B377 /* NSString+LTMorphingLabel.swift in Sources */,
 				35945DC919E8D0D000BF5EC3 /* CheckNetwork.m in Sources */,
 				35945D3F19E8C49D00BF5EC3 /* wkContextMenuView.m in Sources */,

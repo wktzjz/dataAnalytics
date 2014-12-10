@@ -34,6 +34,11 @@
 #import "hotPageModel.h"
 #import "transformAnalyticsModel.h"
 
+#import "authenticationViewController.h"
+#import "authenticationManager.h"
+#import "flatButton.h"
+#import "wkBlurPopover.h"
+
 
 typedef enum {
     dragUnknown = 0,
@@ -131,6 +136,15 @@ const static CGFloat titleViewHeight = 44.0f;
 //    [self.navigationController.navigationBar setBackgroundColor:[UIColor clearColor]];
 
     [self setTitle:@"概览"];
+//    NSMutableDictionary *a = [[NSMutableDictionary alloc] initWithDictionary:@{@"1":@"1"}];
+//    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithDictionary:@{@"dict1":a}];
+//    NSMutableDictionary *b = dict[@"dict1"];
+//    NSLog(@"dict1[1]:%@",(NSString *)b[@"1"]);
+////    [dict setObject:@{@"1":@"2"} forKey:@"dict1"];
+//    [a setObject:@"2" forKey:@"1"];
+//    NSLog(@"dict1[1]:%@",(NSString *)b[@"1"]);
+//    
+
     
     [self addFrontAndBackgroundView];
     [self addTimeView];
@@ -176,7 +190,9 @@ const static CGFloat titleViewHeight = 44.0f;
         [[NSNotificationCenter defaultCenter] addObserver:strongSelf
                                                  selector:@selector(handleTransformAnalyticsOutlineDataDidInitialize:)
                                                      name:transformAnalyticsOutlineDataDidInitialize object:nil];
-        
+//        [[NSNotificationCenter defaultCenter] addObserver:strongSelf
+//                                                 selector:@selector(jumpToAuthenticationView)
+//                                                     name:@"applicationNeedToAuthenticate" object:nil];
         
 //        NSMutableArray *test1 = [[NSMutableArray alloc] initWithArray:@[@1,@2]];
 //        NSMutableArray *test2 = [[NSMutableArray alloc] initWithArray:test1];
@@ -262,6 +278,8 @@ const static CGFloat titleViewHeight = 44.0f;
     [alertView show];
     
 }
+
+#pragma mark add views
 
 - (void)addFrontAndBackgroundView
 {
@@ -474,7 +492,6 @@ const static CGFloat titleViewHeight = 44.0f;
     _transformView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _hotPageView.frame.origin.y + _hotPageView.frame.size.height + 20, width, height - 140.0) ifLoading:YES];
     [_scrollView1 addSubview:_transformView];
     
-    
     _outLineViewArray = [[NSMutableArray alloc] initWithArray:@[_realTimeView,_visitorGruopView,_sourceView,_pageView,_hotCityView,_hotPageView,_transformView]];
 }
 
@@ -600,10 +617,99 @@ const static CGFloat titleViewHeight = 44.0f;
         
         [self presentViewController:viewController animated:YES completion:nil];
     }
-    
+#if !TARGET_IPHONE_SIMULATOR
+    else if ([self isIOS8]){
+        [self jumpToAuthenticationView];
+    }
+#endif
+   
     [self getNetworkInfo];
-
 }
+
+
+
+#pragma mark - AuthenticationView
+
+- (void)jumpToAuthenticationView
+{
+//    authenticationViewController *viewController = [[authenticationViewController alloc] init];
+//    
+//    viewController.dismissBlock = ^{
+//        [self dismissViewControllerAnimated:YES completion:nil];
+//    };
+//    
+//    [self presentViewController:viewController animated:YES completion:nil];
+    
+//    authenticationViewController *viewController = [[authenticationViewController alloc] initWithFrame:CGRectMake(0, 350, 280, 216)];
+//    __weak typeof(self) weakSelf = self;
+//    
+//    viewController.dismissBlock = ^{
+//        [self dismissViewControllerAnimated:YES completion:nil];
+//    };
+//
+//    wkBlurPopover *popover = [[wkBlurPopover alloc] initWithContentViewController:viewController];
+//    [self presentViewController:popover animated:YES completion:nil];
+
+    UIView *blurView;
+    UIVisualEffect *effect;
+    effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+    blurView = [[UIVisualEffectView alloc] initWithEffect:effect];
+    blurView.frame = wkScreen;
+    [self.view addSubview:blurView];
+    blurView.alpha = 0.0;
+    
+    flatButton *button = [flatButton button];
+    button.backgroundColor = [UIColor clearColor];
+    button.alpha = 0.7;
+    button.translatesAutoresizingMaskIntoConstraints = NO;
+    [button setTitle:@"点击指纹验证" forState:UIControlStateNormal];
+    [button setTextColor:[UIColor blackColor]];
+    [button addTarget:[authenticationManager sharedInstance] action:@selector(fingerAuthentication) forControlEvents:UIControlEventTouchUpInside];
+    [blurView addSubview:button];
+    
+    [blurView addConstraint:[NSLayoutConstraint constraintWithItem:button
+                                                          attribute:NSLayoutAttributeCenterX
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:blurView
+                                                          attribute:NSLayoutAttributeCenterX
+                                                         multiplier:1.0f
+                                                           constant:0]];
+    [blurView addConstraint:[NSLayoutConstraint constraintWithItem:button
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:blurView
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1.0f
+                                                           constant:-50]];
+
+    
+    [UIView animateWithDuration:0.3
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         blurView.alpha = 0.90;
+                        }
+                     completion: ^(BOOL finished){
+                         [[authenticationManager sharedInstance] startAuthentication];
+                         
+                         [authenticationManager sharedInstance].dismissBlock = ^{
+                             dispatch_main_async_safe(^{
+                                 [authenticationManager sharedInstance].isAuthenticationg = NO;
+
+                                 [UIView animateWithDuration:0.5
+                                                       delay:0.0
+                                                     options:UIViewAnimationOptionCurveEaseInOut
+                                                  animations:^{
+                                                      blurView.alpha = 0.0;
+                                                  }completion:^(BOOL finished){
+                                                      [blurView removeFromSuperview];
+                                                  }];
+                             })
+                         };
+                     }];
+}
+
+
 
 - (void)onApplicationFinishedLaunching
 {
@@ -614,6 +720,7 @@ const static CGFloat titleViewHeight = 44.0f;
     });
 }
 
+
 #pragma mark - getNetworkInfo
 - (void)getNetworkInfo
 {
@@ -623,6 +730,7 @@ const static CGFloat titleViewHeight = 44.0f;
      //@"http://news-at.zhihu.com/api/3/news/latest"];
     ////http://news-at.zhihu.com/api/3/news/hot;
 }
+
 
 #pragma mark - handleInfoFromNetwork
 - (BOOL)handleInfoFromNetwork:(NSDictionary *)info
@@ -646,7 +754,6 @@ const static CGFloat titleViewHeight = 44.0f;
     //加载完概览页面后 预加载第二屏数据
     [self getDetailsData];
 
-    
     return YES;
 }
 
@@ -661,6 +768,7 @@ const static CGFloat titleViewHeight = 44.0f;
     [self getTransformDetailData];
 }
 
+
 #pragma mark getVisitorGroupData
 
 - (void)getVisitorGroupDetailsData
@@ -671,6 +779,7 @@ const static CGFloat titleViewHeight = 44.0f;
     [_visitorGruopView.loadingView stopAnimation];
 }
 
+
 #pragma mark getVisitorGroupData
 
 - (void)getSourceAnalyticsDetailsData
@@ -680,6 +789,7 @@ const static CGFloat titleViewHeight = 44.0f;
     _sourceAnalyticsDetailsDataLoaded = YES;
     [_sourceView.loadingView stopAnimation];
 }
+
 
 #pragma mark getVisitorGroupData
 

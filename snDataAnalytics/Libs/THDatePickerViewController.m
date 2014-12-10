@@ -403,7 +403,7 @@
                            fromDate:dateDay.date];
         NSInteger month = [_comps month];
         NSInteger day = [_comps day];
-        dateDay.dayTag = month*100 + day;
+        dateDay.dayTag = month * 100 + day;
         
         if (!_lastSelectedDay) {
             _lastSelectedDay = dateDay;

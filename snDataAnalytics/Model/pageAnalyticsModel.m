@@ -66,11 +66,11 @@ static NSString *const pageAnalyticsOutlineDataDidInitialize       = @"pageAnaly
     NSArray *indexOptionsArray1    = @[@"PV",@"退出次数",@"退出率",@"退出占比"];
     
     _defineDetails =  @{@"dimensionOptionsArray":dimensionOptionsArray,
-                        @"页面类型":@{@"labelStringArray":@[@"苏宁易购首页",@"商品四级页面"],
+                        @"页面类型":@{@"tagType":@[@"苏宁易购首页",@"商品四级页面"],
                                    @"indexOptionsArray":indexOptionsArray},
-                        @"着陆页":@{@"labelStringArray":@[@"苏宁易购首页"],
+                        @"着陆页":@{@"tagType":@[@"苏宁易购首页"],
                                  @"indexOptionsArray":indexOptionsArray},
-                        @"退出页":@{@"labelStringArray":@[@"苏宁易购首页",@"商品四级页面"],
+                        @"退出页":@{@"tagType":@[@"苏宁易购首页",@"商品四级页面"],
                                  @"indexOptionsArray":indexOptionsArray1},
                         };
     
@@ -200,29 +200,32 @@ static NSString *const pageAnalyticsOutlineDataDidInitialize       = @"pageAnaly
 //    NSArray *indexOptionsArray1    = @[@"PV",@"退出次数",@"退出率",@"退出占比"];
 //
 //    _defineDetails =  @{@"dimensionOptionsArray":dimensionOptionsArray,
-//                        @"页面类型":@{@"labelStringArray":@[@"苏宁易购首页",@"商品四级页面"],
+//                        @"页面类型":@{@"tagType":@[@"苏宁易购首页",@"商品四级页面"],
 //                                  @"indexOptionsArray":indexOptionsArray},
-//                        @"着陆页":@{@"labelStringArray":@[@"苏宁易购首页"],
+//                        @"着陆页":@{@"tagType":@[@"苏宁易购首页"],
 //                                 @"indexOptionsArray":indexOptionsArray},
-//                        @"退出页":@{@"labelStringArray":@[@"苏宁易购首页",@"商品四级页面"],
+//                        @"退出页":@{@"tagType":@[@"苏宁易购首页",@"商品四级页面"],
 //                                 @"indexOptionsArray":indexOptionsArray1},
 //                        };
     
     
     _detailsData =  @{ @"页面类型":@{
-                               @"labelValues":@[@(arc4random() % 20000),@(arc4random() % 20000)],
+                               @"tagType":@[@"苏宁易购首页",@"商品四级页面"],
+                               @"tagValue":@[@(arc4random() % 20000),@(arc4random() % 20000)],
                                @"arrayOfDates":arrayofDate,
                                @"PV_arrayOfValues":array1,@"UV_arrayOfValues":array2,@"平均页面停留时间_arrayOfValues":array3,@"一跳_arrayOfValues":array4,@"四级页面PV_arrayOfValues":array5,@"购物车PV_arrayOfValues":array6,
                                @"PV_number":@(arc4random() % 20000),@"UV_number":@(arc4random() % 20000),@"平均页面停留时间_number":@(arc4random() % 100),@"一跳_number":@(arc4random() % 10000),@"四级页面PV_number":@(arc4random() % 20000),@"购物车PV_number":@(arc4random() % 20000)
                                },
                        @"着陆页":@{
-                               @"labelValues":@[@(arc4random() % 20000)],
+                               @"tagType":@[@"苏宁易购首页"],
+                               @"tagValue":@[@(arc4random() % 20000)],
                                @"arrayOfDates":arrayofDate,
                                @"PV_arrayOfValues":array1,@"UV_arrayOfValues":array2,@"平均页面停留时间_arrayOfValues":array3,@"一跳_arrayOfValues":array4,@"四级页面PV_arrayOfValues":array5,@"购物车PV_arrayOfValues":array6,
                                @"PV_number":@(arc4random() % 20000),@"UV_number":@(arc4random() % 20000),@"平均页面停留时间_number":@(arc4random() % 100),@"一跳_number":@(arc4random() % 10000),@"四级页面PV_number":@(arc4random() % 20000),@"购物车PV_number":@(arc4random() % 20000)
                                },
                        @"退出页":@{
-                               @"labelValues":@[@(arc4random() % 20000),@(arc4random() % 20000)],
+                               @"tagType":@[@"苏宁易购首页",@"商品四级页面"],
+                               @"tagValue":@[@(arc4random() % 20000),@(arc4random() % 20000)],
                                @"arrayOfDates":arrayofDate,
                                @"PV_arrayOfValues":array1,@"退出次数_arrayOfValues":array2,@"退出率_arrayOfValues":array3,@"退出占比_arrayOfValues":array4,
                                @"PV_number":@(arc4random() % 20000),@"退出次数_number":@(arc4random() % 20000),@"退出率_number":@(arc4random() % 100),@"退出占比_number":@(arc4random() % 100)

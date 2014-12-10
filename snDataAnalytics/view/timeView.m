@@ -59,7 +59,7 @@
 {
     _curDate = [NSDate date];
     _formatter = [[NSDateFormatter alloc] init];
-    [_formatter setDateFormat:@"dd/MM/yyyy --- HH:mm"];
+    [_formatter setDateFormat:@"yyyy-MM-dd"];
     _fromTime = _curDate;
     
     _fromTimeArray = [[NSMutableArray alloc] initWithArray:@[@0,@0,@0]];
@@ -187,7 +187,9 @@
     _fromTimeArray[1] = @(month);
     _fromTimeArray[0] = @(year);
     
-    _fromString = [NSString stringWithFormat:@"%li年%li月%li日",year,month,day];
+//    _fromString = [NSString stringWithFormat:@"%li年%li月%li日",year,month,day];
+    _fromString = [_formatter stringFromDate:_fromTime];
+
     NSLog(@"fromDate:%@",_fromString);
 
     _fromDay.text = [NSString stringWithFormat:@"%li",day];
@@ -208,7 +210,9 @@
     _toTimeArray[1] = @(month);
     _toTimeArray[0] = @(year);
     
-    _toString = [NSString stringWithFormat:@"%li年%li月%li日",year,month,day];
+//    _toString = [NSString stringWithFormat:@"%li年%li月%li日",year,month,day];
+    _toString = [_formatter stringFromDate:_toTime];
+
     
     NSLog(@"toDate:%@",_toString);
 

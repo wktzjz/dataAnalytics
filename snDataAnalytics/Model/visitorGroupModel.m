@@ -21,6 +21,10 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
     __weak id      _wself;
     NSArray *_groupColorArray;
     NSArray *_groupPercentArray;
+    NSDateFormatter *_dateFormatter;
+    NSString *_curDate;
+    NSString *_fromDate;
+    NSString *_toDate;
 }
 
 + (instancetype)sharedInstance
@@ -43,6 +47,9 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
         
         _wself = self;
         _arrayOfDates = [[NSMutableArray alloc] init];
+        _dateFormatter = [[NSDateFormatter alloc] init];
+        [_dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        _curDate = [_dateFormatter stringFromDate:[NSDate date]];
 //        _defineDetails = [NSDictionary dictionary];
 
     }
@@ -81,7 +88,7 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
         });
     };
     
-    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:nil failureBlock:successefullyBlock successedBlock:successefullyBlock];
+    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:@"http://10.22.18.102:8080/snf-mbbi-web/mbbi/getVistorGroup.htm" failureBlock:successefullyBlock successedBlock:successefullyBlock];
 }
 
 - (NSDictionary *)getDetailOutlineData
@@ -242,49 +249,86 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
 //    NSArray *indexOptionsArray4 = @[@"回访数",@"买家数",@"首购率",@"复购率",@"客单价",@"平均订单收入"];
 //    NSArray *indexOptionsArray5 = @[@"访问会员数",@"买家数",@"购买率",@"客单价",@"平均订单收入"];
     
-    _detailsData =  @{ @"访客类型":@{
-                                @"labelValues":@[@(arc4random() % 2000),@(arc4random() % 2000)],
+//    _detailsData = [[NSMutableDictionary alloc] initWithCapacity:7];
+//    
+//    void (^VisitorTypeBlock)(NSDictionary *) = ^(NSDictionary *data) {
+//        [_detailsData setObject:@{
+//                                 @"tagType":@[@"新访客",@"回访客"],
+//                                 @"tagValue":@[@(arc4random() % 2000),@(arc4random() % 2000)],
+//                                 @"arrayOfDates":arrayofDate,
+//                                 @"UV_arrayOfValues":array1,@"PV_arrayOfValues":array2,@"VISIT_arrayOfValues":array3,@"新UV_arrayOfValues":array4,@"有效UV_arrayOfValues":array5,@"平均页面停留时间_arrayOfValues":array6,@"提交订单转化率_arrayOfValues":array7,@"有效订单转化率_arrayOfValues":array8,
+//                                 @"UV_number":@(arc4random() % 20000),@"PV_number":@(arc4random() % 20000),@"VISIT_number":@(arc4random() % 20000),@"新UV_number":@(arc4random() % 10000),@"有效UV_number":@(arc4random() % 2000),@"平均页面停留时间_number":@(arc4random() % 200),@"提交订单转化率_number":@(arc4random() % 100),@"有效订单转化率_number":@(arc4random() % 100)
+//                                 }
+//                         forKey: @"访客类型"];
+//    };
+//    NSString *urlVisitorType = [[NSString alloc] initWithFormat:@"http://10.22.18.102:8080/snf-mbbi-web/visitGroup/getVistorType.htm?beginTime=%@&endTime=%@&kpi=uv&nvgtnTp=ios",_curDate,_curDate ];
+//     [[networkManager sharedInstance] sendAsynchronousRequestWithURL:urlVisitorType failureBlock:VisitorTypeBlock successedBlock:VisitorTypeBlock];
+//    
+//    void (^terminalTypeBlock)(NSDictionary *) = ^(NSDictionary *data) {
+//        [_detailsData setObject:@{
+//                                  @"tagType":@[@"PC",@"WAP",@"APP"],
+//                                  @"tagValue":@[@(arc4random() % 2000),@(arc4random() % 2000),@(arc4random() % 2000)],
+//                                  @"arrayOfDates":arrayofDate,
+//                                  @"UV_arrayOfValues":array1,@"PV_arrayOfValues":array2,@"VISIT_arrayOfValues":array3,@"新UV_arrayOfValues":array4,@"有效UV_arrayOfValues":array5,@"平均页面停留时间_arrayOfValues":array6,@"提交订单转化率_arrayOfValues":array7,@"有效订单转化率_arrayOfValues":array8,
+//                                  @"UV_number":@(arc4random() % 20000),@"PV_number":@(arc4random() % 20000),@"VISIT_number":@(arc4random() % 20000),@"新UV_number":@(arc4random() % 10000),@"有效UV_number":@(arc4random() % 2000),@"平均页面停留时间_number":@(arc4random() % 200),@"提交订单转化率_number":@(arc4random() % 100),@"有效订单转化率_number":@(arc4random() % 100)
+//                                  }
+//                         forKey:@"终端类型"];
+//    };
+//    NSString *urlTerminalType = [[NSString alloc] initWithFormat:@"http://10.22.18.102:8080/snf-mbbi-web/visitGroup/getTagType.htm?beginTime=%@&endTime=%@&kpi=uv&nvgtnTp=ios",_curDate,_curDate ];
+//    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:urlTerminalType failureBlock:terminalTypeBlock successedBlock:terminalTypeBlock];
+//
+    
+    
+    _detailsData = [[NSMutableDictionary alloc] initWithDictionary: @{ @"访客类型":@{
+                                @"tagType":@[@"新访客",@"回访客"],
+                                @"tagValue":@[@(arc4random() % 2000),@(arc4random() % 2000)],
                                 @"arrayOfDates":arrayofDate,
                                 @"UV_arrayOfValues":array1,@"PV_arrayOfValues":array2,@"VISIT_arrayOfValues":array3,@"新UV_arrayOfValues":array4,@"有效UV_arrayOfValues":array5,@"平均页面停留时间_arrayOfValues":array6,@"提交订单转化率_arrayOfValues":array7,@"有效订单转化率_arrayOfValues":array8,
                                 @"UV_number":@(arc4random() % 20000),@"PV_number":@(arc4random() % 20000),@"VISIT_number":@(arc4random() % 20000),@"新UV_number":@(arc4random() % 10000),@"有效UV_number":@(arc4random() % 2000),@"平均页面停留时间_number":@(arc4random() % 200),@"提交订单转化率_number":@(arc4random() % 100),@"有效订单转化率_number":@(arc4random() % 100)
                                 },
                         @"终端类型":@{
-                                @"labelValues":@[@(arc4random() % 2000),@(arc4random() % 2000),@(arc4random() % 2000)],
+                                @"tagType":@[@"PC",@"WAP",@"APP"],
+                                @"tagValue":@[@(arc4random() % 2000),@(arc4random() % 2000),@(arc4random() % 2000)],
                                 @"arrayOfDates":arrayofDate,
                                 @"UV_arrayOfValues":array1,@"PV_arrayOfValues":array2,@"VISIT_arrayOfValues":array3,@"新UV_arrayOfValues":array4,@"有效UV_arrayOfValues":array5,@"平均页面停留时间_arrayOfValues":array6,@"提交订单转化率_arrayOfValues":array7,@"有效订单转化率_arrayOfValues":array8,
                                 @"UV_number":@(arc4random() % 20000),@"PV_number":@(arc4random() % 20000),@"VISIT_number":@(arc4random() % 20000),@"新UV_number":@(arc4random() % 10000),@"有效UV_number":@(arc4random() % 2000),@"平均页面停留时间_number":@(arc4random() % 200),@"提交订单转化率_number":@(arc4random() % 100),@"有效订单转化率_number":@(arc4random() % 100)
                                 },
                         @"整体会员":@{
-                                 @"labelValues":@[@(arc4random() % 20000)],
+                                @"tagType":@[@"会员"],
+                                @"tagValue":@[@(arc4random() % 20000)],
                                 @"arrayOfDates":arrayofDate,
                                 @"访问会员数_arrayOfValues":array1,@"买家数_arrayOfValues":array2,@"购买率_arrayOfValues":array3,@"客单价_arrayOfValues":array4,@"平均订单收入_arrayOfValues":array5,
                                 @"访问会员数_number":@(arc4random() % 20000),@"买家数_number":@(arc4random() % 2000),@"购买率_number":@(arc4random() % 100),@"客单价_number":@(arc4random() % 10000),@"平均订单收入_number":@(arc4random() % 200)
                                 },
                         @"新会员":@{
-                                 @"labelValues":@[@(arc4random() % 10000)],
+                                @"tagType":@[@"新会员"],
+                                @"tagValue":@[@(arc4random() % 10000)],
                                 @"arrayOfDates":arrayofDate,
                                 @"注册数_arrayOfValues":array1,@"买家数_arrayOfValues":array2,@"购买率_arrayOfValues":array3,@"客单价_arrayOfValues":array4,@"平均订单收入_arrayOfValues":array5,
                                 @"注册数_number":@(arc4random() % 20000),@"买家数_number":@(arc4random() % 2000),@"购买率_number":@(arc4random() % 100),@"客单价_number":@(arc4random() % 10000),@"平均订单收入_number":@(arc4random() % 200)
                                 },
                         @"老会员":@{
-                                 @"labelValues":@[@(arc4random() % 20000)],
+                                @"tagType":@[@"老会员"],
+                                @"tagValue":@[@(arc4random() % 20000)],
                                 @"arrayOfDates":arrayofDate,
                                 @"回访数_arrayOfValues":array1,@"买家数_arrayOfValues":array2,@"首购率_arrayOfValues":array3,@"复购率_arrayOfValues":array6,@"客单价_arrayOfValues":array4,@"平均订单收入_arrayOfValues":array5,
                                 @"回访数_number":@(arc4random() % 20000),@"买家数_number":@(arc4random() % 2000),@"首购率_number":@(arc4random() % 100),@"复购率_number":@(arc4random() % 100),@"客单价_number":@(arc4random() % 10000),@"平均订单收入_number":@(arc4random() % 200)
                                 },
                         @"会员等级":@{
-                                 @"labelValues":@[@(arc4random() % 20000),@(arc4random() % 2000),@(arc4random() % 200),@(arc4random() % 50)],
+                                @"tagType":@[@"普通会员",@"银卡会员",@"金卡会员",@"白金会员"],
+                                @"tagValue":@[@(arc4random() % 20000),@(arc4random() % 2000),@(arc4random() % 200),@(arc4random() % 50)],
                                 @"arrayOfDates":arrayofDate,
                                 @"访问会员数_arrayOfValues":array1,@"买家数_arrayOfValues":array2,@"购买率_arrayOfValues":array3,@"客单价_arrayOfValues":array4,@"平均订单收入_arrayOfValues":array5,
                                 @"访问会员数_number":@(arc4random() % 20000),@"买家数_number":@(arc4random() % 2000),@"购买率_number":@(arc4random() % 100),@"客单价_number":@(arc4random() % 10000),@"平均订单收入_number":@(arc4random() % 200)
                                 },
                         @"城市分布":@{
-                                @"labelValues":@[@(arc4random() % 20000),@(arc4random() % 20000),@(arc4random() % 20000)],
+                                @"tagType":@[@"南京",@"上海",@"北京"],
+                                @"tagValue":@[@(arc4random() % 20000),@(arc4random() % 20000),@(arc4random() % 20000)],
                                 @"arrayOfDates":arrayofDate,
                                 @"UV_arrayOfValues":array1,@"PV_arrayOfValues":array2,@"VISIT_arrayOfValues":array3,@"新UV_arrayOfValues":array4,@"有效UV_arrayOfValues":array5,@"平均页面停留时间_arrayOfValues":array6,@"提交订单转化率_arrayOfValues":array7,@"有效订单转化率_arrayOfValues":array8,
                                 @"UV_number":@(arc4random() % 20000),@"PV_number":@(arc4random() % 20000),@"VISIT_number":@(arc4random() % 20000),@"新UV_number":@(arc4random() % 10000),@"有效UV_number":@(arc4random() % 2000),@"平均页面停留时间_number":@(arc4random() % 200),@"提交订单转化率_number":@(arc4random() % 100),@"有效订单转化率_number":@(arc4random() % 100)
                                 },
-                        };
+                        }];
     
 }
 

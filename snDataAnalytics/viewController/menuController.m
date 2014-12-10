@@ -53,14 +53,12 @@
     
     self.data =
     @[
-      @{@"text": @"Setting1", @"icon": @"heart"},
-      @{@"text": @"Setting2", @"icon": @"heart"},
-      @{@"text": @"实时", @"icon": @"puzzle"},
+      @{@"text": @"Setting1", @"icon": @"ic_账户"},
+      @{@"text": @"Setting2", @"icon": @"ic_设置"},
+      @{@"text": @"实时", @"icon": @"ic_实时"},
       @{@"text": @"访客群体分析", @"icon": @"puzzle"},
       @{@"text": @"来源分析", @"icon": @"puzzle"},
       @{@"text": @"页面分析", @"icon": @"puzzle"},
-//      @{@"text": @"热门城市", @"icon": @"puzzle"},
-//      @{@"text": @"热门页面", @"icon": @"puzzle"},
       @{@"text": @"转化分析", @"icon": @"puzzle"}
       ];
 /*    访客群体分析
@@ -200,18 +198,19 @@
 {
     switch (indexPath.row) {
         case account:
-            
             break;
         case chooseSource:
-            
             break;
+            
         case realTime:{
-            
             [self presentRealTimeViewController];
+             break;
         }
-            break;
-        case visitorGroup:{
-            _menuViewController = [[menuViewController alloc] initWithType:visitorGroup];
+        case visitorGroup:
+        case source:
+        case pageAnalytics:
+        case transform:{
+            _menuViewController = [[menuViewController alloc] initWithType:(cellType)indexPath.row];
             _menuViewController.view.frame = CGRectMake(0, 0, wkScreenWidth, wkScreenHeight-frontViewRemainHeight);
 
             [self.navigationController pushViewController:_menuViewController animated:YES ];

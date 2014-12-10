@@ -83,7 +83,7 @@
     
     // Customization of the graph
     
-    _lineGraph.colorLine = [UIColor robinEggColor];
+    _lineGraph.colorLine = [UIColor indigoColor];
     
     _lineGraph.colorXaxisLabel = [UIColor clearColor];
     _lineGraph.colorYaxisLabel = [UIColor clearColor];

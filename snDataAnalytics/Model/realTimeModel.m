@@ -165,7 +165,6 @@ static NSString *const realTimeOutlineDataDidInitialize = @"realTimeOutlineDataD
             [[NSNotificationQueue defaultQueue] enqueueNotification:notification
                                                        postingStyle:NSPostASAP
                                                        coalesceMask:NSNotificationCoalescingOnName forModes:@[NSDefaultRunLoopMode]];
-            
         });
 
         //            if (![NSThread isMainThread]) {

@@ -15,7 +15,7 @@ typedef void(^indexButtonClicked)();
 @interface lineChartDetailsView : UIView
 
 @property (nonatomic) labelLineChartView *lineView;
-@property (nonatomic) detailsSwitchView *detailsView;
+@property (nonatomic) detailsSwitchView  *detailsView;
 
 @property (nonatomic) NSString *dimensionName;
 @property (nonatomic) NSString *indexName;

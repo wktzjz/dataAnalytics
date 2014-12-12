@@ -81,10 +81,12 @@
             failBlock(nil);
             return;
         }
-        
-        
         if (data) {
             json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&connectionError];
+            if(json){
+                NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json options:NSJSONWritingPrettyPrinted error:nil];
+                NSLog(@"jsonData %@",[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]);
+            }
         }else{
             json = nil;
         }
@@ -102,7 +104,6 @@
             succeedBlock(json);
         }
       }
-     
     ];
 }
 

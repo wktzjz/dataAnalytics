@@ -711,7 +711,8 @@ const static CGFloat itemsViewHeight = 145.0f;
         switch (type) {
             case outlineVisitorGroup:
                 [[visitorGroupModel sharedInstance] createDefineDetails];
-                [[visitorGroupModel sharedInstance] createDetailsData];
+//                [[visitorGroupModel sharedInstance] createDetailsData];
+                [[visitorGroupModel sharedInstance] getVisitorTypeDetailsData:nil];
                 break;
             case outlineSource:
                 [[sourcesAnalyticsModel sharedInstance] createDefineDetails];

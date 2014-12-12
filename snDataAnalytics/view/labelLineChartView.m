@@ -131,7 +131,7 @@
         NSLog(@"%@ arrayOfValues is nil",_labelString);
     }
     
-    assert((NSMutableArray *)data[keyofDates]);
+//    assert((NSMutableArray *)data[keyofDates]);
     if ((NSMutableArray *)data[keyofDates]) {
         _arrayOfDates  = (NSMutableArray *)data[keyofDates];
     }else{

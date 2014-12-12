@@ -207,6 +207,7 @@
 		35EB871C1A35AABD00D45E37 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35EB871B1A35AABD00D45E37 /* Security.framework */; };
 		35EB871E1A35AAC400D45E37 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35EB871D1A35AAC400D45E37 /* LocalAuthentication.framework */; };
 		35EB87261A36DE6500D45E37 /* authenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB87251A36DE6500D45E37 /* authenticationManager.m */; };
+		35EB87281A3AF15C00D45E37 /* city.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 35EB87271A3AF15C00D45E37 /* city.sqlite */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -562,6 +563,7 @@
 		35EB871D1A35AAC400D45E37 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		35EB87241A36DE6500D45E37 /* authenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = authenticationManager.h; path = viewController/authenticationManager.h; sourceTree = "<group>"; };
 		35EB87251A36DE6500D45E37 /* authenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = authenticationManager.m; path = viewController/authenticationManager.m; sourceTree = "<group>"; };
+		35EB87271A3AF15C00D45E37 /* city.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = city.sqlite; path = Model/city.sqlite; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1025,6 +1027,7 @@
 				3550C3AC1A199FF700402F33 /* hotCity */,
 				3550C3AD1A19A00500402F33 /* hotPage */,
 				3550C3AE1A19A00F00402F33 /* transformAnalytics */,
+				35EB87271A3AF15C00D45E37 /* city.sqlite */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1086,6 +1089,7 @@
 		3562983319B4575E004A8054 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				35EB87291A3AF4C700D45E37 /* SQlite */,
 				35D397BA19FF2E930014B377 /* TLYShyNavBar */,
 				35D397A219FE316C0014B377 /* LTMorphingLabel */,
 				35945DFC19F6547C00BF5EC3 /* JBChartView */,
@@ -1599,6 +1603,13 @@
 			name = AppDelegate;
 			sourceTree = "<group>";
 		};
+		35EB87291A3AF4C700D45E37 /* SQlite */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = SQlite;
+			sourceTree = "<group>";
+		};
 		35F3999019CFC1D30077BA75 /* popupViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1692,6 +1703,7 @@
 			files = (
 				35945D7119E8CA7E00BF5EC3 /* dialog_cancel.png in Resources */,
 				3522248A19C689740048F57C /* LaunchScreen.xib in Resources */,
+				35EB87281A3AF15C00D45E37 /* city.sqlite in Resources */,
 				35945D7719E8CA7E00BF5EC3 /* dialog_ok-disabled.png in Resources */,
 				35945D9419E8CBE100BF5EC3 /* NotificationBackgroundSuccess.png in Resources */,
 				357E442419FA046000719A2A /* google-plus-white.png in Resources */,
@@ -1942,7 +1954,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1985,7 +1997,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;

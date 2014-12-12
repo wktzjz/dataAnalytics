@@ -42,7 +42,7 @@ const static CGFloat titleViewHeight = 44.0f;
     NSMutableArray *_popupIndexViews;
     
     timeView *_timeView;
-
+    UIScrollView *_scrollView;
 
 }
 
@@ -82,6 +82,7 @@ const static CGFloat titleViewHeight = 44.0f;
     
     [self addLineDetailsView];
     [self addTimeView];
+    [self addScrollView];
 
     wkContextMenuView* overlay = [[wkContextMenuView alloc] init];
     overlay.dataSource = self;
@@ -219,10 +220,23 @@ const static CGFloat titleViewHeight = 44.0f;
     
     [self.view addSubview:_chartDetailsView];
     
-    _popupBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 350, self.view.frame.size.width, 210)];
-    _popupBackgroundView.backgroundColor = [UIColor whiteColor];
-    _popupBackgroundView.alpha = 0.0;
-    [self.view addSubview:_popupBackgroundView];
+//    _popupBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 350, self.view.frame.size.width, 230)];
+//    _popupBackgroundView.backgroundColor = [UIColor whiteColor];
+//    _popupBackgroundView.alpha = 0.0;
+//    [self.view addSubview:_popupBackgroundView];
+}
+
+- (void)addScrollView
+{
+    float originY =  _chartDetailsView.lineView.frame.origin.y + _chartDetailsView.lineView.frame.size.height + 85;
+    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, originY ,self.view.frame.size.width , self.view.frame.size.height - originY)];
+//    [_scrollView setShowsVerticalScrollIndicator:NO];
+    [_scrollView setContentSize:CGSizeMake(0, self.view.bounds.size.height * 2)];
+    _scrollView.backgroundColor = [UIColor whiteColor];
+
+    [self.view addSubview:_scrollView];
+    
+    [self.view insertSubview:_scrollView belowSubview:_chartDetailsView];
 }
 
 
@@ -304,10 +318,12 @@ const static CGFloat titleViewHeight = 44.0f;
                                                 size:15];
             [button setTitleColor:PNTwitterColor forState:UIControlStateNormal];
             
-            CGRect frame = CGRectMake(25, 355 + idx * 30 , 150, 30);
-            if(idx > 6){
-                frame = CGRectMake(25 + 30, 145 + idx * 30 , 150, 30);
-            }
+            CGRect frame = CGRectMake(25, 10 + idx * 30 , 150, 30);
+
+//            CGRect frame = CGRectMake(25, 355 + idx * 30 , 150, 30);
+//            if(idx > 6){
+//                frame = CGRectMake(25 + 30, 145 + idx * 30 , 150, 30);
+//            }
             button.frame = frame;
             button.backgroundColor = [UIColor clearColor];
             button.alpha = 0.0f;
@@ -318,7 +334,7 @@ const static CGFloat titleViewHeight = 44.0f;
                 [button addTarget:self action:@selector(handleIndexClicked:) forControlEvents:UIControlEventTouchUpInside];
             }
             
-            [self.view addSubview:button];
+            [_scrollView addSubview:button];
             
             [views addObject:button];
         }];
@@ -371,16 +387,19 @@ const static CGFloat titleViewHeight = 44.0f;
             centerX = 500;
         }
         
+        [self.view insertSubview:_scrollView aboveSubview:_chartDetailsView];
+
         [UIView animateWithDuration:0.3 animations:^{
-            _popupBackgroundView.alpha = 1.0;
+            _scrollView.alpha = 1.0;
+//            _popupBackgroundView.alpha = 1.0;
         }];
         
         [views enumerateObjectsUsingBlock:^(UIButton *view, NSUInteger idx, BOOL *stop) {
             view.alpha = 0;
             CGFloat x = self.view.center.x;
-            if(idx > 6){
-                x += 90;
-            }
+//            if(idx > 6){
+//                x += 90;
+//            }
             view.center =CGPointMake(centerX, view.center.y);
             
             [self showWithView:view idx:idx initDelay:0.1 + delay centerX:x];
@@ -414,9 +433,13 @@ const static CGFloat titleViewHeight = 44.0f;
                           delay:0.7
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
-                         _popupBackgroundView.alpha = 0.0;
+//                         _popupBackgroundView.alpha = 0.0;
+                         _scrollView.alpha = 0.0;
+
                      }
-                     completion:nil];
+                     completion:^(BOOL finished){
+                         [self.view insertSubview:_scrollView belowSubview:_chartDetailsView];
+                     }];
     
 }
 

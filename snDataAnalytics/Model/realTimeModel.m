@@ -294,7 +294,8 @@ static NSString *const realTimeOutlineDataDidInitialize = @"realTimeOutlineDataD
          });
      };
     
-    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:@"http://news-at.zhihu.com/api/3/news/latest" failureBlock:successefullyBlock successedBlock:successefullyBlock];
+    //@"http://news-at.zhihu.com/api/3/news/latest"
+    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:nil failureBlock:successefullyBlock successedBlock:successefullyBlock];
 }
 
 - (void)addNumberToArray:(NSMutableArray *)array

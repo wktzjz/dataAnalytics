@@ -259,7 +259,7 @@
         //wk
 //        day.orderTag = i;
 //        if (![_shownDaysTag containsObject:@(day.dayTag)]) {
-            [_shownDays addObject:day];
+        [_shownDays addObject:day];
 //            [_shownDaysTag addObject:@(day.dayTag)];
 //        }
         [_shownDaysWithRepetition addObject:day];
@@ -408,9 +408,9 @@
         if (!_lastSelectedDay) {
             _lastSelectedDay = dateDay;
         }
-//        [_selectedDaysArray addObject:dateDay];
+        
         [_selectedDaysArray setObject:dateDay forKey:@(dateDay.dayTag)];
-        [dateDay setSelected:YES];
+//        [dateDay setSelected:YES];
 //        if (![self dateInCurrentMonth:dateDay.date]) {
 //            double direction = [dateDay.date timeIntervalSinceDate:self.firstOfCurrentMonth];
 //            self.internalDate = dateDay.date;
@@ -419,14 +419,27 @@
 //        else
 //            if (!_internalDate || [_internalDate timeIntervalSinceDate:dateDay.date]) { // new date selected
 //            [self.currentDay setSelected:NO];
-        
+        NSMutableArray *addingDays = [[NSMutableArray alloc] initWithCapacity:20];
         for (THDateDay *day in _shownDays) {
             
             if ((day.dayTag < _lastSelectedDay.dayTag && day.dayTag > dateDay.dayTag) || (day.dayTag > _lastSelectedDay.dayTag && day.dayTag < dateDay.dayTag)) {
                 
-                [day setSelected:YES];
+                [addingDays addObject:day];
+//                [day setSelected:YES];
                 [_selectedDaysArray setObject:day forKey:@(day.dayTag)];
             }
+        }
+        
+        //限制选择 最多30天
+        if ( _selectedDaysArray.count <= 30) {
+            [dateDay setSelected:YES];
+            [addingDays enumerateObjectsUsingBlock:^(THDateDay *day, NSUInteger idx, BOOL *stop) {
+                [day setSelected:YES];
+//                [_selectedDaysArray setObject:day forKey:@(day.dayTag)];
+            }];
+        }else{
+            UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"最多选择30天" message:@"如要重新选择,请按按钮-" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alertView show];
         }
         
 //        NSLog(@"before _selectedDaysArray count:%i",(int)_selectedDaysArray.count);

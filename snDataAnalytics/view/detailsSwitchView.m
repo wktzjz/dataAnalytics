@@ -18,6 +18,8 @@
     FBShimmeringView *_loadingLogo;
     BOOL _ifLoadingLogoShowing;
     
+    UIScrollView  *_scrollView;
+
 //    flatButton *_dimensionButton;
 //    flatButton *_indexButton;
     BFPaperButton *_dimensionButton;
@@ -47,6 +49,7 @@
         _valueLabelArray = [[NSMutableArray alloc] initWithCapacity:10];
 
         [self addButtons];
+        [self addScrollView];
         [self addLoadingView];
 
     }
@@ -73,6 +76,15 @@
     [self addSubview:_indexButton];
 
 
+}
+
+- (void)addScrollView
+{
+    float originY = _dimensionButton.frame.origin.y + _dimensionButton.frame.size.height;
+    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, originY ,self.frame.size.width , self.frame.size.height - originY)];
+//    [_scrollView setShowsVerticalScrollIndicator:NO];
+    [_scrollView setContentSize:CGSizeMake(0, self.bounds.size.height * 2)];
+    [self addSubview:_scrollView];
 }
 
 - (void)dimensionButtonClicked
@@ -127,7 +139,9 @@
         }];
     }
     
-    _valueArray = (NSArray *)((NSDictionary *)data[@"tagValue"]);
+//    _valueArray = (NSArray *)((NSDictionary *)data[@"tagValue"]);
+    NSString *keyofValues  = [NSString stringWithFormat:@"%@_array",_indexName];
+    _valueArray = (NSArray *)((NSDictionary *)data[keyofValues]);
     [self addValues];
 }
 
@@ -142,14 +156,14 @@
         float centerX = _dimensionButton.center.x;
         
         [_labelStringArray enumerateObjectsUsingBlock:^(NSString *string, NSUInteger idx, BOOL *stop) {
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(35.0, 50 + 40.0 *idx, width, 30)];
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(35.0, 10 + 40.0 *idx, width, 30)];
             label.text = string;
             label.textColor = PNDeepGrey;
             label.font = [UIFont fontWithName:@"OpenSans-Light" size:18.0];
             label.textAlignment = NSTextAlignmentCenter;
             label.center = CGPointMake(centerX, label.center.y);
             [_labelArray addObject:label];
-            [self addSubview:label];
+            [_scrollView addSubview:label];
         }];
     }
 }
@@ -162,7 +176,7 @@
         float centerX = _indexButton.center.x;
 
         [_valueArray enumerateObjectsUsingBlock:^(NSNumber *value, NSUInteger idx, BOOL *stop) {
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(originX, 50 + 40.0 *idx, width, 30)];
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(originX, 10 + 40.0 *idx, width, 30)];
             label.text = [NSString stringWithFormat:@"%i",value.intValue];
             label.textColor = [UIColor fadedBlueColor];
             label.font = [UIFont fontWithName:@"OpenSans-Light" size:18.0];
@@ -170,7 +184,7 @@
             label.center = CGPointMake(centerX, label.center.y);
 
             [_valueLabelArray addObject:label];
-            [self addSubview:label];
+            [_scrollView addSubview:label];
         }];
     }
 }
@@ -197,7 +211,9 @@
     }];
     [_valueLabelArray removeAllObjects];
     
-    _valueArray = (NSArray *)((NSDictionary *)data[@"tagValue"]);
+    NSString *keyofValues  = [NSString stringWithFormat:@"%@_array",_indexName];
+
+    _valueArray = (NSArray *)((NSDictionary *)data[keyofValues]);
     [self addValues];
 }
 

@@ -69,7 +69,6 @@ const static CGFloat titleViewHeight = 44.0f;
     UIView          *_backgroundView;
     UIView          *_frontView;
     UIView          *_blackView;
-    UIScrollView    *_scrollView1;
     changefulButton *_button;
     timeView        *_timeView;
     
@@ -452,18 +451,18 @@ const static CGFloat titleViewHeight = 44.0f;
 - (void)addDataView
 {
 //    CGFloat originY = _ifUseFlexibleBar ? 10 : 50;
-    _scrollView1 = [[UIScrollView alloc] initWithFrame:CGRectMake(mainDataScrollViewMargin, 0 , wkScreenWidth - mainDataScrollViewMargin * 2, self.view.frame.size.height)];
-    [_scrollView1 setDelegate:self];
-    [_scrollView1 setShowsVerticalScrollIndicator:NO];
-    [_scrollView1 setContentSize:CGSizeMake(0, self.view.bounds.size.height * 3.8)];
-    [_frontView addSubview:_scrollView1];
-//    [_scrollView1 setContentOffset:CGPointMake(0, -100) animated:YES];
+    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(mainDataScrollViewMargin, 0 , wkScreenWidth - mainDataScrollViewMargin * 2, self.view.frame.size.height)];
+    [_scrollView setDelegate:self];
+    [_scrollView setShowsVerticalScrollIndicator:NO];
+    [_scrollView setContentSize:CGSizeMake(0, self.view.bounds.size.height * 3.8)];
+    [_frontView addSubview:_scrollView];
+//    [_scrollView setContentOffset:CGPointMake(0, -100) animated:YES];
     
     if (_ifUseFlexibleBar) {
-        self.shyNavBarManager.scrollView = _scrollView1;
+        self.shyNavBarManager.scrollView = _scrollView;
         [self.shyNavBarManager setExtensionView:_timeView];
     }
-    [_scrollView1 setContentOffset:CGPointMake(0, -80) animated:YES];
+    [_scrollView setContentOffset:CGPointMake(0, -80) animated:YES];
 
 
     CGFloat width = outleineContainerViewWidth;
@@ -472,25 +471,25 @@ const static CGFloat titleViewHeight = 44.0f;
     CGFloat originX = 0;
     
     _realTimeView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, 0, width, height + 490.0) ifLoading:YES];
-    [_scrollView1 addSubview:_realTimeView];
+    [_scrollView addSubview:_realTimeView];
     
     _visitorGruopView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _realTimeView.frame.origin.y + _realTimeView.frame.size.height + 20, width, height - 85.0) ifLoading:YES];
-    [_scrollView1 addSubview:_visitorGruopView];
+    [_scrollView addSubview:_visitorGruopView];
     
     _sourceView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _visitorGruopView.frame.origin.y + _visitorGruopView.frame.size.height + 20, width, height - 50.0) ifLoading:YES];
-    [_scrollView1 addSubview:_sourceView];
+    [_scrollView addSubview:_sourceView];
     
     _pageView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _sourceView.frame.origin.y + _sourceView.frame.size.height + 20, width, height/2) ifLoading:YES];
-    [_scrollView1 addSubview:_pageView];
+    [_scrollView addSubview:_pageView];
     
     _hotCityView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _pageView.frame.origin.y + _pageView.frame.size.height + 20, width, 240) ifLoading:YES];
-    [_scrollView1 addSubview:_hotCityView];
+    [_scrollView addSubview:_hotCityView];
     
     _hotPageView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _hotCityView.frame.origin.y + _hotCityView.frame.size.height + 20, width, 240) ifLoading:YES];
-    [_scrollView1 addSubview:_hotPageView];
+    [_scrollView addSubview:_hotPageView];
 
     _transformView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _hotPageView.frame.origin.y + _hotPageView.frame.size.height + 20, width, height - 140.0) ifLoading:YES];
-    [_scrollView1 addSubview:_transformView];
+    [_scrollView addSubview:_transformView];
     
     _outLineViewArray = [[NSMutableArray alloc] initWithArray:@[_realTimeView,_visitorGruopView,_sourceView,_pageView,_hotCityView,_hotPageView,_transformView]];
 }
@@ -820,8 +819,8 @@ const static CGFloat titleViewHeight = 44.0f;
         }else{
         CGPoint locationInMainView = [recongnizer locationInView:_contentView];
             
-            if (CGRectContainsPoint(_scrollView1.frame, locationInMainView)) {
-                CGPoint location = [recongnizer locationInView:_scrollView1];
+            if (CGRectContainsPoint(_scrollView.frame, locationInMainView)) {
+                CGPoint location = [recongnizer locationInView:_scrollView];
                 
                 if (CGRectContainsPoint(((dataOutlineViewContainer *)_outLineViewArray[0]).frame, location)) {
                       [self handleTappingOutlineView:outlineRealTime];
@@ -896,7 +895,7 @@ const static CGFloat titleViewHeight = 44.0f;
     }
     
     CGRect frame = targetView.frame;
-    frame = [_scrollView1 convertRect:frame toView:self.view];
+    frame = [_scrollView convertRect:frame toView:self.view];
     
 //    if (!_ifUseFlexibleBar) {
         [self.navigationController setClickedView:targetView];

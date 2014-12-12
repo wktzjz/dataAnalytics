@@ -9,8 +9,8 @@
 #import "UIViewController+clickedViewIndex.h"
 #import <objc/runtime.h>
 
-static NSString * const indexKey          = @"wkIndexKey";
-static NSString * const clickedViewKey       = @"wkClickedView";
+static NSString * const indexKey            = @"wkIndexKey";
+static NSString * const clickedViewKey      = @"wkClickedView";
 static NSString * const clickedViewFrameKey = @"wkClickedViewFrame";
 
 @implementation UIViewController (clickedView)

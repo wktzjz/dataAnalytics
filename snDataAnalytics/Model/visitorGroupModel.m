@@ -25,6 +25,15 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
     NSString *_curDate;
     NSString *_fromDate;
     NSString *_toDate;
+    
+    NSMutableDictionary *_visitorTypeDetailsData;
+    NSMutableDictionary *_terminalTypeDetailsData;
+    NSMutableDictionary *_allMemberDetailsData;
+    NSMutableDictionary *_newMemberDetailsData;
+    NSMutableDictionary *_oldMemberDetailsData;
+    NSMutableDictionary *_memberGradeDetailsData;
+    NSMutableDictionary *_memberCityDetailsData;
+
 }
 
 + (instancetype)sharedInstance
@@ -46,12 +55,15 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
     if (self) {
         
         _wself = self;
-        _arrayOfDates = [[NSMutableArray alloc] init];
+        _arrayOfDates  = [[NSMutableArray alloc] init];
         _dateFormatter = [[NSDateFormatter alloc] init];
         [_dateFormatter setDateFormat:@"yyyy-MM-dd"];
-        _curDate = [_dateFormatter stringFromDate:[NSDate date]];
-//        _defineDetails = [NSDictionary dictionary];
+        _curDate     = [_dateFormatter stringFromDate:[NSDate date]];
+        _detailsData = [[NSMutableDictionary alloc] initWithCapacity:7];
 
+//        _defineDetails = [NSDictionary dictionary];
+        _detailsDataMethodsArray  = @[@"getVisitorTypeDetailsData:",@"getTerminalTypeDetailsData:",@"getAllMemberDetailsData:",@"getNewMemberDetailsData:",@"getOldMemberDetailsData:",@"getMemberGradeDetailsData:",@"getMemberCityDetailsData:"];
+        _dimensionDataAvailableArray = [[NSMutableArray alloc] initWithArray:@[@NO,@NO,@NO,@NO,@NO,@NO,@NO]];
     }
 
     return self;
@@ -87,8 +99,8 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
                                                        coalesceMask:NSNotificationCoalescingOnName forModes:@[NSDefaultRunLoopMode]];
         });
     };
-    
-    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:@"http://10.22.18.102:8080/snf-mbbi-web/mbbi/getVistorGroup.htm" failureBlock:successefullyBlock successedBlock:successefullyBlock];
+//    @"http://10.27.193.34:80/snf-mbbi-web/mbbi/getVistorGroup.htm?beginTime=2014-12-08&endTime=2014-12-08"
+    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:@"http://10.27.193.34:80/snf-mbbi-web/mbbi/getVistorGroup.htm?beginTime=2014-12-08&endTime=2014-12-08" failureBlock:successefullyBlock successedBlock:successefullyBlock];
 }
 
 - (NSDictionary *)getDetailOutlineData
@@ -206,7 +218,6 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
                        @"城市分布":@{@"labelStringArray":@[@"南京",@"上海",@"北京"],
                                  @"indexOptionsArray":indexOptionsArray1},
                        };
-
 }
 
 - (NSDictionary *)getDetailsData
@@ -218,6 +229,352 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
         return _detailsData;
     }
 }
+
+- (void)getVisitorTypeDetailsData:(void (^)(NSDictionary *data))succeedBlock
+{
+//    NSString *urlVisitorType = [[NSString alloc] initWithFormat:@"http://10.27.193.34:80/snf-mbbi-web/visitGroup/getVistorType.htm?beginTime=%@&endTime=%@&nvgtnTp=ios",_curDate,_curDate ];
+    NSString *urlVisitorType = [[NSString alloc] initWithFormat:@"http://10.27.193.34:80/snf-mbbi-web/visitGroup/getVistorType.htm?beginTime=2014-12-08&endTime=2014-12-08"];
+    void (^VisitorTypeBlock)(NSDictionary *) = ^(NSDictionary *data) {
+        NSMutableArray *array1 = [[NSMutableArray alloc] init];
+        NSMutableArray *array2 = [[NSMutableArray alloc] init];
+        NSMutableArray *array3 = [[NSMutableArray alloc] init];
+        NSMutableArray *array4 = [[NSMutableArray alloc] init];
+        NSMutableArray *array5 = [[NSMutableArray alloc] init];
+        NSMutableArray *array6 = [[NSMutableArray alloc] init];
+        NSMutableArray *array7 = [[NSMutableArray alloc] init];
+        NSMutableArray *array8 = [[NSMutableArray alloc] init];
+        
+        NSArray *parallelArray = @[array1,array2,array3,array4,array5,array6,array7,array8];
+        
+        //同步并行处理数据
+        dispatch_apply(8, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t index) {
+            [self addNumberToArray:parallelArray[index]];
+        });
+        
+        NSMutableArray *arrayofDate = [NSMutableArray array];
+        for (int i = 0; i < 20; i++) {
+            [arrayofDate addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:i]]];
+        }
+        
+        _visitorTypeDetailsData = [[NSMutableDictionary alloc] initWithDictionary:
+                                   @{
+                                     @"tagType":@[@"新访客",@"回访客"],
+                                     @"UV_array":@[@(arc4random() % 2000),@(arc4random() % 2000)],
+                                     @"PV_array":@[@(arc4random() % 2000),@(arc4random() % 2000)],
+                                     @"VISIT_array":@[@(arc4random() % 2000),@(arc4random() % 2000)],
+                                     @"新UV_array":@[@(arc4random() % 2000),@(arc4random() % 2000)],
+                                     @"有效UV_array":@[@(arc4random() % 2000),@(arc4random() % 2000)],
+                                     @"平均页面停留时间_array":@[@(arc4random() % 2000),@(arc4random() % 2000)],
+                                     @"提交订单转化率_array":@[@(arc4random() % 2000),@(arc4random() % 2000)],
+                                     @"有效订单转化率_array":@[@(arc4random() % 2000),@(arc4random() % 2000)],
+//                                     @"tagValue":@[@(arc4random() % 2000),@(arc4random() % 2000)],
+                                     @"arrayOfDates":arrayofDate,
+                                     @"UV_arrayOfValues":array1,@"PV_arrayOfValues":array2,@"VISIT_arrayOfValues":array3,@"新UV_arrayOfValues":array4,@"有效UV_arrayOfValues":array5,@"平均页面停留时间_arrayOfValues":array6,@"提交订单转化率_arrayOfValues":array7,@"有效订单转化率_arrayOfValues":array8,
+                                     @"UV_number":@(arc4random() % 20000),@"PV_number":@(arc4random() % 20000),@"VISIT_number":@(arc4random() % 20000),@"新UV_number":@(arc4random() % 10000),@"有效UV_number":@(arc4random() % 2000),@"平均页面停留时间_number":@(arc4random() % 200),@"提交订单转化率_number":@(arc4random() % 100),@"有效订单转化率_number":@(arc4random() % 100)
+                                     }];
+        
+        [_detailsData setObject:_visitorTypeDetailsData forKey: @"访客类型"];
+        _dimensionDataAvailableArray[0] = @YES;
+        
+        if(succeedBlock){
+            succeedBlock(_visitorTypeDetailsData);
+        }
+    };
+    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:urlVisitorType failureBlock:VisitorTypeBlock successedBlock:VisitorTypeBlock];
+}
+
+- (void)getTerminalTypeDetailsData:(void (^)(NSDictionary *data))succeedBlock
+{
+//    NSString *urlTerminalType = [[NSString alloc] initWithFormat:@"http://10.27.193.34:80/snf-mbbi-web/visitGroup/getTagType.htm?beginTime=%@&endTime=%@&nvgtnTp=ios",_curDate,_curDate ];
+        NSString *urlTerminalType = [[NSString alloc] initWithFormat:@"http://10.27.193.34:80/snf-mbbi-web/visitGroup/getTagType.htm?beginTime=2014-12-08&endTime=2014-12-08"];
+    void (^terminalTypeBlock)(NSDictionary *) = ^(NSDictionary *data) {
+        NSMutableArray *array1 = [[NSMutableArray alloc] init];
+        NSMutableArray *array2 = [[NSMutableArray alloc] init];
+        NSMutableArray *array3 = [[NSMutableArray alloc] init];
+        NSMutableArray *array4 = [[NSMutableArray alloc] init];
+        NSMutableArray *array5 = [[NSMutableArray alloc] init];
+        NSMutableArray *array6 = [[NSMutableArray alloc] init];
+        NSMutableArray *array7 = [[NSMutableArray alloc] init];
+        NSMutableArray *array8 = [[NSMutableArray alloc] init];
+        
+        NSArray *parallelArray = @[array1,array2,array3,array4,array5,array6,array7,array8];
+        
+        //同步并行处理数据
+        dispatch_apply(8, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t index) {
+            [self addNumberToArray:parallelArray[index]];
+        });
+        
+        NSMutableArray *arrayofDate = [NSMutableArray array];
+        for (int i = 0; i < 20; i++) {
+            [arrayofDate addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:i]]];
+        }
+        
+        _terminalTypeDetailsData = [[NSMutableDictionary alloc] initWithDictionary:@{
+                                                                                     @"tagType":@[@"PC",@"WAP",@"APP"],
+//                                                                                     @"tagValue":@[@(arc4random() % 2000),@(arc4random() % 2000),@(arc4random() % 2000)],
+                                                                                     @"UV_array":@[@(arc4random() % 2000),@(arc4random() % 2000),@(arc4random() % 2000)],
+                                                                                     @"PV_array":@[@(arc4random() % 2000),@(arc4random() % 2000),@(arc4random() % 2000)],
+                                                                                     @"VISIT_array":@[@(arc4random() % 2000),@(arc4random() % 2000),@(arc4random() % 2000)],
+                                                                                     @"新UV_array":@[@(arc4random() % 2000),@(arc4random() % 2000),@(arc4random() % 2000)],
+                                                                                     @"有效UV_array":@[@(arc4random() % 2000),@(arc4random() % 2000),@(arc4random() % 2000)],
+                                                                                     @"平均页面停留时间_array":@[@(arc4random() % 2000),@(arc4random() % 2000),@(arc4random() % 2000)],
+                                                                                     @"提交订单转化率_array":@[@(arc4random() % 2000),@(arc4random() % 2000),@(arc4random() % 2000)],
+                                                                                     @"有效订单转化率_array":@[@(arc4random() % 2000),@(arc4random() % 2000),@(arc4random() % 2000)],
+                                                                                     @"arrayOfDates":arrayofDate,
+                                                                                     @"UV_arrayOfValues":array1,@"PV_arrayOfValues":array2,@"VISIT_arrayOfValues":array3,@"新UV_arrayOfValues":array4,@"有效UV_arrayOfValues":array5,@"平均页面停留时间_arrayOfValues":array6,@"提交订单转化率_arrayOfValues":array7,@"有效订单转化率_arrayOfValues":array8,
+                                                                                     @"UV_number":@(arc4random() % 20000),@"PV_number":@(arc4random() % 20000),@"VISIT_number":@(arc4random() % 20000),@"新UV_number":@(arc4random() % 10000),@"有效UV_number":@(arc4random() % 2000),@"平均页面停留时间_number":@(arc4random() % 200),@"提交订单转化率_number":@(arc4random() % 100),@"有效订单转化率_number":@(arc4random() % 100)
+                                                                                     }];
+        [_detailsData setObject:_terminalTypeDetailsData forKey:@"终端类型"];
+        _dimensionDataAvailableArray[1] = @YES;
+
+        if(succeedBlock){
+            succeedBlock(_terminalTypeDetailsData);
+        }
+    };
+    
+    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:urlTerminalType failureBlock:terminalTypeBlock successedBlock:terminalTypeBlock];
+
+}
+
+- (void)getAllMemberDetailsData:(void (^)(NSDictionary *data))succeedBlock
+{
+    NSString *urlAllMember = [[NSString alloc] initWithFormat:@"http://10.27.193.34:80/snf-mbbi-web/visitGroup/getAllMember.htm?beginTime=%@&endTime=%@&nvgtnTp=ios",_curDate,_curDate ];
+    void (^allMemberBlock)(NSDictionary *) = ^(NSDictionary *data) {
+        
+        NSMutableArray *array1 = [[NSMutableArray alloc] init];
+        NSMutableArray *array2 = [[NSMutableArray alloc] init];
+        NSMutableArray *array3 = [[NSMutableArray alloc] init];
+        NSMutableArray *array4 = [[NSMutableArray alloc] init];
+        NSMutableArray *array5 = [[NSMutableArray alloc] init];
+        NSMutableArray *array6 = [[NSMutableArray alloc] init];
+        NSMutableArray *array7 = [[NSMutableArray alloc] init];
+        NSMutableArray *array8 = [[NSMutableArray alloc] init];
+        
+        NSArray *parallelArray = @[array1,array2,array3,array4,array5,array6,array7,array8];
+        
+        //同步并行处理数据
+        dispatch_apply(8, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t index) {
+            [self addNumberToArray:parallelArray[index]];
+        });
+        
+        NSMutableArray *arrayofDate = [NSMutableArray array];
+        for (int i = 0; i < 20; i++) {
+            [arrayofDate addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:i]]];
+        }
+
+        _allMemberDetailsData = [[NSMutableDictionary alloc] initWithDictionary:@{
+                                                                                  @"tagType":@[@"会员"],
+                                                                                  @"访问会员数_array":@[@(arc4random() % 20000)],@"买家数_array":@[@(arc4random() % 20000)],@"购买率_array":@[@(arc4random() % 20000)],@"客单价_array":@[@(arc4random() % 20000)],@"平均订单收入_array":@[@(arc4random() % 20000)],
+//                                                                                  @"tagValue":@[@(arc4random() % 20000)],
+                                                                                  @"arrayOfDates":arrayofDate,
+                                                                                  @"访问会员数_arrayOfValues":array1,@"买家数_arrayOfValues":array2,@"购买率_arrayOfValues":array3,@"客单价_arrayOfValues":array4,@"平均订单收入_arrayOfValues":array5,
+                                                                                  @"访问会员数_number":@(arc4random() % 20000),@"买家数_number":@(arc4random() % 2000),@"购买率_number":@(arc4random() % 100),@"客单价_number":@(arc4random() % 10000),@"平均订单收入_number":@(arc4random() % 200)
+                                                                                  }];
+        
+        [_detailsData setObject:_allMemberDetailsData forKey:@"整体会员"];
+        _dimensionDataAvailableArray[2] = @YES;
+
+        if(succeedBlock){
+            succeedBlock(_allMemberDetailsData);
+        }
+    };
+    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:nil failureBlock:allMemberBlock successedBlock:allMemberBlock];
+}
+
+
+- (void)getNewMemberDetailsData:(void (^)(NSDictionary *data))succeedBlock
+{
+    NSString *urlNewMember = [[NSString alloc] initWithFormat:@"http://10.27.193.34:80/snf-mbbi-web/visitGroup/getNewMember.htm?beginTime=%@&endTime=%@&nvgtnTp=ios",_curDate,_curDate ];
+    void (^newMemberBlock)(NSDictionary *) = ^(NSDictionary *data) {
+        
+        NSMutableArray *array1 = [[NSMutableArray alloc] init];
+        NSMutableArray *array2 = [[NSMutableArray alloc] init];
+        NSMutableArray *array3 = [[NSMutableArray alloc] init];
+        NSMutableArray *array4 = [[NSMutableArray alloc] init];
+        NSMutableArray *array5 = [[NSMutableArray alloc] init];
+        NSMutableArray *array6 = [[NSMutableArray alloc] init];
+        NSMutableArray *array7 = [[NSMutableArray alloc] init];
+        NSMutableArray *array8 = [[NSMutableArray alloc] init];
+        
+        NSArray *parallelArray = @[array1,array2,array3,array4,array5,array6,array7,array8];
+        
+        //同步并行处理数据
+        dispatch_apply(8, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t index) {
+            [self addNumberToArray:parallelArray[index]];
+        });
+        
+        NSMutableArray *arrayofDate = [NSMutableArray array];
+        for (int i = 0; i < 20; i++) {
+            [arrayofDate addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:i]]];
+        }
+
+        _newMemberDetailsData = [[NSMutableDictionary alloc] initWithDictionary:@{
+                                                                                  @"tagType":@[@"新会员"],
+//                                                                                  @"tagValue":@[@(arc4random() % 10000)],
+                                                                                   @"注册数_array":@[@(arc4random() % 10000)],@"买家数_array":@[@(arc4random() % 10000)],@"购买率_array":@[@(arc4random() % 10000)],@"客单价_array":@[@(arc4random() % 10000)],@"平均订单收入_array":@[@(arc4random() % 10000)],
+                                                                                  @"arrayOfDates":arrayofDate,
+                                                                                  @"注册数_arrayOfValues":array1,@"买家数_arrayOfValues":array2,@"购买率_arrayOfValues":array3,@"客单价_arrayOfValues":array4,@"平均订单收入_arrayOfValues":array5,
+                                                                                  @"注册数_number":@(arc4random() % 20000),@"买家数_number":@(arc4random() % 2000),@"购买率_number":@(arc4random() % 100),@"客单价_number":@(arc4random() % 10000),@"平均订单收入_number":@(arc4random() % 200)
+                                                                                  }];
+        [_detailsData setObject:_newMemberDetailsData forKey:@"新会员"];
+        _dimensionDataAvailableArray[3] = @YES;
+
+        if(succeedBlock){
+            succeedBlock(_newMemberDetailsData);
+        }
+    };
+    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:nil failureBlock:newMemberBlock successedBlock:newMemberBlock];
+    
+}
+
+
+- (void)getOldMemberDetailsData:(void (^)(NSDictionary *data))succeedBlock
+{
+    NSString *urlOldMember = [[NSString alloc] initWithFormat:@"http://10.27.193.34:80/snf-mbbi-web/visitGroup/getOldMember.htm?beginTime=%@&endTime=%@&nvgtnTp=ios",_curDate,_curDate ];
+    void (^oldMemberBlock)(NSDictionary *) = ^(NSDictionary *data) {
+        
+        NSMutableArray *array1 = [[NSMutableArray alloc] init];
+        NSMutableArray *array2 = [[NSMutableArray alloc] init];
+        NSMutableArray *array3 = [[NSMutableArray alloc] init];
+        NSMutableArray *array4 = [[NSMutableArray alloc] init];
+        NSMutableArray *array5 = [[NSMutableArray alloc] init];
+        NSMutableArray *array6 = [[NSMutableArray alloc] init];
+        NSMutableArray *array7 = [[NSMutableArray alloc] init];
+        NSMutableArray *array8 = [[NSMutableArray alloc] init];
+        
+        NSArray *parallelArray = @[array1,array2,array3,array4,array5,array6,array7,array8];
+        
+        //同步并行处理数据
+        dispatch_apply(8, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t index) {
+            [self addNumberToArray:parallelArray[index]];
+        });
+        
+        NSMutableArray *arrayofDate = [NSMutableArray array];
+        for (int i = 0; i < 20; i++) {
+            [arrayofDate addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:i]]];
+        }
+
+        _oldMemberDetailsData = [[NSMutableDictionary alloc] initWithDictionary:@{
+                                                                                  @"tagType":@[@"老会员"],
+//                                                                                  @"tagValue":@[@(arc4random() % 20000)],
+                                                                                  @"回访数_array":@[@(arc4random() % 20000)],@"买家数_array":@[@(arc4random() % 20000)],@"首购率_array":@[@(arc4random() % 20000)],@"客单价_array":@[@(arc4random() % 20000)],@"平均订单收入_array":@[@(arc4random() % 20000)],
+                                                                                  @"arrayOfDates":arrayofDate,
+                                                                                  @"回访数_arrayOfValues":array1,@"买家数_arrayOfValues":array2,@"首购率_arrayOfValues":array3,@"复购率_arrayOfValues":array6,@"客单价_arrayOfValues":array4,@"平均订单收入_arrayOfValues":array5,
+                                                                                  @"回访数_number":@(arc4random() % 20000),@"买家数_number":@(arc4random() % 2000),@"首购率_number":@(arc4random() % 100),@"复购率_number":@(arc4random() % 100),@"客单价_number":@(arc4random() % 10000),@"平均订单收入_number":@(arc4random() % 200)
+                                                                                  }];
+        [_detailsData setObject:_oldMemberDetailsData forKey:@"老会员"];
+        _dimensionDataAvailableArray[4] = @YES;
+
+        if(succeedBlock){
+            succeedBlock(_oldMemberDetailsData);
+        }
+    };
+    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:nil failureBlock:oldMemberBlock successedBlock:oldMemberBlock];
+}
+
+
+- (void)getMemberGradeDetailsData:(void (^)(NSDictionary *data))succeedBlock
+{
+    NSString *urlMemberGrade = [[NSString alloc] initWithFormat:@"http://10.27.193.34:80/snf-mbbi-web/visitGroup/getMemberGrade.htm?beginTime=%@&endTime=%@&nvgtnTp=ios",_curDate,_curDate ];
+    void (^memberGradeBlock)(NSDictionary *) = ^(NSDictionary *data) {
+        
+        NSMutableArray *array1 = [[NSMutableArray alloc] init];
+        NSMutableArray *array2 = [[NSMutableArray alloc] init];
+        NSMutableArray *array3 = [[NSMutableArray alloc] init];
+        NSMutableArray *array4 = [[NSMutableArray alloc] init];
+        NSMutableArray *array5 = [[NSMutableArray alloc] init];
+        NSMutableArray *array6 = [[NSMutableArray alloc] init];
+        NSMutableArray *array7 = [[NSMutableArray alloc] init];
+        NSMutableArray *array8 = [[NSMutableArray alloc] init];
+        
+        NSArray *parallelArray = @[array1,array2,array3,array4,array5,array6,array7,array8];
+        
+        //同步并行处理数据
+        dispatch_apply(8, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t index) {
+            [self addNumberToArray:parallelArray[index]];
+        });
+        
+        NSMutableArray *arrayofDate = [NSMutableArray array];
+        for (int i = 0; i < 20; i++) {
+            [arrayofDate addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:i]]];
+        }
+        
+        _memberGradeDetailsData = [[NSMutableDictionary alloc] initWithDictionary:@{
+                                                                                    @"tagType":@[@"普通会员",@"银卡会员",@"金卡会员",@"白金会员"],
+//                                                                                    @"tagValue":@[@(arc4random() % 20000),@(arc4random() % 2000),@(arc4random() % 200),@(arc4random() % 50)],
+                                                                                    @"访问会员数_array":@[@(arc4random() % 20000),@(arc4random() % 2000),@(arc4random() % 200),@(arc4random() % 50)],
+                                                                                    @"买家数_array":@[@(arc4random() % 20000),@(arc4random() % 2000),@(arc4random() % 200),@(arc4random() % 50)],
+                                                                                    @"购买率_array":@[@(arc4random() % 20000),@(arc4random() % 2000),@(arc4random() % 200),@(arc4random() % 50)],
+                                                                                    @"客单价_array":@[@(arc4random() % 20000),@(arc4random() % 2000),@(arc4random() % 200),@(arc4random() % 50)],
+                                                                                    @"平均订单收入_array":@[@(arc4random() % 20000),@(arc4random() % 2000),@(arc4random() % 200),@(arc4random() % 50)],
+                                                                                    @"arrayOfDates":arrayofDate,
+                                                                                    @"访问会员数_arrayOfValues":array1,@"买家数_arrayOfValues":array2,@"购买率_arrayOfValues":array3,@"客单价_arrayOfValues":array4,@"平均订单收入_arrayOfValues":array5,
+                                                                                    @"访问会员数_number":@(arc4random() % 20000),@"买家数_number":@(arc4random() % 2000),@"购买率_number":@(arc4random() % 100),@"客单价_number":@(arc4random() % 10000),@"平均订单收入_number":@(arc4random() % 200)
+                                                                                    }];
+        [_detailsData setObject:_memberGradeDetailsData forKey:@"会员等级"];
+        _dimensionDataAvailableArray[5] = @YES;
+
+        if(succeedBlock){
+            succeedBlock(_memberGradeDetailsData);
+        }
+    };
+    
+    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:nil failureBlock:memberGradeBlock successedBlock:memberGradeBlock];
+}
+
+
+- (void)getMemberCityDetailsData:(void (^)(NSDictionary *data))succeedBlock
+{
+    NSString *urlMemberCity = [[NSString alloc] initWithFormat:@"http://10.27.193.34:80/snf-mbbi-web/visitGroup/getMemberCity.htm?beginTime=%@&endTime=%@&nvgtnTp=ios",_curDate,_curDate ];
+    void (^memberCityBlock)(NSDictionary *) = ^(NSDictionary *data) {
+        
+        NSMutableArray *array1 = [[NSMutableArray alloc] init];
+        NSMutableArray *array2 = [[NSMutableArray alloc] init];
+        NSMutableArray *array3 = [[NSMutableArray alloc] init];
+        NSMutableArray *array4 = [[NSMutableArray alloc] init];
+        NSMutableArray *array5 = [[NSMutableArray alloc] init];
+        NSMutableArray *array6 = [[NSMutableArray alloc] init];
+        NSMutableArray *array7 = [[NSMutableArray alloc] init];
+        NSMutableArray *array8 = [[NSMutableArray alloc] init];
+        
+        NSArray *parallelArray = @[array1,array2,array3,array4,array5,array6,array7,array8];
+        
+        //同步并行处理数据
+        dispatch_apply(8, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t index) {
+            [self addNumberToArray:parallelArray[index]];
+        });
+        
+        NSMutableArray *arrayofDate = [NSMutableArray array];
+        for (int i = 0; i < 20; i++) {
+            [arrayofDate addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:i]]];
+        }
+        
+        _memberCityDetailsData = [[NSMutableDictionary alloc] initWithDictionary:@{
+                                                                                   @"tagType":@[@"南京",@"上海",@"北京"],
+//                                                                                   @"tagValue":@[@(arc4random() % 20000),@(arc4random() % 20000),@(arc4random() % 20000)],
+                                                                                   @"UV_array":@[@(arc4random() % 20000),@(arc4random() % 20000),@(arc4random() % 20000)],
+                                                                                   @"PV_array":@[@(arc4random() % 20000),@(arc4random() % 20000),@(arc4random() % 20000)],
+                                                                                   @"VISIT_array":@[@(arc4random() % 20000),@(arc4random() % 20000),@(arc4random() % 20000)],
+                                                                                   @"新UV_array":@[@(arc4random() % 20000),@(arc4random() % 20000),@(arc4random() % 20000)],
+                                                                                   @"有效UV_array":@[@(arc4random() % 20000),@(arc4random() % 20000),@(arc4random() % 20000)],
+                                                                                   @"平均页面停留时间_array":@[@(arc4random() % 20000),@(arc4random() % 20000),@(arc4random() % 20000)],
+                                                                                   @"提交订单转化率_array":@[@(arc4random() % 20000),@(arc4random() % 20000),@(arc4random() % 20000)],
+                                                                                   @"有效订单转化率_array":@[@(arc4random() % 20000),@(arc4random() % 20000),@(arc4random() % 20000)],
+                                                                                   @"arrayOfDates":arrayofDate,
+                                                                                   @"UV_arrayOfValues":array1,@"PV_arrayOfValues":array2,@"VISIT_arrayOfValues":array3,@"新UV_arrayOfValues":array4,@"有效UV_arrayOfValues":array5,@"平均页面停留时间_arrayOfValues":array6,@"提交订单转化率_arrayOfValues":array7,@"有效订单转化率_arrayOfValues":array8,
+                                                                                   @"UV_number":@(arc4random() % 20000),@"PV_number":@(arc4random() % 20000),@"VISIT_number":@(arc4random() % 20000),@"新UV_number":@(arc4random() % 10000),@"有效UV_number":@(arc4random() % 2000),@"平均页面停留时间_number":@(arc4random() % 200),@"提交订单转化率_number":@(arc4random() % 100),@"有效订单转化率_number":@(arc4random() % 100)
+                                                                                   }];
+        [_detailsData setObject:_memberCityDetailsData forKey:@"城市分布"];
+        _dimensionDataAvailableArray[6] = @YES;
+
+        if(succeedBlock){
+            succeedBlock(_memberCityDetailsData);
+        }
+    };
+    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:nil failureBlock:memberCityBlock successedBlock:memberCityBlock];
+}
+
+
 
 - (void)createDetailsData
 {
@@ -249,37 +606,89 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
 //    NSArray *indexOptionsArray4 = @[@"回访数",@"买家数",@"首购率",@"复购率",@"客单价",@"平均订单收入"];
 //    NSArray *indexOptionsArray5 = @[@"访问会员数",@"买家数",@"购买率",@"客单价",@"平均订单收入"];
     
-//    _detailsData = [[NSMutableDictionary alloc] initWithCapacity:7];
+    
 //    
-//    void (^VisitorTypeBlock)(NSDictionary *) = ^(NSDictionary *data) {
-//        [_detailsData setObject:@{
-//                                 @"tagType":@[@"新访客",@"回访客"],
-//                                 @"tagValue":@[@(arc4random() % 2000),@(arc4random() % 2000)],
-//                                 @"arrayOfDates":arrayofDate,
-//                                 @"UV_arrayOfValues":array1,@"PV_arrayOfValues":array2,@"VISIT_arrayOfValues":array3,@"新UV_arrayOfValues":array4,@"有效UV_arrayOfValues":array5,@"平均页面停留时间_arrayOfValues":array6,@"提交订单转化率_arrayOfValues":array7,@"有效订单转化率_arrayOfValues":array8,
-//                                 @"UV_number":@(arc4random() % 20000),@"PV_number":@(arc4random() % 20000),@"VISIT_number":@(arc4random() % 20000),@"新UV_number":@(arc4random() % 10000),@"有效UV_number":@(arc4random() % 2000),@"平均页面停留时间_number":@(arc4random() % 200),@"提交订单转化率_number":@(arc4random() % 100),@"有效订单转化率_number":@(arc4random() % 100)
-//                                 }
-//                         forKey: @"访客类型"];
-//    };
-//    NSString *urlVisitorType = [[NSString alloc] initWithFormat:@"http://10.22.18.102:8080/snf-mbbi-web/visitGroup/getVistorType.htm?beginTime=%@&endTime=%@&kpi=uv&nvgtnTp=ios",_curDate,_curDate ];
-//     [[networkManager sharedInstance] sendAsynchronousRequestWithURL:urlVisitorType failureBlock:VisitorTypeBlock successedBlock:VisitorTypeBlock];
-//    
+//    NSString *urlTerminalType = [[NSString alloc] initWithFormat:@"http://10.27.193.34:80/snf-mbbi-web/visitGroup/getTagType.htm?beginTime=%@&endTime=%@&nvgtnTp=ios",_curDate,_curDate ];
 //    void (^terminalTypeBlock)(NSDictionary *) = ^(NSDictionary *data) {
-//        [_detailsData setObject:@{
-//                                  @"tagType":@[@"PC",@"WAP",@"APP"],
-//                                  @"tagValue":@[@(arc4random() % 2000),@(arc4random() % 2000),@(arc4random() % 2000)],
-//                                  @"arrayOfDates":arrayofDate,
-//                                  @"UV_arrayOfValues":array1,@"PV_arrayOfValues":array2,@"VISIT_arrayOfValues":array3,@"新UV_arrayOfValues":array4,@"有效UV_arrayOfValues":array5,@"平均页面停留时间_arrayOfValues":array6,@"提交订单转化率_arrayOfValues":array7,@"有效订单转化率_arrayOfValues":array8,
-//                                  @"UV_number":@(arc4random() % 20000),@"PV_number":@(arc4random() % 20000),@"VISIT_number":@(arc4random() % 20000),@"新UV_number":@(arc4random() % 10000),@"有效UV_number":@(arc4random() % 2000),@"平均页面停留时间_number":@(arc4random() % 200),@"提交订单转化率_number":@(arc4random() % 100),@"有效订单转化率_number":@(arc4random() % 100)
-//                                  }
-//                         forKey:@"终端类型"];
+//        _terminalTypeDetailsData = [[NSMutableDictionary alloc] initWithDictionary:@{
+//                                                                                   @"tagType":@[@"PC",@"WAP",@"APP"],
+//                                                                                   @"tagValue":@[@(arc4random() % 2000),@(arc4random() % 2000),@(arc4random() % 2000)],
+//                                                                                   @"arrayOfDates":arrayofDate,
+//                                                                                   @"UV_arrayOfValues":array1,@"PV_arrayOfValues":array2,@"VISIT_arrayOfValues":array3,@"新UV_arrayOfValues":array4,@"有效UV_arrayOfValues":array5,@"平均页面停留时间_arrayOfValues":array6,@"提交订单转化率_arrayOfValues":array7,@"有效订单转化率_arrayOfValues":array8,
+//                                                                                   @"UV_number":@(arc4random() % 20000),@"PV_number":@(arc4random() % 20000),@"VISIT_number":@(arc4random() % 20000),@"新UV_number":@(arc4random() % 10000),@"有效UV_number":@(arc4random() % 2000),@"平均页面停留时间_number":@(arc4random() % 200),@"提交订单转化率_number":@(arc4random() % 100),@"有效订单转化率_number":@(arc4random() % 100)
+//                                                                                   }];
+//        [_detailsData setObject:_terminalTypeDetailsData forKey:@"终端类型"];
 //    };
-//    NSString *urlTerminalType = [[NSString alloc] initWithFormat:@"http://10.22.18.102:8080/snf-mbbi-web/visitGroup/getTagType.htm?beginTime=%@&endTime=%@&kpi=uv&nvgtnTp=ios",_curDate,_curDate ];
 //    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:urlTerminalType failureBlock:terminalTypeBlock successedBlock:terminalTypeBlock];
 //
+//    NSString *urlAllMember = [[NSString alloc] initWithFormat:@"http://10.27.193.34:80/snf-mbbi-web/visitGroup/getAllMember.htm?beginTime=%@&endTime=%@&nvgtnTp=ios",_curDate,_curDate ];
+//    void (^allMemberBlock)(NSDictionary *) = ^(NSDictionary *data) {
+//        _allMemberDetailsData = [[NSMutableDictionary alloc] initWithDictionary:@{
+//                                                                                  @"tagType":@[@"会员"],
+//                                                                                  @"tagValue":@[@(arc4random() % 20000)],
+//                                                                                  @"arrayOfDates":arrayofDate,
+//                                                                                  @"访问会员数_arrayOfValues":array1,@"买家数_arrayOfValues":array2,@"购买率_arrayOfValues":array3,@"客单价_arrayOfValues":array4,@"平均订单收入_arrayOfValues":array5,
+//                                                                                  @"访问会员数_number":@(arc4random() % 20000),@"买家数_number":@(arc4random() % 2000),@"购买率_number":@(arc4random() % 100),@"客单价_number":@(arc4random() % 10000),@"平均订单收入_number":@(arc4random() % 200)
+//                                                                                  }];
+//
+//        [_detailsData setObject:_allMemberDetailsData forKey:@"整体会员"];
+//    };
+//    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:urlAllMember failureBlock:allMemberBlock successedBlock:allMemberBlock];
     
+//    NSString *urlNewMember = [[NSString alloc] initWithFormat:@"http://10.27.193.34:80/snf-mbbi-web/visitGroup/getNewMember.htm?beginTime=%@&endTime=%@&nvgtnTp=ios",_curDate,_curDate ];
+//    void (^newMemberBlock)(NSDictionary *) = ^(NSDictionary *data) {
+//        _newMemberDetailsData = [[NSMutableDictionary alloc] initWithDictionary:@{
+//                                                                                  @"tagType":@[@"新会员"],
+//                                                                                  @"tagValue":@[@(arc4random() % 10000)],
+//                                                                                  @"arrayOfDates":arrayofDate,
+//                                                                                  @"注册数_arrayOfValues":array1,@"买家数_arrayOfValues":array2,@"购买率_arrayOfValues":array3,@"客单价_arrayOfValues":array4,@"平均订单收入_arrayOfValues":array5,
+//                                                                                  @"注册数_number":@(arc4random() % 20000),@"买家数_number":@(arc4random() % 2000),@"购买率_number":@(arc4random() % 100),@"客单价_number":@(arc4random() % 10000),@"平均订单收入_number":@(arc4random() % 200)
+//                                                                                  }];
+//        [_detailsData setObject:_newMemberDetailsData forKey:@"新会员"];
+//    };
+//    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:urlNewMember failureBlock:newMemberBlock successedBlock:newMemberBlock];
     
-    _detailsData = [[NSMutableDictionary alloc] initWithDictionary: @{ @"访客类型":@{
+//    NSString *urlOldMember = [[NSString alloc] initWithFormat:@"http://10.27.193.34:80/snf-mbbi-web/visitGroup/getOldMember.htm?beginTime=%@&endTime=%@&nvgtnTp=ios",_curDate,_curDate ];
+//    void (^oldMemberBlock)(NSDictionary *) = ^(NSDictionary *data) {
+//        _oldMemberDetailsData = [[NSMutableDictionary alloc] initWithDictionary:@{
+//                                                                                  @"tagType":@[@"老会员"],
+//                                                                                  @"tagValue":@[@(arc4random() % 20000)],
+//                                                                                  @"arrayOfDates":arrayofDate,
+//                                                                                  @"回访数_arrayOfValues":array1,@"买家数_arrayOfValues":array2,@"首购率_arrayOfValues":array3,@"复购率_arrayOfValues":array6,@"客单价_arrayOfValues":array4,@"平均订单收入_arrayOfValues":array5,
+//                                                                                  @"回访数_number":@(arc4random() % 20000),@"买家数_number":@(arc4random() % 2000),@"首购率_number":@(arc4random() % 100),@"复购率_number":@(arc4random() % 100),@"客单价_number":@(arc4random() % 10000),@"平均订单收入_number":@(arc4random() % 200)
+//                                                                                  }];
+//        [_detailsData setObject:_oldMemberDetailsData forKey:@"老会员"];
+//    };
+//    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:urlOldMember failureBlock:oldMemberBlock successedBlock:oldMemberBlock];
+//    
+//    NSString *urlMemberGrade = [[NSString alloc] initWithFormat:@"http://10.27.193.34:80/snf-mbbi-web/visitGroup/getMemberGrade.htm?beginTime=%@&endTime=%@&nvgtnTp=ios",_curDate,_curDate ];
+//    void (^memberGradeBlock)(NSDictionary *) = ^(NSDictionary *data) {
+//        _memberGradeDetailsData = [[NSMutableDictionary alloc] initWithDictionary:@{
+//                                                                                    @"tagType":@[@"普通会员",@"银卡会员",@"金卡会员",@"白金会员"],
+//                                                                                    @"tagValue":@[@(arc4random() % 20000),@(arc4random() % 2000),@(arc4random() % 200),@(arc4random() % 50)],
+//                                                                                    @"arrayOfDates":arrayofDate,
+//                                                                                    @"访问会员数_arrayOfValues":array1,@"买家数_arrayOfValues":array2,@"购买率_arrayOfValues":array3,@"客单价_arrayOfValues":array4,@"平均订单收入_arrayOfValues":array5,
+//                                                                                    @"访问会员数_number":@(arc4random() % 20000),@"买家数_number":@(arc4random() % 2000),@"购买率_number":@(arc4random() % 100),@"客单价_number":@(arc4random() % 10000),@"平均订单收入_number":@(arc4random() % 200)
+//                                                                                    }];
+//        [_detailsData setObject:_memberGradeDetailsData forKey:@"会员等级"];
+//    };
+//    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:urlMemberGrade failureBlock:memberGradeBlock successedBlock:memberGradeBlock];
+
+//    NSString *urlMemberCity = [[NSString alloc] initWithFormat:@"http://10.27.193.34:80/snf-mbbi-web/visitGroup/getMemberCity.htm?beginTime=%@&endTime=%@&nvgtnTp=ios",_curDate,_curDate ];
+//    void (^memberCityBlock)(NSDictionary *) = ^(NSDictionary *data) {
+//        _memberCityDetailsData = [[NSMutableDictionary alloc] initWithDictionary:@{
+//                                                                                   @"tagType":@[@"南京",@"上海",@"北京"],
+//                                                                                   @"tagValue":@[@(arc4random() % 20000),@(arc4random() % 20000),@(arc4random() % 20000)],
+//                                                                                   @"arrayOfDates":arrayofDate,
+//                                                                                   @"UV_arrayOfValues":array1,@"PV_arrayOfValues":array2,@"VISIT_arrayOfValues":array3,@"新UV_arrayOfValues":array4,@"有效UV_arrayOfValues":array5,@"平均页面停留时间_arrayOfValues":array6,@"提交订单转化率_arrayOfValues":array7,@"有效订单转化率_arrayOfValues":array8,
+//                                                                                   @"UV_number":@(arc4random() % 20000),@"PV_number":@(arc4random() % 20000),@"VISIT_number":@(arc4random() % 20000),@"新UV_number":@(arc4random() % 10000),@"有效UV_number":@(arc4random() % 2000),@"平均页面停留时间_number":@(arc4random() % 200),@"提交订单转化率_number":@(arc4random() % 100),@"有效订单转化率_number":@(arc4random() % 100)
+//                                                                                   }];
+//        [_detailsData setObject:_memberCityDetailsData forKey:@"会员等级"];
+//    };
+//    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:urlMemberCity failureBlock:memberCityBlock successedBlock:memberCityBlock];
+    
+    _detailsData = [[NSMutableDictionary alloc] initWithDictionary: @{
+                        @"访客类型":@{
                                 @"tagType":@[@"新访客",@"回访客"],
                                 @"tagValue":@[@(arc4random() % 2000),@(arc4random() % 2000)],
                                 @"arrayOfDates":arrayofDate,

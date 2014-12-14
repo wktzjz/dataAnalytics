@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "snDataAnalytics/Model/visitorGroupModel.m"
-            timestampString = "440068752.974516"
+            timestampString = "440132137.091611"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "425"
-            endingLineNumber = "425"
+            startingLineNumber = "422"
+            endingLineNumber = "422"
             landmarkName = "-getNewMemberDetailsData:"
             landmarkType = "5">
          </BreakpointContent>

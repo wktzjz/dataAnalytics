@@ -134,7 +134,6 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
 
         for (int i = 0; i < 20; i++) {
             [_arrayOfDates addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:i]]];
-            
         }
         
         //同步并行处理数据
@@ -286,7 +285,7 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
 - (void)getTerminalTypeDetailsData:(void (^)(NSDictionary *data))succeedBlock
 {
 //    NSString *urlTerminalType = [[NSString alloc] initWithFormat:@"http://10.27.193.34:80/snf-mbbi-web/visitGroup/getTagType.htm?beginTime=%@&endTime=%@&nvgtnTp=ios",_curDate,_curDate ];
-        NSString *urlTerminalType = [[NSString alloc] initWithFormat:@"http://10.27.193.34:80/snf-mbbi-web/visitGroup/getTagType.htm?beginTime=2014-12-08&endTime=2014-12-08"];
+    NSString *urlTerminalType = [[NSString alloc] initWithFormat:@"http://10.27.193.34:80/snf-mbbi-web/visitGroup/getTagType.htm?beginTime=2014-12-08&endTime=2014-12-08"];
     void (^terminalTypeBlock)(NSDictionary *) = ^(NSDictionary *data) {
         NSMutableArray *array1 = [[NSMutableArray alloc] init];
         NSMutableArray *array2 = [[NSMutableArray alloc] init];
@@ -525,7 +524,8 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
 
 - (void)getMemberCityDetailsData:(void (^)(NSDictionary *data))succeedBlock
 {
-    NSString *urlMemberCity = [[NSString alloc] initWithFormat:@"http://10.27.193.34:80/snf-mbbi-web/visitGroup/getMemberCity.htm?beginTime=%@&endTime=%@&nvgtnTp=ios",_curDate,_curDate ];
+//    NSString *urlMemberCity = [[NSString alloc] initWithFormat:@"http://10.27.193.34:80/snf-mbbi-web/visitGroup/getMemberCity.htm?beginTime=%@&endTime=%@&nvgtnTp=ios",_curDate,_curDate ];
+    NSString *urlMemberCity = [[NSString alloc] initWithFormat:@"http://10.27.193.34:80/snf-mbbi-web/visitGroup/getMemberCity.htm?beginTime=2014-12-08&endTime=2014-12-08"];
     void (^memberCityBlock)(NSDictionary *) = ^(NSDictionary *data) {
         
         NSMutableArray *array1 = [[NSMutableArray alloc] init];
@@ -571,7 +571,7 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
             succeedBlock(_memberCityDetailsData);
         }
     };
-    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:nil failureBlock:memberCityBlock successedBlock:memberCityBlock];
+    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:urlMemberCity failureBlock:memberCityBlock successedBlock:memberCityBlock];
 }
 
 

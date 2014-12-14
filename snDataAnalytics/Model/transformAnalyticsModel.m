@@ -36,6 +36,8 @@ static NSString *const transformAnalyticsOutlineDataDidInitialize       = @"tran
     
     if (self) {
         
+        _dimensionDataAvailableArray = [[NSMutableArray alloc] initWithArray:@[@NO,@NO,@NO,@NO,@NO,@NO,@NO]];
+
         _wself = self;
         
     }

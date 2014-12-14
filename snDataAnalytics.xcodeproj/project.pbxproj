@@ -207,7 +207,17 @@
 		35EB871C1A35AABD00D45E37 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35EB871B1A35AABD00D45E37 /* Security.framework */; };
 		35EB871E1A35AAC400D45E37 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35EB871D1A35AAC400D45E37 /* LocalAuthentication.framework */; };
 		35EB87261A36DE6500D45E37 /* authenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB87251A36DE6500D45E37 /* authenticationManager.m */; };
-		35EB87281A3AF15C00D45E37 /* city.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 35EB87271A3AF15C00D45E37 /* city.sqlite */; };
+		35EB872D1A3BE3FF00D45E37 /* DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB872C1A3BE3FF00D45E37 /* DBManager.m */; };
+		35EB873B1A3BEE4500D45E37 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB872F1A3BEE4500D45E37 /* FMDatabase.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		35EB873C1A3BEE4500D45E37 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB87311A3BEE4500D45E37 /* FMDatabaseAdditions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		35EB873D1A3BEE4500D45E37 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB87331A3BEE4500D45E37 /* FMDatabasePool.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		35EB873E1A3BEE4500D45E37 /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB87351A3BEE4500D45E37 /* FMDatabaseQueue.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		35EB873F1A3BEE4500D45E37 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB87371A3BEE4500D45E37 /* FMResultSet.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		35EB87401A3BEE4500D45E37 /* GDataXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB87391A3BEE4500D45E37 /* GDataXMLNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		35EB87411A3BEE4500D45E37 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 35EB873A1A3BEE4500D45E37 /* libsqlite3.0.dylib */; };
+		35EB87431A3C140100D45E37 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 35EB87421A3C140100D45E37 /* libxml2.dylib */; };
+		35EB87451A3C1BF200D45E37 /* cityname.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 35EB87441A3C1BF200D45E37 /* cityname.sqlite */; };
+		35EB87471A3C3B4A00D45E37 /* city.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 35EB87461A3C36E200D45E37 /* city.sqlite */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -563,7 +573,24 @@
 		35EB871D1A35AAC400D45E37 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		35EB87241A36DE6500D45E37 /* authenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = authenticationManager.h; path = viewController/authenticationManager.h; sourceTree = "<group>"; };
 		35EB87251A36DE6500D45E37 /* authenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = authenticationManager.m; path = viewController/authenticationManager.m; sourceTree = "<group>"; };
-		35EB87271A3AF15C00D45E37 /* city.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = city.sqlite; path = Model/city.sqlite; sourceTree = "<group>"; };
+		35EB872B1A3BE3FF00D45E37 /* DBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBManager.h; path = Model/DBManager.h; sourceTree = "<group>"; };
+		35EB872C1A3BE3FF00D45E37 /* DBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBManager.m; path = Model/DBManager.m; sourceTree = "<group>"; };
+		35EB872E1A3BEE4500D45E37 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabase.h; path = Libs/SQLite/FMDatabase.h; sourceTree = "<group>"; };
+		35EB872F1A3BEE4500D45E37 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabase.m; path = Libs/SQLite/FMDatabase.m; sourceTree = "<group>"; };
+		35EB87301A3BEE4500D45E37 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabaseAdditions.h; path = Libs/SQLite/FMDatabaseAdditions.h; sourceTree = "<group>"; };
+		35EB87311A3BEE4500D45E37 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseAdditions.m; path = Libs/SQLite/FMDatabaseAdditions.m; sourceTree = "<group>"; };
+		35EB87321A3BEE4500D45E37 /* FMDatabasePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabasePool.h; path = Libs/SQLite/FMDatabasePool.h; sourceTree = "<group>"; };
+		35EB87331A3BEE4500D45E37 /* FMDatabasePool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabasePool.m; path = Libs/SQLite/FMDatabasePool.m; sourceTree = "<group>"; };
+		35EB87341A3BEE4500D45E37 /* FMDatabaseQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabaseQueue.h; path = Libs/SQLite/FMDatabaseQueue.h; sourceTree = "<group>"; };
+		35EB87351A3BEE4500D45E37 /* FMDatabaseQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseQueue.m; path = Libs/SQLite/FMDatabaseQueue.m; sourceTree = "<group>"; };
+		35EB87361A3BEE4500D45E37 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMResultSet.h; path = Libs/SQLite/FMResultSet.h; sourceTree = "<group>"; };
+		35EB87371A3BEE4500D45E37 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = Libs/SQLite/FMResultSet.m; sourceTree = "<group>"; };
+		35EB87381A3BEE4500D45E37 /* GDataXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataXMLNode.h; path = Libs/SQLite/GDataXMLNode.h; sourceTree = "<group>"; };
+		35EB87391A3BEE4500D45E37 /* GDataXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataXMLNode.m; path = Libs/SQLite/GDataXMLNode.m; sourceTree = "<group>"; };
+		35EB873A1A3BEE4500D45E37 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = Libs/SQLite/libsqlite3.0.dylib; sourceTree = "<group>"; };
+		35EB87421A3C140100D45E37 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
+		35EB87441A3C1BF200D45E37 /* cityname.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = cityname.sqlite; path = Model/cityname.sqlite; sourceTree = "<group>"; };
+		35EB87461A3C36E200D45E37 /* city.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = city.sqlite; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -571,8 +598,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35EB87431A3C140100D45E37 /* libxml2.dylib in Frameworks */,
 				35EB871E1A35AAC400D45E37 /* LocalAuthentication.framework in Frameworks */,
 				35EB871C1A35AABD00D45E37 /* Security.framework in Frameworks */,
+				35EB87411A3BEE4500D45E37 /* libsqlite3.0.dylib in Frameworks */,
 				355900A219B8690C001AD1FF /* Foundation.framework in Frameworks */,
 				356298E919B86713004A8054 /* QuartzCore.framework in Frameworks */,
 				356298E719B86703004A8054 /* CoreGraphics.framework in Frameworks */,
@@ -973,6 +1002,7 @@
 		3562980319B44564004A8054 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				35EB87421A3C140100D45E37 /* libxml2.dylib */,
 				35EB871D1A35AAC400D45E37 /* LocalAuthentication.framework */,
 				35EB871B1A35AABD00D45E37 /* Security.framework */,
 				35945DE019E8D3D800BF5EC3 /* Info.plist */,
@@ -1020,6 +1050,7 @@
 		3562982E19B4508C004A8054 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				35EB872A1A3BE3DD00D45E37 /* DBManager */,
 				35945DF019F0F39C00BF5EC3 /* realTime */,
 				35D397FF1A07590F0014B377 /* visitorGroup */,
 				3550C3AA1A199FDF00402F33 /* sourcesAnalytics */,
@@ -1027,7 +1058,8 @@
 				3550C3AC1A199FF700402F33 /* hotCity */,
 				3550C3AD1A19A00500402F33 /* hotPage */,
 				3550C3AE1A19A00F00402F33 /* transformAnalytics */,
-				35EB87271A3AF15C00D45E37 /* city.sqlite */,
+				35EB87441A3C1BF200D45E37 /* cityname.sqlite */,
+				35EB87461A3C36E200D45E37 /* city.sqlite */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1606,8 +1638,30 @@
 		35EB87291A3AF4C700D45E37 /* SQlite */ = {
 			isa = PBXGroup;
 			children = (
+				35EB872E1A3BEE4500D45E37 /* FMDatabase.h */,
+				35EB872F1A3BEE4500D45E37 /* FMDatabase.m */,
+				35EB87301A3BEE4500D45E37 /* FMDatabaseAdditions.h */,
+				35EB87311A3BEE4500D45E37 /* FMDatabaseAdditions.m */,
+				35EB87321A3BEE4500D45E37 /* FMDatabasePool.h */,
+				35EB87331A3BEE4500D45E37 /* FMDatabasePool.m */,
+				35EB87341A3BEE4500D45E37 /* FMDatabaseQueue.h */,
+				35EB87351A3BEE4500D45E37 /* FMDatabaseQueue.m */,
+				35EB87361A3BEE4500D45E37 /* FMResultSet.h */,
+				35EB87371A3BEE4500D45E37 /* FMResultSet.m */,
+				35EB87381A3BEE4500D45E37 /* GDataXMLNode.h */,
+				35EB87391A3BEE4500D45E37 /* GDataXMLNode.m */,
+				35EB873A1A3BEE4500D45E37 /* libsqlite3.0.dylib */,
 			);
 			name = SQlite;
+			sourceTree = "<group>";
+		};
+		35EB872A1A3BE3DD00D45E37 /* DBManager */ = {
+			isa = PBXGroup;
+			children = (
+				35EB872B1A3BE3FF00D45E37 /* DBManager.h */,
+				35EB872C1A3BE3FF00D45E37 /* DBManager.m */,
+			);
+			name = DBManager;
 			sourceTree = "<group>";
 		};
 		35F3999019CFC1D30077BA75 /* popupViewController */ = {
@@ -1701,9 +1755,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35EB87471A3C3B4A00D45E37 /* city.sqlite in Resources */,
 				35945D7119E8CA7E00BF5EC3 /* dialog_cancel.png in Resources */,
 				3522248A19C689740048F57C /* LaunchScreen.xib in Resources */,
-				35EB87281A3AF15C00D45E37 /* city.sqlite in Resources */,
 				35945D7719E8CA7E00BF5EC3 /* dialog_ok-disabled.png in Resources */,
 				35945D9419E8CBE100BF5EC3 /* NotificationBackgroundSuccess.png in Resources */,
 				357E442419FA046000719A2A /* google-plus-white.png in Resources */,
@@ -1723,6 +1777,7 @@
 				357E442C19FA046000719A2A /* linkedin-white@2x.png in Resources */,
 				35945D9719E8CBE100BF5EC3 /* NotificationBackgroundSuccessIcon@2x.png in Resources */,
 				358F8E481A357A79008BF6A7 /* ic_设置@2x.png in Resources */,
+				35EB87451A3C1BF200D45E37 /* cityname.sqlite in Resources */,
 				35945D7319E8CA7E00BF5EC3 /* dialog_clear-disabled.png in Resources */,
 				35945D9B19E8CBE100BF5EC3 /* NotificationBackgroundWarningIcon@2x.png in Resources */,
 				35945D8F19E8CBE100BF5EC3 /* NotificationBackgroundError@2x.png in Resources */,
@@ -1809,6 +1864,7 @@
 				3522247519C2C73D0048F57C /* POPSpringAnimation.mm in Sources */,
 				35945CFE19E8C29900BF5EC3 /* menuViewController.m in Sources */,
 				35AE1ABA1A0A247A00167096 /* lineChartDetailsViewFactory.m in Sources */,
+				35EB872D1A3BE3FF00D45E37 /* DBManager.m in Sources */,
 				3562987C19B46294004A8054 /* baseViewController.m in Sources */,
 				350BCFF41A2D691A000EA574 /* pageAnalyticsModel.m in Sources */,
 				35945D2219E8C37300BF5EC3 /* PNBar.m in Sources */,
@@ -1816,6 +1872,7 @@
 				35945DD719E8D1F500BF5EC3 /* UICountingLabel.m in Sources */,
 				35945DD419E8D17700BF5EC3 /* AMWaveViewController.m in Sources */,
 				3522246C19C2C73D0048F57C /* POPAnimator.mm in Sources */,
+				35EB87401A3BEE4500D45E37 /* GDataXMLNode.m in Sources */,
 				35D397EA19FF2F910014B377 /* TLYShyNavBarManager.m in Sources */,
 				35D397D819FF2F2B0014B377 /* LTMorphingLabel+Fall.swift in Sources */,
 				35945CF219E8C20A00BF5EC3 /* visitorGroupDetailOutlineView.m in Sources */,
@@ -1871,6 +1928,7 @@
 				35945DA419E8CC3300BF5EC3 /* JVFloatLabeledTextField.m in Sources */,
 				35D397F61A0090C20014B377 /* realTimeDetailsView.m in Sources */,
 				3522247619C2C73D0048F57C /* POPVector.mm in Sources */,
+				35EB873F1A3BEE4500D45E37 /* FMResultSet.m in Sources */,
 				35945E1619F655E500BF5EC3 /* JBChartHeaderView.m in Sources */,
 				3562989019B5BE82004A8054 /* menuController.m in Sources */,
 				35945DB819E8D00300BF5EC3 /* PresentingAnimator.m in Sources */,
@@ -1881,6 +1939,8 @@
 				35945D2619E8C37300BF5EC3 /* PNColor.m in Sources */,
 				3522246E19C2C73D0048F57C /* POPCGUtils.mm in Sources */,
 				35945D3219E8C3AC00BF5EC3 /* THDateDay.m in Sources */,
+				35EB873D1A3BEE4500D45E37 /* FMDatabasePool.m in Sources */,
+				35EB873E1A3BEE4500D45E37 /* FMDatabaseQueue.m in Sources */,
 				3522246B19C2C73D0048F57C /* POPAnimationTracer.mm in Sources */,
 				35945D4619E8C8B900BF5EC3 /* BEMCircle.m in Sources */,
 				3522246719C2C73D0048F57C /* POPAnimation.mm in Sources */,
@@ -1903,8 +1963,10 @@
 				3522247119C2C73D0048F57C /* POPGeometry.mm in Sources */,
 				35945DCA19E8D0D000BF5EC3 /* Reachability.m in Sources */,
 				3522246D19C2C73D0048F57C /* POPBasicAnimation.mm in Sources */,
+				35EB873B1A3BEE4500D45E37 /* FMDatabase.m in Sources */,
 				35D397E919FF2F910014B377 /* TLYDelegateProxy.m in Sources */,
 				35945DF719F0FC4400BF5EC3 /* KeyValueObserver.m in Sources */,
+				35EB873C1A3BEE4500D45E37 /* FMDatabaseAdditions.m in Sources */,
 				35945D0A19E8C33600BF5EC3 /* FRDLivelyButton.m in Sources */,
 				3550C3B31A19A5CF00402F33 /* sourcesAnalyticsModel.m in Sources */,
 				35945DFB19F64D1600BF5EC3 /* visitorGroupModel.m in Sources */,
@@ -2026,10 +2088,15 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Applications/Xcode\\ 2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include",
+					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = snDataAnalytics/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/snDataAnalytics/Libs/SQLite",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "snDataAnalytics/snDataAnalytics-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -2051,10 +2118,15 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Applications/Xcode\\ 2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include",
+					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = snDataAnalytics/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/snDataAnalytics/Libs/SQLite",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "snDataAnalytics/snDataAnalytics-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";

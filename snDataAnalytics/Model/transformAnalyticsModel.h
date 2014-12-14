@@ -16,6 +16,9 @@
 @property (nonatomic,readonly) BOOL initializeDataReady;
 @property (nonatomic,readonly) BOOL detailsDataReady;
 
+@property (nonatomic,strong) NSArray *detailsDataMethodsArray;
+@property (nonatomic,strong) NSMutableArray *dimensionDataAvailableArray;
+
 + (instancetype)sharedInstance;
 
 - (void)getOutlineData;

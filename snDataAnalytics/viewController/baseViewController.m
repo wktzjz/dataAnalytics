@@ -38,6 +38,7 @@
 #import "authenticationManager.h"
 #import "flatButton.h"
 #import "wkBlurPopover.h"
+#import "DBManager.h"
 
 
 typedef enum {
@@ -144,7 +145,6 @@ const static CGFloat titleViewHeight = 44.0f;
 //    NSLog(@"dict1[1]:%@",(NSString *)b[@"1"]);
 //    
 
-    
     [self addFrontAndBackgroundView];
     [self addTimeView];
     [self addDataView];
@@ -155,6 +155,7 @@ const static CGFloat titleViewHeight = 44.0f;
     [self addLoadingBarItem];
     [self jumoToLoginView];
 //    [self addModel];
+    [[DBManager sharedInstance] getIDByCityName:@"南京市"];
     
     double delayInSeconds = 1.0;
     __weak id wself = self;

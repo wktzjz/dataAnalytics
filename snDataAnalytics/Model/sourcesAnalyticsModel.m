@@ -40,6 +40,7 @@ static NSString *const sourceAnalyticsOutlineDataDidInitialize       = @"sourceA
     if (self) {
         _groupPercentArray = [[NSMutableArray alloc] initWithCapacity:6];
         _groupValidPercentArray = [[NSMutableArray alloc] initWithCapacity:6];
+        _dimensionDataAvailableArray = [[NSMutableArray alloc] initWithArray:@[@NO,@NO,@NO,@NO,@NO,@NO,@NO]];
 
         _wself = self;
         

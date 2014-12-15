@@ -231,7 +231,7 @@ const static CGFloat titleViewHeight = 44.0f;
     float originY =  _chartDetailsView.lineView.frame.origin.y + _chartDetailsView.lineView.frame.size.height + 85;
     _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, originY ,self.view.frame.size.width , self.view.frame.size.height - originY)];
 //    [_scrollView setShowsVerticalScrollIndicator:NO];
-    [_scrollView setContentSize:CGSizeMake(0, self.view.bounds.size.height * 2)];
+    [_scrollView setContentSize:CGSizeMake(0, self.view.bounds.size.height * 3)];
     _scrollView.backgroundColor = [UIColor whiteColor];
 
     [self.view addSubview:_scrollView];

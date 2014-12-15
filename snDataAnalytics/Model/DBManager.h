@@ -13,5 +13,6 @@
 + (instancetype)sharedInstance;
 - (NSString *)getCityNameByID:(NSString *)ID;
 - (NSString *)getIDByCityName:(NSString *)cityName;
+- (NSMutableArray *)getCityArrayByIDArray:(NSArray *)IDArray;
 
 @end

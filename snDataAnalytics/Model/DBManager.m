@@ -86,6 +86,28 @@
     return cityName;
 }
 
+- (NSMutableArray *)getCityArrayByIDArray:(NSArray *)IDArray
+{
+    FMResultSet *resultSet=[_db executeQuery:@"SELECT * FROM city"];
+    NSString *tempName;
+    NSString *tempNumber;
+    NSMutableArray *cityNameArray = [[NSMutableArray alloc] initWithCapacity:20];
+    
+    while ([resultSet next]) {
+        tempName = [resultSet stringForColumn:@"city_name"];
+        tempNumber = [resultSet stringForColumn:@"city_id"];
+        
+        [IDArray enumerateObjectsUsingBlock:^(NSString *ID, NSUInteger idx, BOOL *stop) {
+            if([tempNumber isEqualToString:ID]){
+                NSLog(@"cityname:%@",tempName);
+                [cityNameArray addObject:tempName];
+            }
+        }];
+    }
+    
+    return cityNameArray;
+}
+
 
 - (NSString *)getIDByCityName:(NSString *)cityName
 {

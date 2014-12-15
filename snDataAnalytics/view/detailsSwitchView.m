@@ -177,7 +177,12 @@
 
         [_valueArray enumerateObjectsUsingBlock:^(NSNumber *value, NSUInteger idx, BOOL *stop) {
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(originX, 10 + 40.0 *idx, width, 30)];
-            label.text = [NSString stringWithFormat:@"%i",value.intValue];
+            float floatValue = value.floatValue;
+            if(floatValue < 1){
+                label.text = [NSString stringWithFormat:@"%.1f%%",value.floatValue * 100.0];
+            }else{
+                label.text = [NSString stringWithFormat:@"%li",value.integerValue];
+            }
             label.textColor = [UIColor fadedBlueColor];
             label.font = [UIFont fontWithName:@"OpenSans-Light" size:18.0];
             label.textAlignment = NSTextAlignmentCenter;

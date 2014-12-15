@@ -86,6 +86,10 @@
             if(json){
                 NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json options:NSJSONWritingPrettyPrinted error:nil];
                 NSLog(@"jsonData %@",[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]);
+                
+                if (succeedBlock) {
+                    succeedBlock(json);
+                }
             }
         }else{
             json = nil;
@@ -98,11 +102,11 @@
             return ;
         }
         
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json options:NSJSONWritingPrettyPrinted error:nil];
-        
-        if (succeedBlock) {
-            succeedBlock(json);
-        }
+//        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json options:NSJSONWritingPrettyPrinted error:nil];
+//        
+//        if (succeedBlock) {
+//            succeedBlock(json);
+//        }
       }
     ];
 }

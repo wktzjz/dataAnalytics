@@ -15,7 +15,7 @@
 @property (nonatomic) int visitor;
 
 @property (nonatomic,strong) NSMutableArray *arrayOfDates;
-@property (nonatomic,strong) NSDictionary *outlineData;
+@property (nonatomic,strong) NSMutableDictionary *outlineData;
 @property (nonatomic,strong) NSDictionary *detailInitializeData;
 @property (nonatomic,strong) NSMutableDictionary *detailsData;
 @property (nonatomic,strong) NSDictionary *sendDict;

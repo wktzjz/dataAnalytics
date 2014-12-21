@@ -216,7 +216,6 @@
 		35EB87401A3BEE4500D45E37 /* GDataXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB87391A3BEE4500D45E37 /* GDataXMLNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		35EB87411A3BEE4500D45E37 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 35EB873A1A3BEE4500D45E37 /* libsqlite3.0.dylib */; };
 		35EB87431A3C140100D45E37 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 35EB87421A3C140100D45E37 /* libxml2.dylib */; };
-		35EB87451A3C1BF200D45E37 /* cityname.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 35EB87441A3C1BF200D45E37 /* cityname.sqlite */; };
 		35EB87471A3C3B4A00D45E37 /* city.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 35EB87461A3C36E200D45E37 /* city.sqlite */; };
 /* End PBXBuildFile section */
 
@@ -589,7 +588,6 @@
 		35EB87391A3BEE4500D45E37 /* GDataXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataXMLNode.m; path = Libs/SQLite/GDataXMLNode.m; sourceTree = "<group>"; };
 		35EB873A1A3BEE4500D45E37 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = Libs/SQLite/libsqlite3.0.dylib; sourceTree = "<group>"; };
 		35EB87421A3C140100D45E37 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
-		35EB87441A3C1BF200D45E37 /* cityname.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = cityname.sqlite; path = Model/cityname.sqlite; sourceTree = "<group>"; };
 		35EB87461A3C36E200D45E37 /* city.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = city.sqlite; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1058,7 +1056,6 @@
 				3550C3AC1A199FF700402F33 /* hotCity */,
 				3550C3AD1A19A00500402F33 /* hotPage */,
 				3550C3AE1A19A00F00402F33 /* transformAnalytics */,
-				35EB87441A3C1BF200D45E37 /* cityname.sqlite */,
 				35EB87461A3C36E200D45E37 /* city.sqlite */,
 			);
 			name = Models;
@@ -1777,7 +1774,6 @@
 				357E442C19FA046000719A2A /* linkedin-white@2x.png in Resources */,
 				35945D9719E8CBE100BF5EC3 /* NotificationBackgroundSuccessIcon@2x.png in Resources */,
 				358F8E481A357A79008BF6A7 /* ic_设置@2x.png in Resources */,
-				35EB87451A3C1BF200D45E37 /* cityname.sqlite in Resources */,
 				35945D7319E8CA7E00BF5EC3 /* dialog_clear-disabled.png in Resources */,
 				35945D9B19E8CBE100BF5EC3 /* NotificationBackgroundWarningIcon@2x.png in Resources */,
 				35945D8F19E8CBE100BF5EC3 /* NotificationBackgroundError@2x.png in Resources */,

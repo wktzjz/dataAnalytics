@@ -13,8 +13,10 @@ typedef void(^timeViewChoosed)();
 
 @property (nonatomic,copy) timeViewChoosed timeViewChoosedBlock;
 
-@property (nonatomic) NSDate *fromTime;
-@property (nonatomic) NSDate *toTime;
+@property (nonatomic, strong) NSDate *fromTime;
+@property (nonatomic, strong) NSDate *toTime;
+@property (nonatomic, strong) NSString *fromString;
+@property (nonatomic, strong) NSString *toString;
 
 - (instancetype)initWithFrame:(CGRect)frame;
 

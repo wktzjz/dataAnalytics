@@ -87,6 +87,11 @@
     [self addSubview:_scrollView];
 }
 
+- (void)pullScrollViewToTop
+{
+    [_scrollView setContentOffset:CGPointMake(0, 0)];
+}
+
 - (void)dimensionButtonClicked
 {
     if (_dimensionButtonClickedBlock) {
@@ -177,12 +182,20 @@
 
         [_valueArray enumerateObjectsUsingBlock:^(NSNumber *value, NSUInteger idx, BOOL *stop) {
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(originX, 10 + 40.0 *idx, width, 30)];
+            
             float floatValue = value.floatValue;
-            if(floatValue < 1){
-                label.text = [NSString stringWithFormat:@"%.1f%%",value.floatValue * 100.0];
+            if (floatValue < 1){
+                if (floatValue == 0){
+                    label.text = [NSString stringWithFormat:@"0"];
+                }else if (floatValue < 0.1){
+                    label.text = [NSString stringWithFormat:@"%.2f%%",value.floatValue * 100.0];
+                }else{
+                    label.text = [NSString stringWithFormat:@"%.1f%%",value.floatValue * 100.0];
+                }
             }else{
                 label.text = [NSString stringWithFormat:@"%li",value.integerValue];
             }
+            
             label.textColor = [UIColor fadedBlueColor];
             label.font = [UIFont fontWithName:@"OpenSans-Light" size:18.0];
             label.textAlignment = NSTextAlignmentCenter;
@@ -206,6 +219,7 @@
 //    _labelStringArray = (NSArray *)(((NSDictionary *)data[_dimensionName])[@"labelStringArray"]);
     _labelStringArray = (NSArray *)((NSDictionary *)data[@"tagType"]);
 
+    [self pullScrollViewToTop];
     [self addLabels];
 }
 
@@ -219,6 +233,8 @@
     NSString *keyofValues  = [NSString stringWithFormat:@"%@_array",_indexName];
 
     _valueArray = (NSArray *)((NSDictionary *)data[keyofValues]);
+    
+    [self pullScrollViewToTop];
     [self addValues];
 }
 

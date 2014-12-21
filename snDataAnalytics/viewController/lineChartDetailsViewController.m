@@ -78,7 +78,7 @@ const static CGFloat titleViewHeight = 44.0f;
     
     [self addTitleView];
     [self addSettingButton];
-    [self addDatePickerButton];
+//    [self addDatePickerButton];
     
     [self addLineDetailsView];
     [self addTimeView];
@@ -88,7 +88,7 @@ const static CGFloat titleViewHeight = 44.0f;
     overlay.dataSource = self;
     overlay.delegate = self;
     
-    UILongPressGestureRecognizer* _longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:overlay action:@selector(longPressDetected:)];
+    UILongPressGestureRecognizer *_longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:overlay action:@selector(longPressDetected:)];
     [self.view addGestureRecognizer:_longPressRecognizer];
 
 }
@@ -389,6 +389,7 @@ const static CGFloat titleViewHeight = 44.0f;
         
         [self.view insertSubview:_scrollView aboveSubview:_chartDetailsView];
 
+        [_scrollView setContentOffset:CGPointMake(0, 0)];
         [UIView animateWithDuration:0.3 animations:^{
             _scrollView.alpha = 1.0;
 //            _popupBackgroundView.alpha = 1.0;
@@ -563,7 +564,6 @@ const static CGFloat titleViewHeight = 44.0f;
         [_datePicker setCurrentDateColor:[UIColor colorWithRed:242/255.0 green:121/255.0 blue:53/255.0 alpha:1.0]];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            
             [strongSelf presentSemiViewController:_datePicker withOptions:@{
                                                                             KNSemiModalOptionKeys.pushParentBack    : @(NO),
                                                                             KNSemiModalOptionKeys.animationDuration : @(0.6),
@@ -589,7 +589,10 @@ const static CGFloat titleViewHeight = 44.0f;
     if (arr.count > 0) {
         _timeView.fromTime = ((THDateDay *)selectedDays[(NSNumber *)arr[0]]).date;
         _timeView.toTime = ((THDateDay *)selectedDays[[arr lastObject]]).date;
-        
+    }
+    
+    if(_dataChoosedBlock){
+        _dataChoosedBlock(_timeView.fromString,_timeView.toString);
     }
 }
 

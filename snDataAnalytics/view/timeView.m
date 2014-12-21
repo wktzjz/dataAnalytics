@@ -28,9 +28,6 @@
     UILabel        *_toDay;
     UILabel        *_toMonth;
     
-    NSString       *_fromString;
-    NSString       *_toString;
-    
     BOOL           _showToTime;
 }
 

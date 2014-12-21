@@ -43,6 +43,8 @@
     NSNumber *_pageAnalyticsChosenIndexNumber;
     NSNumber *_transformAnalyticsChosenDimensionNumber;
     NSNumber *_transformAnalyticsChosenIndexNumber;
+    
+     __weak id      _weakSelf;
 
 }
 
@@ -93,7 +95,11 @@
         _pageAnalyticsChosenIndexNumber = @(0);
         _transformAnalyticsChosenDimensionNumber = @(0);
         _transformAnalyticsChosenIndexNumber = @(0);
+        
+         _weakSelf = self;
+
     }
+    
     return self;
 }
 
@@ -136,6 +142,10 @@
     NSArray  *indexArray;
     id model;
     
+    lineChartDetailsViewController *vc = [[lineChartDetailsViewController alloc] initWithFrame:wkScreen data:nil];
+    __weak typeof(vc) weakVC = vc;
+    lineChartDetailsViewFactory *strongSelf = _weakSelf;
+    
     switch (viewType) {
         case outlineVisitorGroup:{
             chosenDimension = _visitorGroupChosenDimensionNumber;
@@ -175,11 +185,10 @@
             break;
     }
     
-    lineChartDetailsViewController *vc = [[lineChartDetailsViewController alloc] initWithFrame:wkScreen data:nil];
-    __block NSDictionary *detailsData;
+    __block NSMutableDictionary *detailsData;
     __block NSDictionary *labelData = (NSDictionary *)[model getDefineDetails];
     
-    detailsData = (NSDictionary *)((NSDictionary *)[model getDetailsData])[(NSString *)dimensionArray[0]];
+    detailsData = (NSMutableDictionary *)((NSDictionary *)[model getDetailsData])[(NSString *)dimensionArray[0]];
     
     ///details views的 title 和 当前维度 名称
     vc.titleString = vc.chartDetailsView.dimensionName = dimensionArray[0];
@@ -196,8 +205,6 @@
     vc.dimensionArray = [[NSMutableArray alloc] initWithArray:dimensionArray];
     vc.indexArray = [[NSMutableArray alloc] initWithArray:indexArray];
     
-    __weak typeof(vc) weakVC = vc;
-    
     vc.indexChoosedBlock = ^(NSInteger i) {
         if (chosenIndex.integerValue != i) {
             chosenIndex = @(i);
@@ -211,13 +218,17 @@
             strongVC.chartDetailsView.lineView.labelString = (NSString *)indexNameArray[i];
             
             //此时的detailsData已经添加了最新请求的demension的数据
-            detailsData = (NSDictionary *)((NSDictionary *)[model getDetailsData])[chosenDimensionName];
-            //图表自动根据labelString 筛选detailsData中得数据 用以绘图
-            [strongVC.chartDetailsView.lineView relodData:detailsData];
-            //detailsview的数值
-            [strongVC.chartDetailsView.detailsView reloadValuesWithData:detailsData];
+            detailsData = (NSMutableDictionary *)((NSDictionary *)[model getDetailsData])[chosenDimensionName];
+            if (detailsData){
+                //图表自动根据labelString 筛选detailsData中得数据 用以绘图
+                [strongVC.chartDetailsView.lineView relodData:detailsData];
+                //detailsview的数值
+                [strongVC.chartDetailsView.detailsView reloadValuesWithData:detailsData];
+
+            }
         }
     };
+    
     
     vc.dimensionChoosedBlock = ^(NSInteger i) {
         if (chosenDimension.integerValue != i) {
@@ -225,92 +236,140 @@
             
             typeof (weakVC) strongVC = weakVC;
             
-            //details views的 指标数组
-            NSArray *indexNameArray = (NSArray *)(NSDictionary *)(labelData[dimensionArray[i]])[@"indexOptionsArray"];
-            
-            //details views的 title 和 当前维度 名称
-            strongVC.titleString = strongVC.chartDetailsView.dimensionName = dimensionArray[i];
-            //details views的 当前指标 名称
-            strongVC.chartDetailsView.indexName = (NSString *)indexNameArray[0];
-            strongVC.chartDetailsView.lineView.labelString = (NSString *)indexNameArray[0];
-            //添加detailsview的index array选项
-            strongVC.indexArray = [[NSMutableArray alloc] initWithArray:indexNameArray];
-
-            /*没有数据时，通过model的方法名称列表 获得获取请求数据的方法SEL，再通过该方法请求数据，同时将回调block传入
-             */
-            if([model respondsToSelector:@selector(dimensionDataAvailableArray)]){
-                if([((NSArray *)[model dimensionDataAvailableArray])[i] isEqual:@NO]){
-                    
-                    NSString *getDataMethodString = ((NSArray *)[model detailsDataMethodsArray])[i];
-                    SEL getDataMethodSEL = NSSelectorFromString(getDataMethodString);
-                    
-                    void (^successefullyGetDataBlock)(NSDictionary *) = ^(NSDictionary *data) {
-                        
-                        //如果网络处理在非主线程，回调需要在主线程更新UI
-                        dispatch_main_async_safe(^{
-                            //detailsview的labels
-                            [strongVC.chartDetailsView.detailsView reloadLabelsWithData:data];
-                            //detailsview的数值
-                            [strongVC.chartDetailsView.detailsView reloadValuesWithData:data];
-                            //图表
-                            [strongVC.chartDetailsView.lineView relodData:data];
-                        })
-                    };
-                    
-                    //getDataMethodSEL 例如 - (void)getVisitorTypeDetailsData:(void (^)(NSDictionary *data))succeedBlock方法
-                    //[model performSelector:getDataMethodSEL withObject:successefullyGetDataBlock];
-                    // id (*typed_msgSend)(id, SEL, id) = (void *)objc_msgSend;
-                    
-#if !TARGET_IPHONE_SIMULATOR
-                    ((id (*)(id, SEL, id))objc_msgSend)(model,getDataMethodSEL,successefullyGetDataBlock);
-#else
-                    objc_msgSend(model,getDataMethodSEL,successefullyGetDataBlock);
-#endif
-                    
-                    }else{
-                        
-                /*已有数据时，直接处理
-                 */
-                    detailsData = (NSDictionary *)((NSDictionary *)[model getDetailsData])[(NSString *)dimensionArray[i]];
-                    //detailsview的labels
-                    [strongVC.chartDetailsView.detailsView reloadLabelsWithData:detailsData];
-                    //detailsview的数值
-                    [strongVC.chartDetailsView.detailsView reloadValuesWithData:detailsData];
-                    //图表
-                    [strongVC.chartDetailsView.lineView relodData:detailsData];
-                }
-                
-            }
+            [strongSelf reloadController:strongVC dimensionIndex:i withModel:model withLabelData:labelData withDimensionArray:dimensionArray];
             
 //            //details views的 指标数组
 //            NSArray *indexNameArray = (NSArray *)(NSDictionary *)(labelData[dimensionArray[i]])[@"indexOptionsArray"];
 //            
-//            detailsData = (NSDictionary *)((NSDictionary *)[model getDetailsData])[(NSString *)dimensionArray[i]];
-//            
 //            //details views的 title 和 当前维度 名称
 //            strongVC.titleString = strongVC.chartDetailsView.dimensionName = dimensionArray[i];
-//            
 //            //details views的 当前指标 名称
 //            strongVC.chartDetailsView.indexName = (NSString *)indexNameArray[0];
 //            strongVC.chartDetailsView.lineView.labelString = (NSString *)indexNameArray[0];
-//            
-//            //detailsview的labels
-//            [strongVC.chartDetailsView.detailsView reloadLabelsWithData:detailsData];
-//            
-//            //图表
-//            [strongVC.chartDetailsView.lineView relodData:detailsData];
-//            
-//            //detailsview的数值
-//            [strongVC.chartDetailsView.detailsView reloadValuesWithData:detailsData];
-//            
 //            //添加detailsview的index array选项
 //            strongVC.indexArray = [[NSMutableArray alloc] initWithArray:indexNameArray];
-            
+//
+//            /*没有数据时，通过model的方法名称列表 获得获取请求数据的方法SEL，再通过该方法请求数据，同时将回调block传入
+//             */
+//            if([model respondsToSelector:@selector(dimensionDataAvailableArray)]){
+//                if([((NSArray *)[model dimensionDataAvailableArray])[i] isEqual:@NO]){
+//                    
+//                    NSString *getDataMethodString = ((NSArray *)[model detailsDataMethodsArray])[i];
+//                    SEL getDataMethodSEL = NSSelectorFromString(getDataMethodString);
+//                    
+//                    void (^successefullyGetDataBlock)(NSDictionary *) = ^(NSDictionary *data) {
+//                        
+//                        //如果网络处理在非主线程，回调需要在主线程更新UI
+//                        dispatch_main_async_safe(^{
+//                            //detailsview的labels
+//                            [strongVC.chartDetailsView.detailsView reloadLabelsWithData:data];
+//                            //detailsview的数值
+//                            [strongVC.chartDetailsView.detailsView reloadValuesWithData:data];
+//                            //图表
+//                            [strongVC.chartDetailsView.lineView relodData:data];
+//                        })
+//                    };
+//                    
+//                    //getDataMethodSEL 例如 - (void)getVisitorTypeDetailsData:(void (^)(NSDictionary *data))succeedBlock方法
+//                    //[model performSelector:getDataMethodSEL withObject:successefullyGetDataBlock];
+//                    // id (*typed_msgSend)(id, SEL, id) = (void *)objc_msgSend;
+//                    
+//#if !TARGET_IPHONE_SIMULATOR
+//                    ((id (*)(id, SEL, id))objc_msgSend)(model,getDataMethodSEL,successefullyGetDataBlock);
+//#else
+//                    objc_msgSend(model,getDataMethodSEL,successefullyGetDataBlock);
+//#endif
+//                    
+//                    }else{
+//                /*已有数据时，直接处理
+//                 */
+//                    detailsData = (NSMutableDictionary *)((NSDictionary *)[model getDetailsData])[(NSString *)dimensionArray[i]];
+//                    //detailsview的labels
+//                    [strongVC.chartDetailsView.detailsView reloadLabelsWithData:detailsData];
+//                    //detailsview的数值
+//                    [strongVC.chartDetailsView.detailsView reloadValuesWithData:detailsData];
+//                    //图表
+//                    [strongVC.chartDetailsView.lineView relodData:detailsData];
+//                }
+//            }
         }
     };
     
+    vc.dataChoosedBlock = ^(NSString *fromDate, NSString *toDate){
+        typeof (weakVC) strongVC = weakVC;
+        
+        [model setFromDate:fromDate];
+        [model setToDate:toDate];
+        [model setAllDetailsDataNeedReload];
+        
+        [strongSelf reloadController:strongVC dimensionIndex:chosenDimension.integerValue withModel:model withLabelData:labelData withDimensionArray:dimensionArray];
+    };
+
+    
     return vc;
 }
+
+
+- (void)reloadController:(lineChartDetailsViewController *)strongVC dimensionIndex:(NSInteger)i withModel:(id)model withLabelData:(NSDictionary *)labelData withDimensionArray:(NSArray *)dimensionArray
+{
+    //details views的 指标数组
+    NSArray *indexNameArray = (NSArray *)(NSDictionary *)(labelData[dimensionArray[i]])[@"indexOptionsArray"];
+    
+    //details views的 title 和 当前维度 名称
+    strongVC.titleString = strongVC.chartDetailsView.dimensionName = dimensionArray[i];
+    //details views的 当前指标 名称
+    strongVC.chartDetailsView.indexName = (NSString *)indexNameArray[0];
+    strongVC.chartDetailsView.lineView.labelString = (NSString *)indexNameArray[0];
+    //添加detailsview的index array选项
+    strongVC.indexArray = [[NSMutableArray alloc] initWithArray:indexNameArray];
+    
+    /*没有数据时，通过model的方法名称列表 获得获取请求数据的方法SEL，再通过该方法请求数据，同时将回调block传入
+     */
+    if([model respondsToSelector:@selector(dimensionDataAvailableArray)]){
+        if([((NSArray *)[model dimensionDataAvailableArray])[i] isEqual:@NO]){
+            
+            NSString *getDataMethodString = ((NSArray *)[model detailsDataMethodsArray])[i];
+            SEL getDataMethodSEL = NSSelectorFromString(getDataMethodString);
+            
+            void (^successefullyGetDataBlock)(NSDictionary *) = ^(NSDictionary *data) {
+                
+                if (data){
+                    //如果网络处理在非主线程，回调需要在主线程更新UI
+                    dispatch_main_async_safe(^{
+                        //detailsview的labels
+                        [strongVC.chartDetailsView.detailsView reloadLabelsWithData:data];
+                        //detailsview的数值
+                        [strongVC.chartDetailsView.detailsView reloadValuesWithData:data];
+                        //图表
+                        [strongVC.chartDetailsView.lineView relodData:data];
+                    })
+                }
+            };
+            
+            //getDataMethodSEL 例如 - (void)getVisitorTypeDetailsData:(void (^)(NSDictionary *data))succeedBlock方法
+            //[model performSelector:getDataMethodSEL withObject:successefullyGetDataBlock];
+            // id (*typed_msgSend)(id, SEL, id) = (void *)objc_msgSend;
+            
+#if !TARGET_IPHONE_SIMULATOR
+            ((id (*)(id, SEL, id))objc_msgSend)(model,getDataMethodSEL,successefullyGetDataBlock);
+#else
+            objc_msgSend(model,getDataMethodSEL,successefullyGetDataBlock);
+#endif
+            
+        }else{
+            /*已有数据时，直接处理
+             */
+            NSMutableDictionary *detailsData = (NSMutableDictionary *)((NSDictionary *)[model getDetailsData])[(NSString *)dimensionArray[i]];
+            //detailsview的labels
+            [strongVC.chartDetailsView.detailsView reloadLabelsWithData:detailsData];
+            //detailsview的数值
+            [strongVC.chartDetailsView.detailsView reloadValuesWithData:detailsData];
+            //图表
+            [strongVC.chartDetailsView.lineView relodData:detailsData];
+        }
+    }
+}
+
 
 - (lineChartDetailsViewController *)getVisitorGroupControllerByType:(NSInteger)type
 {
@@ -318,7 +377,7 @@
     _defineDetails =  @{@"dimensionOptionsArray":dimensionOptionsArray,
                         @"访客类型":@{@"labelStringArray":@[@"新访客",@"回访客"],
                                   @"indexOptionsArray":indexOptionsArray1},
-    
+ 
     _detailsData =  @{ @"访客类型":@{
                                @"labelValues":@[@(arc4random() % 2000),@(arc4random() % 2000)],
                                @"arrayOfDates":arrayofDate,
@@ -376,7 +435,6 @@
         }
     };
     
-
     vc.dimensionChoosedBlock = ^(NSInteger i) {
         if (_visitorGroupChosenDimension != i) {
             typeof (weakVC) strongVC = weakVC;

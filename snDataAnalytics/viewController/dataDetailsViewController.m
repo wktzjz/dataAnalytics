@@ -716,7 +716,7 @@ const static CGFloat itemsViewHeight = 145.0f;
                 break;
             case outlineSource:
                 [[sourcesAnalyticsModel sharedInstance] createDefineDetails];
-                [[sourcesAnalyticsModel sharedInstance] createDetailsData];
+                [[sourcesAnalyticsModel sharedInstance] getDisplayAdvertisingDetailsData:nil];
                 break;
             case outlinePageAnalytics:
                 [[pageAnalyticsModel sharedInstance] createDefineDetails];

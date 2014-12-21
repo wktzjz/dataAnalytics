@@ -11,7 +11,7 @@ typedef void(^dismiss)();
 @interface authenticationManager : NSObject
 
 @property (nonatomic, copy) dismiss dismissBlock;
-@property (nonatomic) BOOL isAuthenticationg;
+@property (nonatomic) BOOL isAuthenticating;
 
 + (instancetype)sharedInstance;
 

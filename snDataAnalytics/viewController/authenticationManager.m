@@ -80,7 +80,7 @@
 
 - (void)fingerAuthentication
 {
-     _isAuthenticationg = YES;
+     _isAuthenticating = YES;
     
     LAContext *myContext = [[LAContext alloc] init];
     NSError   *authError = nil;
@@ -182,7 +182,7 @@
 
 - (void)passwordAuthentication
 {
-     _isAuthenticationg = YES;
+     _isAuthenticating = YES;
     
     NSDictionary *query = @{(__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
                             (__bridge id)kSecAttrService: @"SampleService",

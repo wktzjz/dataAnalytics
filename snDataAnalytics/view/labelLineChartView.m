@@ -148,11 +148,18 @@
     _numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width/2, 5, self.frame.size.width/2 - 20, 30)];
 //    _numberLabel.text = [NSString stringWithFormat:@"%@", _labelNumber];
     float floatValue = _labelNumber.floatValue;
-    if(floatValue < 1){
-        _numberLabel.text = [NSString stringWithFormat:@"%.1f%%",_labelNumber.floatValue * 100.0];
+    if (floatValue < 1){
+        if (floatValue == 0){
+            _numberLabel.text = [NSString stringWithFormat:@"0"];
+        }else if (floatValue < 0.1){
+            _numberLabel.text = [NSString stringWithFormat:@"%.2f%%",_labelNumber.floatValue * 100.0];
+        }else{
+            _numberLabel.text = [NSString stringWithFormat:@"%.1f%%",_labelNumber.floatValue * 100.0];
+        }
     }else{
         _numberLabel.text = [NSString stringWithFormat:@"%li",_labelNumber.integerValue];
     }
+
     _numberLabel.textColor = [UIColor fadedBlueColor];
     _numberLabel.font = [UIFont fontWithName:@"OpenSans-Light" size:20.0];
     _numberLabel.textAlignment = NSTextAlignmentRight;
@@ -263,10 +270,16 @@
 //    _numberLabel.text = [NSString stringWithFormat:@"%@",_labelNumber ];
     
     float floatValue = labelNumber.floatValue;
-    if(floatValue < 1){
-        _numberLabel.text = [NSString stringWithFormat:@"%.1f%%",labelNumber.floatValue * 100.0];
+    if (floatValue < 1){
+        if (floatValue == 0){
+            _numberLabel.text = [NSString stringWithFormat:@"0"];
+        }else if (floatValue < 0.1){
+            _numberLabel.text = [NSString stringWithFormat:@"%.2f%%",_labelNumber.floatValue * 100.0];
+        }else{
+            _numberLabel.text = [NSString stringWithFormat:@"%.1f%%",_labelNumber.floatValue * 100.0];
+        }
     }else{
-        _numberLabel.text = [NSString stringWithFormat:@"%li",labelNumber.integerValue];
+        _numberLabel.text = [NSString stringWithFormat:@"%li",_labelNumber.integerValue];
     }
 }
 

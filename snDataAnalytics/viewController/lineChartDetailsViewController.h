@@ -16,6 +16,7 @@
 typedef void(^dismiss)();
 typedef void(^dimensionChoosed)(NSInteger i);
 typedef void(^indexChoosed)(NSInteger i);
+typedef void(^dataChoosed)(NSString *fromDate, NSString *toString);
 
 @interface lineChartDetailsViewController : UIViewController
 
@@ -30,6 +31,7 @@ typedef void(^indexChoosed)(NSInteger i);
 @property (nonatomic,copy) dismiss dismissBlock;
 @property (nonatomic,copy) dimensionChoosed dimensionChoosedBlock;
 @property (nonatomic,copy) indexChoosed indexChoosedBlock;
+@property (nonatomic,copy) dataChoosed dataChoosedBlock;
 
 - (instancetype)initWithFrame:(CGRect)frame data:(NSDictionary *)data;
 - (void)reloadViewWithData:(NSDictionary *)data;

@@ -9,16 +9,19 @@
 
 @interface sourcesAnalyticsModel : NSObject
 
-@property (nonatomic) NSDictionary *defineDetails;
-@property (nonatomic) NSDictionary *outlineData;
-@property (nonatomic) NSDictionary *detailInitializeData;
-@property (nonatomic) NSDictionary *detailsData;
+@property (nonatomic,strong) NSDictionary *defineDetails;
+@property (nonatomic,strong) NSDictionary *outlineData;
+@property (nonatomic,strong) NSDictionary *detailInitializeData;
+@property (nonatomic,strong) NSMutableDictionary *detailsData;
 
 @property (nonatomic,readonly) BOOL initializeDataReady;
 @property (nonatomic,readonly) BOOL detailsDataReady;
 
 @property (nonatomic,strong) NSArray *detailsDataMethodsArray;
 @property (nonatomic,strong) NSMutableArray *dimensionDataAvailableArray;
+
+@property (nonatomic, strong) NSString *fromDate;
+@property (nonatomic, strong) NSString *toDate;
 
 + (instancetype)sharedInstance;
 
@@ -32,5 +35,9 @@
 
 - (void)createDetailsData;
 - (NSDictionary *)getDetailsData;
+
+- (void)getDisplayAdvertisingDetailsData:(void (^)(NSDictionary *data))succeedBlock;
+
+- (void)setAllDetailsDataNeedReload;
 
 @end

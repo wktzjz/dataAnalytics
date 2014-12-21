@@ -662,7 +662,7 @@ const static CGFloat titleViewHeight = 44.0f;
     button.backgroundColor = [UIColor clearColor];
     button.alpha = 0.7;
     button.translatesAutoresizingMaskIntoConstraints = NO;
-    [button setTitle:@"点击指纹验证" forState:UIControlStateNormal];
+    [button setTitle:@"点击验证身份" forState:UIControlStateNormal];
     [button setTextColor:[UIColor blackColor]];
     [button addTarget:[authenticationManager sharedInstance] action:@selector(fingerAuthentication) forControlEvents:UIControlEventTouchUpInside];
     [blurView addSubview:button];
@@ -694,7 +694,7 @@ const static CGFloat titleViewHeight = 44.0f;
                          
                          [authenticationManager sharedInstance].dismissBlock = ^{
                              dispatch_main_async_safe(^{
-                                 [authenticationManager sharedInstance].isAuthenticationg = NO;
+                                 [authenticationManager sharedInstance].isAuthenticating = NO;
 
                                  [UIView animateWithDuration:0.5
                                                        delay:0.0

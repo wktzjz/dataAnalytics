@@ -166,7 +166,7 @@
 
 }
 
--(void)fingerAuthentication
+- (void)fingerAuthentication
 {
     LAContext *myContext = [[LAContext alloc] init];
     NSError   *authError = nil;

@@ -24,23 +24,21 @@
     if (self) {
         _groupPercentArray      = (NSMutableArray *)data[@"groupPercentArray"];
         _groupValidPercentArray = (NSMutableArray *)data[@"groupValidPercentArray"];
-        [_groupValidPercentArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            _groupValidPercentArray[idx] = @(((NSNumber *)_groupPercentArray[idx]).floatValue * ((NSNumber *)_groupValidPercentArray[idx]).floatValue / 100.00);
-        }];
+//        [_groupValidPercentArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+////            _groupValidPercentArray[idx] = @(((NSNumber *)_groupPercentArray[idx]).floatValue * ((NSNumber *)_groupValidPercentArray[idx]).floatValue / 100.00);
+//            _groupValidPercentArray[idx] = @(((NSNumber *)_groupValidPercentArray[idx]).floatValue / ((NSNumber *)_groupPercentArray[idx]).floatValue);
+//
+//        }];
         
-//        _groupPercentArray = [[NSMutableArray alloc] initWithArray:@[@30,@20,@20,@15,@10,@5]];
-//        _groupValidPercentArray = [[NSMutableArray alloc] initWithArray:@[@10,@7,@13,@6,@6,@9]];
-
         _groupColorArray   = [[NSMutableArray alloc] initWithArray:@[PNLightGreen,
                                                                      PNFreshGreen,
                                                                      PNDeepGreen,
                                                                      [UIColor paperColorTeal],
                                                                      [UIColor paperColorCyan],
                                                                      [UIColor paperColorLightBlue]
-                                                                     ]
-                              ];
+                                                                     ]];
         
-        _sourcesStringArray = [[NSMutableArray alloc] initWithArray: @[@"硬广",@"导航",@"搜索",@"广告联盟",@"直接流量",@"EDM"]];
+        _sourcesStringArray = (NSMutableArray *)data[@"sourceArray"];
 
         _marginX = 20.0;
         

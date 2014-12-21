@@ -77,7 +77,7 @@ static NSInteger const blurViewTag  = 1211;
     if ([self isIOS8]) {
         
         // 注意[authenticationManager sharedInstance].dismissBlock会被这里的block实现替代
-        if (![authenticationManager sharedInstance].isAuthenticationg) {
+        if (![authenticationManager sharedInstance].isAuthenticating) {
             UIView *blurView;
             UIVisualEffect *effect;
             effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
@@ -90,7 +90,7 @@ static NSInteger const blurViewTag  = 1211;
             button.backgroundColor = [UIColor clearColor];
             button.alpha = 0.7;
             button.translatesAutoresizingMaskIntoConstraints = NO;
-            [button setTitle:@"点击指纹验证" forState:UIControlStateNormal];
+            [button setTitle:@"点击验证身份" forState:UIControlStateNormal];
             [button setTextColor:[UIColor blackColor]];
             [button addTarget:[authenticationManager sharedInstance] action:@selector(fingerAuthentication) forControlEvents:UIControlEventTouchUpInside];
             [blurView addSubview:button];
@@ -125,7 +125,7 @@ static NSInteger const blurViewTag  = 1211;
                                  [authenticationManager sharedInstance].dismissBlock = ^{
                                      //dismissBlock 为非主线程
                                      dispatch_main_async_safe(^{
-                                         [authenticationManager sharedInstance].isAuthenticationg = NO;
+                                         [authenticationManager sharedInstance].isAuthenticating = NO;
                                          
                                          [UIView animateWithDuration:0.5
                                                                delay:0.0

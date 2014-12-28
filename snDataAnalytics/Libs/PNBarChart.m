@@ -49,6 +49,7 @@
         _showReferenceLines = NO;
         _bars1              = [NSMutableArray array];
         _referencesLines    = [NSMutableArray array];
+        _labelLineNumber     = 1;
     }
 
     return self;
@@ -117,6 +118,9 @@
             if (labelAddCount == _xLabelSkip) {
                 NSString *labelText = _xLabels[index];
                 PNChartLabel * label = [[PNChartLabel alloc] initWithFrame:CGRectZero];
+                if(_labelLineNumber > 1){
+                    label.numberOfLines = _labelLineNumber;
+                }
                 label.font = _labelFont;
                 label.textColor = _labelTextColor;
                 [label setTextAlignment:NSTextAlignmentCenter];

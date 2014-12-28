@@ -207,7 +207,7 @@
 		35EB871C1A35AABD00D45E37 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35EB871B1A35AABD00D45E37 /* Security.framework */; };
 		35EB871E1A35AAC400D45E37 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35EB871D1A35AAC400D45E37 /* LocalAuthentication.framework */; };
 		35EB87261A36DE6500D45E37 /* authenticationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB87251A36DE6500D45E37 /* authenticationManager.m */; };
-		35EB872D1A3BE3FF00D45E37 /* DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB872C1A3BE3FF00D45E37 /* DBManager.m */; };
+		35EB872D1A3BE3FF00D45E37 /* CityDBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB872C1A3BE3FF00D45E37 /* CityDBManager.m */; };
 		35EB873B1A3BEE4500D45E37 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB872F1A3BEE4500D45E37 /* FMDatabase.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		35EB873C1A3BEE4500D45E37 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB87311A3BEE4500D45E37 /* FMDatabaseAdditions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		35EB873D1A3BEE4500D45E37 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB87331A3BEE4500D45E37 /* FMDatabasePool.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -217,6 +217,15 @@
 		35EB87411A3BEE4500D45E37 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 35EB873A1A3BEE4500D45E37 /* libsqlite3.0.dylib */; };
 		35EB87431A3C140100D45E37 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 35EB87421A3C140100D45E37 /* libxml2.dylib */; };
 		35EB87471A3C3B4A00D45E37 /* city.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 35EB87461A3C36E200D45E37 /* city.sqlite */; };
+		35EB874B1A48107C00D45E37 /* ConditionInquireController.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB874A1A48107C00D45E37 /* ConditionInquireController.m */; };
+		35EB875A1A490B4000D45E37 /* PinYinForObjc.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB874D1A490B4000D45E37 /* PinYinForObjc.m */; };
+		35EB875B1A490B4000D45E37 /* ChineseToPinyinResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB87501A490B4000D45E37 /* ChineseToPinyinResource.m */; };
+		35EB875C1A490B4000D45E37 /* HanyuPinyinOutputFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB87521A490B4000D45E37 /* HanyuPinyinOutputFormat.m */; };
+		35EB875D1A490B4000D45E37 /* NSString+PinYin4Cocoa.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB87541A490B4000D45E37 /* NSString+PinYin4Cocoa.m */; };
+		35EB875E1A490B4000D45E37 /* PinyinFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB87561A490B4000D45E37 /* PinyinFormatter.m */; };
+		35EB875F1A490B4000D45E37 /* PinyinHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB87581A490B4000D45E37 /* PinyinHelper.m */; };
+		35EB87601A490B4000D45E37 /* unicode_to_hanyu_pinyin.txt in Resources */ = {isa = PBXBuildFile; fileRef = 35EB87591A490B4000D45E37 /* unicode_to_hanyu_pinyin.txt */; };
+		35EB87631A49113200D45E37 /* ChineseInclude.m in Sources */ = {isa = PBXBuildFile; fileRef = 35EB87621A49113200D45E37 /* ChineseInclude.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -516,7 +525,7 @@
 		35945DF219F0F3CE00BF5EC3 /* realTimeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = realTimeModel.m; path = Model/realTimeModel.m; sourceTree = "<group>"; };
 		35945DF519F0FC4400BF5EC3 /* KeyValueObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyValueObserver.h; sourceTree = "<group>"; };
 		35945DF619F0FC4400BF5EC3 /* KeyValueObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyValueObserver.m; sourceTree = "<group>"; };
-		35945DF819F4E99200BF5EC3 /* notificationDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = notificationDefine.h; sourceTree = "<group>"; };
+		35945DF819F4E99200BF5EC3 /* networkDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = networkDefine.h; sourceTree = "<group>"; };
 		35945DF919F64D1600BF5EC3 /* visitorGroupModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = visitorGroupModel.h; path = Model/visitorGroupModel.h; sourceTree = "<group>"; };
 		35945DFA19F64D1600BF5EC3 /* visitorGroupModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = visitorGroupModel.m; path = Model/visitorGroupModel.m; sourceTree = "<group>"; };
 		35945E0619F654CC00BF5EC3 /* JBBarChartView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBBarChartView.h; path = Libs/JBBarChartView.h; sourceTree = "<group>"; };
@@ -572,8 +581,8 @@
 		35EB871D1A35AAC400D45E37 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		35EB87241A36DE6500D45E37 /* authenticationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = authenticationManager.h; path = viewController/authenticationManager.h; sourceTree = "<group>"; };
 		35EB87251A36DE6500D45E37 /* authenticationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = authenticationManager.m; path = viewController/authenticationManager.m; sourceTree = "<group>"; };
-		35EB872B1A3BE3FF00D45E37 /* DBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DBManager.h; path = Model/DBManager.h; sourceTree = "<group>"; };
-		35EB872C1A3BE3FF00D45E37 /* DBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DBManager.m; path = Model/DBManager.m; sourceTree = "<group>"; };
+		35EB872B1A3BE3FF00D45E37 /* CityDBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CityDBManager.h; path = Model/CityDBManager.h; sourceTree = "<group>"; };
+		35EB872C1A3BE3FF00D45E37 /* CityDBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CityDBManager.m; path = Model/CityDBManager.m; sourceTree = "<group>"; };
 		35EB872E1A3BEE4500D45E37 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabase.h; path = Libs/SQLite/FMDatabase.h; sourceTree = "<group>"; };
 		35EB872F1A3BEE4500D45E37 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabase.m; path = Libs/SQLite/FMDatabase.m; sourceTree = "<group>"; };
 		35EB87301A3BEE4500D45E37 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabaseAdditions.h; path = Libs/SQLite/FMDatabaseAdditions.h; sourceTree = "<group>"; };
@@ -589,6 +598,23 @@
 		35EB873A1A3BEE4500D45E37 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = Libs/SQLite/libsqlite3.0.dylib; sourceTree = "<group>"; };
 		35EB87421A3C140100D45E37 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		35EB87461A3C36E200D45E37 /* city.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = city.sqlite; sourceTree = "<group>"; };
+		35EB87491A48107C00D45E37 /* ConditionInquireController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConditionInquireController.h; path = viewController/ConditionInquireController.h; sourceTree = "<group>"; };
+		35EB874A1A48107C00D45E37 /* ConditionInquireController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConditionInquireController.m; path = viewController/ConditionInquireController.m; sourceTree = "<group>"; };
+		35EB874D1A490B4000D45E37 /* PinYinForObjc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PinYinForObjc.m; path = Libs/ChineseSpelling/PinYinForObjc.m; sourceTree = "<group>"; };
+		35EB874E1A490B4000D45E37 /* PinYinForObjc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PinYinForObjc.h; path = Libs/ChineseSpelling/PinYinForObjc.h; sourceTree = "<group>"; };
+		35EB874F1A490B4000D45E37 /* ChineseToPinyinResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChineseToPinyinResource.h; path = Libs/ChineseSpelling/ChineseToPinyinResource.h; sourceTree = "<group>"; };
+		35EB87501A490B4000D45E37 /* ChineseToPinyinResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChineseToPinyinResource.m; path = Libs/ChineseSpelling/ChineseToPinyinResource.m; sourceTree = "<group>"; };
+		35EB87511A490B4000D45E37 /* HanyuPinyinOutputFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HanyuPinyinOutputFormat.h; path = Libs/ChineseSpelling/HanyuPinyinOutputFormat.h; sourceTree = "<group>"; };
+		35EB87521A490B4000D45E37 /* HanyuPinyinOutputFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HanyuPinyinOutputFormat.m; path = Libs/ChineseSpelling/HanyuPinyinOutputFormat.m; sourceTree = "<group>"; };
+		35EB87531A490B4000D45E37 /* NSString+PinYin4Cocoa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+PinYin4Cocoa.h"; path = "Libs/ChineseSpelling/NSString+PinYin4Cocoa.h"; sourceTree = "<group>"; };
+		35EB87541A490B4000D45E37 /* NSString+PinYin4Cocoa.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+PinYin4Cocoa.m"; path = "Libs/ChineseSpelling/NSString+PinYin4Cocoa.m"; sourceTree = "<group>"; };
+		35EB87551A490B4000D45E37 /* PinyinFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PinyinFormatter.h; path = Libs/ChineseSpelling/PinyinFormatter.h; sourceTree = "<group>"; };
+		35EB87561A490B4000D45E37 /* PinyinFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PinyinFormatter.m; path = Libs/ChineseSpelling/PinyinFormatter.m; sourceTree = "<group>"; };
+		35EB87571A490B4000D45E37 /* PinyinHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PinyinHelper.h; path = Libs/ChineseSpelling/PinyinHelper.h; sourceTree = "<group>"; };
+		35EB87581A490B4000D45E37 /* PinyinHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PinyinHelper.m; path = Libs/ChineseSpelling/PinyinHelper.m; sourceTree = "<group>"; };
+		35EB87591A490B4000D45E37 /* unicode_to_hanyu_pinyin.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = unicode_to_hanyu_pinyin.txt; path = Libs/ChineseSpelling/unicode_to_hanyu_pinyin.txt; sourceTree = "<group>"; };
+		35EB87611A49113200D45E37 /* ChineseInclude.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChineseInclude.h; path = Libs/ChineseSpelling/ChineseInclude.h; sourceTree = "<group>"; };
+		35EB87621A49113200D45E37 /* ChineseInclude.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChineseInclude.m; path = Libs/ChineseSpelling/ChineseInclude.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1031,7 +1057,7 @@
 			isa = PBXGroup;
 			children = (
 				35945DDF19E8D3B100BF5EC3 /* defines.h */,
-				35945DF819F4E99200BF5EC3 /* notificationDefine.h */,
+				35945DF819F4E99200BF5EC3 /* networkDefine.h */,
 			);
 			name = Marco;
 			sourceTree = "<group>";
@@ -1088,6 +1114,7 @@
 		3562983019B45099004A8054 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				35EB87481A480F9400D45E37 /* ConditionInquireController */,
 				35EB871F1A36981700D45E37 /* AppDelegate */,
 				354AE1721A144B3200564F9F /* Login */,
 				35EB87171A35A9A700D45E37 /* AuthenticationController */,
@@ -1118,15 +1145,16 @@
 		3562983319B4575E004A8054 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				3562989A19B8382E004A8054 /* PNChart */,
+				35791EED19D2605A00BAB351 /* THCalendarDatePicker */,
+				355900A419B9B918001AD1FF /* BEMLineChart */,
+				35EB874C1A490B2400D45E37 /* ChineseSpelling */,
 				35EB87291A3AF4C700D45E37 /* SQlite */,
 				35D397BA19FF2E930014B377 /* TLYShyNavBar */,
 				35D397A219FE316C0014B377 /* LTMorphingLabel */,
 				35945DFC19F6547C00BF5EC3 /* JBChartView */,
-				35791EED19D2605A00BAB351 /* THCalendarDatePicker */,
 				3522248E19C936A40048F57C /* JVFloatLabeledTextField */,
 				3522243219C2C6570048F57C /* Pop */,
-				355900A419B9B918001AD1FF /* BEMLineChart */,
-				3562989A19B8382E004A8054 /* PNChart */,
 				3562984719B45833004A8054 /* TSMessages */,
 				3562984019B457EB004A8054 /* NetworkReachablity */,
 				3562983819B457BB004A8054 /* FBShimmering */,
@@ -1655,10 +1683,41 @@
 		35EB872A1A3BE3DD00D45E37 /* DBManager */ = {
 			isa = PBXGroup;
 			children = (
-				35EB872B1A3BE3FF00D45E37 /* DBManager.h */,
-				35EB872C1A3BE3FF00D45E37 /* DBManager.m */,
+				35EB872B1A3BE3FF00D45E37 /* CityDBManager.h */,
+				35EB872C1A3BE3FF00D45E37 /* CityDBManager.m */,
 			);
 			name = DBManager;
+			sourceTree = "<group>";
+		};
+		35EB87481A480F9400D45E37 /* ConditionInquireController */ = {
+			isa = PBXGroup;
+			children = (
+				35EB87491A48107C00D45E37 /* ConditionInquireController.h */,
+				35EB874A1A48107C00D45E37 /* ConditionInquireController.m */,
+			);
+			name = ConditionInquireController;
+			sourceTree = "<group>";
+		};
+		35EB874C1A490B2400D45E37 /* ChineseSpelling */ = {
+			isa = PBXGroup;
+			children = (
+				35EB87611A49113200D45E37 /* ChineseInclude.h */,
+				35EB87621A49113200D45E37 /* ChineseInclude.m */,
+				35EB874D1A490B4000D45E37 /* PinYinForObjc.m */,
+				35EB874E1A490B4000D45E37 /* PinYinForObjc.h */,
+				35EB874F1A490B4000D45E37 /* ChineseToPinyinResource.h */,
+				35EB87501A490B4000D45E37 /* ChineseToPinyinResource.m */,
+				35EB87511A490B4000D45E37 /* HanyuPinyinOutputFormat.h */,
+				35EB87521A490B4000D45E37 /* HanyuPinyinOutputFormat.m */,
+				35EB87531A490B4000D45E37 /* NSString+PinYin4Cocoa.h */,
+				35EB87541A490B4000D45E37 /* NSString+PinYin4Cocoa.m */,
+				35EB87551A490B4000D45E37 /* PinyinFormatter.h */,
+				35EB87561A490B4000D45E37 /* PinyinFormatter.m */,
+				35EB87571A490B4000D45E37 /* PinyinHelper.h */,
+				35EB87581A490B4000D45E37 /* PinyinHelper.m */,
+				35EB87591A490B4000D45E37 /* unicode_to_hanyu_pinyin.txt */,
+			);
+			name = ChineseSpelling;
 			sourceTree = "<group>";
 		};
 		35F3999019CFC1D30077BA75 /* popupViewController */ = {
@@ -1809,6 +1868,7 @@
 				35945D3319E8C3AC00BF5EC3 /* THDateDay.xib in Resources */,
 				35945D6E19E8CA7E00BF5EC3 /* calendar_littledot@2x.png in Resources */,
 				35945D9A19E8CBE100BF5EC3 /* NotificationBackgroundWarningIcon.png in Resources */,
+				35EB87601A490B4000D45E37 /* unicode_to_hanyu_pinyin.txt in Resources */,
 				35945D6A19E8CA7E00BF5EC3 /* calendar_clear-disabled@2x.png in Resources */,
 				35945D9519E8CBE100BF5EC3 /* NotificationBackgroundSuccess@2x.png in Resources */,
 				358F8E4B1A357A79008BF6A7 /* ic_账户@2x.png in Resources */,
@@ -1849,6 +1909,7 @@
 				358F8E3B1A303B90008BF6A7 /* hotPageOutlineView.m in Sources */,
 				35D397D919FF2F2B0014B377 /* LTMorphingLabel+Pixelate.swift in Sources */,
 				3522246A19C2C73D0048F57C /* POPAnimationRuntime.mm in Sources */,
+				35EB875C1A490B4000D45E37 /* HanyuPinyinOutputFormat.m in Sources */,
 				35945D2419E8C37300BF5EC3 /* PNChartLabel.m in Sources */,
 				3562989919B83763004A8054 /* dataDetailsViewController.m in Sources */,
 				35945DB519E8CE8100BF5EC3 /* UIViewController+clickedViewIndex.m in Sources */,
@@ -1860,7 +1921,7 @@
 				3522247519C2C73D0048F57C /* POPSpringAnimation.mm in Sources */,
 				35945CFE19E8C29900BF5EC3 /* menuViewController.m in Sources */,
 				35AE1ABA1A0A247A00167096 /* lineChartDetailsViewFactory.m in Sources */,
-				35EB872D1A3BE3FF00D45E37 /* DBManager.m in Sources */,
+				35EB872D1A3BE3FF00D45E37 /* CityDBManager.m in Sources */,
 				3562987C19B46294004A8054 /* baseViewController.m in Sources */,
 				350BCFF41A2D691A000EA574 /* pageAnalyticsModel.m in Sources */,
 				35945D2219E8C37300BF5EC3 /* PNBar.m in Sources */,
@@ -1877,10 +1938,12 @@
 				35945D7D19E8CB7500BF5EC3 /* HexColor.m in Sources */,
 				3522246F19C2C73D0048F57C /* POPCustomAnimation.mm in Sources */,
 				3522247419C2C73D0048F57C /* POPPropertyAnimation.mm in Sources */,
+				35EB875F1A490B4000D45E37 /* PinyinHelper.m in Sources */,
 				35D397EF19FF90950014B377 /* FXBlurView.m in Sources */,
 				35D397D319FF2F2B0014B377 /* LTEasing.swift in Sources */,
 				35D397D519FF2F2B0014B377 /* LTMorphingLabel+Anvil.swift in Sources */,
 				35945DC119E8D05200BF5EC3 /* UIColor+CustomColors.m in Sources */,
+				35EB875E1A490B4000D45E37 /* PinyinFormatter.m in Sources */,
 				35945DB219E8CE6900BF5EC3 /* UIViewController+KNSemiModal.m in Sources */,
 				35D397E719FF2F910014B377 /* NSObject+TLYSwizzlingHelpers.m in Sources */,
 				35AE1AC41A10B3A800167096 /* UIColor+BFPaperColors.m in Sources */,
@@ -1927,9 +1990,11 @@
 				35EB873F1A3BEE4500D45E37 /* FMResultSet.m in Sources */,
 				35945E1619F655E500BF5EC3 /* JBChartHeaderView.m in Sources */,
 				3562989019B5BE82004A8054 /* menuController.m in Sources */,
+				35EB874B1A48107C00D45E37 /* ConditionInquireController.m in Sources */,
 				35945DB819E8D00300BF5EC3 /* PresentingAnimator.m in Sources */,
 				35D397D619FF2F2B0014B377 /* LTMorphingLabel+Burn.swift in Sources */,
 				35945DC019E8D05200BF5EC3 /* Colours.m in Sources */,
+				35EB875D1A490B4000D45E37 /* NSString+PinYin4Cocoa.m in Sources */,
 				35945DEA19E8D42400BF5EC3 /* TSBlurView.m in Sources */,
 				354AE1801A159E2600564F9F /* timeView.m in Sources */,
 				35945D2619E8C37300BF5EC3 /* PNColor.m in Sources */,
@@ -1948,9 +2013,11 @@
 				35EB871A1A35A9DE00D45E37 /* authenticationViewController.m in Sources */,
 				35D397DB19FF2F2B0014B377 /* NSString+LTMorphingLabel.swift in Sources */,
 				35945DC919E8D0D000BF5EC3 /* CheckNetwork.m in Sources */,
+				35EB875B1A490B4000D45E37 /* ChineseToPinyinResource.m in Sources */,
 				35945D3F19E8C49D00BF5EC3 /* wkContextMenuView.m in Sources */,
 				35D397FE1A033AC10014B377 /* detailsSwitchView.m in Sources */,
 				35945DBB19E8D02A00BF5EC3 /* DismissingAnimator.m in Sources */,
+				35EB87631A49113200D45E37 /* ChineseInclude.m in Sources */,
 				35945CF319E8C20A00BF5EC3 /* visitorGroupOutlineView.m in Sources */,
 				35D397F91A0336700014B377 /* lineChartDetailsViewController.m in Sources */,
 				35945D2A19E8C37300BF5EC3 /* PNPieChart.m in Sources */,
@@ -1964,6 +2031,7 @@
 				35945DF719F0FC4400BF5EC3 /* KeyValueObserver.m in Sources */,
 				35EB873C1A3BEE4500D45E37 /* FMDatabaseAdditions.m in Sources */,
 				35945D0A19E8C33600BF5EC3 /* FRDLivelyButton.m in Sources */,
+				35EB875A1A490B4000D45E37 /* PinYinForObjc.m in Sources */,
 				3550C3B31A19A5CF00402F33 /* sourcesAnalyticsModel.m in Sources */,
 				35945DFB19F64D1600BF5EC3 /* visitorGroupModel.m in Sources */,
 				35D397EB19FF2F910014B377 /* TLYShyViewController.m in Sources */,

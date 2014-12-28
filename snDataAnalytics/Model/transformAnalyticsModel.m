@@ -8,10 +8,7 @@
 
 #import "transformAnalyticsModel.h"
 #import "networkManager.h"
-
-static NSString *const transformAnalyticsDataDidChange                  = @"transformAnalyticsDataDidChanged";
-static NSString *const transformAnalyticsDetailOutlineDataDidInitialize = @"transformAnalyticsDetailOutlineDataDidInitialize";
-static NSString *const transformAnalyticsOutlineDataDidInitialize       = @"transformAnalyticsOutlineDataDidInitialize";
+#import "networkDefine.h"
 
 @implementation transformAnalyticsModel
 {
@@ -35,7 +32,7 @@ static NSString *const transformAnalyticsOutlineDataDidInitialize       = @"tran
     self = [super init];
     
     if (self) {
-        
+        _detailsData = [[NSMutableDictionary alloc] initWithCapacity:4];
         _dimensionDataAvailableArray = [[NSMutableArray alloc] initWithArray:@[@NO,@NO,@NO,@NO,@NO,@NO,@NO]];
 
         _wself = self;

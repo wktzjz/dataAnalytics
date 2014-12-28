@@ -11,6 +11,12 @@
 #import "PNColor.h"
 #import <snDataAnalytics-swift.h>
 
+#define dispatch_main_async_safe(block)\
+if ([NSThread isMainThread]) {\
+block();\
+} else {\
+dispatch_async(dispatch_get_main_queue(), block);\
+}
 
 @implementation timeView
 {
@@ -186,11 +192,15 @@
     
 //    _fromString = [NSString stringWithFormat:@"%li年%li月%li日",year,month,day];
     _fromString = [_formatter stringFromDate:_fromTime];
+//
+//    NSLog(@"fromDate:%@",_fromString);
 
-    NSLog(@"fromDate:%@",_fromString);
-
-    _fromDay.text = [NSString stringWithFormat:@"%li",day];
-    _fromMonth.text = [NSString stringWithFormat:@"%li月\n%li", month, year];
+    NSString *dayString = [NSString stringWithFormat:@"%li",day];
+    NSString *monthString =[NSString stringWithFormat:@"%li月\n%li", month, year];
+    dispatch_main_async_safe(^{
+        _fromDay.text = dayString;
+        _fromMonth.text = monthString;
+    });
 
 }
 
@@ -209,27 +219,24 @@
     
 //    _toString = [NSString stringWithFormat:@"%li年%li月%li日",year,month,day];
     _toString = [_formatter stringFromDate:_toTime];
-
-    
     NSLog(@"toDate:%@",_toString);
-
-    _toDay.text = [NSString stringWithFormat:@"%li",day];
-    _toMonth.text = [NSString stringWithFormat:@"%li月\n%li", month, year];
-    CGSize size = [_toDay.text sizeWithFont:_toDay.font];
-    CGRect r = _toDay.frame;
-    r.size = size;
-    _toDay.frame = r;
-//    CGPoint p = _toDay.center;
-//    p.y = self.frame.size.height/2;
-//    _toDay.center = p;
-
-//    CGPoint p = _toMonth.center;
-//    p.y = self.frame.size.height/2;
-//    _toMonth.center = p;
     
-    if(!_showToTime){
-        [self showToTimeView];
-    }
+    
+    NSString *dayString = [NSString stringWithFormat:@"%li",day];
+    NSString *monthString = [NSString stringWithFormat:@"%li月\n%li", month, year];
+    
+    dispatch_main_async_safe(^{
+        _toDay.text = dayString;
+        _toMonth.text = monthString;
+        CGSize size = [_toDay.text sizeWithFont:_toDay.font];
+        CGRect r = _toDay.frame;
+        r.size = size;
+        _toDay.frame = r;
+        
+        if(!_showToTime){
+            [self showToTimeView];
+        }
+    });
 }
 
 - (void)showToTimeView

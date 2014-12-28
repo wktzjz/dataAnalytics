@@ -8,16 +8,7 @@
 
 #import "sourcesAnalyticsModel.h"
 #import "networkManager.h"
-
-#if !TARGET_IPHONE_SIMULATOR
-static NSString *const serverAddress = @"http://sasssit.cnsuning.com:4080";
-#else
-static NSString *const serverAddress = @"http://10.27.193.34:80";
-#endif
-
-static NSString *const sourceAnalyticsDataDidChange                  = @"sourceAnalyticsDataDidChanged";
-static NSString *const sourceAnalyticsDetailOutlineDataDidInitialize = @"sourceAnalyticsDetailOutlineDataDidInitialize";
-static NSString *const sourceAnalyticsOutlineDataDidInitialize       = @"sourceAnalyticsOutlineDataDidInitialize";
+#import "networkDefine.h"
 
 @implementation sourcesAnalyticsModel
 {
@@ -159,14 +150,14 @@ static NSString *const sourceAnalyticsOutlineDataDidInitialize       = @"sourceA
         });
     };
     NSString *URL = [[NSString alloc] initWithFormat:@"%@/snf-mbbi-web/mbbi/getSourceAnalyse.htm?beginTime=%@&endTime=%@",serverAddress,_fromDate,_toDate];
-    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:URL failureBlock:successefullyBlock successedBlock:successefullyBlock];
+    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:URL failureBlock:nil successedBlock:successefullyBlock];
 }
 
 
 - (NSDictionary *)getDetailOutlineData
 {
     if (!_detailInitializeData) {
-        [self createDetailOutlineData];
+        [self createDetailOutlineData:nil];
         return _detailInitializeData;
     }else{
         return _detailInitializeData;
@@ -174,39 +165,65 @@ static NSString *const sourceAnalyticsOutlineDataDidInitialize       = @"sourceA
 }
 
 
-- (void)createDetailOutlineData
+- (NSDictionary *)handleDetailOutlineData:(NSDictionary *)data
+{
+    return @{ @"arrayOfDates":data[@"arrayOfDates"],
+              @"UV_arrayOfValues":data[@"uvArrayOfValues"],
+              @"PV_arrayOfValues":data[@"pvArrayOfValues"],
+              @"VISIT_arrayOfValues":data[@"visitArrayOfValues"],
+              @"新UV_arrayOfValues":data[@"newUvArrayOfValues"],
+              @"有效UV_arrayOfValues":data[@"validUvArrayOfValues"],
+              @"平均页面停留时间_arrayOfValues":data[@"arrayOfAvgPageTime"],
+              @"提交订单转化率_arrayOfValues":data[@"avgOrderTransPercent"],
+              @"有效订单转化率_arrayOfValues":data[@"validOrderTransPercent"],
+              @"间接订单数_arrayOfValues":data[@"indirectOrderNum"],
+              @"间接订单转化率_arrayOfValues":data[@"indirectOrderTransPercent"],
+              @"UV_number":data[@"uvTotal"],
+              @"PV_number":data[@"pvTotal"],
+              @"VISIT_number":data[@"visitTotal"],
+              @"新UV_number":data[@"newUvTotal"],
+              @"有效UV_number":data[@"validUvTotal"],
+              @"平均页面停留时间_number":data[@"avgPageTime"],
+              @"提交订单转化率_number":data[@"orderPercent"],
+              @"有效订单转化率_number":data[@"validOrderPercent"],
+              @"间接订单数_number":data[@"indirectOrder"],
+              @"间接订单转化率_number":data[@"indirectOrdPer"],
+              };
+}
+
+
+- (void)createDetailOutlineData:(void(^)())succeedBlock
 {
     NSString *url = [[NSString alloc] initWithFormat:@"%@/snf-mbbi-web/mbbi/getSourceDesc.htm?beginTime=%@&endTime=%@",serverAddress,_fromDate,_toDate];
-//    NSString *url = [[NSString alloc] initWithFormat: @"http://10.27.193.34:80/snf-mbbi-web/mbbi/getSourceDesc.htm?beginTime=2014-12-08&endTime=2014-12-08"];
 
     void (^successefullyBlock)(NSDictionary *) = ^(NSDictionary *data) {
         
         sourcesAnalyticsModel *strongSelf = _wself;
         
-        NSMutableArray *array1 = [[NSMutableArray alloc] init];
-        NSMutableArray *array2 = [[NSMutableArray alloc] init];
-        NSMutableArray *array3 = [[NSMutableArray alloc] init];
-        NSMutableArray *array4 = [[NSMutableArray alloc] init];
-        NSMutableArray *array5 = [[NSMutableArray alloc] init];
-        NSMutableArray *array6 = [[NSMutableArray alloc] init];
-        NSMutableArray *array7 = [[NSMutableArray alloc] init];
-        NSMutableArray *array8 = [[NSMutableArray alloc] init];
-        NSMutableArray *array9 = [[NSMutableArray alloc] init];
-        NSMutableArray *array10 = [[NSMutableArray alloc] init];
+//        NSMutableArray *array1 = [[NSMutableArray alloc] init];
+//        NSMutableArray *array2 = [[NSMutableArray alloc] init];
+//        NSMutableArray *array3 = [[NSMutableArray alloc] init];
+//        NSMutableArray *array4 = [[NSMutableArray alloc] init];
+//        NSMutableArray *array5 = [[NSMutableArray alloc] init];
+//        NSMutableArray *array6 = [[NSMutableArray alloc] init];
+//        NSMutableArray *array7 = [[NSMutableArray alloc] init];
+//        NSMutableArray *array8 = [[NSMutableArray alloc] init];
+//        NSMutableArray *array9 = [[NSMutableArray alloc] init];
+//        NSMutableArray *array10 = [[NSMutableArray alloc] init];
+//        
+//        NSArray *parallelArray = @[array1,array2,array3,array4,array5,array6,array7,array8,array9,array10];
+//        NSMutableArray *arrayofDate = [NSMutableArray array];
+//        for (int i = 0; i < 20; i++) {
+//            [arrayofDate addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:i]]];
+//        }
+//        
+//        //同步并行处理数据
+//        dispatch_apply(10, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t index) {
+//            [strongSelf addNumberToArray:parallelArray[index]];
+//        });
         
-        NSArray *parallelArray = @[array1,array2,array3,array4,array5,array6,array7,array8,array9,array10];
-        NSMutableArray *arrayofDate = [NSMutableArray array];
-        for (int i = 0; i < 20; i++) {
-            [arrayofDate addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:i]]];
-        }
-        
-        //同步并行处理数据
-        dispatch_apply(10, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t index) {
-            [strongSelf addNumberToArray:parallelArray[index]];
-        });
-        
-        _detailInitializeData =
-                 @{
+//        _detailInitializeData =
+//                 @{
 //                            @"arrayOfDates":arrayofDate,
 //                            @"UV_arrayOfValues":array1,
 //                            @"PV_arrayOfValues":array2,
@@ -228,43 +245,43 @@ static NSString *const sourceAnalyticsOutlineDataDidInitialize       = @"sourceA
 //                            @"有效订单转化率_number":@(arc4random() % 100),
 //                            @"间接订单数_number":@(arc4random() % 1000),
 //                            @"间接订单转化率_number":@(arc4random() % 100),
-                   @"arrayOfDates":data[@"arrayOfDates"],
-                   @"UV_arrayOfValues":data[@"uvArrayOfValues"],
-                   @"PV_arrayOfValues":data[@"pvArrayOfValues"],
-                   @"VISIT_arrayOfValues":data[@"visitArrayOfValues"],
-                   @"新UV_arrayOfValues":data[@"newUvArrayOfValues"],
-                   @"有效UV_arrayOfValues":data[@"validUvArrayOfValues"],
-                   @"平均页面停留时间_arrayOfValues":data[@"arrayOfAvgPageTime"],
-                   @"提交订单转化率_arrayOfValues":data[@"avgOrderTransPercent"],
-                   @"有效订单转化率_arrayOfValues":data[@"validOrderTransPercent"],
-                   @"间接订单数_arrayOfValues":data[@"indirectOrderNum"],
-                   @"间接订单转化率_arrayOfValues":data[@"indirectOrderTransPercent"],
-                   @"UV_number":data[@"uvTotal"],
-                   @"PV_number":data[@"pvTotal"],
-                   @"VISIT_number":data[@"visitTotal"],
-                   @"新UV_number":data[@"newUvTotal"],
-                   @"有效UV_number":data[@"validUvTotal"],
-                   @"平均页面停留时间_number":data[@"avgPageTime"],
-                   @"提交订单转化率_number":data[@"orderPercent"],
-                   @"有效订单转化率_number":data[@"validOrderPercent"],
-                   @"间接订单数_number":data[@"indirectOrder"],
-                   @"间接订单转化率_number":data[@"indirectOrdPer"],
-            };
+//            };
+        
+        _detailInitializeData = [strongSelf handleDetailOutlineData:data];
         
         _initializeDataReady = YES;
-        
-//        NSNotification *notification = [[NSNotification alloc] initWithName:dataDidInitialize object:strongSelf userInfo:_initializeData];
-//        
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [[NSNotificationQueue defaultQueue] enqueueNotification:notification
-//                                                       postingStyle:NSPostASAP
-//                                                       coalesceMask:NSNotificationCoalescingOnName forModes:@[NSDefaultRunLoopMode]];
-//        });
+        if(succeedBlock){
+            succeedBlock();
+        }
         
     };
 
-    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:url failureBlock:successefullyBlock successedBlock:successefullyBlock];
+    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:url failureBlock:nil successedBlock:successefullyBlock];
 }
+
+
+- (void)reloadDetailOutlineFromDate:(NSString *)fromDate toDate:(NSString *)toDate
+{
+    NSString *url = [[NSString alloc] initWithFormat:@"%@/snf-mbbi-web/mbbi/getSourceDesc.htm?beginTime=%@&endTime=%@",serverAddress,fromDate,toDate];
+    
+    void (^successefullyBlock)(NSDictionary *) = ^(NSDictionary *data) {
+        sourcesAnalyticsModel *strongSelf = _wself;
+        
+        NSDictionary *detailInitializeData = [strongSelf handleDetailOutlineData:data];
+        
+        NSNotification *notification = [[NSNotification alloc] initWithName:detailOutlineDataDidChange object:strongSelf userInfo:detailInitializeData];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationQueue defaultQueue] enqueueNotification:notification
+                                                       postingStyle:NSPostASAP
+                                                       coalesceMask:NSNotificationCoalescingOnName forModes:@[NSDefaultRunLoopMode]];
+        });
+  
+    };
+    
+    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:url failureBlock:nil successedBlock:successefullyBlock];
+}
+
 
 - (void)setAllDetailsDataNeedReload
 {
@@ -314,8 +331,8 @@ static NSString *const sourceAnalyticsOutlineDataDidInitialize       = @"sourceA
 
 - (void)getDisplayAdvertisingDetailsData:(void (^)(NSDictionary *data))succeedBlock
 {
-    if([_dimensionDataAvailableArray[0] isEqual: @NO]){
-        
+    if([_dimensionDataAvailableArray[0] isEqual:@NO]){
+        //http://10.27.193.34//snf-mbbi-web/source/getYingGuang.htm?beginTime=2014-12-08&endTime=2014-12-08&srcCateId1=10
         NSString *url = [[NSString alloc] initWithFormat:@"%@/snf-mbbi-web/source/getYingGuang.htm?beginTime=%@&endTime=%@&srcCateId1=10",serverAddress,_fromDate,_toDate];
         
         void (^successfullyBlock)(NSDictionary *) = ^(NSDictionary *data) {
@@ -334,7 +351,7 @@ static NSString *const sourceAnalyticsOutlineDataDidInitialize       = @"sourceA
 
 - (void)getNavigationDetailsData:(void (^)(NSDictionary *data))succeedBlock
 {
-    if([_dimensionDataAvailableArray[1] isEqual: @NO]){
+    if([_dimensionDataAvailableArray[1] isEqual:@NO]){
         
         NSString *url = [[NSString alloc] initWithFormat:@"%@/snf-mbbi-web/source/getYingGuang.htm?beginTime=%@&endTime=%@&srcCateId1=20",serverAddress,_fromDate,_toDate];
         
@@ -355,7 +372,7 @@ static NSString *const sourceAnalyticsOutlineDataDidInitialize       = @"sourceA
 
 - (void)getSearchDetailsData:(void (^)(NSDictionary *data))succeedBlock
 {
-    if([_dimensionDataAvailableArray[2] isEqual: @NO]){
+    if([_dimensionDataAvailableArray[2] isEqual:@NO]){
         
         NSString *url = [[NSString alloc] initWithFormat:@"%@/snf-mbbi-web/source/getYingGuang.htm?beginTime=%@&endTime=%@&srcCateId1=30",serverAddress,_fromDate,_toDate];
         
@@ -376,7 +393,7 @@ static NSString *const sourceAnalyticsOutlineDataDidInitialize       = @"sourceA
 
 - (void)getADAllianceDetailsData:(void (^)(NSDictionary *data))succeedBlock
 {
-    if([_dimensionDataAvailableArray[3] isEqual: @NO]){
+    if([_dimensionDataAvailableArray[3] isEqual:@NO]){
         
         NSString *url = [[NSString alloc] initWithFormat:@"%@/snf-mbbi-web/source/getYingGuang.htm?beginTime=%@&endTime=%@&srcCateId1=40",serverAddress,_fromDate,_toDate];
         
@@ -397,7 +414,7 @@ static NSString *const sourceAnalyticsOutlineDataDidInitialize       = @"sourceA
 
 - (void)getDirectFlowDetailsData:(void (^)(NSDictionary *data))succeedBlock
 {
-    if([_dimensionDataAvailableArray[4] isEqual: @NO]){
+    if([_dimensionDataAvailableArray[4] isEqual:@NO]){
         
         NSString *url = [[NSString alloc] initWithFormat:@"%@/snf-mbbi-web/source/getYingGuang.htm?beginTime=%@&endTime=%@&srcCateId1=50",serverAddress,_fromDate,_toDate];
         
@@ -418,7 +435,7 @@ static NSString *const sourceAnalyticsOutlineDataDidInitialize       = @"sourceA
 
 - (void)getEDMDetailsData:(void (^)(NSDictionary *data))succeedBlock
 {
-    if([_dimensionDataAvailableArray[5] isEqual: @NO]){
+    if([_dimensionDataAvailableArray[5] isEqual:@NO]){
         
         NSString *url = [[NSString alloc] initWithFormat:@"%@/snf-mbbi-web/source/getYingGuang.htm?beginTime=%@&endTime=%@&srcCateId1=60",serverAddress,_fromDate,_toDate];
         
@@ -492,7 +509,7 @@ static NSString *const sourceAnalyticsOutlineDataDidInitialize       = @"sourceA
 //                        };
 
     
-    _detailsData =  [[NSMutableDictionary alloc] initWithDictionary:
+    _detailsData = [[NSMutableDictionary alloc] initWithDictionary:
                  @{
                    @"硬广":@{
                                @"tagType":@[@"运营商",@"垂直",@"DSP"],

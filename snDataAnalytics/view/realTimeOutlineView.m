@@ -33,6 +33,20 @@
     UIView  *_UVLine;
     UIView  *_validUVLine;
     UILabel *_validUVRatioLabel;
+    
+    UIView  *_newVISITLine;
+    UIView  *_backVISITLine;
+    UIView  *_newUVLine;
+    UIView  *_backUVLine;
+    UIView  *_newValidUVLine;
+    UIView  *_backValidUVLine;
+    
+    UILabel *_visitRatioLabel;
+    UILabel *_UVRatioLabel;
+    float _lineWidth;
+    UIColor *_newColor;
+    UIColor *_backColor;
+
 
     UILabel *_dealMoneyLabel;
     UILabel *_validDealNumberLabel;
@@ -77,7 +91,6 @@
     
     NSArray *_validSourceLabelArray;
     
-
     UIButton *_referenceLineButton;
 }
 
@@ -86,26 +99,34 @@
     self = [super initWithFrame:frame];
     
     if (self) {
+        _lineWidth = outlineViewWidth/2 + 10.0;
+        _newColor  = [UIColor colorWithRed:0x45/255.0 green:0xa7/255.0 blue:0xff/255.0 alpha:1];
+        _backColor = PNLightGrey;
         
-        _groupUV      = ((NSNumber *)data[@"groupUV"]).intValue;
-        _validUVRatio = ((NSNumber *)data[@"validUVRatio"]).floatValue;
-        _validGroupUV = ((NSNumber *)data[@"validGroupUV"]).intValue;
-        _VISITNumber  = ((NSNumber *)data[@"VISIT"]).intValue;
-        _dealMoney    = ((NSNumber *)data[@"dealMoney"]).intValue;
+        _groupUV      = ((NSNumber *)data[@"groupUV"]).integerValue;
+//        _validUVRatio = ((NSNumber *)data[@"validUVRatio"]).floatValue;
+        _validGroupUV = ((NSNumber *)data[@"validGroupUV"]).integerValue;
+        _VISITNumber  = ((NSNumber *)data[@"VISIT"]).integerValue;
+        
+        _newVISITRatio = ((NSNumber *)data[@"newVISITRatio"]).floatValue;
+        _newUVRatio    = ((NSNumber *)data[@"newUVRatio"]).floatValue;
+        _newVaildUVRatio = ((NSNumber *)data[@"newVaildUVRatio"]).floatValue;
+
+        _dealMoney    = ((NSNumber *)data[@"dealMoney"]).integerValue;
         _arrayOfValues = (NSMutableArray *)data[@"arrayOfValues"];
         _arrayOfDates  = (NSMutableArray *)data[@"arrayOfDates"];
-        _validDealNumber         = ((NSNumber *)data[@"validDealNumber"]).intValue;
+        _validDealNumber         = ((NSNumber *)data[@"validDealNumber"]).integerValue;
         _validDealTransformRatio = ((NSNumber *)data[@"validDealTransformRatio"]).floatValue;
         
-        _groupPercentArray      = (NSMutableArray *)data[@"groupPercentArray"];
-        _groupValidPercentArray = (NSMutableArray *)data[@"groupValidPercentArray"];
+        _sourceVisitArray      = (NSMutableArray *)data[@"sourceVisitArray"];
+        _sourceValidUVArray = (NSMutableArray *)data[@"sourceValidUVArray"];
         _cityNameArray          = (NSMutableArray *)data[@"cityNameArray"];
         _cityValueArray         = (NSMutableArray *)data[@"cityValueArray"];
         _pagesNameArray         = (NSMutableArray *)data[@"pagesNameArray"];
         _pagesValueArray        = (NSMutableArray *)data[@"pagesValueArray"];
         
-//        _groupPercentArray = [[NSMutableArray alloc] initWithArray:@[@15,@30,@55,@23,@33,@40,@20]];
-//        _groupValidPercentArray = [[NSMutableArray alloc] initWithArray:@[@7,@14,@25,@11,@15,@19,@9]];
+//        _sourceVisitArray = [[NSMutableArray alloc] initWithArray:@[@15,@30,@55,@23,@33,@40,@20]];
+//        _sourceValidUVArray = [[NSMutableArray alloc] initWithArray:@[@7,@14,@25,@11,@15,@19,@9]];
         _groupColorArray = [[NSMutableArray alloc] initWithArray:@[
                                                                    PNLightGreen,
                                                                    PNFreshGreen,
@@ -199,11 +220,156 @@
     UIView *backgroudLineView = [[UIView alloc] initWithFrame:CGRectMake(0,_chartLabel.frame.origin.y +_chartLabel.frame.size.height, outlineViewWidth, 25)];
     backgroudLineView.backgroundColor = [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
     
-//    _groupUV = arc4random() % 20000;
-//    _validUVRatio = ((arc4random() % 500) + 500) / 1000.0;
-//    _validGroupUV = _groupUV * _validUVRatio;
+    [self addSubview:backgroudLineView];
+    [self addSubview:_realtimeVisitorGroupLabel];
     
-    _uvGroupLabel = [[/*LTMorphingLabel*/UILabel alloc] initWithFrame:CGRectMake(20, 10 + _realtimeVisitorGroupLabel.frame.origin.y +_realtimeVisitorGroupLabel.frame.size.height, outlineViewWidth/2, 20)];
+    
+    
+    
+    _visitorGroupLabel = [[UILabel alloc] initWithFrame:CGRectMake(12, 10 + _realtimeVisitorGroupLabel.frame.origin.y +_realtimeVisitorGroupLabel.frame.size.height, outlineViewWidth/2 - 20, 30)];
+    _visitorGroupLabel.text = [NSString stringWithFormat:@"VISIT: %li",_VISITNumber];
+    _visitorGroupLabel.textColor = PNDeepGrey;
+    _visitorGroupLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
+    _visitorGroupLabel.textAlignment = NSTextAlignmentLeft;
+    
+    _newVISITLine = [[UIView alloc] initWithFrame:CGRectMake(_lineWidth - 30.0,12.5 + _realtimeVisitorGroupLabel.frame.origin.y +_realtimeVisitorGroupLabel.frame.size.height,(_lineWidth - 1) * _newVISITRatio,25)];
+    _newVISITLine.backgroundColor = _newColor;
+    _backVISITLine = [[UIView alloc] initWithFrame:CGRectMake(1 + _newVISITLine.frame.origin.x+_newVISITLine.frame.size.width,_newVISITLine.frame.origin.y,(_lineWidth - 1) * (1 - _newVISITRatio),25)];
+    _backVISITLine.backgroundColor = _backColor;
+    
+    _uvGroupLabel = [[UILabel alloc] initWithFrame:CGRectMake(12,7.5 + _visitorGroupLabel.frame.origin.y +_visitorGroupLabel.frame.size.height, outlineViewWidth/2 - 20, 30)];
+    _uvGroupLabel.text =[NSString stringWithFormat:@"UV: %li",_groupUV];
+    _uvGroupLabel.textColor = PNDeepGrey;
+    _uvGroupLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
+    _uvGroupLabel.textAlignment = NSTextAlignmentLeft;
+    
+    _newUVLine = [[UIView alloc] initWithFrame:CGRectMake(_lineWidth - 30.0,10 + _visitorGroupLabel.frame.origin.y +_visitorGroupLabel.frame.size.height,(_lineWidth - 1) * _newUVRatio,25)];
+    _newUVLine.backgroundColor = _newColor;
+    _backUVLine = [[UIView alloc] initWithFrame:CGRectMake(1 + _newUVLine.frame.origin.x+_newUVLine.frame.size.width,_newUVLine.frame.origin.y,(_lineWidth - 1) * (1 - _newUVRatio),25)];
+    _backUVLine.backgroundColor = _backColor;
+    
+    _validGroupUVLabel = [[UILabel alloc] initWithFrame:CGRectMake(12, 7.5 + _uvGroupLabel.frame.origin.y +_uvGroupLabel.frame.size.height, outlineViewWidth/2 - 20, 30)];
+    _validGroupUVLabel.text =[NSString stringWithFormat:@"有效UV: %li",_validGroupUV];
+    _validGroupUVLabel.textColor = PNDeepGrey;
+    _validGroupUVLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
+    _validGroupUVLabel.textAlignment = NSTextAlignmentLeft;
+    
+    _newValidUVLine = [[UIView alloc] initWithFrame:CGRectMake(_lineWidth - 30.0,10.0 + _uvGroupLabel.frame.origin.y +_uvGroupLabel.frame.size.height,(_lineWidth - 1) * _newVaildUVRatio,25)];
+    _newValidUVLine.backgroundColor = _newColor;
+    _backValidUVLine = [[UIView alloc] initWithFrame:CGRectMake(1 + _newValidUVLine.frame.origin.x + _newValidUVLine.frame.size.width,_newValidUVLine.frame.origin.y,(_lineWidth - 1) * (1 - _newVaildUVRatio),25)];
+    _backValidUVLine.backgroundColor = _backColor;
+    
+    UILabel *tipNewLabel  = [[UILabel alloc] initWithFrame:CGRectMake(outlineViewWidth/7,5 + _validGroupUVLabel.frame.origin.y +_validGroupUVLabel.frame.size.height, outlineViewWidth/5, 30)];
+    tipNewLabel.text = @"新访客";
+    tipNewLabel.textColor = PNDeepGrey;
+    tipNewLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
+    tipNewLabel.textAlignment = NSTextAlignmentCenter;
+    
+    UIView *tipNewView = [[UIView alloc] initWithFrame:CGRectMake(3.0 + tipNewLabel.frame.origin.x +tipNewLabel.frame.size.width,12.5 + _validGroupUVLabel.frame.origin.y +_validGroupUVLabel.frame.size.height, 15, 15)];
+    tipNewView.backgroundColor = _newColor;
+    tipNewView.layer.cornerRadius = 7.5;
+    
+    UILabel *tipBackLabel  = [[UILabel alloc] initWithFrame:CGRectMake(outlineViewWidth/2 + 5.0,5 + _validGroupUVLabel.frame.origin.y +_validGroupUVLabel.frame.size.height, outlineViewWidth/5, 30)];
+    tipBackLabel.text = @"回访客";
+    tipBackLabel.textColor = PNDeepGrey;
+    tipBackLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
+    tipBackLabel.textAlignment = NSTextAlignmentCenter;
+    
+    UIView *tipBackView = [[UIView alloc] initWithFrame:CGRectMake(3.0 + tipBackLabel.frame.origin.x +tipBackLabel.frame.size.width,12.5 + _validGroupUVLabel.frame.origin.y +_validGroupUVLabel.frame.size.height,15, 15)];
+    tipBackView.backgroundColor = _backColor;
+    tipBackView.layer.cornerRadius = 7.5;
+    
+    _visitRatioLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,_newVISITLine.frame.origin.y, outlineViewWidth/4, 25)];
+    _visitRatioLabel.text =[NSString stringWithFormat:@"%.1f%%",_newVISITRatio * 100.0];
+    _visitRatioLabel.textColor = PNDeepGrey;
+    _visitRatioLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:20.0];
+    _visitRatioLabel.textAlignment = NSTextAlignmentRight;
+    r = _visitRatioLabel.frame;
+    size = [_visitRatioLabel.text sizeWithFont:_visitRatioLabel.font];
+    r.size.width = size.width;
+    r.origin.x = _backVISITLine.frame.origin.x - 1 - r.size.width - 5;
+    if (r.origin.x < _newVISITLine.frame.origin.x) {
+        r.origin.x =  _backVISITLine.frame.origin.x + 5 ;
+    }
+    _visitRatioLabel.frame = r;
+    
+    _UVRatioLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,_newUVLine.frame.origin.y, outlineViewWidth/4, 25)];
+    _UVRatioLabel.text =[NSString stringWithFormat:@"%.1f%%",_newUVRatio * 100.0];
+    _UVRatioLabel.textColor = PNDeepGrey;
+    _UVRatioLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:20.0];
+    _UVRatioLabel.textAlignment = NSTextAlignmentRight;
+    r = _UVRatioLabel.frame;
+    size = [_UVRatioLabel.text sizeWithFont:_UVRatioLabel.font];
+    r.size.width = size.width;
+    r.origin.x = _backUVLine.frame.origin.x - 1 - r.size.width - 5;
+    if (r.origin.x < _newUVLine.frame.origin.x) {
+        r.origin.x =  _backUVLine.frame.origin.x + 5 ;
+    }
+    _UVRatioLabel.frame = r;
+
+    
+    _validUVRatioLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,_newValidUVLine.frame.origin.y, outlineViewWidth/4, 25)];
+    _validUVRatioLabel.text =[NSString stringWithFormat:@"%.1f%%",_newVaildUVRatio * 100.0];
+    _validUVRatioLabel.textColor = PNDeepGrey;
+    _validUVRatioLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:20.0];
+    _validUVRatioLabel.textAlignment = NSTextAlignmentRight;
+    r = _validUVRatioLabel.frame;
+    size = [_validUVRatioLabel.text sizeWithFont:_validUVRatioLabel.font];
+    r.size.width = size.width;
+    r.origin.x = _backValidUVLine.frame.origin.x - 1 - r.size.width - 5;
+    if (r.origin.x < _newValidUVLine.frame.origin.x) {
+        r.origin.x =  _backValidUVLine.frame.origin.x + 5 ;
+    }
+    _validUVRatioLabel.frame = r;
+
+    //    center = _visitRatioLabel.center;
+    //    center.y = _UVLine.center.y;
+    //    _visitRatioLabel.center = center;
+    
+    //    CGPoint center = tipNewLabel.center;
+    //    center.x = outlineViewWidth/4;
+    //    tipNewLabel.center = center;
+    //
+    //    center = tipNewView.center;
+    //    center.x = outlineViewWidth/4 + 50;
+    //    tipNewView.center = center;
+    //
+    //    center = tipBackLabel.c                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           enter;
+    //    center.x = 3 * outlineViewWidth/4;
+    //    tipNewLabel.center = center;
+    //
+    //    center = tipNewView.center;
+    //    center.x = outlineViewWidth/4 + 50;
+    //    tipNewView.center = center;
+    
+    [self addSubview:_chartLabel];
+    
+    [self addSubview:_visitorGroupLabel];
+    [self addSubview:_newVISITLine];
+    [self addSubview:_backVISITLine];
+    [self addSubview:_visitRatioLabel];
+    
+    [self addSubview:_uvGroupLabel];
+    [self addSubview:_newUVLine];
+    [self addSubview:_backUVLine];
+    [self addSubview:_UVRatioLabel];
+    
+    [self addSubview:_validGroupUVLabel];
+    [self addSubview:_newValidUVLine];
+    [self addSubview:_backValidUVLine];
+    [self addSubview:_validUVRatioLabel];
+    
+    [self addSubview:tipNewLabel];
+    [self addSubview:tipNewView];
+    [self addSubview:tipBackLabel];
+    [self addSubview:tipBackView];
+
+    
+    
+    
+    
+/*
+    _uvGroupLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 10 + _realtimeVisitorGroupLabel.frame.origin.y +_realtimeVisitorGroupLabel.frame.size.height, outlineViewWidth/2, 20)];
     _uvGroupLabel.text = [NSString stringWithFormat:@"UV:%i",_groupUV];
     _uvGroupLabel.textColor = PNDeepGrey;
     _uvGroupLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
@@ -270,19 +436,21 @@
     
     [self addSubview:backgroudLineView];
     [self addSubview:_realtimeVisitorGroupLabel];
-    [self addSubview:_UVLine];
-    [self addSubview:_validUVLine];
-    [self addSubview:_validUVRatioLabel];
-    [self addSubview:_validGroupUVLabel];
-    [self addSubview:_uvGroupLabel];
-    [self addSubview:_visitorGroupLabel];
+//    [self addSubview:_UVLine];
+//    [self addSubview:_validUVLine];
+//    [self addSubview:_validUVRatioLabel];
+//    [self addSubview:_validGroupUVLabel];
+//    [self addSubview:_uvGroupLabel];
+//    [self addSubview:_visitorGroupLabel];
+    */
 }
 
 - (void)addDealView
 {
     //    成交
-    
-    _realtimeDealLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 2.5 + _UVLine.frame.origin.y +_UVLine.frame.size.height, outlineViewWidth/2, 20)];
+//    _realtimeDealLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 2.5 + _UVLine.frame.origin.y +_UVLine.frame.size.height, outlineViewWidth/2, 20)];
+    _realtimeDealLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 2.5 + 10 + _validGroupUVLabel.frame.origin.y +_validGroupUVLabel.frame.size.height + 30, outlineViewWidth/2, 20)];
+
     _realtimeDealLabel.text =@"成交:";
     _realtimeDealLabel.textColor = PNDeepGrey;
     _realtimeDealLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
@@ -292,7 +460,9 @@
     r.size.width = size.width;
     _realtimeDealLabel.frame = r;
     
-    UIView *backgroudLineView = [[UIView alloc] initWithFrame:CGRectMake(0, _UVLine.frame.origin.y +_UVLine.frame.size.height, outlineViewWidth, 25)];
+//    UIView *backgroudLineView = [[UIView alloc] initWithFrame:CGRectMake(0, _UVLine.frame.origin.y +_UVLine.frame.size.height, outlineViewWidth, 25)];
+    UIView *backgroudLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 10 + _validGroupUVLabel.frame.origin.y +_validGroupUVLabel.frame.size.height + 30, outlineViewWidth, 25)];
+
     backgroudLineView.backgroundColor = [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
     
     _dealMoneyLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 10 + _realtimeDealLabel.frame.origin.y +_realtimeDealLabel.frame.size.height, outlineViewWidth, 20)];
@@ -300,6 +470,13 @@
     _dealMoneyLabel.textColor = PNDeepGrey;
     _dealMoneyLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
     _dealMoneyLabel.textAlignment = NSTextAlignmentLeft;
+    
+    UILabel *dealMoneyTip = [[UILabel alloc] initWithFrame:CGRectMake( outlineViewWidth / 2 + 40.0, _dealMoneyLabel.frame.origin.y , outlineViewWidth/3, 20)];
+    dealMoneyTip.text = @"付款变化趋势图如下";
+    dealMoneyTip.textColor = [UIColor fadedBlueColor];
+    dealMoneyTip.font = [UIFont fontWithName:@"Avenir-Medium" size:10.0];
+    dealMoneyTip.textAlignment = NSTextAlignmentRight;
+
 //    _dealMoneyLabel.morphingDuration = 0.07f;
     
 //    _arrayOfValues = [[NSMutableArray alloc] init];
@@ -311,7 +488,7 @@
 //        
 //    }
     
-    _lineGraph = [[BEMSimpleLineGraphView alloc] initWithFrame:CGRectMake(0, 5.0+_dealMoneyLabel.frame.origin.y +_dealMoneyLabel.frame.size.height, outlineViewWidth, 45.0)];
+    _lineGraph = [[BEMSimpleLineGraphView alloc] initWithFrame:CGRectMake(0, 5.0+_dealMoneyLabel.frame.origin.y +_dealMoneyLabel.frame.size.height, outlineViewWidth, 60.0)];
     _lineGraph.delegate = self;
     _lineGraph.dataSource = self;
     
@@ -340,7 +517,7 @@
     //            self.myGraph.backgroundColor = [UIColor whiteColor];
     self.tintColor = [UIColor whiteColor];
     
-    _validDealNumberLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 3 + _lineGraph.frame.origin.y +_lineGraph.frame.size.height, outlineViewWidth/2, 20)];
+    _validDealNumberLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, -15 + _lineGraph.frame.origin.y +_lineGraph.frame.size.height, outlineViewWidth/2, 20)];
     _validDealNumberLabel.text =[NSString stringWithFormat:@"有效订单数: %li",_validDealNumber];
     _validDealNumberLabel.textColor = PNDeepGrey;
     _validDealNumberLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
@@ -364,6 +541,7 @@
     [self addSubview:backgroudLineView];
     [self addSubview:_realtimeDealLabel];
     [self addSubview:_dealMoneyLabel];
+    [self addSubview:dealMoneyTip];
     [self addSubview:_lineGraph];
     [self addSubview:_validDealNumberLabel];
     [self addSubview:_validDealTransformRatioLabel];
@@ -373,7 +551,7 @@
 {
     //    来源渠道
     
-    _realtimeSourceLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 2.5 + _validDealTransformRatioLabel.frame.origin.y +_validDealTransformRatioLabel.frame.size.height, outlineViewWidth/2, 20)];
+    _realtimeSourceLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 5.0 + _validDealTransformRatioLabel.frame.origin.y +_validDealTransformRatioLabel.frame.size.height, outlineViewWidth/2, 20)];
     _realtimeSourceLabel.text =@"来源分析:";
     _realtimeSourceLabel.textColor = PNDeepGrey;
     _realtimeSourceLabel.font = [UIFont fontWithName:@"Avenir-Medium" size:16.0];
@@ -383,15 +561,15 @@
     r.size.width = size.width;
     _realtimeSourceLabel.frame = r;
     
-    UIView *backgroudLineView = [[UIView alloc] initWithFrame:CGRectMake(0, _validDealTransformRatioLabel.frame.origin.y +_validDealTransformRatioLabel.frame.size.height, outlineViewWidth, 25)];
+    UIView *backgroudLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 2.5 +_validDealTransformRatioLabel.frame.origin.y +_validDealTransformRatioLabel.frame.size.height, outlineViewWidth, 25)];
     backgroudLineView.backgroundColor = [UIColor colorWithRed:240.0/255.0 green:240.0/255.0 blue:240.0/255.0 alpha:1];
 
-    NSArray *items = @[[PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[0]).floatValue color:_groupColorArray[0]],
-                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[1]).floatValue color:_groupColorArray[1]],
-                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[2]).floatValue color:_groupColorArray[2]],
-                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[3]).floatValue color:_groupColorArray[3]],
-                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[4]).floatValue color:_groupColorArray[4]],
-                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[5]).floatValue color:_groupColorArray[5]],
+    NSArray *items = @[[PNPieChartDataItem dataItemWithValue:((NSNumber *)_sourceVisitArray[0]).floatValue color:_groupColorArray[0]],
+                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_sourceVisitArray[1]).floatValue color:_groupColorArray[1]],
+                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_sourceVisitArray[2]).floatValue color:_groupColorArray[2]],
+                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_sourceVisitArray[3]).floatValue color:_groupColorArray[3]],
+                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_sourceVisitArray[4]).floatValue color:_groupColorArray[4]],
+                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_sourceVisitArray[5]).floatValue color:_groupColorArray[5]],
                        ];
     
     
@@ -490,8 +668,8 @@
     _vaildSourceBarChart.labelMarginTop = 5.0;
     _vaildSourceBarChart.yLabelSum = 5;
     [_vaildSourceBarChart setXLabels:_sourcesStringArray];
-    [_vaildSourceBarChart setYValues:_groupPercentArray];
-    [_vaildSourceBarChart setYValues1:_groupValidPercentArray];
+    [_vaildSourceBarChart setYValues:_sourceVisitArray];
+    [_vaildSourceBarChart setYValues1:_sourceValidUVArray];
     _vaildSourceBarChart.labelFont = [UIFont fontWithName:@"OpenSans-Light" size:10.0];
 //    [_vaildSourceBarChart setStrokeColor:[UIColor colorWithRed:0x6a/255.0 green:0xb9/255.0 blue:0xff/255.0 alpha:1.0]/*[UIColor colorWithRed:0x45/255.0 green:0xa7/255.0 blue:0xff/255.0 alpha:1]*/];
     [_vaildSourceBarChart setStrokeColor: [UIColor paperColorLightBlue]];
@@ -535,10 +713,11 @@
     _citiesBarChart.backgroundColor = [UIColor clearColor];
     _citiesBarChart.yLabelFormatter = ^(CGFloat yValue) {
         CGFloat yValueParsed = yValue;
-        NSString * labelText = [NSString stringWithFormat:@"%1.f",yValueParsed];
+        NSString * labelText = [NSString stringWithFormat:@"%i",(int)yValueParsed];
         return labelText;
     };
     _citiesBarChart.labelMarginTop = 5.0;
+    _citiesBarChart.yChartLabelWidth = 20;
     [_citiesBarChart setXLabels:_cityNameArray];
     [_citiesBarChart setYValues:_cityValueArray];
     [_citiesBarChart setStrokeColor:PNDeepGreen];
@@ -568,10 +747,13 @@
     _pagesBarChart.backgroundColor = [UIColor clearColor];
     _pagesBarChart.yLabelFormatter = ^(CGFloat yValue) {
         CGFloat yValueParsed = yValue;
-        NSString * labelText = [NSString stringWithFormat:@"%1.f",yValueParsed];
+        NSString * labelText = [NSString stringWithFormat:@"%i",(int)yValueParsed];
         return labelText;
     };
+
+    _pagesBarChart.yChartLabelWidth = 20;
     _pagesBarChart.labelMarginTop = 5.0;
+    _pagesBarChart.labelLineNumber = 2;
     [_pagesBarChart setXLabels:_pagesNameArray];
     [_pagesBarChart setYValues:_pagesValueArray];
     [_pagesBarChart setStrokeColor:[UIColor violetColor]];
@@ -593,87 +775,138 @@
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         
-        _arrayOfValues = (NSMutableArray *)data[@"arrayOfValues"];
-        _groupUV       = ((NSNumber *)data[@"groupUV"]).intValue;
-        _validUVRatio  = ((NSNumber *)data[@"validUVRatio"]).floatValue;
-        _validGroupUV  = ((NSNumber *)data[@"validGroupUV"]).intValue;
-        _VISITNumber   = ((NSNumber *)data[@"VISIT"]).intValue;
-        _dealMoney     = ((NSNumber *)data[@"dealMoney"]).intValue;
-        _validDealNumber         = ((NSNumber *)data[@"validDealNumber"]).intValue;
-        _validDealTransformRatio = ((NSNumber *)data[@"validDealTransformRatio"]).floatValue;
-        _cityNameArray          = (NSMutableArray *)data[@"cityNameArray"];
-        _cityValueArray         = (NSMutableArray *)data[@"cityValueArray"];
-        _pagesNameArray         = (NSMutableArray *)data[@"pagesNameArray"];
-        _pagesValueArray        = (NSMutableArray *)data[@"pagesValueArray"];
+    @autoreleasepool {
+            _arrayOfValues = (NSMutableArray *)data[@"arrayOfValues"];
+            _groupUV       = ((NSNumber *)data[@"groupUV"]).integerValue;
+//            _validUVRatio  = ((NSNumber *)data[@"validUVRatio"]).floatValue;
+            _validGroupUV  = ((NSNumber *)data[@"validGroupUV"]).integerValue;
+            _VISITNumber   = ((NSNumber *)data[@"VISIT"]).integerValue;
+            _newVISITRatio = ((NSNumber *)data[@"newVISITRatio"]).floatValue;
+            _newUVRatio    = ((NSNumber *)data[@"newUVRatio"]).floatValue;
+            _newVaildUVRatio = ((NSNumber *)data[@"newVaildUVRatio"]).floatValue;
+            
+            _dealMoney     = ((NSNumber *)data[@"dealMoney"]).integerValue;
+            _validDealNumber         = ((NSNumber *)data[@"validDealNumber"]).integerValue;
+            _validDealTransformRatio = ((NSNumber *)data[@"validDealTransformRatio"]).floatValue;
+            _cityNameArray          = (NSMutableArray *)data[@"cityNameArray"];
+            _cityValueArray         = (NSMutableArray *)data[@"cityValueArray"];
+            _pagesNameArray         = (NSMutableArray *)data[@"pagesNameArray"];
+            _pagesValueArray        = (NSMutableArray *)data[@"pagesValueArray"];
+            
+    //        _validGroupUVLabel.text =[NSString stringWithFormat:@"有效UV: %i",_validGroupUV];
+            
+            CGSize size = [_validGroupUVLabel.text sizeWithFont:_validGroupUVLabel.font];
+            CGRect r = _validGroupUVLabel.frame;
+            r.size.width = size.width + 15.0;
+            _validGroupUVLabel.frame = r;
+            size = [_validGroupUVLabel.text sizeWithFont:_validGroupUVLabel.font];
+            r = _uvGroupLabel.frame;
+            r.size.width = size.width;
+            _uvGroupLabel.frame = r;
+            
+//            CGRect validUVLineRect = CGRectMake(2,5 + _uvGroupLabel.frame.origin.y+_uvGroupLabel.frame.size.height,(outlineViewWidth - 5)*_validUVRatio,30);
+//            CGRect UVLineRect = CGRectMake(1 + validUVLineRect.origin.x + validUVLineRect.size.width,validUVLineRect.origin.y,(outlineViewWidth - 5)*(1 - _validUVRatio),30);
+//            
+//            CGRect validUVRatioLabelRect = _validUVRatioLabel.frame;
+//            _validUVRatioLabel.frame = validUVRatioLabelRect;
+//            validUVRatioLabelRect.origin.x = UVLineRect.origin.x - 1 - validUVRatioLabelRect.size.width - 5;
+//            
+//            if (CGRectIntersectsRect(_validGroupUVLabel.frame,validUVRatioLabelRect)) {
+//                validUVRatioLabelRect.origin.x =  UVLineRect.origin.x + 5 ;
+//            }
         
-//        _validGroupUVLabel.text =[NSString stringWithFormat:@"有效UV: %i",_validGroupUV];
         
-        CGSize size = [_validGroupUVLabel.text sizeWithFont:_validGroupUVLabel.font];
-        CGRect r = _validGroupUVLabel.frame;
-        r.size.width = size.width + 15.0;
-        _validGroupUVLabel.frame = r;
-        size = [_validGroupUVLabel.text sizeWithFont:_validGroupUVLabel.font];
-        r = _uvGroupLabel.frame;
-        r.size.width = size.width;
-        _uvGroupLabel.frame = r;
-        
-        CGRect validUVLineRect = CGRectMake(2,5 + _uvGroupLabel.frame.origin.y+_uvGroupLabel.frame.size.height,(outlineViewWidth - 5)*_validUVRatio,30);
-        CGRect UVLineRect = CGRectMake(1 + validUVLineRect.origin.x + validUVLineRect.size.width,validUVLineRect.origin.y,(outlineViewWidth - 5)*(1 - _validUVRatio),30);
-        
-        CGRect validUVRatioLabelRect = _validUVRatioLabel.frame;
-        _validUVRatioLabel.frame = validUVRatioLabelRect;
-        validUVRatioLabelRect.origin.x = UVLineRect.origin.x - 1 - validUVRatioLabelRect.size.width - 5;
-        
-        if (CGRectIntersectsRect(_validGroupUVLabel.frame,validUVRatioLabelRect)) {
-            validUVRatioLabelRect.origin.x =  UVLineRect.origin.x + 5 ;
-        }
+            CGRect newVISITLine = CGRectMake(_lineWidth - 30.0,12.5 + _realtimeVisitorGroupLabel.frame.origin.y +_realtimeVisitorGroupLabel.frame.size.height,(_lineWidth - 1)*_newVISITRatio,25);
+            CGRect backVISITLine = CGRectMake(1 + newVISITLine.origin.x + newVISITLine.size.width,newVISITLine.origin.y,(_lineWidth - 1)*(1 - _newVISITRatio),25);
+            
+            CGRect newUVLine = CGRectMake(_lineWidth - 30.0,10 + _visitorGroupLabel.frame.origin.y +_visitorGroupLabel.frame.size.height,(_lineWidth - 1) * _newUVRatio,25);
+            CGRect backUVLine = CGRectMake(1 + newUVLine.origin.x +newUVLine.size.width,newUVLine.origin.y,(_lineWidth - 1)*(1 - _newUVRatio),25);
+            
+            CGRect newValidUVLine = CGRectMake(_lineWidth - 30.0,10 + _uvGroupLabel.frame.origin.y +_uvGroupLabel.frame.size.height,(_lineWidth - 1) * _newVaildUVRatio,25);
+            CGRect backValidUVLine = CGRectMake(1 + newValidUVLine.origin.x + newValidUVLine.size.width,newValidUVLine.origin.y,(_lineWidth - 1)*(1 - _newVaildUVRatio),25);
 
-        _groupPercentArray = (NSMutableArray *)data[@"groupPercentArray"];
+            CGRect visitRatioLabelRect = _visitRatioLabel.frame;
+            CGSize visitRatioLabelsize = [_visitRatioLabel.text sizeWithFont:_visitRatioLabel.font];
+            visitRatioLabelRect.size.width = visitRatioLabelsize.width;
+            visitRatioLabelRect.origin.x = backVISITLine.origin.x - 1 - visitRatioLabelRect.size.width - 5;
+            if (visitRatioLabelRect.origin.x < newVISITLine.origin.x) {
+                visitRatioLabelRect.origin.x =  backVISITLine.origin.x + 5 ;
+            }
+            CGRect UVRatioLabelRect = _UVRatioLabel.frame;
+            CGSize UVRatioLabelsize = [_UVRatioLabel.text sizeWithFont:_UVRatioLabel.font];
+            UVRatioLabelRect.size.width = UVRatioLabelsize.width;
+            UVRatioLabelRect.origin.x = backUVLine.origin.x - 1 - UVRatioLabelRect.size.width - 5;
+            if (UVRatioLabelRect.origin.x < newUVLine.origin.x) {
+                UVRatioLabelRect.origin.x =  backUVLine.origin.x + 5 ;
+            }
+            CGRect validUVRatioLabelRect = _validUVRatioLabel.frame;
+            CGSize validUVRatioLabelsize = [_validUVRatioLabel.text sizeWithFont:_validUVRatioLabel.font];
+            validUVRatioLabelRect.size.width = validUVRatioLabelsize.width;
+            validUVRatioLabelRect.origin.x = backValidUVLine.origin.x - 1 - validUVRatioLabelRect.size.width - 5;
+            if (validUVRatioLabelRect.origin.x < newValidUVLine.origin.x) {
+                validUVRatioLabelRect.origin.x =  backValidUVLine.origin.x + 5 ;
+            }
         
-        NSArray *items = @[[PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[0]).floatValue color:_groupColorArray[0]],
-                           [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[1]).floatValue color:_groupColorArray[1]],
-                           [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[2]).floatValue color:_groupColorArray[2]],
-                           [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[3]).floatValue color:_groupColorArray[3]],
-                           [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[4]).floatValue color:_groupColorArray[4]],
-                           [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[5]).floatValue color:_groupColorArray[5]],
-                           ];
-        
-        _visitorPieChart.items = items;
-        
-        [_vaildSourceBarChart setYValues:_groupPercentArray];
-        _groupValidPercentArray = (NSMutableArray *)data[@"groupValidPercentArray"];
-        [_vaildSourceBarChart setYValues1:_groupValidPercentArray];
-        
-        [_citiesBarChart setYValues:_cityValueArray];
-        [_pagesBarChart setYValues:_pagesValueArray];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [_lineGraph reloadGraph];
+            _sourceVisitArray = (NSMutableArray *)data[@"sourceVisitArray"];
             
-            _uvGroupLabel.text = [NSString stringWithFormat:@"UV: %i",_groupUV];
-            _validGroupUVLabel.text =[NSString stringWithFormat:@"有效UV: %i",_validGroupUV];
-            _visitorGroupLabel.text =[NSString stringWithFormat:@"VISIT: %i",_VISITNumber];
-            _validUVRatioLabel.text =[NSString stringWithFormat:@"%.1f%%",_validUVRatio * 100.0];
-            _dealMoneyLabel.text = [NSString stringWithFormat:@"付款金额: %li",(long)_dealMoney];
-            _validDealNumberLabel.text =[NSString stringWithFormat:@"有效订单数: %li",_validDealNumber];
-            _validDealTransformRatioLabel.text =[NSString stringWithFormat:@"转化率: %.1f%%",_validDealTransformRatio];
+            NSArray *items = @[[PNPieChartDataItem dataItemWithValue:((NSNumber *)_sourceVisitArray[0]).floatValue color:_groupColorArray[0]],
+                               [PNPieChartDataItem dataItemWithValue:((NSNumber *)_sourceVisitArray[1]).floatValue color:_groupColorArray[1]],
+                               [PNPieChartDataItem dataItemWithValue:((NSNumber *)_sourceVisitArray[2]).floatValue color:_groupColorArray[2]],
+                               [PNPieChartDataItem dataItemWithValue:((NSNumber *)_sourceVisitArray[3]).floatValue color:_groupColorArray[3]],
+                               [PNPieChartDataItem dataItemWithValue:((NSNumber *)_sourceVisitArray[4]).floatValue color:_groupColorArray[4]],
+                               [PNPieChartDataItem dataItemWithValue:((NSNumber *)_sourceVisitArray[5]).floatValue color:_groupColorArray[5]],
+                               ];
+            
+            _visitorPieChart.items = items;
+            
+            [_vaildSourceBarChart setYValues:_sourceVisitArray];
+            _sourceValidUVArray = (NSMutableArray *)data[@"sourceValidUVArray"];
+            [_vaildSourceBarChart setYValues1:_sourceValidUVArray];
+            
+            [_citiesBarChart setYValues:_cityValueArray];
+            [_pagesBarChart setYValues:_pagesValueArray];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_lineGraph reloadGraph];
+                
+                _uvGroupLabel.text = [NSString stringWithFormat:@"UV: %li",_groupUV];
+                _validGroupUVLabel.text =[NSString stringWithFormat:@"有效UV: %li",(long)_validGroupUV];
+                _visitorGroupLabel.text =[NSString stringWithFormat:@"VISIT: %li",(long)_VISITNumber];
+                
+                _visitRatioLabel.text =[NSString stringWithFormat:@"%.1f%%",_newVISITRatio * 100.0];
+                _UVRatioLabel.text =[NSString stringWithFormat:@"%.1f%%",_newUVRatio * 100.0];
+                _validUVRatioLabel.text =[NSString stringWithFormat:@"%.1f%%",_newVaildUVRatio * 100.0];
+                
+                _dealMoneyLabel.text = [NSString stringWithFormat:@"付款金额: %li",(long)_dealMoney];
+                _validDealNumberLabel.text =[NSString stringWithFormat:@"有效订单数: %li",_validDealNumber];
+                _validDealTransformRatioLabel.text =[NSString stringWithFormat:@"转化率: %.1f%%",_validDealTransformRatio];
 
-            [UIView animateWithDuration:0.8
-                                  delay:0.0
-                                options:UIViewAnimationOptionCurveEaseInOut
-                             animations:^{
-                                 _validUVLine.frame = validUVLineRect;
-                                 _UVLine.frame = UVLineRect;
-                                 _validUVRatioLabel.frame = validUVRatioLabelRect;
-                             } completion:nil];
-            
-            [_visitorPieChart strokeChart];
-            
-            [_vaildSourceBarChart strokeChart];
-            [_citiesBarChart strokeChart];
-            [_pagesBarChart strokeChart];
-        });
-    });
+                [UIView animateWithDuration:0.8
+                                      delay:0.0
+                                    options:UIViewAnimationOptionCurveEaseInOut
+                                 animations:^{
+    //                                 _validUVLine.frame = validUVLineRect;
+    //                                 _UVLine.frame = UVLineRect;
+                                     _visitRatioLabel.frame = visitRatioLabelRect;
+                                     _UVRatioLabel.frame = UVRatioLabelRect;
+                                     _validUVRatioLabel.frame = validUVRatioLabelRect;
+
+                                     _newVISITLine.frame    = newVISITLine;
+                                     _backVISITLine.frame   = backVISITLine;
+                                     _newUVLine.frame       = newUVLine;
+                                     _backUVLine.frame      = backUVLine;
+                                     _newValidUVLine.frame  = newValidUVLine;
+                                     _backValidUVLine.frame = backValidUVLine;
+                                 } completion:nil];
+                
+                [_visitorPieChart strokeChart];
+                
+                [_vaildSourceBarChart strokeChart];
+                [_citiesBarChart strokeChart];
+                [_pagesBarChart strokeChart];
+            });
+   }
+});
 
 
    
@@ -688,21 +921,21 @@
 //                          _validUVRatioLabel.frame = validUVRatioLabelRect;
 //                   } completion:nil];
     
-//    _groupPercentArray = (NSMutableArray *)data[@"groupPercentArray"];
+//    _sourceVisitArray = (NSMutableArray *)data[@"groupPercentArray"];
 //    
-//    NSArray *items = @[[PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[0]).floatValue color:_groupColorArray[0]],
-//                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[1]).floatValue color:_groupColorArray[1]],
-//                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[2]).floatValue color:_groupColorArray[2]],
-//                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[3]).floatValue color:_groupColorArray[3]],
-//                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[4]).floatValue color:_groupColorArray[4]],
-//                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_groupPercentArray[5]).floatValue color:_groupColorArray[5]],
+//    NSArray *items = @[[PNPieChartDataItem dataItemWithValue:((NSNumber *)_sourceVisitArray[0]).floatValue color:_groupColorArray[0]],
+//                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_sourceVisitArray[1]).floatValue color:_groupColorArray[1]],
+//                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_sourceVisitArray[2]).floatValue color:_groupColorArray[2]],
+//                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_sourceVisitArray[3]).floatValue color:_groupColorArray[3]],
+//                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_sourceVisitArray[4]).floatValue color:_groupColorArray[4]],
+//                       [PNPieChartDataItem dataItemWithValue:((NSNumber *)_sourceVisitArray[5]).floatValue color:_groupColorArray[5]],
 //                       ];
 //    
 //    _visitorPieChart.items = items;
 //    [_visitorPieChart strokeChart];
     
-//    [_vaildSourceBarChart setYValues:_groupPercentArray];
-//    _groupValidPercentArray = (NSMutableArray *)data[@"groupValidPercentArray"];
+//    [_vaildSourceBarChart setYValues:_sourceVisitArray];
+//    _sourceValidUVArray = (NSMutableArray *)data[@"groupValidPercentArray"];
 //    [_vaildSourceBarChart strokeChart];
 
 }
@@ -724,8 +957,9 @@
 }
 
 - (NSString *)lineGraph:(BEMSimpleLineGraphView *)graph labelOnXAxisForIndex:(NSInteger)index {
-    NSString *label = [_arrayOfDates objectAtIndex:index];
-    return [label stringByReplacingOccurrencesOfString:@" " withString:@"\n"];
+//    NSString *label = [_arrayOfDates objectAtIndex:index];
+//    return [label stringByReplacingOccurrencesOfString:@" " withString:@"\n"];
+    return @"";
 }
 
 //- (void)lineGraph:(BEMSimpleLineGraphView *)graph didTouchGraphWithClosestIndex:(NSInteger)index {

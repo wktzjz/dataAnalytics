@@ -8,10 +8,7 @@
 
 #import "hotCityModel.h"
 #import "networkManager.h"
-
-static NSString *const hotCityDataDidChange                  = @"hotCityDataDidChange";
-static NSString *const hotCityDetailOutlineDataDidInitialize = @"hotCityDetailOutlineDataDidInitialize";
-static NSString *const hotCityOutlineDataDidInitialize       = @"hotCityOutlineDataDidInitialize";
+#import "networkDefine.h"
 
 @implementation hotCityModel
 {

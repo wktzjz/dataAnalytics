@@ -11,13 +11,15 @@
 @property (nonatomic) NSDictionary *defineDetails;
 @property (nonatomic) NSDictionary *outlineData;
 @property (nonatomic) NSDictionary *detailInitializeData;
-@property (nonatomic) NSDictionary *detailsData;
+@property (nonatomic) NSMutableDictionary *detailsData;
 
 @property (nonatomic,readonly) BOOL initializeDataReady;
 @property (nonatomic,readonly) BOOL detailsDataReady;
 
 @property (nonatomic,strong) NSArray *detailsDataMethodsArray;
 @property (nonatomic,strong) NSMutableArray *dimensionDataAvailableArray;
+@property (nonatomic, strong) NSString *fromDate;
+@property (nonatomic, strong) NSString *toDate;
 
 + (instancetype)sharedInstance;
 
@@ -31,5 +33,8 @@
 
 - (void)createDetailsData;
 - (NSDictionary *)getDetailsData;
+
+- (void)reloadDetailOutlineFromDate:(NSString *)fromDate toDate:(NSString *)toDate;
+- (void)setAllDetailsDataNeedReload;
 
 @end

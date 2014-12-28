@@ -8,10 +8,7 @@
 
 #import "hotPageModel.h"
 #import "networkManager.h"
-
-static NSString *const hotPageDataDidChange                  = @"hotPageDataDidChange";
-static NSString *const hotPageDetailOutlineDataDidInitialize = @"hotPageDetailOutlineDataDidInitialize";
-static NSString *const hotPageOutlineDataDidInitialize       = @"hotPageOutlineDataDidInitialize";
+#import "networkDefine.h"
 
 @implementation hotPageModel
 {

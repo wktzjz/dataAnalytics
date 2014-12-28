@@ -313,14 +313,40 @@
     _uvLabel.text =[NSString stringWithFormat:@"UV: %li",_UVNumber];
     _validUVLabel.text =[NSString stringWithFormat:@"有效UV: %li",_validUVNumber];
     
-    CGRect newVISITLine = CGRectMake(_lineWidth - 30.0,10 + _chartLabel.frame.origin.y +_chartLabel.frame.size.height,(_lineWidth - 1)*_newVISITRatio,30);
-    CGRect backVISITLine = CGRectMake(1 + newVISITLine.origin.x + newVISITLine.size.width,newVISITLine.origin.y,(_lineWidth - 1)*(1 - _newVISITRatio),30);
+    CGRect newVISITLine = CGRectMake(_lineWidth - 30.0,12.5 + _chartLabel.frame.origin.y +_chartLabel.frame.size.height,(_lineWidth - 1)*_newVISITRatio,25);
+    CGRect backVISITLine = CGRectMake(1 + newVISITLine.origin.x + newVISITLine.size.width,newVISITLine.origin.y,(_lineWidth - 1) * (1 - _newVISITRatio),25);
     
-    CGRect newUVLine = CGRectMake(_lineWidth - 30.0,10 + _visitLabel.frame.origin.y +_visitLabel.frame.size.height,(_lineWidth - 1) * _newUVRatio,30);
-    CGRect backUVLine = CGRectMake(1 + newUVLine.origin.x +newUVLine.size.width,newUVLine.origin.y,(_lineWidth - 1)*(1 - _newUVRatio),30);
+    CGRect newUVLine = CGRectMake(_lineWidth - 30.0,12.5 + _visitLabel.frame.origin.y +_visitLabel.frame.size.height,(_lineWidth - 1) * _newUVRatio,25);
+    CGRect backUVLine = CGRectMake(1 + newUVLine.origin.x +newUVLine.size.width,newUVLine.origin.y,(_lineWidth - 1) * (1 - _newUVRatio),25);
 
-    CGRect newValidUVLine = CGRectMake(_lineWidth - 30.0,10 + _uvLabel.frame.origin.y +_uvLabel.frame.size.height,(_lineWidth - 1) * _newVaildUVRatio,30);
-    CGRect backValidUVLine = CGRectMake(1 + newValidUVLine.origin.x + newValidUVLine.size.width,newValidUVLine.origin.y,(_lineWidth - 1)*(1 - _newVaildUVRatio),30);
+    CGRect newValidUVLine = CGRectMake(_lineWidth - 30.0,12.5 + _uvLabel.frame.origin.y +_uvLabel.frame.size.height,(_lineWidth - 1) * _newVaildUVRatio,25);
+    CGRect backValidUVLine = CGRectMake(1 + newValidUVLine.origin.x + newValidUVLine.size.width,newValidUVLine.origin.y,(_lineWidth - 1) * (1 - _newVaildUVRatio),25);
+    
+    CGRect visitRatioLabelRect = _visitRatioLabel.frame;
+    CGSize visitRatioLabelsize = [_visitRatioLabel.text sizeWithFont:_visitRatioLabel.font];
+    visitRatioLabelRect.size.width = visitRatioLabelsize.width;
+    visitRatioLabelRect.origin.x = backVISITLine.origin.x - 1 - visitRatioLabelRect.size.width - 5;
+    if (visitRatioLabelRect.origin.x < newVISITLine.origin.x) {
+        visitRatioLabelRect.origin.x =  backVISITLine.origin.x + 5 ;
+    }
+    //            _visitRatioLabel.frame = visitRatioLabelRect;
+    
+    CGRect UVRatioLabelRect = _UVRatioLabel.frame;
+    CGSize UVRatioLabelsize = [_UVRatioLabel.text sizeWithFont:_UVRatioLabel.font];
+    UVRatioLabelRect.size.width = UVRatioLabelsize.width;
+    UVRatioLabelRect.origin.x = backUVLine.origin.x - 1 - UVRatioLabelRect.size.width - 5;
+    if (UVRatioLabelRect.origin.x < newUVLine.origin.x) {
+        UVRatioLabelRect.origin.x =  backUVLine.origin.x + 5 ;
+    }
+    //            _UVRatioLabel.frame = UVRatioLabelRect;
+    
+    CGRect validUVRatioLabelRect = _validUVRatioLabel.frame;
+    CGSize validUVRatioLabelsize = [_validUVRatioLabel.text sizeWithFont:_validUVRatioLabel.font];
+    validUVRatioLabelRect.size.width = validUVRatioLabelsize.width;
+    validUVRatioLabelRect.origin.x = backValidUVLine.origin.x - 1 - validUVRatioLabelRect.size.width - 5;
+    if (validUVRatioLabelRect.origin.x < newValidUVLine.origin.x) {
+        validUVRatioLabelRect.origin.x =  backValidUVLine.origin.x + 5 ;
+    }
     
     [UIView animateWithDuration:0.8
                           delay:0.0
@@ -332,6 +358,9 @@
                          _backUVLine.frame      = backUVLine;
                          _newValidUVLine.frame  = newValidUVLine;
                          _backValidUVLine.frame = backValidUVLine;
+                         _visitRatioLabel.frame = visitRatioLabelRect;
+                         _UVRatioLabel.frame = UVRatioLabelRect;
+                         _validUVRatioLabel.frame = validUVRatioLabelRect;
                      }
                      completion:nil];
     

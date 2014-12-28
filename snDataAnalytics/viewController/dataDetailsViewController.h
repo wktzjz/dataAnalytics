@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "dataOutlineViewContainer.h"
+#import "detailOutlineView.h"
 
 #import "PNChart.h"
 
@@ -18,17 +19,21 @@
 
 @end
 
+typedef void(^dateChoosed)(NSString *fromDate, NSString *toString);
+
 @interface dataDetailsViewController : UIViewController
 
 @property (nonatomic, weak) id <dataDetailsControllerDelegate> delegate;
 @property (nonatomic) viewType dataVisualizedType;
-@property (nonatomic) UIScrollView *scrollView;
-@property (nonatomic) NSString *viewTitleString;
-@property (nonatomic) UILabel *viewTitle;
-@property (nonatomic) dataOutlineViewContainer *dataContentView;
+@property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, strong) NSString *viewTitleString;
+@property (nonatomic, strong) UILabel *viewTitle;
+@property (nonatomic, strong) dataOutlineViewContainer *dataContentView;
+@property (nonatomic, strong) detailOutlineView *detailOutlineView;
 
-@property (nonatomic) NSDictionary *initializedData;
-@property (nonatomic) BOOL initializedDataReady;
+@property (nonatomic, strong) NSDictionary *initializedData;
+@property (nonatomic, assign) BOOL initializedDataReady;
+@property (nonatomic, copy) dateChoosed dateChoosedBlock;
 
 //- (instancetype)init;
 //- (instancetype)initWithFrame:(CGRect)frame;

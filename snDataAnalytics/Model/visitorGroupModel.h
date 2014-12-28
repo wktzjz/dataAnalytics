@@ -34,8 +34,9 @@
 + (instancetype)sharedInstance;
 - (void)getOutlineData;
 
-- (void)createDetailOutlineData;
+- (void)createDetailOutlineData:(void(^)())succeedBlock;
 - (NSDictionary *)getDetailOutlineData;
+- (void)reloadDetailOutlineFromDate:(NSString *)fromDate toDate:(NSString *)toDate;
 
 - (void)createDefineDetails;
 -(NSDictionary *)getDefineDetails;

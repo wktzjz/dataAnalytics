@@ -16,22 +16,26 @@
 typedef void(^dismiss)();
 typedef void(^dimensionChoosed)(NSInteger i);
 typedef void(^indexChoosed)(NSInteger i);
-typedef void(^dataChoosed)(NSString *fromDate, NSString *toString);
+typedef void(^dateChoosed)(NSString *fromDate, NSString *toString);
+typedef void(^conditionChoosed)(NSDictionary *data);
+
 
 @interface lineChartDetailsViewController : UIViewController
 
-@property lineChartDetailsView *chartDetailsView;
-@property (nonatomic) NSString *titleString;
+@property (nonatomic) NSInteger type;
+@property (nonatomic, strong) lineChartDetailsView *chartDetailsView;
+@property (nonatomic, strong) NSString *titleString;
 
-@property (nonatomic) NSDictionary *data;
-@property (nonatomic) NSMutableDictionary *selectedDays;
-@property (nonatomic) NSMutableArray *dimensionArray;
-@property (nonatomic) NSMutableArray *indexArray;
+@property (nonatomic, strong) NSDictionary *data;
+@property (nonatomic, strong) NSMutableDictionary *selectedDays;
+@property (nonatomic, strong) NSMutableArray *dimensionArray;
+@property (nonatomic, strong) NSMutableArray *indexArray;
 
-@property (nonatomic,copy) dismiss dismissBlock;
-@property (nonatomic,copy) dimensionChoosed dimensionChoosedBlock;
-@property (nonatomic,copy) indexChoosed indexChoosedBlock;
-@property (nonatomic,copy) dataChoosed dataChoosedBlock;
+@property (nonatomic, copy) dismiss dismissBlock;
+@property (nonatomic, copy) dimensionChoosed dimensionChoosedBlock;
+@property (nonatomic, copy) indexChoosed indexChoosedBlock;
+@property (nonatomic, copy) dateChoosed dateChoosedBlock;
+@property (nonatomic, copy) conditionChoosed conditionChoosedBlock;
 
 - (instancetype)initWithFrame:(CGRect)frame data:(NSDictionary *)data;
 - (void)reloadViewWithData:(NSDictionary *)data;

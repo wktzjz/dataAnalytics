@@ -170,16 +170,7 @@
 }
 
 - (void)addLineGraph
-{
-    float totalNumber = 0;
-    
-//    for (int i = 0; i < 20; i++) {
-//        [_arrayOfValues addObject:[NSNumber numberWithInteger:(arc4random() % 100)]]; // Random values for the graph
-//        [_arrayOfDates addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:i]]]; // Dates for the X-Axis of the graph
-//        
-//        totalNumber = totalNumber + [[_arrayOfValues objectAtIndex:i] intValue]; // All of the values added together
-//    }
-    
+{    
     float originY =  5.0 + _label.frame.origin.y +_label.frame.size.height;
     _lineGraph = [[BEMSimpleLineGraphView alloc] initWithFrame:CGRectMake(0, originY, self.frame.size.width, self.frame.size.height - originY - 10.0 )];
     
@@ -316,26 +307,5 @@
     NSString *label = [_arrayOfDates objectAtIndex:index];
     return [label stringByReplacingOccurrencesOfString:@" " withString:@"\n"];
 }
-
-//- (void)lineGraph:(BEMSimpleLineGraphView *)graph didTouchGraphWithClosestIndex:(NSInteger)index {
-//    //    self.labelValues.text = [NSString stringWithFormat:@"%@", [self.ArrayOfValues objectAtIndex:index]];
-//    //    self.labelDates.text = [NSString stringWithFormat:@"in %@", [self.ArrayOfDates objectAtIndex:index]];
-//}
-//
-//- (void)lineGraph:(BEMSimpleLineGraphView *)graph didReleaseTouchFromGraphWithClosestIndex:(CGFloat)index {
-//    [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-//        //        self.labelValues.alpha = 0.0;
-//        //        self.labelDates.alpha = 0.0;
-//    } completion:^(BOOL finished) {
-//        //        self.labelValues.text = [NSString stringWithFormat:@"%i", [[self.myGraph calculatePointValueSum] intValue]];
-//        //        self.labelDates.text = [NSString stringWithFormat:@"between 2000 and %@", [self.ArrayOfDates lastObject]];
-//        
-//        [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-//            //            self.labelValues.alpha = 1.0;
-//            //            self.labelDates.alpha = 1.0;
-//        } completion:nil];
-//    }];
-//}
-
 
 @end

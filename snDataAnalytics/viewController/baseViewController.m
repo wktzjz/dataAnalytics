@@ -20,11 +20,11 @@
 #import "changefulButton.h"
 #import "wkContextMenuView.h"
 #import "visitorGroupModel.h"
-#import "notificationDefine.h"
+#import "networkDefine.h"
 #import "TLYShyNavBarManager.h"
 #import "timeView.h"
 #import "THDatePickerViewController.h"
-#import "notificationDefine.h"
+#import "networkDefine.h"
 
 #import "realTimeModel.h"
 #import "visitorGroupModel.h"
@@ -38,7 +38,8 @@
 #import "authenticationManager.h"
 #import "flatButton.h"
 #import "wkBlurPopover.h"
-#import "DBManager.h"
+#import "CityDBManager.h"
+#import "CheckNetwork.h"
 
 
 typedef enum {
@@ -154,21 +155,20 @@ const static CGFloat titleViewHeight = 44.0f;
 
     [self addLoadingBarItem];
     [self jumoToLoginView];
-//    [self addModel];
-    [[DBManager sharedInstance] getIDByCityName:@"南京市"];
     
-    double delayInSeconds = 1.0;
+//    [self addModel];
+    
+    double delayInSeconds = 0.1;
     __weak id wself = self;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     
     dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         baseViewController *strongSelf = wself;
-        [strongSelf addModel];
-
 //        [strongSelf addObservers];
         [[NSNotificationCenter defaultCenter] addObserver:strongSelf
                                                  selector:@selector(handleRealTimeDataDidInitialize:)
-                                                     name:realTimeDataOutlineDidInitialize object:nil];
+                                                     name:realTimeDataDidInitialize object:nil];
+
         [[NSNotificationCenter defaultCenter] addObserver:strongSelf
                                                  selector:@selector(handleRealTimeDataDidChange:)
                                                      name:realTimeDataDidChange object:nil];
@@ -190,6 +190,12 @@ const static CGFloat titleViewHeight = 44.0f;
         [[NSNotificationCenter defaultCenter] addObserver:strongSelf
                                                  selector:@selector(handleTransformAnalyticsOutlineDataDidInitialize:)
                                                      name:transformAnalyticsOutlineDataDidInitialize object:nil];
+        
+        [strongSelf addModel];
+        [strongSelf getDetailsData];
+        
+        [strongSelf registerForIdleNotification];
+
 //        [[NSNotificationCenter defaultCenter] addObserver:strongSelf
 //                                                 selector:@selector(jumpToAuthenticationView)
 //                                                     name:@"applicationNeedToAuthenticate" object:nil];
@@ -202,7 +208,6 @@ const static CGFloat titleViewHeight = 44.0f;
         
         [strongSelf onApplicationFinishedLaunching];
 //        NSLog(@"width:%f, height:%f",wkScreenWidth,wkScreenHeight);
-//        NSLog(@"navigationbar height:%f",self.navigationController.navigationBar.frame.size.height);
     });
     
 //    wkContextMenuView* overlay = [[wkContextMenuView alloc] init];
@@ -215,16 +220,34 @@ const static CGFloat titleViewHeight = 44.0f;
     
 }
 
-- (void)addObservers
+#pragma idleNotificationMethod
+
+- (void)idleNotificationMethod
 {
+    [[visitorGroupModel sharedInstance] createDefineDetails];
+    [[sourcesAnalyticsModel sharedInstance] createDefineDetails];
+    [[pageAnalyticsModel sharedInstance] createDefineDetails];
+    [[transformAnalyticsModel sharedInstance] createDefineDetails];
     
+    [[CityDBManager sharedInstance] initAllCities];
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)registerForIdleNotification
 {
-    [super viewDidAppear:animated];
-    [self.navigationController setDelegate:self];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(idleNotificationMethod)
+                                                 name:@"IdleNotification"
+                                               object:nil];
+    NSNotification *notification = [NSNotification
+                                    notificationWithName:@"IdleNotification" object:nil];
+    [[NSNotificationQueue defaultQueue] enqueueNotification:notification postingStyle:NSPostWhenIdle];
 }
+
+//- (void)viewDidAppear:(BOOL)animated
+//{
+//    [super viewDidAppear:animated];
+//    [self.navigationController setDelegate:self];
+//}
 
 - (void)addLoadingBarItem
 {
@@ -234,6 +257,9 @@ const static CGFloat titleViewHeight = 44.0f;
     self.navigationItem.rightBarButtonItem = loadingItem;
     [_loadingView startAnimation];
 }
+
+
+#pragma addModel
 
 - (void)addModel
 {
@@ -354,6 +380,7 @@ const static CGFloat titleViewHeight = 44.0f;
     [_frontView addGestureRecognizer:tapGestureRecognizer];
 }
 
+
 - (void)addBarButton
 {
     _button = [changefulButton button];
@@ -455,7 +482,7 @@ const static CGFloat titleViewHeight = 44.0f;
     _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(mainDataScrollViewMargin, 0 , wkScreenWidth - mainDataScrollViewMargin * 2, self.view.frame.size.height)];
     [_scrollView setDelegate:self];
     [_scrollView setShowsVerticalScrollIndicator:NO];
-    [_scrollView setContentSize:CGSizeMake(0, self.view.bounds.size.height * 3.8)];
+    [_scrollView setContentSize:CGSizeMake(0, self.view.bounds.size.height * 4.0)];
     [_frontView addSubview:_scrollView];
 //    [_scrollView setContentOffset:CGPointMake(0, -100) animated:YES];
     
@@ -471,7 +498,7 @@ const static CGFloat titleViewHeight = 44.0f;
 //    NSLog(@"!!!!!width:%f",width);
     CGFloat originX = 0;
     
-    _realTimeView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, 0, width, height + 490.0) ifLoading:YES];
+    _realTimeView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, 0, width, height + 585.0) ifLoading:YES];
     [_scrollView addSubview:_realTimeView];
     
     _visitorGruopView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(originX, _realTimeView.frame.origin.y + _realTimeView.frame.size.height + 20, width, height - 85.0) ifLoading:YES];
@@ -623,7 +650,7 @@ const static CGFloat titleViewHeight = 44.0f;
     }
 #endif
    
-    [self getNetworkInfo];
+//    [self getNetworkInfo];
 }
 
 
@@ -688,8 +715,7 @@ const static CGFloat titleViewHeight = 44.0f;
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          blurView.alpha = 0.90;
-                        }
-                     completion: ^(BOOL finished){
+                        }completion: ^(BOOL finished){
                          [[authenticationManager sharedInstance] startAuthentication];
                          
                          [authenticationManager sharedInstance].dismissBlock = ^{
@@ -713,11 +739,12 @@ const static CGFloat titleViewHeight = 44.0f;
 
 - (void)onApplicationFinishedLaunching
 {
-    dispatch_main_async_safe(^{
-//        [self jumoToLoginView];
-        
-        [TSMessage showNotificationWithTitle:@" Network Error" subtitle:@"There is a problem getting the data." type:TSMessageNotificationTypeError];
-    });
+    if (![CheckNetwork isExistenceNetwork]) {
+        dispatch_main_async_safe(^{
+            
+            [TSMessage showNotificationWithTitle:@"无网络连接" subtitle:@"网络连接出现问题" type:TSMessageNotificationTypeError];
+        });
+    }
 }
 
 
@@ -752,7 +779,7 @@ const static CGFloat titleViewHeight = 44.0f;
 //    }
     
     //加载完概览页面后 预加载第二屏数据
-    [self getDetailsData];
+//    [self getDetailsData];
 
     return YES;
 }
@@ -773,10 +800,12 @@ const static CGFloat titleViewHeight = 44.0f;
 
 - (void)getVisitorGroupDetailsData
 {
-    [[visitorGroupModel sharedInstance] createDetailOutlineData];
+    [[visitorGroupModel sharedInstance] createDetailOutlineData:^{
+        _visitorGroupDetailsDataLoaded = YES;
+        [_visitorGruopView.loadingView stopAnimation];
+    }];
     
-    _visitorGroupDetailsDataLoaded = YES;
-    [_visitorGruopView.loadingView stopAnimation];
+//    [_visitorGruopView.loadingView stopAnimation];
 }
 
 
@@ -784,10 +813,14 @@ const static CGFloat titleViewHeight = 44.0f;
 
 - (void)getSourceAnalyticsDetailsData
 {
-    [[sourcesAnalyticsModel sharedInstance] createDetailOutlineData];
+    [[sourcesAnalyticsModel sharedInstance] createDetailOutlineData:^{
+        _sourceAnalyticsDetailsDataLoaded = YES;
+        [_sourceView.loadingView stopAnimation];
+
+    }];
     
-    _sourceAnalyticsDetailsDataLoaded = YES;
-    [_sourceView.loadingView stopAnimation];
+//    _sourceAnalyticsDetailsDataLoaded = YES;
+//    [_sourceView.loadingView stopAnimation];
 }
 
 
@@ -795,10 +828,14 @@ const static CGFloat titleViewHeight = 44.0f;
 
 - (void)getPageAnalyticsDetailsData
 {
-    [[pageAnalyticsModel sharedInstance] createDetailOutlineData];
-    
-    _pageAnalyticsDetailsDataLoaded = YES;
-    [_pageView.loadingView stopAnimation];
+    [[pageAnalyticsModel sharedInstance] createDetailOutlineData:^{
+        _pageAnalyticsDetailsDataLoaded = YES;
+        [_pageView.loadingView stopAnimation];
+
+    }];
+
+//    _pageAnalyticsDetailsDataLoaded = YES;
+//    [_pageView.loadingView stopAnimation];
 }
 
 - (void)getTransformDetailData
@@ -943,10 +980,14 @@ const static CGFloat titleViewHeight = 44.0f;
         _detailsViewController.initializedData      = _realTimeData.initializeData;
     }else if (type == outlineVisitorGroup) {
         [_detailsViewController addDetailOutlineViewWithData:[visitorGroupModel sharedInstance].detailInitializeData Type:type];
-//        _detailsViewController.initializedDataReady = [visitorGroupModel sharedInstance].initializeDataReady;
-//        _detailsViewController.initializedData      = [visitorGroupModel sharedInstance].detailInitializeData;
+        _detailsViewController.dateChoosedBlock = ^(NSString *fromDate, NSString *toString){
+            [[visitorGroupModel sharedInstance] reloadDetailOutlineFromDate:fromDate toDate:toString];
+        };
     }else if (type == outlineSource){
         [_detailsViewController addDetailOutlineViewWithData:[sourcesAnalyticsModel sharedInstance].detailInitializeData Type:type];
+        _detailsViewController.dateChoosedBlock = ^(NSString *fromDate, NSString *toString){
+            [[sourcesAnalyticsModel sharedInstance] reloadDetailOutlineFromDate:fromDate toDate:toString];
+        };
 //        _detailsViewController.initializedDataReady = [sourcesAnalyticsModel sharedInstance].initializeDataReady;
 //        _detailsViewController.initializedData      = [sourcesAnalyticsModel sharedInstance].detailInitializeData;
     }else if (type == outlinePageAnalytics){

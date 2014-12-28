@@ -9,6 +9,8 @@
 #import "networkManager.h"
 #import "CheckNetwork.h"
 #import "defines.h"
+#import "TSMessage.h"
+
 
 @implementation networkManager
 {
@@ -70,6 +72,13 @@
 
 - (void)sendAsynchronousRequestWithURL:(NSString *)urlString failureBlock:(void (^)(NSDictionary *data))failBlock successedBlock:(void (^)(NSDictionary *data))succeedBlock
 {
+    if (![CheckNetwork isExistenceNetwork]) {
+        [TSMessage showNotificationWithTitle:@"无网络连接" subtitle:@"网络连接出现问题" type:TSMessageNotificationTypeError];
+
+        failBlock(nil);
+        return;
+    }
+
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5];
     NSOperationQueue *queue = [[NSOperationQueue alloc] init];
@@ -78,14 +87,17 @@
         
         NSDictionary *json;
         if (connectionError || !data || !data.length){
-            failBlock(nil);
+//            NSLog(@"URL :%@",urlString);
+            if(failBlock){
+                failBlock(nil);
+            };
             return;
         }
         if (data) {
             json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&connectionError];
             if(json){
                 NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json options:NSJSONWritingPrettyPrinted error:nil];
-                NSLog(@"jsonData %@",[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]);
+//                NSLog(@"jsonData %@",[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]);
                 
                 if (succeedBlock) {
                     succeedBlock(json);

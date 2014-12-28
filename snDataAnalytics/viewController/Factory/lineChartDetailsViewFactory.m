@@ -48,7 +48,6 @@
 
 }
 
-
 + (instancetype)sharedInstance
 {
     static lineChartDetailsViewFactory *sharedInstance = nil;
@@ -231,9 +230,9 @@
     
     
     vc.dimensionChoosedBlock = ^(NSInteger i) {
+        
         if (chosenDimension.integerValue != i) {
             chosenDimension = @(i);
-            
             typeof (weakVC) strongVC = weakVC;
             
             [strongSelf reloadController:strongVC dimensionIndex:i withModel:model withLabelData:labelData withDimensionArray:dimensionArray];
@@ -295,7 +294,7 @@
         }
     };
     
-    vc.dataChoosedBlock = ^(NSString *fromDate, NSString *toDate){
+    vc.dateChoosedBlock = ^(NSString *fromDate, NSString *toDate){
         typeof (weakVC) strongVC = weakVC;
         
         [model setFromDate:fromDate];
@@ -304,7 +303,10 @@
         
         [strongSelf reloadController:strongVC dimensionIndex:chosenDimension.integerValue withModel:model withLabelData:labelData withDimensionArray:dimensionArray];
     };
-
+    
+    vc.conditionChoosedBlock = ^(NSDictionary *data){
+        data;
+    };
     
     return vc;
 }
@@ -317,7 +319,7 @@
     
     //details views的 title 和 当前维度 名称
     strongVC.titleString = strongVC.chartDetailsView.dimensionName = dimensionArray[i];
-    //details views的 当前指标 名称
+    //details views的 当前指标名称
     strongVC.chartDetailsView.indexName = (NSString *)indexNameArray[0];
     strongVC.chartDetailsView.lineView.labelString = (NSString *)indexNameArray[0];
     //添加detailsview的index array选项
@@ -360,12 +362,14 @@
             /*已有数据时，直接处理
              */
             NSMutableDictionary *detailsData = (NSMutableDictionary *)((NSDictionary *)[model getDetailsData])[(NSString *)dimensionArray[i]];
-            //detailsview的labels
-            [strongVC.chartDetailsView.detailsView reloadLabelsWithData:detailsData];
-            //detailsview的数值
-            [strongVC.chartDetailsView.detailsView reloadValuesWithData:detailsData];
-            //图表
-            [strongVC.chartDetailsView.lineView relodData:detailsData];
+            dispatch_main_async_safe(^{
+                //detailsview的labels
+                [strongVC.chartDetailsView.detailsView reloadLabelsWithData:detailsData];
+                //detailsview的数值
+                [strongVC.chartDetailsView.detailsView reloadValuesWithData:detailsData];
+                //图表
+                [strongVC.chartDetailsView.lineView relodData:detailsData];
+            });
         }
     }
 }

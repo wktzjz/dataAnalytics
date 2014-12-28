@@ -19,9 +19,9 @@
 @property (nonatomic) int   visit;
 
 @property (nonatomic,strong) NSArray *groupColorArray;
-@property (nonatomic,strong) NSMutableArray *groupPercentArray;
+@property (nonatomic,strong) NSMutableArray *sourceVisitArray;
 @property (nonatomic,strong) NSArray *validSourceUVColorArray;
-@property (nonatomic,strong) NSMutableArray *groupValidPercentArray;
+@property (nonatomic,strong) NSMutableArray *sourceValidUVArray;
 @property (nonatomic,strong) NSMutableArray *cityNameArray;
 @property (nonatomic,strong) NSMutableArray *cityValueArray;
 @property (nonatomic,strong) NSMutableArray *pagesNameArray;
@@ -33,12 +33,16 @@
 
 //use the folling methods
 @property (nonatomic,strong) NSDictionary *initializeData;
+@property (nonatomic,strong) NSDictionary *detailOutlineData;
+
 @property (nonatomic,strong) NSDictionary *sendDict;
 @property (nonatomic,readonly) BOOL initializeDataReady;
 
 + (instancetype)sharedInstance;
 
 - (void)getOutlineData;
+- (void)getDetailOutlineData;
+
 
 //the Timer will automaticlly getNewData every 10s,and send async notifications to update;
 - (void)getNewData;

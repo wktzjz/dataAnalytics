@@ -9,18 +9,8 @@
 #import "visitorGroupModel.h"
 #import "networkManager.h"
 #import "PNColor.h"
-#import "DBManager.h"
-
-#if !TARGET_IPHONE_SIMULATOR
-static NSString *const serverAddress                  = @"http://sasssit.cnsuning.com:4080";
-#else
-static NSString *const serverAddress                  = @"http://10.27.193.34:80";
-#endif
-
-static NSString *const visitorGroupDataDidChange                  = @"visitorGroupDataDidChanged";
-static NSString *const visitorGroupDetailOutlineDataDidInitialize = @"visitorGroupDetailOutlineDataDidInitialize";
-static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGroupOutlineDataDidInitialize";
-
+#import "CityDBManager.h"
+#import "networkDefine.h"
 
 @implementation visitorGroupModel
 {
@@ -84,6 +74,7 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
     }
 }
 
+//http://10.27.193.34/snf-mbbi-web/visitGroup/getTrmnlTp.htm
 - (void)getOutlineData
 {
     void (^successefullyBlock)(NSDictionary *data) = ^(NSDictionary *data) {
@@ -116,52 +107,75 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
         });
     };
 
+    //http://10.27.193.34/snf-mbbi-web/mbbi/getVistorGroup.htm?beginTime=2014-12-08&endTime=2014-12-08
     NSString *URL = [[NSString alloc] initWithFormat:@"%@/snf-mbbi-web/mbbi/getVistorGroup.htm?beginTime=%@&endTime=%@",serverAddress,_fromDate,_toDate];
-    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:URL failureBlock:successefullyBlock successedBlock:successefullyBlock];
+    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:URL failureBlock:nil successedBlock:successefullyBlock];
 }
+
 
 - (NSDictionary *)getDetailOutlineData
 {
     if (!_detailInitializeData) {
-        [self createDetailOutlineData];
+        [self createDetailOutlineData:nil];
         return _detailInitializeData;
     }else{
         return _detailInitializeData;
     }
 }
 
-- (void)createDetailOutlineData
+- (NSDictionary *)handleDetailOutlineData:(NSDictionary *)data
+{
+    return @{ @"arrayOfDates":data[@"arrayOfDates"],
+              @"UV_arrayOfValues":data[@"uvArrayOfValues"],
+              @"PV_arrayOfValues":data[@"pvArrayOfValues"],
+              @"VISIT_arrayOfValues":data[@"visitArrayOfValues"],
+              @"新UV_arrayOfValues":data[@"newUvArrayOfValues"],
+              @"有效UV_arrayOfValues":data[@"validUvArrayOfValues"],
+              @"平均页面停留时间_arrayOfValues":data[@"arrayOfAvgPageTime"],
+              @"提交订单转化率_arrayOfValues":data[@"avgOrderTransPercent"],
+              @"有效订单转化率_arrayOfValues":data[@"validOrderTransPercent"],
+              @"UV_number":data[@"uvTotal"],
+              @"PV_number":data[@"pvTotal"],
+              @"VISIT_number":data[@"visitTotal"],
+              @"新UV_number":data[@"newUvTotal"],
+              @"有效UV_number":data[@"validUvTotal"],
+              @"平均页面停留时间_number":data[@"avgPageTime"],
+              @"提交订单转化率_number":data[@"orderPercent"],
+              @"有效订单转化率_number":data[@"validOrderPercent"]
+              };
+    
+}
+
+- (void)createDetailOutlineData:(void(^)())succeedBlock
 {
     NSString *url = [[NSString alloc] initWithFormat:@"%@/snf-mbbi-web/mbbi/getVisitTpDesc.htm?beginTime=%@&endTime=%@",serverAddress,_fromDate,_toDate];
-//    NSString *url = [[NSString alloc] initWithFormat: @"http://10.27.193.34:80/snf-mbbi-web/mbbi/getVisitTpDesc.htm?beginTime=2014-12-08&endTime=2014-12-08"];
     
     void (^successefullyBlock)(NSDictionary *) = ^(NSDictionary *data) {
-        
-        _groupUV = arc4random() % 20000;
-        float validUVRatio = ((arc4random() % 500) + 500) / 1000.0;
-        _validGroupUV = _groupUV * validUVRatio;
-        _visitor = arc4random() % 30000;
-        
-        _groupPercentArray = @[@15,@30,@55];
-        _groupColorArray = @[PNLightGreen,PNFreshGreen,PNDeepGreen];
-        
         visitorGroupModel *strongSelf = _wself;
+
+//        _groupUV = arc4random() % 20000;
+//        float validUVRatio = ((arc4random() % 500) + 500) / 1000.0;
+//        _validGroupUV = _groupUV * validUVRatio;
+//        _visitor = arc4random() % 30000;
+//        
+//        _groupPercentArray = @[@15,@30,@55];
+//        _groupColorArray = @[PNLightGreen,PNFreshGreen,PNDeepGreen];
+//        
+//        NSMutableArray *parallelArray = [[NSMutableArray alloc] initWithCapacity:8];
+//        for(int i = 0; i < 8; i++){
+//            [parallelArray addObject:[[NSMutableArray alloc] init]];
+//        }
+//        
+//        for (int i = 0; i < 20; i++) {
+//            [_arrayOfDates addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:i]]];
+//        }
+//        
+//        //同步并行处理数据
+//        dispatch_apply(8, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t index) {
+//            [strongSelf addNumberToArray:parallelArray[index]];
+//        });
         
-        NSMutableArray *parallelArray = [[NSMutableArray alloc] initWithCapacity:8];
-        for(int i = 0; i < 8; i++){
-            [parallelArray addObject:[[NSMutableArray alloc] init]];
-        }
-        
-        for (int i = 0; i < 20; i++) {
-            [_arrayOfDates addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:i]]];
-        }
-        
-        //同步并行处理数据
-        dispatch_apply(8, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t index) {
-            [strongSelf addNumberToArray:parallelArray[index]];
-        });
-        
-        _detailInitializeData = @{
+//        _detailInitializeData = @{
                                   //                            @"arrayOfDates":_arrayOfDates,
                                   //                            @"UV_arrayOfValues":parallelArray[0],
                                   //                            @"PV_arrayOfValues":parallelArray[1],
@@ -179,28 +193,40 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
                                   //                            @"平均页面停留时间_number":@(arc4random() % 200),
                                   //                            @"提交订单转化率_number":@(arc4random() % 100),
                                   //                            @"有效订单转化率_number":@(arc4random() % 100)
-                                  @"arrayOfDates":data[@"arrayOfDates"],
-                                  @"UV_arrayOfValues":data[@"uvArrayOfValues"],
-                                  @"PV_arrayOfValues":data[@"pvArrayOfValues"],
-                                  @"VISIT_arrayOfValues":data[@"visitArrayOfValues"],
-                                  @"新UV_arrayOfValues":data[@"newUvArrayOfValues"],
-                                  @"有效UV_arrayOfValues":data[@"validUvArrayOfValues"],
-                                  @"平均页面停留时间_arrayOfValues":data[@"arrayOfAvgPageTime"],
-                                  @"提交订单转化率_arrayOfValues":data[@"avgOrderTransPercent"],
-                                  @"有效订单转化率_arrayOfValues":data[@"validOrderTransPercent"],
-                                  @"UV_number":data[@"uvTotal"],
-                                  @"PV_number":data[@"pvTotal"],
-                                  @"VISIT_number":data[@"visitTotal"],
-                                  @"新UV_number":data[@"newUvTotal"],
-                                  @"有效UV_number":data[@"validUvTotal"],
-                                  @"平均页面停留时间_number":data[@"avgPageTime"],
-                                  @"提交订单转化率_number":data[@"orderPercent"],
-                                  @"有效订单转化率_number":data[@"validOrderPercent"]
-                                  };
+//                                  };
+        
+        _detailInitializeData = [strongSelf handleDetailOutlineData:data];
         
         _initializeDataReady = YES;
         
-        NSNotification *notification = [[NSNotification alloc] initWithName:visitorGroupDetailOutlineDataDidInitialize object:strongSelf userInfo:_detailInitializeData];
+        if(succeedBlock){
+            succeedBlock();
+        }
+//        NSNotification *notification = [[NSNotification alloc] initWithName:visitorGroupDetailOutlineDataDidInitialize object:strongSelf userInfo:_detailInitializeData];
+//        
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [[NSNotificationQueue defaultQueue] enqueueNotification:notification
+//                                                       postingStyle:NSPostASAP
+//                                                       coalesceMask:NSNotificationCoalescingOnName forModes:@[NSDefaultRunLoopMode]];
+//        });
+        
+    };
+    
+    
+    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:url failureBlock:nil successedBlock:successefullyBlock];
+}
+
+
+- (void)reloadDetailOutlineFromDate:(NSString *)fromDate toDate:(NSString *)toDate
+{
+    NSString *url = [[NSString alloc] initWithFormat:@"%@/snf-mbbi-web/mbbi/getVisitTpDesc.htm?beginTime=%@&endTime=%@",serverAddress,fromDate,toDate];
+    
+    void (^successefullyBlock)(NSDictionary *) = ^(NSDictionary *data) {
+          visitorGroupModel *strongSelf = _wself;
+        
+        NSDictionary *detailInitializeData = [strongSelf handleDetailOutlineData:data];
+        
+        NSNotification *notification = [[NSNotification alloc] initWithName:detailOutlineDataDidChange object:strongSelf userInfo:detailInitializeData];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [[NSNotificationQueue defaultQueue] enqueueNotification:notification
@@ -211,8 +237,10 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
     };
     
     
-    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:url failureBlock:successefullyBlock successedBlock:successefullyBlock];
+    [[networkManager sharedInstance] sendAsynchronousRequestWithURL:url failureBlock:nil successedBlock:successefullyBlock];
+
 }
+
 
 - (NSDictionary *)getDefineDetails
 {
@@ -303,7 +331,7 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
 
 - (void)getVisitorTypeDetailsData:(void (^)(NSDictionary *data))succeedBlock
 {
-    if([_dimensionDataAvailableArray[0] isEqual: @NO]){
+    if([_dimensionDataAvailableArray[0] isEqual:@NO]){
         
         NSString *urlVisitorType = [[NSString alloc] initWithFormat:@"%@/snf-mbbi-web/visitGroup/getVistorType.htm?beginTime=%@&endTime=%@",serverAddress,_fromDate,_toDate];
         
@@ -360,7 +388,7 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
 
 - (void)getTerminalTypeDetailsData:(void (^)(NSDictionary *data))succeedBlock
 {
-     if( [_dimensionDataAvailableArray[1] isEqual: @NO]){
+     if( [_dimensionDataAvailableArray[1] isEqual:@NO]){
 
         NSString *urlTerminalType = [[NSString alloc] initWithFormat:@"%@/snf-mbbi-web/visitGroup/getTagType.htm?beginTime=%@&endTime=%@",serverAddress,_fromDate,_toDate];
          
@@ -436,7 +464,7 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
 
 - (void)getAllMemberDetailsData:(void (^)(NSDictionary *data))succeedBlock
 {
-    if([_dimensionDataAvailableArray[2] isEqual: @NO]){
+    if([_dimensionDataAvailableArray[2] isEqual:@NO]){
         
         NSString *urlAllMember = [[NSString alloc] initWithFormat:@"%@/snf-mbbi-web/visitGroup/getAllMember.htm?beginTime=%@&endTime=%@",serverAddress,_fromDate,_toDate];
         
@@ -496,7 +524,7 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
 
 - (void)getNewMemberDetailsData:(void (^)(NSDictionary *data))succeedBlock
 {
-    if([_dimensionDataAvailableArray[3] isEqual: @NO]){
+    if([_dimensionDataAvailableArray[3] isEqual:@NO]){
         
         NSString *urlNewMember = [[NSString alloc] initWithFormat:@"%@/snf-mbbi-web/visitGroup/getNewMember.htm?beginTime=%@&endTime=%@",serverAddress,_fromDate,_toDate];
         
@@ -556,7 +584,7 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
 
 - (void)getOldMemberDetailsData:(void (^)(NSDictionary *data))succeedBlock
 {
-    if([_dimensionDataAvailableArray[4] isEqual: @NO]){
+    if([_dimensionDataAvailableArray[4] isEqual:@NO]){
         
         NSString *urlOldMember = [[NSString alloc] initWithFormat:@"%@/snf-mbbi-web/visitGroup/getOldMember.htm?beginTime=%@&endTime=%@",serverAddress,_fromDate,_toDate];
         
@@ -622,7 +650,7 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
 
 - (void)getMemberGradeDetailsData:(void (^)(NSDictionary *data))succeedBlock
 {
-    if([_dimensionDataAvailableArray[5] isEqual: @NO]){
+    if([_dimensionDataAvailableArray[5] isEqual:@NO]){
         
         NSString *urlMemberGrade = [[NSString alloc] initWithFormat:@"%@/snf-mbbi-web/visitGroup/getMemberGrade.htm?beginTime=%@&endTime=%@",serverAddress,_fromDate,_toDate];
         
@@ -650,7 +678,7 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
                      @"访问会员数_array":data[@"memberNum"],
                      @"买家数_array":data[@"buyerNum"],
                      @"购买率_array":data[@"buyPercentNum"],
-                     @"客单价_array":data[@"avgOrderNum"],
+                     @"客单价_array":data[@"orderPriceNum"],
                      @"平均订单收入_array":data[@"avgOrderNum"],
                      @"arrayOfDates":data[@"arrayOfDates"],
                      @"访问会员数_arrayOfValues":data[@"memberArrayOfValues"],
@@ -681,7 +709,7 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
 
 - (void)getMemberCityDetailsData:(void (^)(NSDictionary *data))succeedBlock
 {
-    if([_dimensionDataAvailableArray[6] isEqual: @NO]){
+    if([_dimensionDataAvailableArray[6] isEqual:@NO]){
         
         NSString *urlMemberCity = [[NSString alloc] initWithFormat:@"%@/snf-mbbi-web/visitGroup/getMemberCity.htm?beginTime=%@&endTime=%@",serverAddress,_fromDate,_toDate];
         
@@ -708,8 +736,11 @@ static NSString *const visitorGroupOutlineDataDidInitialize       = @"visitorGro
                 [arrayofDate addObject:[NSString stringWithFormat:@"%@",[NSNumber numberWithInt:i]]];
             }
             
+            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:data options:NSJSONWritingPrettyPrinted error:nil];
+            NSLog(@"jsonData %@",[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]);
+            
             NSArray *IDArray = data[@"tagType"];
-            NSArray *cityArray = [[NSArray alloc] initWithArray:[[DBManager sharedInstance] getCityArrayByIDArray:IDArray]];
+            NSArray *cityArray = [[NSArray alloc] initWithArray:[[CityDBManager sharedInstance] getCityArrayByIDArray:IDArray]];
             
             _memberCityDetailsData = [[NSMutableDictionary alloc] initWithDictionary: [self handleDetailsData:data]];
             [_memberCityDetailsData setObject:cityArray forKey:@"tagType"];

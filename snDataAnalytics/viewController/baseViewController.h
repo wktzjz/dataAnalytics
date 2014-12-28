@@ -15,23 +15,23 @@
 
 @interface baseViewController : UIViewController <networkDelegate,UIScrollViewDelegate,UIGestureRecognizerDelegate,dataDetailsControllerDelegate,outLineViewTransitionProtocol>
 
-@property (nonatomic) UIView *settingView;
-@property (nonatomic) UIView *contentView;
-@property (nonatomic) NSMutableArray *outLineViewArray;
+@property (nonatomic, strong) UIView *settingView;
+@property (nonatomic, strong) UIView *contentView;
+@property (nonatomic, strong) NSMutableArray *outLineViewArray;
 
-@property (nonatomic) dataOutlineViewContainer *realTimeView;
-@property (nonatomic) dataOutlineViewContainer *visitorGruopView;
-@property (nonatomic) dataOutlineViewContainer *sourceView;
-@property (nonatomic) dataOutlineViewContainer *pageView;
-@property (nonatomic) dataOutlineViewContainer *hotCityView;
-@property (nonatomic) dataOutlineViewContainer *hotPageView;
-@property (nonatomic) dataOutlineViewContainer *transformView;
+@property (nonatomic, strong) dataOutlineViewContainer *realTimeView;
+@property (nonatomic, strong) dataOutlineViewContainer *visitorGruopView;
+@property (nonatomic, strong) dataOutlineViewContainer *sourceView;
+@property (nonatomic, strong) dataOutlineViewContainer *pageView;
+@property (nonatomic, strong) dataOutlineViewContainer *hotCityView;
+@property (nonatomic, strong) dataOutlineViewContainer *hotPageView;
+@property (nonatomic, strong) dataOutlineViewContainer *transformView;
 
-@property (nonatomic,strong) dataDetailsViewController *detailsViewController;
+@property (nonatomic, strong) dataDetailsViewController *detailsViewController;
 
 @property (nonatomic, strong) id observeToken;
 
-@property (nonatomic) NSNumber *clickedOutLineViewIndex;
+@property (nonatomic, strong) NSNumber *clickedOutLineViewIndex;
 
 //- (NSNumber *)clickedOutlineIndex;
 //- (NSMutableArray *)outLineViewArray;

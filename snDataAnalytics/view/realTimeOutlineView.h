@@ -29,10 +29,13 @@
 @property (nonatomic) NSInteger dealMoney;
 @property (nonatomic) NSInteger validDealNumber;
 @property (nonatomic) float validDealTransformRatio;
-@property (nonatomic) int   groupUV;
-@property (nonatomic) int   validGroupUV;
+@property (nonatomic) NSInteger   groupUV;
+@property (nonatomic) NSInteger   validGroupUV;
+@property (nonatomic) NSInteger   VISITNumber;
 @property (nonatomic) float validUVRatio;
-@property (nonatomic) int   VISITNumber;
+@property (nonatomic) float newVISITRatio;
+@property (nonatomic) float newUVRatio;
+@property (nonatomic) float newVaildUVRatio;
 
 //@property (nonatomic,strong) NSArray *groupColorArray;
 //@property (nonatomic,strong) NSArray *groupPercentArray;
@@ -43,8 +46,8 @@
 @property (nonatomic,strong) NSMutableArray *arrayOfDates;
 
 @property (nonatomic,strong) NSMutableArray *groupColorArray;
-@property (nonatomic,strong) NSMutableArray *groupPercentArray;
-@property (nonatomic,strong) NSMutableArray *groupValidPercentArray;
+@property (nonatomic,strong) NSMutableArray *sourceVisitArray;
+@property (nonatomic,strong) NSMutableArray *sourceValidUVArray;
 @property (nonatomic,strong) NSMutableArray *cityNameArray;
 @property (nonatomic,strong) NSMutableArray *cityValueArray;
 @property (nonatomic,strong) NSMutableArray *pagesNameArray;

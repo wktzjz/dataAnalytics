@@ -117,6 +117,11 @@ typedef NSString *(^PNyLabelFromatter)(CGFloat yLabelValue);
 @property (nonatomic) UIFont * labelFont;
 
 /*
+ labelLineNumber
+ */
+@property (nonatomic) NSInteger labelLineNumber;
+
+/*
  xLabelSkip define the label skip number
  */
 @property (nonatomic) NSInteger xLabelSkip;

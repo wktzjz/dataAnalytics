@@ -21,7 +21,6 @@ typedef NS_ENUM(NSUInteger, visitorGroupControllerType) {
 };
 
 
-
 @interface lineChartDetailsViewFactory : NSObject
 
 + (instancetype)sharedInstance;

@@ -217,9 +217,13 @@
         
     } else if (numberOfPoints == 1) {
         NSLog(@"[BEMSimpleLineGraph] Data source contains only one data point. Add more data to the data source and then reload the graph.");
-        BEMCircle *circleDot = [[BEMCircle alloc] initWithFrame:CGRectMake(0, 0, self.sizePoint, self.sizePoint)];
-        circleDot.center = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
-        circleDot.Pointcolor = self.colorPoint;
+        //wktzjz
+//        BEMCircle *circleDot = [[BEMCircle alloc] initWithFrame:CGRectMake(0, 0, self.sizePoint, self.sizePoint)];
+        BEMCircle *circleDot = [[BEMCircle alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+//        circleDot.center = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
+        circleDot.center = CGPointMake(self.frame.size.width/2, self.frame.size.height/4);
+//        circleDot.Pointcolor = self.colorPoint;
+        circleDot.Pointcolor = [UIColor colorWithRed:31.0/255.0 green:187.0/255.0 blue:166.0/255.0 alpha:1.0];
         circleDot.alpha = 1;
         [self addSubview:circleDot];
         return;

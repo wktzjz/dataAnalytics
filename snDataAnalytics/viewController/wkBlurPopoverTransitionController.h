@@ -8,10 +8,15 @@
 
 @import UIKit;
 
+typedef NS_ENUM(NSUInteger, popoverType) {
+    center = 0,
+    top,
+};
 
 @interface wkBlurPopoverTransitionController : NSObject <UIViewControllerAnimatedTransitioning>
 
 @property (nonatomic, assign) BOOL isPresentation;
+@property (nonatomic) popoverType popovertype;
 
 @end
 

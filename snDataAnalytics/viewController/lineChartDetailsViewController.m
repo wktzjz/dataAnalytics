@@ -7,7 +7,9 @@
 //
 
 #import "lineChartDetailsViewController.h"
+#import "ConditionInquireController.h"
 #import "THDatePickerViewController.h"
+#import "wkBlurPopover.h"
 #import "wkContextMenuView.h"
 #import "FBShimmeringView.h"
 #import "BFPaperButton.h"
@@ -128,8 +130,8 @@ const static CGFloat titleViewHeight = 44.0f;
     settingButton.backgroundColor = [UIColor clearColor];
     settingButton.translatesAutoresizingMaskIntoConstraints = NO;
     settingButton.textColor = PNTwitterColor;
-    [settingButton setTitle:@"Settings" forState:UIControlStateNormal];
-//    [settingButton addTarget:self action:@selector(settingButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [settingButton setTitle:@"查询" forState:UIControlStateNormal];
+    [settingButton addTarget:self action:@selector(settingButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     
     [_barView addSubview:settingButton];
     
@@ -288,6 +290,22 @@ const static CGFloat titleViewHeight = 44.0f;
     [self addPopViewsType:Index];
 }
 
+#pragma mark settingButtonClicked
+- (void)settingButtonClicked
+{
+    ConditionInquireController *vc = [[ConditionInquireController alloc] initWithFrame:CGRectMake(0, 0, 300, 360) type:inquireVisitorGroup1];
+    
+    vc.chooseActionBlock =^(NSDictionary *data) {
+        if(_conditionChoosedBlock){
+            _conditionChoosedBlock(data);
+        }
+    };
+    
+    wkBlurPopover *popover = [[wkBlurPopover alloc] initWithContentViewController:vc type:top];
+    [self presentViewController:popover animated:YES completion:nil];
+    
+}
+
 
 #pragma mark - popDimensionViews
 
@@ -401,7 +419,7 @@ const static CGFloat titleViewHeight = 44.0f;
 //            if(idx > 6){
 //                x += 90;
 //            }
-            view.center =CGPointMake(centerX, view.center.y);
+            view.center = CGPointMake(centerX, view.center.y);
             
             [self showWithView:view idx:idx initDelay:0.1 + delay centerX:x];
         }];
@@ -580,20 +598,24 @@ const static CGFloat titleViewHeight = 44.0f;
 {
     [self dismissSemiModalView];
     
-    NSArray* arr = [selectedDays allKeys];
-    arr = [arr sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        NSComparisonResult result = [obj1 compare:obj2];
-        return result==NSOrderedDescending;
-    }];
-    
-    if (arr.count > 0) {
-        _timeView.fromTime = ((THDateDay *)selectedDays[(NSNumber *)arr[0]]).date;
-        _timeView.toTime = ((THDateDay *)selectedDays[[arr lastObject]]).date;
-    }
-    
-    if(_dataChoosedBlock){
-        _dataChoosedBlock(_timeView.fromString,_timeView.toString);
-    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+        NSArray* arr = [selectedDays allKeys];
+        arr = [arr sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            NSComparisonResult result = [obj1 compare:obj2];
+            return result==NSOrderedDescending;
+        }];
+        
+        if (arr.count > 0) {
+            _timeView.fromTime = ((THDateDay *)selectedDays[(NSNumber *)arr[0]]).date;
+            _timeView.toTime = ((THDateDay *)selectedDays[[arr lastObject]]).date;
+        }
+        
+        if(_dateChoosedBlock){
+            _dateChoosedBlock(_timeView.fromString,_timeView.toString);
+        }
+
+    });
+   
 }
 
 -(void)datePickerCancelPressed:(THDatePickerViewController *)datePicker

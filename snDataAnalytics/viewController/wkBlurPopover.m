@@ -7,7 +7,6 @@
 //
 
 #import "wkBlurPopover.h"
-#import "wkBlurPopoverTransitionController.h"
 
 @interface wkBlurPopover () <UIViewControllerTransitioningDelegate>
 
@@ -20,12 +19,21 @@
 @end
 
 @implementation wkBlurPopover
+{
+    popoverType _type;
+}
 
 - (instancetype)initWithContentViewController:(UIViewController *)contentViewController
+{
+    return [self initWithContentViewController:contentViewController type:center];
+}
+
+- (instancetype)initWithContentViewController:(UIViewController *)contentViewController type:(popoverType)type
 {
     self = [super initWithNibName:nil bundle:nil];
     if (self)
     {
+        _type = type;
         self.contentViewController = contentViewController;
         self.transitioningDelegate = self;
         
@@ -51,10 +59,18 @@
         [self.contentViewController.view addGestureRecognizer:self.panGestureRecognizer];
     }
     
-    // make content view controller center aligned
     CGRect frame = CGRectZero;
-    frame.origin.x = (CGRectGetWidth(self.view.bounds) - self.contentViewController.preferredContentSize.width) / 2;
-    frame.origin.y = (CGRectGetHeight(self.view.bounds) - self.contentViewController.preferredContentSize.height) / 2;
+    if (_type == center) {
+        // make content view controller center aligned
+
+        frame.origin.x = (CGRectGetWidth(self.view.bounds) - self.contentViewController.preferredContentSize.width) / 2;
+        frame.origin.y = (CGRectGetHeight(self.view.bounds) - self.contentViewController.preferredContentSize.height) / 2;
+
+    }else if (_type == top){
+        frame.origin.x = (CGRectGetWidth(self.view.bounds) - self.contentViewController.preferredContentSize.width) / 2;
+        frame.origin.y = 0;
+    }
+    
     frame.size = [self contentViewController].preferredContentSize;
     self.contentViewController.view.frame = frame;
     

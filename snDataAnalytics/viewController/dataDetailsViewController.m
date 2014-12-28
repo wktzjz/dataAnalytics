@@ -26,7 +26,7 @@
 #import "wkContextMenuView.h"
 
 //#import "test.h"
-#import "notificationDefine.h"
+#import "networkDefine.h"
 #import "FRDLivelyButton.h"
 #import "calloutItemView.h"
 
@@ -46,7 +46,7 @@
 #import "timeView.h"
 
 #import "detailOutlineView.h"
-#import "notificationDefine.h"
+#import "networkDefine.h"
 
 
 const static CGFloat titleViewHeight = 44.0f;
@@ -97,7 +97,7 @@ const static CGFloat itemsViewHeight = 145.0f;
     timeView *_timeView;
     
     id _outlineViewData;
-    detailOutlineView *_detailOutlineView;
+//    detailOutlineView *_detailOutlineView;
     detailOutlineView *_realTimeView;
 //    detailOutlineView *_visitorGroupView;
 //    detailOutlineView *_sourceAnalyticsView;
@@ -163,11 +163,11 @@ const static CGFloat itemsViewHeight = 145.0f;
     _shouldShowReferenceLines = NO;
 
     [self addTitleView];
-    [self addSettingButton];
-    [self addDatePickerButton];
+//    [self addSettingButton];
+//    [self addDatePickerButton];
     [self addScrollView];
     [self addOutlineDataViewWithData:_outlineViewData];
-    [self addTimeSwithButton];
+//    [self addTimeSwithButton];
     [self addTimeView];
     
     wkContextMenuView* overlay = [[wkContextMenuView alloc] init];
@@ -177,6 +177,10 @@ const static CGFloat itemsViewHeight = 145.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleRealTimeDataDidChange:)
                                                  name:realTimeDataDidChange object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleDetailOutlineDataDidChange:)
+                                                 name:detailOutlineDataDidChange object:nil];
     
     UILongPressGestureRecognizer* _longPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:overlay action:@selector(longPressDetected:)];
     [self.scrollView setUserInteractionEnabled:YES];
@@ -315,10 +319,6 @@ const static CGFloat itemsViewHeight = 145.0f;
         default:
             break;
     }
-    
-    
-//    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//    [alertView show];
     
 }
 
@@ -672,7 +672,7 @@ const static CGFloat itemsViewHeight = 145.0f;
     _dataContentView = [[dataOutlineViewContainer alloc ] initWithFrame:CGRectMake(_marginX, _marginY, _width, _height - 140.0) dataType:outlineTransform data:data inControllerType:detailView];
     [_scrollView addSubview:_dataContentView];
     
-     _detailOutlineView = [[detailOutlineView alloc] initWithFrame:CGRectMake(_marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, _width, _height * 7.0) viewType:outlineTransform];
+    _detailOutlineView = [[detailOutlineView alloc] initWithFrame:CGRectMake(_marginX , _dataContentView.frame.origin.y + _dataContentView.frame.size.height + 10, _width, _height * 7.0) viewType:outlineTransform];
     
 //    [self addDetailOutlineViewWithType:outlineTransform];
     
@@ -720,7 +720,7 @@ const static CGFloat itemsViewHeight = 145.0f;
                 break;
             case outlinePageAnalytics:
                 [[pageAnalyticsModel sharedInstance] createDefineDetails];
-                [[pageAnalyticsModel sharedInstance] createDetailsData];
+                [[pageAnalyticsModel sharedInstance] getPageTypeDetailsData:nil];
                 break;
             case outlineTransform:
                 [[transformAnalyticsModel sharedInstance] createDefineDetails];
@@ -734,56 +734,65 @@ const static CGFloat itemsViewHeight = 145.0f;
 
 }
 
-- (void)addDetailOutlineViewWithType:(viewType)type
+- (void)handleDetailOutlineDataDidChange:(NSNotification *)notification
 {
-    double delayInSeconds = 0.5;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    
-    __weak typeof(self) weakself = self;
-    dispatch_after(popTime, dispatch_get_main_queue(), ^{
-        typeof(weakself) strongSelf = weakself;
-        
-        if (_initializedDataReady) {
-            [_detailOutlineView initViewsWithData:_initializedData];
-        }
-        
-        _detailOutlineView.viewClickedBlock = ^(NSInteger markers) {
-            [strongSelf handleLineViewClicked:markers fromView:type];
-        };
-        
-        [_scrollView addSubview:_detailOutlineView];
-    });
-    
-    _ifHasDetailsView = YES;
-    
-    if ([_viewTitleString isEqual: @"Details"]) {
-        self.viewTitleString = _viewTitleStringArray[type];
+    if (notification.userInfo) {
+        dispatch_main_async_safe(^{
+            [_detailOutlineView reloadData:notification.userInfo];
+        })
     }
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        switch (type) {
-            case outlineVisitorGroup:
-                [[visitorGroupModel sharedInstance] createDefineDetails];
-                [[visitorGroupModel sharedInstance] createDetailsData];
-                break;
-            case outlineSource:
-                [[sourcesAnalyticsModel sharedInstance] createDefineDetails];
-                [[sourcesAnalyticsModel sharedInstance] createDetailsData];
-                break;
-            case outlinePageAnalytics:
-                [[pageAnalyticsModel sharedInstance] createDefineDetails];
-                [[pageAnalyticsModel sharedInstance] createDetailsData];
-                break;
-            case outlineTransform:
-                [[transformAnalyticsModel sharedInstance] createDefineDetails];
-                [[transformAnalyticsModel sharedInstance] createDetailsData];
-                break;
-                
-            default:
-                break;
-        }
-    });
 }
+
+//- (void)addDetailOutlineViewWithType:(viewType)type
+//{
+//    double delayInSeconds = 0.5;
+//    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+//    
+//    __weak typeof(self) weakself = self;
+//    dispatch_after(popTime, dispatch_get_main_queue(), ^{
+//        typeof(weakself) strongSelf = weakself;
+//        
+//        if (_initializedDataReady) {
+//            [_detailOutlineView initViewsWithData:_initializedData];
+//        }
+//        
+//        _detailOutlineView.viewClickedBlock = ^(NSInteger markers) {
+//            [strongSelf handleLineViewClicked:markers fromView:type];
+//        };
+//        
+//        [_scrollView addSubview:_detailOutlineView];
+//    });
+//    
+//    _ifHasDetailsView = YES;
+//    
+//    if ([_viewTitleString isEqual: @"Details"]) {
+//        self.viewTitleString = _viewTitleStringArray[type];
+//    }
+//    
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+//        switch (type) {
+//            case outlineVisitorGroup:
+//                [[visitorGroupModel sharedInstance] createDefineDetails];
+//                [[visitorGroupModel sharedInstance] createDetailsData];
+//                break;
+//            case outlineSource:
+//                [[sourcesAnalyticsModel sharedInstance] createDefineDetails];
+//                [[sourcesAnalyticsModel sharedInstance] createDetailsData];
+//                break;
+//            case outlinePageAnalytics:
+//                [[pageAnalyticsModel sharedInstance] createDefineDetails];
+//                [[pageAnalyticsModel sharedInstance] createDetailsData];
+//                break;
+//            case outlineTransform:
+//                [[transformAnalyticsModel sharedInstance] createDefineDetails];
+//                [[transformAnalyticsModel sharedInstance] createDetailsData];
+//                break;
+//                
+//            default:
+//                break;
+//        }
+//    });
+//}
 
 #pragma mark handleVisitorGroupLineViewClicked
 - (void)handleLineViewClicked:(NSInteger)markers fromView:(viewType)type
@@ -897,27 +906,34 @@ const static CGFloat itemsViewHeight = 145.0f;
 //                                                                  }];
 }
 
+
 #pragma mark THDatePickerDelegate
 -(void)datePickerDonePressed:(THDatePickerViewController *)datePicker selectedDays:(NSMutableDictionary *)selectedDays
 {
     [self dismissSemiModalView];
 
     _selectedDays = selectedDays;
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
 
-    NSArray* arr = [selectedDays allKeys];
-    arr = [arr sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        NSComparisonResult result = [obj1 compare:obj2];
-        return result==NSOrderedDescending;
-    }];
-//    [arr enumerateObjectsUsingBlock:^(NSNumber *key, NSUInteger idx, BOOL *stop) {
-//        _timeView.toTime = ((THDateDay *)selectedDays[key]).date;
-//    }];
-    if (arr.count > 0) {
-        _timeView.fromTime = ((THDateDay *)selectedDays[(NSNumber *)arr[0]]).date;
-        _timeView.toTime = ((THDateDay *)selectedDays[[arr lastObject]]).date;
-
-    }
+        NSArray* arr = [selectedDays allKeys];
+        arr = [arr sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            NSComparisonResult result = [obj1 compare:obj2];
+            return result==NSOrderedDescending;
+        }];
+        
+        if (arr.count > 0) {
+            _timeView.fromTime = ((THDateDay *)selectedDays[(NSNumber *)arr[0]]).date;
+            _timeView.toTime = ((THDateDay *)selectedDays[[arr lastObject]]).date;
+        }
+        
+        if(_dateChoosedBlock){
+            _dateChoosedBlock(_timeView.fromString,_timeView.toString);
+        }
+    });
+    
 }
+
 
 -(void)datePickerCancelPressed:(THDatePickerViewController *)datePicker
 {
